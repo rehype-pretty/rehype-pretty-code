@@ -1,5 +1,9 @@
 # MDX Pretty Code
 
+<p align="center">
+<img src="./preview.jpg" height="761">
+</p>
+
 A Remark plugin to make the code in your MDX docs simply beautiful. Powered by
 [Shiki](https://github.com/shikijs/shiki).
 
@@ -15,10 +19,6 @@ npm install @atomiks/mdx-pretty-code shiki
 
 ## Usage
 
-MDX Pretty Code ships with the
-[Moonlight II](https://github.com/atomiks/moonlight-vscode-theme) VS Code theme
-by default, but any theme file can be used.
-
 CommonJS is also supported.
 
 ```js
@@ -30,10 +30,7 @@ const prettyCode = createRemarkPlugin({
   shikiOptions: {
     // Link to your VS Code theme JSON file
     theme: JSON.parse(
-      fs.readFileSync(
-        require.resolve('@atomiks/mdx-pretty-code/dist/moonlight-ii.json'),
-        'utf-8'
-      )
+      fs.readFileSync(require.resolve('./themes/my-theme.json'), 'utf-8')
     ),
   },
   // These are hooks which allow you to style the node. `node` is an element
@@ -174,6 +171,9 @@ Now you can just do:
 ```
 The function name is `hello{:.function}`.
 ```
+
+> Note: for the token feature to work, you must have supplied a JSON object to
+> `shikiOptions.theme`, not a default Shiki theme string.
 
 ## Sanitizing
 
