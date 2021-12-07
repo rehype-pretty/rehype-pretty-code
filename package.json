@@ -4,16 +4,16 @@
   "description": "A Remark plugin to make the code in your MDX docs simply beautiful. Powered by [Shiki](https://github.com/shikijs/shiki).",
   "main": "./dist/mdx-pretty-code.cjs",
   "type": "module",
+  "exports": {
+    "import": "./dist/mdx-pretty-code.js",
+    "require": "./dist/mdx-pretty-code.cjs"
+  },
   "files": [
     "dist/",
     "index.d.ts"
   ],
   "scripts": {
     "build": "npx rollup -c"
-  },
-  "exports": {
-    "import": "./dist/mdx-pretty-code.js",
-    "require": "./dist/mdx-pretty-code.cjs"
   },
   "author": "",
   "license": "MIT",
