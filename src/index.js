@@ -27,7 +27,7 @@ export function createRemarkPlugin(options) {
     visit(tree, 'inlineCode', inlineCode);
     visit(tree, 'code', blockCode);
 
-    function inlineCode() {
+    function inlineCode(node) {
       const meta = node.value.match(/{:([a-zA-Z.-]+)}$/)?.[1];
 
       if (!meta) {
@@ -68,7 +68,7 @@ export function createRemarkPlugin(options) {
       );
     }
 
-    function blockCode() {
+    function blockCode(node) {
       const lang =
         ignoreUnknownLanguage && !loadedLanguages.includes(node.lang)
           ? null
