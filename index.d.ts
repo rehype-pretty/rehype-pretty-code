@@ -11,8 +11,6 @@ export type Options = {
   ignoreUnknownLanguage: boolean;
 };
 
-declare const createRemarkPlugin: (
-  options: Partial<Options>
-) => () => Promise<void>;
+declare const createRemarkPlugin: (options?: Partial<Options>) => any;
 
 export {createRemarkPlugin};
