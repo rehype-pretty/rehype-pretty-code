@@ -1,0 +1,188 @@
+# MDX Pretty Code
+
+A Remark plugin to make the code in your MDX docs simply beautiful. Powered by
+[Shiki](https://github.com/shikijs/shiki).
+
+- ✅ Perfect VS Code highlighting (use any theme)
+- ✅ Line and word highlighting
+- ✅ Context-adjustable inline code highlighting
+
+Install the dependencies:
+
+```shell
+npm install @atomiks/mdx-pretty-code shiki
+```
+
+## Usage
+
+CJS usage is also supported.
+
+```js
+import {createRemarkPlugin} from '@atomiks/mdx-pretty-code';
+import fs from 'fs';
+import path from 'path';
+
+const prettyCode = createRemarkPlugin({
+  // Options passed to shiki.getHighlighter()
+  shikiOptions: {
+    // Link to your VS Code theme JSON file
+    theme: JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, 'assets', 'moonlight-ii.json'),
+        'utf-8'
+      )
+    ),
+  },
+  // These are hooks which allow you to style the node. `node` is an element
+  // using JSDOM, so you can apply any CSS.
+  onVisitLine(node) {
+    // Style a line node.
+    Object.assign(node.style, {
+      margin: '0 -1.5rem',
+      padding: '0 1.5rem',
+    });
+  },
+  onVisitHighlightedLine(node) {
+    // Style a highlighted line node.
+    Object.assign(node.style, {
+      backgroundColor: 'rgba(0,0,0,0.1)',
+    });
+  },
+  onVisitHighlightedWord(node) {
+    // Style a highlighted word node.
+    Object.assign(node.style, {
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      padding: '0.25rem',
+      borderRadius: '0.25rem',
+    });
+  },
+});
+```
+
+Then pass the plugin to your MDX options. For example, in Next.js' config file
+`next.config.js` using MDX v2:
+
+```js
+module.exports = {
+  experimental: {esmExternals: true},
+  webpack(config, options) {
+    config.module.rules.push({
+      test: /\.mdx?$/,
+      use: [
+        options.defaultLoaders.babel,
+        {
+          loader: '@mdx-js/loader',
+          /** @type {import('@mdx-js/loader').Options} */
+          options: {
+            remarkPlugins: [prettyCode],
+          },
+        },
+      ],
+    });
+
+    return config;
+  },
+};
+```
+
+## Line highlighting
+
+Highlight lines 1, 2 through 4, and 6.
+
+<!-- prettier-ignore -->
+\`\`\`js {1,2-4,6} 
+Code in here 
+\`\`\`
+
+## Word highlighting
+
+Highlight the literal word `carrot`. Any flagless regex can be supplied.
+
+<!-- prettier-ignore -->
+\`\`\`js /carrot/ 
+const carrot = 5; 
+\`\`\`
+
+### Limit word highlighting to specific instances
+
+If you want to limit which words get highlighted, this is possible. For
+instance:
+
+<!-- prettier-ignore -->
+\`\`\`js /carrot/1-2,4 
+Code 
+\`\`\`
+
+The numeric range must be directly after the `/`.
+
+This will only highlight the first, second, and fourth instances of `carrot`,
+but not the third, or fifth+.
+
+## Inline highlighting
+
+Append `{:lang}` (e.g. `{:js}`) at the end of the inline code to highlight it
+like it's a regular code block.
+
+```
+This is `inline(){:js}` code which will be colored like a regular code block.
+```
+
+In your `MDXProvider`'s `components` prop, modify `span` like so:
+
+```js
+const mdxComponents = {
+  span(props) {
+    if (props['data-mdx-pretty-code'] != null) {
+      return (
+        <code style={{color: props['data-color']}}>
+          {props.children.props.children}
+        </code>
+      );
+    }
+
+    return <span {...props} />;
+  },
+};
+```
+
+### Context-specific highlighting
+
+Shiki will color plain variables as plain text since the highlighting has no
+context. But if you're referring to a variable which was colored a different way
+by Shiki in a code block above or below the inline code, it won't be semantic.
+
+You can instruct MDX Pretty Code to color a word by supplying a token whose
+color is specified in the VS Code theme.
+
+It must start with a `.` to indicate it's a token, not a language.
+
+```
+The function name is `hello{:.entity.name.function}`.
+```
+
+You can create a `tokensMap` to shorten this throughout your docs:
+
+```js
+createRemarkPlugin({
+  // ...
+  tokensMap: {
+    function: 'entity.name.function',
+  },
+});
+```
+
+Now you can just do:
+
+```
+The function name is `hello{:.function}`.
+```
+
+## Sanitizing
+
+All HTML is sanitized via
+[`sanitize-html`](https://www.npmjs.com/package/sanitize-html). To configure the
+sanitizing options, pass `sanitizeOptions`, which is 1:1 with its API.
+
+## License
+
+MIT
