@@ -13,13 +13,19 @@ A Remark plugin to make the code in your MDX docs simply beautiful. Powered by
 
 ## Installation
 
+ESM contexts:
+
 ```shell
-npm install @atomiks/mdx-pretty-code shiki
+npm install @atomiks/mdx-pretty-code shiki unist-util-visit
+```
+
+CJS contexts:
+
+```shell
+npm install @atomiks/mdx-pretty-code shiki unist-util-visit@2
 ```
 
 ## Usage
-
-CommonJS is also supported.
 
 ```js
 import {createRemarkPlugin} from '@atomiks/mdx-pretty-code';

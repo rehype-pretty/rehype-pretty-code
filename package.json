@@ -23,7 +23,8 @@
     "proseWrap": "always"
   },
   "peerDependencies": {
-    "shiki": ">=0.9.0"
+    "shiki": "*",
+    "unist-util-visit": "*"
   },
   "devDependencies": {
     "prettier": "^2.5.1",
@@ -34,7 +35,6 @@
   "dependencies": {
     "jsdom": "^19.0.0",
     "parse-numeric-range": "^1.3.0",
-    "sanitize-html": "^2.6.0",
-    "unist-util-visit": "^2.0.3"
+    "sanitize-html": "^2.6.0"
   }
 }
