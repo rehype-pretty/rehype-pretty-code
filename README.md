@@ -7,7 +7,7 @@ A Remark plugin to make the code in your MDX docs simply beautiful. Powered by
 - ✅ Line and word highlighting
 - ✅ Context-adjustable inline code highlighting
 
-Install the dependencies:
+## Installation
 
 ```shell
 npm install @atomiks/mdx-pretty-code shiki
@@ -15,7 +15,7 @@ npm install @atomiks/mdx-pretty-code shiki
 
 ## Usage
 
-CJS usage is also supported.
+CommonJS is also supported.
 
 ```js
 import {createRemarkPlugin} from '@atomiks/mdx-pretty-code';
@@ -59,7 +59,7 @@ const prettyCode = createRemarkPlugin({
 });
 ```
 
-Then pass the plugin to your MDX options. For example, in Next.js' config file
+Then pass the plugin to your MDX `remarkPlugins` option. For example, in
 `next.config.js` using MDX v2:
 
 ```js
@@ -85,40 +85,35 @@ module.exports = {
 };
 ```
 
-## Line highlighting
+## API
+
+Code blocks are configured via the meta string after the top codeblock fence.
+
+### Line highlighting
 
 Highlight lines 1, 2 through 4, and 6.
 
-<!-- prettier-ignore -->
-\`\`\`js {1,2-4,6} 
-Code in here 
-\`\`\`
+\`\`\`js {1,2-4,6}
 
-## Word highlighting
+### Word highlighting
 
-Highlight the literal word `carrot`. Any flagless regex can be supplied.
+Highlight the literal word `carrot`. Regex is not currently supported.
 
-<!-- prettier-ignore -->
-\`\`\`js /carrot/ 
-const carrot = 5; 
-\`\`\`
+\`\`\`js /carrot/
 
-### Limit word highlighting to specific instances
+#### Limit word highlighting to specific instances
 
 If you want to limit which words get highlighted, this is possible. For
 instance:
 
-<!-- prettier-ignore -->
-\`\`\`js /carrot/1-2,4 
-Code 
-\`\`\`
+\`\`\`js /carrot/1-2,4
 
 The numeric range must be directly after the `/`.
 
 This will only highlight the first, second, and fourth instances of `carrot`,
 but not the third, or fifth+.
 
-## Inline highlighting
+### Inline highlighting
 
 Append `{:lang}` (e.g. `{:js}`) at the end of the inline code to highlight it
 like it's a regular code block.
@@ -145,7 +140,7 @@ const mdxComponents = {
 };
 ```
 
-### Context-specific highlighting
+#### Context-specific highlighting
 
 Shiki will color plain variables as plain text since the highlighting has no
 context. But if you're referring to a variable which was colored a different way
