@@ -8,6 +8,9 @@
     "dist/",
     "index.d.ts"
   ],
+  "scripts": {
+    "build": "npx rollup -c"
+  },
   "exports": {
     "import": "./dist/mdx-pretty-code.js",
     "require": "./dist/mdx-pretty-code.cjs"
