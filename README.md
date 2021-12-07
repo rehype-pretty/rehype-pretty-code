@@ -24,7 +24,6 @@ CommonJS is also supported.
 ```js
 import {createRemarkPlugin} from '@atomiks/mdx-pretty-code';
 import fs from 'fs';
-import path from 'path';
 
 const prettyCode = createRemarkPlugin({
   // Options passed to shiki.getHighlighter()
