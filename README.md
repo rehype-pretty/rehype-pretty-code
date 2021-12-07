@@ -15,6 +15,10 @@ npm install @atomiks/mdx-pretty-code shiki
 
 ## Usage
 
+MDX Pretty Code ships with the
+[Moonlight II](https://github.com/atomiks/moonlight-vscode-theme) VS Code theme
+by default, but any theme file can be used.
+
 CommonJS is also supported.
 
 ```js
@@ -28,7 +32,7 @@ const prettyCode = createRemarkPlugin({
     // Link to your VS Code theme JSON file
     theme: JSON.parse(
       fs.readFileSync(
-        path.join(__dirname, 'assets', 'moonlight-ii.json'),
+        require.resolve('@atomiks/mdx-pretty-code/dist/moonlight-ii.json'),
         'utf-8'
       )
     ),

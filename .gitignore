@@ -4,7 +4,8 @@ node_modules
 .chrome
 *.log
 .jekyll-metadata
-dist
+dist/mdx-pretty-code.cjs
+dist/mdx-pretty-code.js
 .idea/
 .vscode/
 coverage.info
