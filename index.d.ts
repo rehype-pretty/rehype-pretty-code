@@ -1,7 +1,7 @@
 export type Options = {
   sanitizeOptions: any;
   shikiOptions: {
-    theme: JSON;
+    theme: JSON | string;
     [key: string]: any;
   };
   tokensMap: {[key: string]: string};
