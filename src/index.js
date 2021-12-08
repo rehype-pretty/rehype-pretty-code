@@ -38,6 +38,12 @@ export function createRemarkPlugin(options = {}) {
 
       // It's a token, not a lang
       if (meta[0] === '.') {
+        if (typeof shikiOptions.theme === 'string') {
+          throw new Error(
+            'MDX Pretty Code: Must be using a JSON theme object to use tokens.'
+          );
+        }
+
         const color =
           shikiOptions.theme.tokenColors.find(({scope}) =>
             scope?.includes(tokensMap[meta.slice(1)] ?? meta.slice(1))
