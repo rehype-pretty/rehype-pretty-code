@@ -4,7 +4,7 @@ import rangeParser from 'parse-numeric-range';
 import shiki from 'shiki';
 import sanitizeHtml from 'sanitize-html';
 
-export function createRemarkPlugin(options) {
+export function createRemarkPlugin(options = {}) {
   return () => async (tree) => {
     const {
       sanitizeOptions = {
@@ -103,19 +103,27 @@ export function createRemarkPlugin(options) {
             wordNumbers.length === 0 ||
             wordNumbers.includes(visitedWordsCount)
           ) {
-            const textArr = node.innerHTML.split(word);
+            const splitByBreakChar = new RegExp(`\\b${word}\\b`);
+            const adjacentText = node.innerHTML.split(splitByBreakChar);
 
-            node.innerHTML = [
-              textArr[0],
-              `<span data-mdx-pretty-code-word>${word}</span>`,
-              textArr[1],
-            ].join('');
+            node.innerHTML = adjacentText
+              .map(
+                (txt, i) =>
+                  `${txt}${
+                    i !== adjacentText.length - 1
+                      ? `<span data-mdx-pretty-code-word>${word}</span>`
+                      : ''
+                  }`
+              )
+              .flat()
+              .join('');
 
-            const wordNode = node.querySelector('[data-mdx-pretty-code-word]');
-
-            wordNode.removeAttribute('data-mdx-pretty-code-word');
-
-            onVisitHighlightedWord(wordNode);
+            node
+              .querySelectorAll('[data-mdx-pretty-code-word]')
+              .forEach((wordNode) => {
+                wordNode.removeAttribute('data-mdx-pretty-code-word');
+                onVisitHighlightedWord(wordNode);
+              });
           }
         }
       });
