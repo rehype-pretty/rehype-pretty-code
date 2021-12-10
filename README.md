@@ -1,7 +1,7 @@
 # MDX Pretty Code
 
 <p align="center">
-<img src="./preview.jpg" height="761">
+  <img src="https://github.com/atomiks/mdx-pretty-code/raw/master//preview.jpg">
 </p>
 
 A Remark plugin to make the code in your MDX docs simply beautiful. Powered by
@@ -10,6 +10,7 @@ A Remark plugin to make the code in your MDX docs simply beautiful. Powered by
 - ✅ Perfect VS Code highlighting (use any theme)
 - ✅ Line and word highlighting
 - ✅ Context-adjustable inline code highlighting
+- ✅ Line numbers
 
 ## Installation
 
@@ -180,6 +181,28 @@ The function name is `hello{:.function}`.
 
 > Note: for the token feature to work, you must have supplied a JSON object to
 > `shikiOptions.theme`, not a default Shiki theme string.
+
+## Line numbers
+
+CSS counters can be used to add line numbers.
+
+```css
+.code {
+  counter-reset: line;
+}
+
+.code > .line::before {
+  counter-increment: line;
+  content: counter(line);
+
+  /* Other styling */
+  display: inline-block;
+  width: 1rem;
+  margin-right: 2rem;
+  text-align: right;
+  color: gray;
+}
+```
 
 ## Sanitizing
 
