@@ -1,8 +1,10 @@
-import visit from 'unist-util-visit';
+import {visit} from 'unist-util-visit';
 import {JSDOM} from 'jsdom';
 import rangeParser from 'parse-numeric-range';
 import shiki from 'shiki';
 import sanitizeHtml from 'sanitize-html';
+
+let highlighter = null;
 
 export function createRemarkPlugin(options = {}) {
   return () => async (tree) => {
@@ -21,7 +23,10 @@ export function createRemarkPlugin(options = {}) {
       ignoreUnknownLanguage = true,
     } = options;
 
-    const highlighter = await shiki.getHighlighter(shikiOptions);
+    if (!highlighter) {
+      highlighter = await shiki.getHighlighter(shikiOptions);
+    }
+
     const loadedLanguages = highlighter.getLoadedLanguages();
 
     visit(tree, 'inlineCode', inlineCode);
@@ -121,7 +126,6 @@ export function createRemarkPlugin(options = {}) {
                       : ''
                   }`
               )
-              .flat()
               .join('');
 
             node
@@ -133,6 +137,10 @@ export function createRemarkPlugin(options = {}) {
           }
         }
       });
+
+      dom.window.document
+        .querySelector('code')
+        .setAttribute('data-language', lang);
 
       node.value = sanitizeHtml(
         dom.window.document.body.innerHTML,

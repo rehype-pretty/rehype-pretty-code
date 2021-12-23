@@ -3,6 +3,7 @@
   "version": "0.0.2",
   "description": "A Remark plugin to make the code in your MDX docs simply beautiful. Powered by [Shiki](https://github.com/shikijs/shiki).",
   "main": "./dist/mdx-pretty-code.cjs",
+  "module": "./dist/mdx-pretty-code.js",
   "type": "module",
   "exports": {
     "import": "./dist/mdx-pretty-code.js",
@@ -23,15 +24,15 @@
     "proseWrap": "always"
   },
   "peerDependencies": {
-    "shiki": "*",
-    "unist-util-visit": "*"
+    "shiki": "*"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.1.1",
     "prettier": "^2.5.1",
     "rollup": "^2.60.2",
     "shiki": "^0.9.14",
     "typescript": "^4.5.2",
-    "unist-util-visit": "^4.1.0"
+    "unist-util-visit": "^4.0.0"
   },
   "dependencies": {
     "jsdom": "^19.0.0",

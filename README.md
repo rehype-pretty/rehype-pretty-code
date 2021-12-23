@@ -11,19 +11,12 @@ A Remark plugin to make the code in your MDX docs simply beautiful. Powered by
 - ✅ Line and word highlighting
 - ✅ Context-adjustable inline code highlighting
 - ✅ Line numbers
+- ✅ No runtime or bundle size cost
 
 ## Installation
 
-ESM contexts:
-
 ```shell
-npm install @atomiks/mdx-pretty-code shiki unist-util-visit
-```
-
-CJS contexts:
-
-```shell
-npm install @atomiks/mdx-pretty-code shiki unist-util-visit@2
+npm install @atomiks/mdx-pretty-code shiki
 ```
 
 ## Usage
@@ -187,11 +180,11 @@ The function name is `hello{:.function}`.
 CSS counters can be used to add line numbers.
 
 ```css
-.code {
+code {
   counter-reset: line;
 }
 
-.code > .line::before {
+code > .line::before {
   counter-increment: line;
   content: counter(line);
 
@@ -203,6 +196,11 @@ CSS counters can be used to add line numbers.
   color: gray;
 }
 ```
+
+## Language meta
+
+The `code` tag has a `data-language` attribute, so you can add the language
+information to the code block.
 
 ## Sanitizing
 

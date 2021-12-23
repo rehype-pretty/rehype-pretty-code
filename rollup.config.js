@@ -1,12 +1,9 @@
+import {nodeResolve} from '@rollup/plugin-node-resolve';
+
 const common = {
   input: './src/index.js',
-  external: [
-    'jsdom',
-    'parse-numeric-range',
-    'shiki',
-    'sanitize-html',
-    'unist-util-visit',
-  ],
+  plugins: [nodeResolve()],
+  external: ['jsdom', 'parse-numeric-range', 'shiki', 'sanitize-html'],
 };
 
 export default [
