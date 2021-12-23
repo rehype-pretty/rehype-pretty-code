@@ -1,6 +1,6 @@
 {
   "name": "@atomiks/mdx-pretty-code",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A Remark plugin to make the code in your MDX docs simply beautiful. Powered by [Shiki](https://github.com/shikijs/shiki).",
   "main": "./dist/mdx-pretty-code.cjs",
   "module": "./dist/mdx-pretty-code.js",
