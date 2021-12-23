@@ -11,7 +11,7 @@ export function createRemarkPlugin(options = {}) {
     const {
       sanitizeOptions = {
         allowedAttributes: {
-          code: ['style'],
+          code: ['style', 'data-language'],
           span: ['data-color', 'data-mdx-pretty-code', 'style', 'class'],
         },
       },
