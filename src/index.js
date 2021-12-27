@@ -82,7 +82,7 @@ export function createRemarkPlugin(options = {}) {
     function blockCode(node) {
       const lang =
         ignoreUnknownLanguage && !loadedLanguages.includes(node.lang)
-          ? null
+          ? 'text'
           : node.lang;
 
       node.type = 'html';
