@@ -85,7 +85,7 @@ module.exports = {
 };
 ```
 
-## Multiple Themes (dark/light mode)
+## Multiple themes (dark/light mode)
 
 Because Shiki generates themes at build time, client-side theme switching
 support is not built in. There are two popular options for supporting something
@@ -99,7 +99,7 @@ This gives you access to CSS variable styling, which you can control across Dark
 and Light mode.
 
 Note that this client-side theme is less granular than most other supported
-VSCode themes. Also, be aware that this will generate unstyled code if you do
+VS Code themes. Also, be aware that this will generate unstyled code if you do
 not define these CSS variables somewhere else on your page:
 
 ```css
@@ -123,34 +123,35 @@ not define these CSS variables somewhere else on your page:
 #### 2. Load multiple themes
 
 This will render duplicate code blocks for each theme. You can then hide the
-other blocks with css.
+other blocks with CSS.
 
-Pass an array of themes to `shikiOptions.themes`
+Pass an array of themes to `shikiOptions.themes`:
 
 ```js
   shikiOptions: {
     // Link to your VS Code theme JSON file
     themes: [
-    JSON.parse(
-      fs.readFileSync(require.resolve('./themes/my-theme.json'), 'utf-8')
-    ),
-    JSON.parse(
-      fs.readFileSync(require.resolve('./themes/my-other-theme.json'), 'utf-8')
-    )],
+      JSON.parse(
+        fs.readFileSync(require.resolve('./themes/my-theme.json'), 'utf-8')
+      ),
+      JSON.parse(
+        fs.readFileSync(require.resolve('./themes/my-other-theme.json'), 'utf-8')
+      ),
+    ],
   },
 ```
 
 The `code` elements and the inline code `<span data-mdx-pretty-code>` wrappers
 will have a class of `theme.name` (spaces will be removed, but it's otherwise up
-to you to make sure this is valid as a css class; default themes should already
-havbe a kebab-cased name).
+to you to make sure this is valid as a CSS class; default themes should already
+have a kebab-cased name).
 
 A class of `mdx-pretty-code-theme-[index]` e.g `mdx-pretty-code-theme-0` and
 `mdx-pretty-code-theme-1` will also be applied. This can be useful when trying
 out themes, as you can target the generic class instead of having to update your
-css every time you switch themes.
+CSS every time you switch themes.
 
-Now, you can use css to display the desired theme:
+Now, you can use CSS to display the desired theme:
 
 ```css
 /* Query based dark mode */
