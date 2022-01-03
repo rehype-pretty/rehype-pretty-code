@@ -4,14 +4,40 @@ import rangeParser from 'parse-numeric-range';
 import shiki from 'shiki';
 import sanitizeHtml from 'sanitize-html';
 
-let highlighter = null;
+// To make sure we only have one highlighter per theme in a process
+const highlighterCache = new Map();
+
+function getThemesFromSettings(settings) {
+  return (
+    settings.themes || (settings.theme ? [settings.theme] : ['light-plus'])
+  );
+}
+
+function highlightersFromSettings(settings) {
+  const themes = getThemesFromSettings(settings);
+
+  return Promise.all(
+    themes.map(async (theme, i) => {
+      const themeClass = `mdx-pretty-code-theme-${i}`;
+      const themeName = theme.name || (typeof theme === 'string' ? theme : '');
+      const highlighter = await shiki.getHighlighter({
+        ...settings,
+        theme,
+        themes: undefined,
+      });
+      highlighter.themeName = themeName.replace(/\s/g, '');
+      highlighter.themeClass = themeClass;
+      return highlighter;
+    })
+  );
+}
 
 export function createRemarkPlugin(options = {}) {
   return () => async (tree) => {
     const {
       sanitizeOptions = {
         allowedAttributes: {
-          code: ['style', 'data-language'],
+          code: ['style', 'data-language', 'class'],
           span: ['data-color', 'data-mdx-pretty-code', 'style', 'class'],
         },
       },
@@ -23,16 +49,50 @@ export function createRemarkPlugin(options = {}) {
       ignoreUnknownLanguage = true,
     } = options;
 
-    if (!highlighter) {
-      highlighter = await shiki.getHighlighter(shikiOptions);
+    if (!highlighterCache.has(shikiOptions)) {
+      highlighterCache.set(
+        shikiOptions,
+        highlightersFromSettings(shikiOptions)
+      );
     }
 
-    const loadedLanguages = highlighter.getLoadedLanguages();
+    const highlighters = await highlighterCache.get(shikiOptions);
+    const themes = getThemesFromSettings(shikiOptions);
 
-    visit(tree, 'inlineCode', inlineCode);
-    visit(tree, 'code', blockCode);
+    function remarkVisitor(fn) {
+      return (node) => {
+        let results;
+        const hasMultipleThemes = highlighters.length > 1;
+        const output = highlighters.map((highlighter, i) => {
+          const loadedLanguages = highlighter.getLoadedLanguages();
 
-    function inlineCode(node) {
+          const theme = themes[i];
+          return fn(node, {
+            highlighter,
+            theme,
+            loadedLanguages,
+            hasMultipleThemes,
+          });
+        });
+
+        // return in case of non-meta inline code
+        if (output.some((o) => !o)) return;
+
+        results = output.join('\n');
+
+        if (hasMultipleThemes) {
+          // If we don't do this the code blocks will be wrapped in <undefined>
+          // You can set your mdx renderer to replace this span with a React.Fragment during runtime
+          results = `<span data-mdx-pretty-code-fragment>${results}</span>`;
+        }
+        node.value = results;
+      };
+    }
+
+    visit(tree, 'inlineCode', remarkVisitor(inlineCode));
+    visit(tree, 'code', remarkVisitor(blockCode));
+
+    function inlineCode(node, {highlighter, theme}) {
       const meta = node.value.match(/{:([a-zA-Z.-]+)}$/)?.[1];
 
       if (!meta) {
@@ -40,29 +100,28 @@ export function createRemarkPlugin(options = {}) {
       }
 
       node.type = 'html';
-
       // It's a token, not a lang
       if (meta[0] === '.') {
-        if (typeof shikiOptions.theme === 'string') {
+        if (typeof theme === 'string') {
           throw new Error(
             'MDX Pretty Code: Must be using a JSON theme object to use tokens.'
           );
         }
 
         const color =
-          shikiOptions.theme.tokenColors.find(({scope}) =>
+          theme.tokenColors.find(({scope}) =>
             scope?.includes(tokensMap[meta.slice(1)] ?? meta.slice(1))
           )?.settings.foreground ?? 'inherit';
 
-        node.value = sanitizeHtml(
-          `<span data-mdx-pretty-code data-color="${color}"><span>${node.value.replace(
+        return sanitizeHtml(
+          `<span data-mdx-pretty-code data-color="${color}" class="${
+            highlighter.themeClass
+          } ${highlighter.themeName}"><span>${node.value.replace(
             /{:[a-zA-Z.-]+}/,
             ''
           )}</span></span>`,
           sanitizeOptions
         );
-
-        return;
       }
 
       const highlighted = highlighter.codeToHtml(
@@ -73,13 +132,13 @@ export function createRemarkPlugin(options = {}) {
       const dom = new JSDOM(highlighted);
       const pre = dom.window.document.querySelector('pre');
 
-      node.value = sanitizeHtml(
-        `<span data-mdx-pretty-code>${pre.innerHTML}</span>`,
+      return sanitizeHtml(
+        `<span data-mdx-pretty-code class="${highlighter.themeClass} ${highlighter.themeName}">${pre.innerHTML}</span>`,
         sanitizeOptions
       );
     }
 
-    function blockCode(node) {
+    function blockCode(node, {highlighter, loadedLanguages}) {
       const lang =
         ignoreUnknownLanguage && !loadedLanguages.includes(node.lang)
           ? 'text'
@@ -138,14 +197,12 @@ export function createRemarkPlugin(options = {}) {
         }
       });
 
-      dom.window.document
-        .querySelector('code')
-        .setAttribute('data-language', lang);
+      const code = dom.window.document.querySelector('code');
 
-      node.value = sanitizeHtml(
-        dom.window.document.body.innerHTML,
-        sanitizeOptions
-      );
+      code.setAttribute('data-language', lang);
+      code.classList.add(highlighter.themeClass);
+      highlighter.themeName && code.classList.add(highlighter.themeName);
+      return sanitizeHtml(dom.window.document.body.innerHTML, sanitizeOptions);
     }
   };
 }

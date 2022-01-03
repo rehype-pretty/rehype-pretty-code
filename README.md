@@ -85,6 +85,101 @@ module.exports = {
 };
 ```
 
+## Multiple Themes (dark/light mode)
+
+Because Shiki generates themes at build time, client-side theme switching
+support is not built in. There are two popular options for supporting something
+like Dark Mode with Shiki. See the
+[Shiki docs](https://github.com/shikijs/shiki/blob/main/docs/themes.md#dark-mode-support)
+for more info.
+
+#### 1. Use the "css-variables" theme (Shiki version `0.9.9` and above).
+
+This gives you access to CSS variable styling, which you can control across Dark
+and Light mode.
+
+Note that this client-side theme is less granular than most other supported
+VSCode themes. Also, be aware that this will generate unstyled code if you do
+not define these CSS variables somewhere else on your page:
+
+```css
+<style>
+  :root {
+    --shiki-color-text: rgb(248, 248, 242);
+    --shiki-color-background: rgb(13 13 15);
+    --shiki-token-constant: rgb(102, 217, 239);
+    --shiki-token-string: rgb(230, 219, 116);
+    --shiki-token-comment: rgb(93,93, 95);
+    --shiki-token-keyword: rgb(249, 38, 114);
+    --shiki-token-parameter: rgb(230, 219, 116);
+    --shiki-token-function: rgb(166, 226, 46);
+    --shiki-token-string-expression: rgb(230, 219, 116);
+    --shiki-token-punctuation: rgb(230, 219, 116);
+    --shiki-token-link: rgb(174, 129, 255);
+  }
+</style>
+```
+
+#### 2. Load multiple themes
+
+This will render duplicate code blocks for each theme. You can then hide the
+other blocks with css.
+
+Pass an array of themes to `shikiOptions.themes`
+
+```js
+  shikiOptions: {
+    // Link to your VS Code theme JSON file
+    themes: [
+    JSON.parse(
+      fs.readFileSync(require.resolve('./themes/my-theme.json'), 'utf-8')
+    ),
+    JSON.parse(
+      fs.readFileSync(require.resolve('./themes/my-other-theme.json'), 'utf-8')
+    )],
+  },
+```
+
+The `code` elements and the inline code `<span data-mdx-pretty-code>` wrappers
+will have a class of `theme.name` (spaces will be removed, but it's otherwise up
+to you to make sure this is valid as a css class; default themes should already
+havbe a kebab-cased name).
+
+A class of `mdx-pretty-code-theme-[index]` e.g `mdx-pretty-code-theme-0` and
+`mdx-pretty-code-theme-1` will also be applied. This can be useful when trying
+out themes, as you can target the generic class instead of having to update your
+css every time you switch themes.
+
+Now, you can use css to display the desired theme:
+
+```css
+/* Query based dark mode */
+
+@media (prefers-color-scheme: dark) {
+  .my-theme {
+    display: none;
+  }
+}
+
+@media (prefers-color-scheme: light), (prefers-color-scheme: no-preference) {
+  .my-other-theme {
+    display: none;
+  }
+}
+```
+
+```css
+/* Class based dark mode */
+
+html.dark .my-theme {
+  display: none;
+}
+
+html:not(.dark) .my-other-theme {
+  display: none;
+}
+```
+
 ## API
 
 Code blocks are configured via the meta string after the top codeblock fence.
