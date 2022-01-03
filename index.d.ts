@@ -1,7 +1,9 @@
+type theme = JSON | string;
+
 export type Options = {
   sanitizeOptions: any;
   shikiOptions: {
-    theme: JSON | string;
+    theme: theme | Record<any, theme>;
     [key: string]: any;
   };
   tokensMap: {[key: string]: string};

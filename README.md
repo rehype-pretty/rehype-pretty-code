@@ -85,6 +85,86 @@ module.exports = {
 };
 ```
 
+## Multiple themes (dark/light mode)
+
+Because Shiki generates themes at build time, client-side theme switching
+support is not built in. There are two popular options for supporting something
+like Dark Mode with Shiki. See the
+[Shiki docs](https://github.com/shikijs/shiki/blob/main/docs/themes.md#dark-mode-support)
+for more info.
+
+#### 1. Load multiple themes
+
+This will render duplicate code blocks for each theme. You can then hide the
+other blocks with CSS.
+
+Pass your themes to `shikiOptions.theme`, where the keys represent the color
+mode:
+
+```js
+shikiOptions: {
+  theme: {
+    dark: JSON.parse(
+      fs.readFileSync(require.resolve('./themes/dark.json'), "utf-8")
+    ),
+    light: JSON.parse(
+      fs.readFileSync(require.resolve('./themes/light.json'), "utf-8")
+    ),
+  },
+}
+```
+
+The `code` elements and the inline code `<span data-mdx-pretty-code>` wrappers
+will have a data attribute `data-theme="[key]"`, e.g `data-theme="light"`. You
+can target the data attribute `[data-theme='dark']` to apply styles for that
+theme.
+
+Now, you can use CSS to display the desired theme:
+
+```css
+@media (prefers-color-scheme: dark) {
+  code[data-theme='light'] {
+    display: none;
+  }
+}
+
+@media (prefers-color-scheme: light), (prefers-color-scheme: no-preference) {
+  code[data-theme='dark'] {
+    display: none;
+  }
+}
+```
+
+#### 2. Use the "css-variables" theme (Shiki version `0.9.9` and above)
+
+<details>
+  This gives you access to CSS variable styling, which you can control across Dark
+  and Light mode.
+
+Note that **this client-side theme is less granular than most other supported VS
+Code themes**. Also, be aware that this will generate unstyled code if you do
+not define these CSS variables somewhere else on your page:
+
+```html
+<style>
+  :root {
+    --shiki-color-text: rgb(248, 248, 242);
+    --shiki-color-background: rgb(13 13 15);
+    --shiki-token-constant: rgb(102, 217, 239);
+    --shiki-token-string: rgb(230, 219, 116);
+    --shiki-token-comment: rgb(93,93, 95);
+    --shiki-token-keyword: rgb(249, 38, 114);
+    --shiki-token-parameter: rgb(230, 219, 116);
+    --shiki-token-function: rgb(166, 226, 46);
+    --shiki-token-string-expression: rgb(230, 219, 116);
+    --shiki-token-punctuation: rgb(230, 219, 116);
+    --shiki-token-link: rgb(174, 129, 255);
+  }
+</style>
+```
+
+</details>
+
 ## API
 
 Code blocks are configured via the meta string after the top codeblock fence.
@@ -129,7 +209,10 @@ const mdxComponents = {
   span(props) {
     if (props['data-mdx-pretty-code'] != null) {
       return (
-        <code style={{color: props['data-color']}}>
+        <code
+          data-theme={props['data-theme']}
+          style={{color: props['data-color']}}
+        >
           {props.children.props.children}
         </code>
       );
@@ -138,6 +221,7 @@ const mdxComponents = {
     return <span {...props} />;
   },
 };
+
 ```
 
 #### Context-specific highlighting
