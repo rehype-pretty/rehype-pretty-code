@@ -105,10 +105,10 @@ mode:
 shikiOptions: {
   theme: {
     dark: JSON.parse(
-      fs.readFileSync(require.resolve("./themes/dark.json"), "utf-8")
+      fs.readFileSync(require.resolve('./themes/dark.json'), "utf-8")
     ),
     light: JSON.parse(
-      fs.readFileSync(require.resolve("./themes/light.json"), "utf-8")
+      fs.readFileSync(require.resolve('./themes/light.json'), "utf-8")
     ),
   },
 }
@@ -135,7 +135,7 @@ Now, you can use CSS to display the desired theme:
 }
 ```
 
-#### 2. Use the "css-variables" theme (Shiki version `0.9.9` and above).
+#### 2. Use the "css-variables" theme (Shiki version `0.9.9` and above)
 
 <details>
   This gives you access to CSS variable styling, which you can control across Dark
@@ -207,11 +207,11 @@ In your `MDXProvider`'s `components` prop, modify `span` like so:
 ```js
 const mdxComponents = {
   span(props) {
-    if (props["data-mdx-pretty-code"] != null) {
+    if (props['data-mdx-pretty-code'] != null) {
       return (
         <code
-          data-theme={props["data-theme"]}
-          style={{color: props["data-color"]}}
+          data-theme={props['data-theme']}
+          style={{color: props['data-color']}}
         >
           {props.children.props.children}
         </code>
