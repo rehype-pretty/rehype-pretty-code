@@ -8,10 +8,6 @@ import sanitizeHtml from 'sanitize-html';
 const highlighterCache = new Map();
 
 function getThemesFromSettings(settings) {
-  if (!settings.theme)
-    throw new Error(
-      'MDX Pretty Code: no theme was specified in shikiOptions.theme'
-    );
   if (
     typeof settings.theme === 'string' ||
     settings.theme?.hasOwnProperty('tokenColors')
@@ -28,12 +24,10 @@ function highlightersFromSettings(settings) {
   return Promise.all(
     Object.keys(themes).map(async (key) => {
       const theme = themes[key];
-      const themeName = theme.name || (typeof theme === 'string' ? theme : '');
       const highlighter = await shiki.getHighlighter({
         ...settings,
         theme,
       });
-      highlighter.themeName = themeName.replace(/\s/g, '');
       highlighter.themeKey = key;
       return highlighter;
     })
@@ -45,7 +39,7 @@ export function createRemarkPlugin(options = {}) {
     const {
       sanitizeOptions = {
         allowedAttributes: {
-          code: ['style', 'data-language', 'data-theme', 'class'],
+          code: ['style', 'data-language', 'data-theme'],
           span: [
             'data-color',
             'data-mdx-pretty-code',
@@ -130,10 +124,7 @@ export function createRemarkPlugin(options = {}) {
         return sanitizeHtml(
           `<span data-mdx-pretty-code data-color="${color}" data-theme="${
             highlighter.themeKey
-          }" class="${highlighter.themeClass}"><span>${node.value.replace(
-            /{:[a-zA-Z.-]+}/,
-            ''
-          )}</span></span>`,
+          }"><span>${node.value.replace(/{:[a-zA-Z.-]+}/, '')}</span></span>`,
           sanitizeOptions
         );
       }
@@ -147,7 +138,7 @@ export function createRemarkPlugin(options = {}) {
       const pre = dom.window.document.querySelector('pre');
 
       return sanitizeHtml(
-        `<span data-mdx-pretty-code data-theme="${highlighter.themeKey}" class="${highlighter.themeClass}">${pre.innerHTML}</span>`,
+        `<span data-mdx-pretty-code data-theme="${highlighter.themeKey}">${pre.innerHTML}</span>`,
         sanitizeOptions
       );
     }
@@ -215,7 +206,6 @@ export function createRemarkPlugin(options = {}) {
 
       code.setAttribute('data-language', lang);
       code.setAttribute('data-theme', highlighter.themeKey);
-      highlighter.themeName && code.classList.add(highlighter.themeName);
       return sanitizeHtml(dom.window.document.body.innerHTML, sanitizeOptions);
     }
   };

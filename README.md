@@ -116,14 +116,9 @@ mode:
 ```
 
 The `code` elements and the inline code `<span data-mdx-pretty-code>` wrappers
-will have a class of `theme.name` (spaces will be removed, but it's otherwise up
-to you to make sure this is valid as a CSS class; default themes should already
-have a kebab-cased name).
-
-A data attribute `data-theme="[key]"` e.g `data-theme="light"` will also be
-applied. This can be useful when trying out themes, as you can target the data
-attribute `[data-theme='dark']` instead of having to update your CSS every time
-you switch themes.
+will have a data attribute `data-theme="[key]"`, e.g `data-theme="light"`. You
+can target the data attribute `[data-theme='dark']` to apply styles for that
+theme.
 
 Now, you can use CSS to display the desired theme:
 
@@ -131,13 +126,13 @@ Now, you can use CSS to display the desired theme:
 /* Query based dark mode */
 
 @media (prefers-color-scheme: dark) {
-  .my-theme {
+  [data-theme='light'] {
     display: none;
   }
 }
 
 @media (prefers-color-scheme: light), (prefers-color-scheme: no-preference) {
-  .my-other-theme {
+  [data-theme='dark'] {
     display: none;
   }
 }
@@ -146,11 +141,11 @@ Now, you can use CSS to display the desired theme:
 ```css
 /* Class based dark mode */
 
-html.dark .my-theme {
+html.dark [data-theme='dark'] {
   display: none;
 }
 
-html:not(.dark) .my-other-theme {
+html:not(.dark) [data-theme='light'] {
   display: none;
 }
 ```
