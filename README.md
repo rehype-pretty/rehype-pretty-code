@@ -102,17 +102,16 @@ Pass your themes to `shikiOptions.theme`, where the keys represent the color
 mode:
 
 ```js
-  shikiOptions: {
-    // Link to your VS Code theme JSON file
-    theme: {
-      dark: JSON.parse(
-        fs.readFileSync(require.resolve('./themes/my-theme.json'), 'utf-8')
-      ),
-      light: JSON.parse(
-        fs.readFileSync(require.resolve('./themes/my-other-theme.json'), 'utf-8')
-      ),
-    }
+shikiOptions: {
+  theme: {
+    dark: JSON.parse(
+      fs.readFileSync(require.resolve("./themes/dark.json"), "utf-8")
+    ),
+    light: JSON.parse(
+      fs.readFileSync(require.resolve("./themes/light.json"), "utf-8")
+    ),
   },
+}
 ```
 
 The `code` elements and the inline code `<span data-mdx-pretty-code>` wrappers
@@ -123,30 +122,16 @@ theme.
 Now, you can use CSS to display the desired theme:
 
 ```css
-/* Query based dark mode */
-
 @media (prefers-color-scheme: dark) {
-  [data-theme='light'] {
+  code[data-theme='light'] {
     display: none;
   }
 }
 
 @media (prefers-color-scheme: light), (prefers-color-scheme: no-preference) {
-  [data-theme='dark'] {
+  code[data-theme='dark'] {
     display: none;
   }
-}
-```
-
-```css
-/* Class based dark mode */
-
-html.dark [data-theme='dark'] {
-  display: none;
-}
-
-html:not(.dark) [data-theme='light'] {
-  display: none;
 }
 ```
 
@@ -160,7 +145,7 @@ Note that **this client-side theme is less granular than most other supported VS
 Code themes**. Also, be aware that this will generate unstyled code if you do
 not define these CSS variables somewhere else on your page:
 
-```css
+```html
 <style>
   :root {
     --shiki-color-text: rgb(248, 248, 242);
@@ -222,9 +207,12 @@ In your `MDXProvider`'s `components` prop, modify `span` like so:
 ```js
 const mdxComponents = {
   span(props) {
-    if (props['data-mdx-pretty-code'] != null) {
+    if (props["data-mdx-pretty-code"] != null) {
       return (
-        <code style={{color: props['data-color']}}>
+        <code
+          data-theme={props["data-theme"]}
+          style={{color: props["data-color"]}}
+        >
           {props.children.props.children}
         </code>
       );
@@ -233,6 +221,7 @@ const mdxComponents = {
     return <span {...props} />;
   },
 };
+
 ```
 
 #### Context-specific highlighting
