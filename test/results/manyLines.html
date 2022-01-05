@@ -1,0 +1,47 @@
+
+<style>
+  html {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  body {
+    margin: 30px auto;
+    max-width: 800px;
+  }
+  pre {
+    background: black;
+    display: grid;
+    padding: 16px;
+  }
+  span > code {
+    background: black;
+    padding: 4px;
+  }
+</style>
+<h2>Many line</h2>
+<pre><code data-language="css" data-theme="default"><span class="line"><span style="color:#7EE787">html</span><span style="color:#C9D1D9"> {</span></span>
+<span class="line"><span style="color:#C9D1D9">  </span><span style="color:#FFA657">--page-color</span><span style="color:#C9D1D9">: </span><span style="color:#79C0FF">white</span><span style="color:#C9D1D9">;</span></span>
+<span class="line"><span style="color:#C9D1D9">  </span><span style="color:#FFA657">--ink-color</span><span style="color:#C9D1D9">: </span><span style="color:#79C0FF">black</span><span style="color:#C9D1D9">;</span></span>
+<span class="line"><span style="color:#C9D1D9">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">@media</span><span style="color:#C9D1D9"> (prefers-color-scheme: dark) {</span></span>
+<span class="line"><span style="color:#C9D1D9">  </span><span style="color:#7EE787">html</span><span style="color:#C9D1D9"> {</span></span>
+<span class="line"><span style="color:#C9D1D9">    </span><span style="color:#FFA657">--page-color</span><span style="color:#C9D1D9">: </span><span style="color:#79C0FF">black</span><span style="color:#C9D1D9">;</span></span>
+<span class="line"><span style="color:#C9D1D9">    </span><span style="color:#FFA657">--ink-color</span><span style="color:#C9D1D9">: </span><span style="color:#79C0FF">white</span><span style="color:#C9D1D9">;</span></span>
+<span class="line"><span style="color:#C9D1D9">  }</span></span>
+<span class="line"><span style="color:#C9D1D9">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7EE787">body</span><span style="color:#C9D1D9"> {</span></span>
+<span class="line"><span style="color:#C9D1D9">  </span><span style="color:#79C0FF">background-color</span><span style="color:#C9D1D9">: </span><span style="color:#79C0FF">var</span><span style="color:#C9D1D9">(</span><span style="color:#FFA657">--page-color</span><span style="color:#C9D1D9">);</span></span>
+<span class="line"><span style="color:#C9D1D9">  </span><span style="color:#79C0FF">color</span><span style="color:#C9D1D9">: </span><span style="color:#79C0FF">var</span><span style="color:#C9D1D9">(</span><span style="color:#FFA657">--ink-color</span><span style="color:#C9D1D9">);</span></span>
+<span class="line"><span style="color:#C9D1D9">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7EE787">input</span><span style="color:#C9D1D9"> {</span></span>
+<span class="line"><span style="color:#C9D1D9">  </span><span style="color:#79C0FF">background-color</span><span style="color:#C9D1D9">: </span><span style="color:#79C0FF">var</span><span style="color:#C9D1D9">(</span><span style="color:#FFA657">--page-color</span><span style="color:#C9D1D9">);</span></span>
+<span class="line"><span style="color:#C9D1D9">  </span><span style="color:#79C0FF">color</span><span style="color:#C9D1D9">: </span><span style="color:#79C0FF">var</span><span style="color:#C9D1D9">(</span><span style="color:#FFA657">--ink-color</span><span style="color:#C9D1D9">);</span></span>
+<span class="line"><span style="color:#C9D1D9">  </span><span style="color:#79C0FF">border-color</span><span style="color:#C9D1D9">: </span><span style="color:#79C0FF">var</span><span style="color:#C9D1D9">(</span><span style="color:#FFA657">--ink-color</span><span style="color:#C9D1D9">);</span></span>
+<span class="line"><span style="color:#C9D1D9">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7EE787">button</span><span style="color:#C9D1D9"> {</span></span>
+<span class="line"><span style="color:#C9D1D9">  </span><span style="color:#79C0FF">background-color</span><span style="color:#C9D1D9">: </span><span style="color:#79C0FF">var</span><span style="color:#C9D1D9">(</span><span style="color:#FFA657">--ink-color</span><span style="color:#C9D1D9">);</span></span>
+<span class="line"><span style="color:#C9D1D9">  </span><span style="color:#79C0FF">color</span><span style="color:#C9D1D9">: </span><span style="color:#79C0FF">var</span><span style="color:#C9D1D9">(</span><span style="color:#FFA657">--page-color</span><span style="color:#C9D1D9">);</span></span>
+<span class="line"><span style="color:#C9D1D9">}</span></span></code></pre>
