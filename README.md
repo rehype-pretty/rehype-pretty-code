@@ -173,20 +173,26 @@ Code blocks are configured via the meta string after the top codeblock fence.
 
 Highlight lines 1, 2 through 4, and 6.
 
-\`\`\`js {1,2-4,6}
+```md
+```js {1,2-4,6}
+```
 
 ### Word highlighting
 
 Highlight the literal word `carrot`. Regex is not currently supported.
 
-\`\`\`js /carrot/
+```md
+```js /carrot/
+```
 
 #### Limit word highlighting to specific instances
 
 If you want to limit which words get highlighted, this is possible. For
 instance:
 
-\`\`\`js /carrot/1-2,4
+```md
+```js /carrot/1-2,4
+```
 
 The numeric range must be directly after the `/`.
 
@@ -198,7 +204,7 @@ but not the third, or fifth+.
 Append `{:lang}` (e.g. `{:js}`) at the end of the inline code to highlight it
 like it's a regular code block.
 
-```
+```md
 This is `inline(){:js}` code which will be colored like a regular code block.
 ```
 
