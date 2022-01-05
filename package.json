@@ -18,6 +18,7 @@
   },
   "author": "",
   "license": "MIT",
+  "repository": "github:atomiks/mdx-pretty-code",
   "prettier": {
     "bracketSpacing": false,
     "singleQuote": true,
