@@ -1,4 +1,4 @@
-const {createRemarkPlugin} = require('../dist/mdx-pretty-code.cjs');
+const {createRemarkPlugin} = require('@atomiks/mdx-pretty-code');
 const fs = require('fs');
 
 const prettyCode = createRemarkPlugin({
