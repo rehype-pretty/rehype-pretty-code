@@ -1,5 +1,13 @@
 const colors = require('tailwindcss/colors');
 
+const linkHeadingStyles = {
+  color: colors.gray[100],
+  borderBottomColor: 'transparent !important',
+  '&:hover': {
+    color: `${colors.gray[900]} !important`,
+  },
+};
+
 module.exports = {
   plugins: [require('@tailwindcss/typography')],
   content: [
@@ -20,6 +28,11 @@ module.exports = {
         },
         DEFAULT: {
           css: {
+            'h2 a': linkHeadingStyles,
+            'h3 a': linkHeadingStyles,
+            'h4 a': linkHeadingStyles,
+            'h5 a': linkHeadingStyles,
+            'h6 a': linkHeadingStyles,
             blockquote: {
               fontSize: '90%',
               color: colors.zinc[500],

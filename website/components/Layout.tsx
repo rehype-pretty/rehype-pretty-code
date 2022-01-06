@@ -1,6 +1,28 @@
 import Head from 'next/head';
 // @ts-ignore — using @mdx-js/react v1 as v2.0.0-rc.2 causes a crash
 import {MDXProvider} from '@mdx-js/react';
+import React from 'react';
+
+const slugify = (str: string) =>
+  str
+    .toLowerCase()
+    .replace(/[\s./]/g, '-')
+    .replace(/[.:'"`!$%^&*@#?<>:;(){}|=+/\[\]]/g, '');
+
+const linkify =
+  (Tag: string) =>
+  ({children, ...props}: any) => {
+    const url = slugify(
+      typeof children !== 'string' ? children.props.children : children
+    );
+    return (
+      <Tag {...props} id={url}>
+        <a href={`#${url}`} className="inline-block">
+          {children}
+        </a>
+      </Tag>
+    );
+  };
 
 export function Layout({children}: {children: React.ReactNode}) {
   return (
@@ -38,6 +60,11 @@ export function Layout({children}: {children: React.ReactNode}) {
 
                 return <span {...props} />;
               },
+              h2: linkify('h2'),
+              h3: linkify('h3'),
+              h4: linkify('h4'),
+              h5: linkify('h5'),
+              h6: linkify('h6'),
             }}
           >
             {children}
