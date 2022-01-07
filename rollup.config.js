@@ -4,7 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 const common = {
   input: './src/index.js',
   plugins: [commonjs(), nodeResolve()],
-  external: ['parse-numeric-range', 'shiki'],
+  external: ['parse-numeric-range', 'shiki', 'rehype-parse', 'unified'],
 };
 
 export default [

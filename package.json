@@ -6,8 +6,11 @@
   "module": "./dist/rehype-pretty-code.js",
   "type": "module",
   "exports": {
-    "import": "./dist/rehype-pretty-code.js",
-    "require": "./dist/rehype-pretty-code.cjs"
+    ".": {
+      "import": "./dist/rehype-pretty-code.js",
+      "require": "./dist/rehype-pretty-code.cjs"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist/",
@@ -50,7 +53,7 @@
   },
   "dependencies": {
     "parse-numeric-range": "^1.3.0",
-    "rehype-parse": "^8.0.3",
-    "unified": "^10.1.1"
+    "rehype-parse": "^7.0.1",
+    "unified": "^9.2.2"
   }
 }
