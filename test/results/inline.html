@@ -16,12 +16,15 @@
     background: black;
     padding: 4px;
   }
+  .highlighted, .word {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
 </style>
 <h2>Inline</h2>
 <p>{:js}</p>
 <p>
-  <span data-mdx-pretty-code data-theme="default"
-    ><code
+  <span data-rehype-pretty-code-fragment=""
+    ><code data-language="js" data-theme="default"
       ><span class="line"
         ><span style="color: #ff7b72">const</span
         ><span style="color: #c9d1d9"> </span
@@ -31,7 +34,7 @@
         ><span style="color: #c9d1d9"> (</span
         ><span style="color: #ffa657">str</span
         ><span style="color: #c9d1d9">) </span
-        ><span style="color: #ff7b72">=&gt;</span
+        ><span style="color: #ff7b72">=></span
         ><span style="color: #c9d1d9"> str.</span
         ><span style="color: #79c0ff">length</span
         ><span style="color: #c9d1d9">;</span></span

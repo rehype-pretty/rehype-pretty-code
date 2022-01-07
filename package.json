@@ -1,16 +1,17 @@
 {
-  "name": "@atomiks/mdx-pretty-code",
-  "version": "0.1.0",
-  "workspaces": [
-    "./website"
-  ],
-  "description": "A Remark plugin to make the code in your MDX docs simply beautiful. Powered by [Shiki](https://github.com/shikijs/shiki).",
-  "main": "./dist/mdx-pretty-code.cjs",
-  "module": "./dist/mdx-pretty-code.js",
+  "name": "rehype-pretty-code",
+  "version": "0.0.5",
+  "description": "A Rehype plugin to make the code your docs beautiful.",
+  "main": "./dist/rehype-pretty-code.cjs",
+  "module": "./dist/rehype-pretty-code.js",
   "type": "module",
+  "types": "index.d.ts",
   "exports": {
-    "import": "./dist/mdx-pretty-code.js",
-    "require": "./dist/mdx-pretty-code.cjs"
+    ".": {
+      "import": "./dist/rehype-pretty-code.js",
+      "require": "./dist/rehype-pretty-code.cjs"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist/",
@@ -38,21 +39,22 @@
     "shiki": "*"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.1.1",
     "hast-util-to-html": "^8.0.3",
     "jest": "^27.4.5",
     "jest-file-snapshot": "^0.5.0",
     "mdast-util-to-hast": "^12.1.0",
     "prettier": "^2.5.1",
+    "rehype-parse": "^8.0.3",
     "remark": "^14.0.2",
     "rollup": "^2.60.2",
     "shiki": "^0.9.14",
     "typescript": "^4.5.2",
+    "unified": "^10.1.1",
     "unist-util-visit": "^4.0.0"
   },
   "dependencies": {
-    "jsdom": "^19.0.0",
-    "parse-numeric-range": "^1.3.0",
-    "sanitize-html": "^2.6.0"
+    "parse-numeric-range": "^1.3.0"
   }
 }

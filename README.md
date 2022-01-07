@@ -1,5 +1,5 @@
-# MDX Pretty Code
+# Rehype Pretty Code
 
 Beautiful syntax highlighting for your MD/MDX docs.
 
-[View website for documentation](https://mdx-pretty-code.netlify.app)
+[View website for documentation](https://rehype-pretty-code.netlify.app)

@@ -1,212 +1,174 @@
 import {visit} from 'unist-util-visit';
-import {JSDOM} from 'jsdom';
 import rangeParser from 'parse-numeric-range';
 import shiki from 'shiki';
-import sanitizeHtml from 'sanitize-html';
+import {unified} from 'unified';
+import rehypeParse from 'rehype-parse';
 
-// To make sure we only have one highlighter per theme in a process
+// Store only one highlighter per theme in a process
 const highlighterCache = new Map();
+const hastParser = unified().use(rehypeParse, {fragment: true});
 
-function getThemesFromSettings(settings) {
-  if (
-    typeof settings.theme === 'string' ||
-    settings.theme?.hasOwnProperty('tokenColors')
-  ) {
-    return {default: settings.theme};
-  }
+function toFragment({node, trees, lang, inline = false}) {
+  node.tagName = 'span';
+  // User can replace this with a real Fragment at runtime
+  node.properties = {'data-rehype-pretty-code-fragment': ''};
+  node.children = Object.entries(trees).map(([mode, tree]) => {
+    const pre = tree.children[0];
+    // Remove class="shiki" and the background-color
+    pre.properties = {};
 
-  return settings.theme;
-}
+    const code = pre.children[0];
+    code.properties['data-language'] = lang;
+    code.properties['data-theme'] = mode;
 
-function highlightersFromSettings(settings) {
-  const themes = getThemesFromSettings(settings);
-
-  return Promise.all(
-    Object.keys(themes).map(async (key) => {
-      const theme = themes[key];
-      const highlighter = await shiki.getHighlighter({
-        ...settings,
-        theme,
-      });
-      highlighter.themeKey = key;
-      return highlighter;
-    })
-  );
-}
-
-export function createRemarkPlugin(options = {}) {
-  return () => async (tree) => {
-    const {
-      sanitizeOptions = {
-        allowedAttributes: {
-          code: ['style', 'data-language', 'data-theme'],
-          span: [
-            'data-color',
-            'data-mdx-pretty-code',
-            'data-theme',
-            'style',
-            'class',
-          ],
-        },
-      },
-      shikiOptions = {},
-      tokensMap = {},
-      onVisitLine = () => {},
-      onVisitHighlightedLine = () => {},
-      onVisitHighlightedWord = () => {},
-      ignoreUnknownLanguage = true,
-    } = options;
-
-    if (!highlighterCache.has(shikiOptions)) {
-      highlighterCache.set(
-        shikiOptions,
-        highlightersFromSettings(shikiOptions)
-      );
+    if (inline) {
+      return code;
     }
 
-    const highlighters = await highlighterCache.get(shikiOptions);
-    const themes = getThemesFromSettings(shikiOptions);
+    return pre;
+  });
+}
 
-    function remarkVisitor(fn) {
-      return (node) => {
-        let results;
-        const hasMultipleThemes = highlighters.length > 1;
-        const output = highlighters.map((highlighter, i) => {
-          const loadedLanguages = highlighter.getLoadedLanguages();
+export default function rehypePrettyCode(options = {}) {
+  const {
+    theme,
+    tokensMap = {},
+    onVisitLine = () => {},
+    onVisitHighlightedLine = () => {},
+    onVisitHighlightedWord = () => {},
+  } = options;
 
-          const theme = themes[highlighter.themeKey];
-          return fn(node, {
-            highlighter,
-            theme,
-            loadedLanguages,
-            hasMultipleThemes,
-          });
-        });
-
-        // return in case of non-meta inline code
-        if (output.some((o) => !o)) return;
-
-        results = output.join('\n');
-
-        if (hasMultipleThemes) {
-          // If we don't do this the code blocks will be wrapped in <undefined>
-          // You can set your mdx renderer to replace this span with a React.Fragment during runtime
-          results = `<span data-mdx-pretty-code-fragment>${results}</span>`;
+  return async (tree) => {
+    if (
+      theme == null ||
+      typeof theme === 'string' ||
+      theme?.hasOwnProperty('tokenColors')
+    ) {
+      if (!highlighterCache.has('default')) {
+        highlighterCache.set('default', await shiki.getHighlighter({theme}));
+      }
+    } else if (typeof theme === 'object') {
+      // color mode object
+      for (const [mode, value] of Object.entries(theme)) {
+        if (!highlighterCache.has(mode)) {
+          highlighterCache.set(
+            mode,
+            await shiki.getHighlighter({theme: value})
+          );
         }
-        node.value = results;
-      };
+      }
     }
 
-    visit(tree, 'inlineCode', remarkVisitor(inlineCode));
-    visit(tree, 'code', remarkVisitor(blockCode));
+    visit(tree, 'element', (node, index, parent) => {
+      // Inline code
+      if (
+        (node.tagName === 'code' && parent.tagName !== 'pre') ||
+        node.tagName === 'inlineCode'
+      ) {
+        const value = node.children[0].value;
 
-    function inlineCode(node, {highlighter, theme}) {
-      const meta = node.value.match(/{:([a-zA-Z.-]+)}$/)?.[1];
+        if (!value) {
+          return;
+        }
 
-      if (!meta) {
-        return;
+        // TODO: allow escape characters to break out of highlighting
+        const stippedValue = value.replace(/{:[a-zA-Z.-]+}/, '');
+        const meta = value.match(/{:([a-zA-Z.-]+)}$/)?.[1];
+
+        if (!meta) {
+          return;
+        }
+
+        const isLang = meta[0] !== '.';
+
+        const trees = {};
+        for (const [mode, highlighter] of highlighterCache.entries()) {
+          if (!isLang) {
+            const color =
+              highlighterCache
+                .get(mode)
+                .getTheme()
+                .settings.find(({scope}) =>
+                  scope?.includes(tokensMap[meta.slice(1)] ?? meta.slice(1))
+                )?.settings.foreground ?? 'inherit';
+
+            trees[mode] = hastParser.parse(
+              `<pre><code><span style="color:${color}">${stippedValue}</span></code></pre>`
+            );
+          } else {
+            trees[mode] = hastParser.parse(
+              highlighter.codeToHtml(stippedValue, meta)
+            );
+          }
+        }
+
+        toFragment({node, trees, lang: isLang ? meta : '.token', inline: true});
       }
 
-      node.type = 'html';
-      // It's a token, not a lang
-      if (meta[0] === '.') {
-        if (typeof theme === 'string') {
-          throw new Error(
-            'MDX Pretty Code: Must be using a JSON theme object to use tokens.'
+      if (
+        // Block code
+        // Check from https://github.com/leafac/rehype-shiki
+        node.tagName === 'pre' &&
+        Array.isArray(node.children) &&
+        node.children.length === 1 &&
+        node.children[0].tagName === 'code' &&
+        typeof node.children[0].properties === 'object' &&
+        Array.isArray(node.children[0].properties.className) &&
+        typeof node.children[0].properties.className[0] === 'string' &&
+        node.children[0].properties.className[0].startsWith('language-')
+      ) {
+        const codeNode = node.children[0].children[0];
+        const lang = node.children[0].properties.className[0].split('-')[1];
+        const meta =
+          node.children[0].data?.meta ?? node.children[0].properties.metastring;
+        const lineNumbers = meta
+          ? rangeParser(meta.match(/{(.*)}/)?.[1] ?? '')
+          : [];
+        const word = meta?.match(/\/(.*)\//)?.[1];
+        const wordNumbers = meta
+          ? rangeParser(meta.match(/\/.*\/([^\s]*)/)?.[1] ?? '')
+          : [];
+
+        const trees = {};
+        for (const [mode, highlighter] of highlighterCache.entries()) {
+          trees[mode] = hastParser.parse(
+            highlighter.codeToHtml(codeNode.value.replace(/\n$/, ''), lang)
           );
         }
 
-        const color =
-          theme.tokenColors.find(({scope}) =>
-            scope?.includes(tokensMap[meta.slice(1)] ?? meta.slice(1))
-          )?.settings.foreground ?? 'inherit';
+        Object.entries(trees).forEach(([mode, tree]) => {
+          let lineCounter = 0;
+          let wordCounter = 0;
 
-        return sanitizeHtml(
-          `<span data-mdx-pretty-code data-color="${color}" data-theme="${
-            highlighter.themeKey
-          }"><span>${node.value.replace(/{:[a-zA-Z.-]+}/, '')}</span></span>`,
-          sanitizeOptions
-        );
-      }
+          visit(tree, 'element', (node) => {
+            if (node.properties.className?.[0] === 'line') {
+              onVisitLine(node);
 
-      const highlighted = highlighter.codeToHtml(
-        node.value.replace(/{:\w+}/, ''),
-        meta
-      );
+              if (
+                lineNumbers.length !== 0 &&
+                lineNumbers.includes(++lineCounter)
+              ) {
+                onVisitHighlightedLine(node);
+              }
 
-      const dom = new JSDOM(highlighted);
-      const pre = dom.window.document.querySelector('pre');
-
-      return sanitizeHtml(
-        `<span data-mdx-pretty-code data-theme="${highlighter.themeKey}">${pre.innerHTML}</span>`,
-        sanitizeOptions
-      );
-    }
-
-    function blockCode(node, {highlighter, loadedLanguages}) {
-      const lang =
-        ignoreUnknownLanguage && !loadedLanguages.includes(node.lang)
-          ? 'text'
-          : node.lang;
-
-      node.type = 'html';
-
-      const highlighted = highlighter.codeToHtml(node.value, lang);
-
-      const lineNumbers = node.meta
-        ? rangeParser(node.meta.match(/{(.*)}/)?.[1] ?? '')
-        : [];
-      const word = node.meta?.match(/\/(.*)\//)?.[1];
-      const wordNumbers = node.meta
-        ? rangeParser(node.meta.match(/\/.*\/([^\s]*)/)?.[1] ?? '')
-        : [];
-
-      let visitedWordsCount = 0;
-
-      const dom = new JSDOM(highlighted);
-      dom.window.document.body.querySelectorAll('.line').forEach((node, i) => {
-        onVisitLine(node);
-
-        if (lineNumbers.includes(i + 1)) {
-          onVisitHighlightedLine(node);
-        }
-
-        if (word && node.innerHTML.includes(word)) {
-          visitedWordsCount++;
-
-          if (
-            wordNumbers.length === 0 ||
-            wordNumbers.includes(visitedWordsCount)
-          ) {
-            const splitByBreakChar = new RegExp(`\\b${word}\\b`);
-            const adjacentText = node.innerHTML.split(splitByBreakChar);
-
-            node.innerHTML = adjacentText
-              .map(
-                (txt, i) =>
-                  `${txt}${
-                    i !== adjacentText.length - 1
-                      ? `<span data-mdx-pretty-code-word>${word}</span>`
-                      : ''
-                  }`
-              )
-              .join('');
-
-            node
-              .querySelectorAll('[data-mdx-pretty-code-word]')
-              .forEach((wordNode) => {
-                wordNode.removeAttribute('data-mdx-pretty-code-word');
-                onVisitHighlightedWord(wordNode);
+              // TODO: handle words that span across syntax boundaries/nodes.
+              // https://github.com/atomiks/mdx-pretty-code/issues/3
+              node.children.forEach((child) => {
+                if (child.children?.[0]?.value.includes(word)) {
+                  if (
+                    wordNumbers.length === 0 ||
+                    wordNumbers.includes(++wordCounter)
+                  ) {
+                    onVisitHighlightedWord(child);
+                  }
+                }
               });
-          }
-        }
-      });
+            }
+          });
+        });
 
-      const code = dom.window.document.querySelector('code');
-
-      code.setAttribute('data-language', lang);
-      code.setAttribute('data-theme', highlighter.themeKey);
-      return sanitizeHtml(dom.window.document.body.innerHTML, sanitizeOptions);
-    }
+        toFragment({node, trees, lang});
+      }
+    });
   };
 }

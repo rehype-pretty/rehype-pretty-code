@@ -6,7 +6,8 @@ import {fileURLToPath} from 'url';
 import {join, parse, dirname} from 'path';
 import {toMatchFile} from 'jest-file-snapshot';
 import prettier from 'prettier';
-import {createRemarkPlugin} from '../src';
+import rehypePrettyCode from '../src';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 expect.extend({toMatchFile});
@@ -15,9 +16,8 @@ const fixturesFolder = join(__dirname, 'fixtures');
 const resultsFolder = join(__dirname, 'results');
 
 const getHTML = async (code, settings) => {
-  const markdownAST = remark().parse(code);
-  await createRemarkPlugin({...settings})()(markdownAST);
-  const hAST = toHast(markdownAST, {allowDangerousHtml: true});
+  const hAST = toHast(remark().parse(code), {allowDangerousHtml: true});
+  await rehypePrettyCode(settings)(hAST);
   return toHtml(hAST, {allowDangerousHtml: true});
 };
 
@@ -29,25 +29,17 @@ const runFixture = async (fixture, fixtureName) => {
   const code = readFileSync(fixture, 'utf8');
 
   const html = await getHTML(code, {
-    shikiOptions: {
-      theme: JSON.parse(
-        readFileSync(
-          join(__dirname, '../node_modules/shiki/themes/github-dark.json'),
-          'utf-8'
-        )
-      ),
-    },
+    theme: JSON.parse(
+      readFileSync(
+        join(__dirname, '../node_modules/shiki/themes/github-dark.json'),
+        'utf-8'
+      )
+    ),
     onVisitHighlightedLine(node) {
-      Object.assign(node.style, {
-        backgroundColor: 'rgba(255, 255, 255, 0.25)',
-      });
+      node.properties.className = ['highlighted'];
     },
     onVisitHighlightedWord(node) {
-      Object.assign(node.style, {
-        backgroundColor: 'rgba(255, 255, 255, 0.25)',
-        padding: '1px',
-        borderRadius: '3px',
-      });
+      node.properties.className = ['word'];
     },
     onVisitLine(node) {},
   });
@@ -90,6 +82,9 @@ const defaultStyle = `
   span > code {
     background: black;
     padding: 4px;
+  }
+  .highlighted, .word {
+    background-color: rgba(255, 255, 255, 0.25);
   }
 </style>
 `;
