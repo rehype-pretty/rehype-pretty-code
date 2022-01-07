@@ -1,5 +1,5 @@
 # Rehype Pretty Code
 
-A Rehype plugin to make the code in your docs beautiful.
+Beautiful syntax highlighting for your MD/MDX docs.
 
-[View website for documentation](https://rehype-pretty-code.netlify.app).
+[View website for documentation](https://rehype-pretty-code.netlify.app)
