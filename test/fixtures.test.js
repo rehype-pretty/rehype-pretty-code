@@ -6,7 +6,7 @@ import {fileURLToPath} from 'url';
 import {join, parse, dirname} from 'path';
 import {toMatchFile} from 'jest-file-snapshot';
 import prettier from 'prettier';
-import {prettyCode} from '../src';
+import rehypePrettyCode from '../src';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,7 +17,7 @@ const resultsFolder = join(__dirname, 'results');
 
 const getHTML = async (code, settings) => {
   const hAST = toHast(remark().parse(code), {allowDangerousHtml: true});
-  await prettyCode(settings)(hAST);
+  await rehypePrettyCode(settings)(hAST);
   return toHtml(hAST, {allowDangerousHtml: true});
 };
 

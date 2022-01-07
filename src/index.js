@@ -29,7 +29,7 @@ function toFragment({node, trees, lang, inline = false}) {
   });
 }
 
-export function prettyCode(options = {}) {
+export default function rehypePrettyCode(options = {}) {
   const {
     theme,
     tokensMap = {},
@@ -132,7 +132,7 @@ export function prettyCode(options = {}) {
         const trees = {};
         for (const [mode, highlighter] of highlighterCache.entries()) {
           trees[mode] = hastParser.parse(
-            highlighter.codeToHtml(codeNode.value, lang)
+            highlighter.codeToHtml(codeNode.value.replace(/\n$/, ''), lang)
           );
         }
 
@@ -154,7 +154,7 @@ export function prettyCode(options = {}) {
               // TODO: handle words that span across syntax boundaries/nodes.
               // https://github.com/atomiks/mdx-pretty-code/issues/3
               node.children.forEach((child) => {
-                if (child.children[0].value.includes(word)) {
+                if (child.children?.[0]?.value.includes(word)) {
                   if (
                     wordNumbers.length === 0 ||
                     wordNumbers.includes(++wordCounter)
