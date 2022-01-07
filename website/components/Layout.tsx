@@ -24,11 +24,15 @@ const linkify =
     );
   };
 
-export function Layout({children}: {children: React.ReactNode}) {
+export function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}): React.ReactNode {
   return (
     <>
       <Head>
-        <title>MDX Pretty Code</title>
+        <title>Rehype Pretty Code</title>
         <meta
           name="description"
           content="Beautiful syntax highlighting for your MD/MDX docs"
