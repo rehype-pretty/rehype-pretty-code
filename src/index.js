@@ -6,7 +6,7 @@ import rehypeParse from 'rehype-parse';
 
 // Store only one highlighter per theme in a process
 const highlighterCache = new Map();
-const hastParser = unified().use(rehypeParse);
+const hastParser = unified().use(rehypeParse, {fragment: true});
 
 export function prettyCode(options = {}) {
   const {
