@@ -8,6 +8,23 @@ import rehypeParse from 'rehype-parse';
 const highlighterCache = new Map();
 const hastParser = unified().use(rehypeParse, {fragment: true});
 
+function toFragment({node, trees, lang}) {
+  node.tagName = 'span';
+  // User can replace this with a real Fragment at runtime
+  node.properties = {'data-rehype-pretty-code-fragment': ''};
+  node.children = Object.entries(trees).map(([mode, tree]) => {
+    const pre = tree.children[0];
+    // Remove class="shiki" and the background-color
+    pre.properties = {};
+
+    const code = pre.children[0];
+    code.properties['data-language'] = lang;
+    code.properties['data-theme'] = mode;
+
+    return pre;
+  });
+}
+
 export function prettyCode(options = {}) {
   const {
     theme,
@@ -53,6 +70,7 @@ export function prettyCode(options = {}) {
         // TODO: allow escape characters to break out of highlighting
         const stippedValue = value.replace(/{:[a-zA-Z.-]+}/, '');
         const meta = value.match(/{:([a-zA-Z.-]+)}$/)?.[1];
+        const isLang = meta[0] !== '.';
 
         if (!meta) {
           return;
@@ -60,8 +78,7 @@ export function prettyCode(options = {}) {
 
         const trees = {};
         for (const [mode, highlighter] of highlighterCache.entries()) {
-          // Token, not lang
-          if (meta[0] === '.') {
+          if (!isLang) {
             const color =
               highlighterCache
                 .get(mode)
@@ -80,8 +97,7 @@ export function prettyCode(options = {}) {
           }
         }
 
-        node.tagName = 'code';
-        node.children = trees.default.children[0].children[0].children;
+        toFragment({node, trees, lang: isLang ? meta : '.token'});
       }
 
       if (
@@ -146,20 +162,7 @@ export function prettyCode(options = {}) {
           });
         });
 
-        node.tagName = 'span';
-        // User can replace this with a real Fragment at runtime
-        node.properties = {'data-rehype-pretty-code-fragment': ''};
-        node.children = Object.entries(trees).map(([mode, tree]) => {
-          const pre = tree.children[0];
-          // Remove class="shiki" and the background-color
-          pre.properties = {};
-
-          const code = pre.children[0];
-          code.properties['data-language'] = lang;
-          code.properties['data-theme'] = mode;
-
-          return pre;
-        });
+        toFragment({node, trees, lang});
       }
     });
   };
