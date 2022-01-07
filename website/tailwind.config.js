@@ -66,12 +66,8 @@ module.exports = {
               },
               fontWeight: 'normal',
             },
-            pre: {
-              background: 'rgba(200,200,255,0.05)',
-              padding: '0.75rem 0',
-              lineHeight: 2,
-
-              '&:nth-of-type(2) .line::before': {
+            '[data-rehype-pretty-code-fragment]:nth-of-type(2) pre': {
+              '.line::before': {
                 content: 'counter(line)',
                 counterIncrement: 'line',
                 display: 'inline-block',
@@ -81,9 +77,15 @@ module.exports = {
                 color: colors.slate[600],
               },
 
-              '&:nth-of-type(2) .line--highlighted::before': {
+              '.line--highlighted::before': {
                 color: colors.slate[400],
               },
+            },
+            pre: {
+              opacity: 0.98,
+              background: 'rgba(200,200,255,0.05)',
+              padding: '0.75rem 0',
+              lineHeight: 2,
 
               '> code': {
                 display: 'grid',
