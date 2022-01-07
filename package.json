@@ -1,6 +1,6 @@
 {
   "name": "rehype-pretty-code",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "A Rehype plugin to make the code your docs beautiful.",
   "main": "./dist/rehype-pretty-code.cjs",
   "module": "./dist/rehype-pretty-code.js",
