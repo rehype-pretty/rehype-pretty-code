@@ -1,13 +1,13 @@
 {
-  "name": "@atomiks/mdx-pretty-code",
+  "name": "rehype-pretty-code",
   "version": "0.1.0",
-  "description": "A Remark plugin to make the code in your MDX docs simply beautiful. Powered by [Shiki](https://github.com/shikijs/shiki).",
-  "main": "./dist/mdx-pretty-code.cjs",
-  "module": "./dist/mdx-pretty-code.js",
+  "description": "A Rehype plugin to make the code your docs beautiful.",
+  "main": "./dist/rehype-pretty-code.cjs",
+  "module": "./dist/rehype-pretty-code.js",
   "type": "module",
   "exports": {
-    "import": "./dist/mdx-pretty-code.js",
-    "require": "./dist/mdx-pretty-code.cjs"
+    "import": "./dist/rehype-pretty-code.js",
+    "require": "./dist/rehype-pretty-code.cjs"
   },
   "files": [
     "dist/",

@@ -11,14 +11,14 @@ export default [
   {
     ...common,
     output: {
-      file: './dist/mdx-pretty-code.js',
+      file: './dist/rehype-pretty-code.js',
       format: 'esm',
     },
   },
   {
     ...common,
     output: {
-      file: './dist/mdx-pretty-code.cjs',
+      file: './dist/rehype-pretty-code.cjs',
       format: 'cjs',
     },
   },

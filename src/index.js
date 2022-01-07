@@ -6,6 +6,7 @@ import rehypeParse from 'rehype-parse';
 
 // Store only one highlighter per theme in a process
 const highlighterCache = new Map();
+const hastParser = unified().use(rehypeParse);
 
 export function prettyCode(options = {}) {
   const {
@@ -147,7 +148,7 @@ export function prettyCode(options = {}) {
 
         node.tagName = 'span';
         // User can replace this with a real Fragment at runtime
-        node.properties = {'data-mdx-pretty-code-fragment': ''};
+        node.properties = {'data-rehype-pretty-code-fragment': ''};
         node.children = Object.entries(trees).map(([mode, tree]) => {
           const pre = tree.children[0];
           // Remove class="shiki" and the background-color
