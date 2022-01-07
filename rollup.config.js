@@ -1,9 +1,10 @@
 import {nodeResolve} from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 const common = {
   input: './src/index.js',
-  plugins: [nodeResolve()],
-  external: ['jsdom', 'parse-numeric-range', 'shiki', 'sanitize-html'],
+  plugins: [commonjs(), nodeResolve()],
+  external: ['parse-numeric-range', 'shiki' 'rehype-parse', 'unified'],
 };
 
 export default [
