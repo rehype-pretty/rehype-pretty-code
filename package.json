@@ -5,6 +5,7 @@
   "main": "./dist/rehype-pretty-code.cjs",
   "module": "./dist/rehype-pretty-code.js",
   "type": "module",
+  "types": "index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/rehype-pretty-code.js",

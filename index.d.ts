@@ -9,6 +9,6 @@ export type Options = {
   onVisitHighlightedWord(node: any): void;
 };
 
-declare const prettyCode: (options?: Partial<Options>) => any;
+declare const rehypePrettyCode: (options?: Partial<Options>) => any;
 
-export {prettyCode};
+export default rehypePrettyCode;
