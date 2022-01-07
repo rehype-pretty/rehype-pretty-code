@@ -149,7 +149,7 @@ const options = {
   onVisitHighlightedLine(node) {
     node.properties.className.push('highlighted');
   },
-  onVisitHighlightedWord(element) {
+  onVisitHighlightedWord(node) {
     node.properties.className = ['word'];
   },
 };
