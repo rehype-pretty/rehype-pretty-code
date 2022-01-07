@@ -8,7 +8,7 @@ import rehypeParse from 'rehype-parse';
 const highlighterCache = new Map();
 const hastParser = unified().use(rehypeParse, {fragment: true});
 
-function toFragment({node, trees, lang}) {
+function toFragment({node, trees, lang, inline = false}) {
   node.tagName = 'span';
   // User can replace this with a real Fragment at runtime
   node.properties = {'data-rehype-pretty-code-fragment': ''};
@@ -20,6 +20,10 @@ function toFragment({node, trees, lang}) {
     const code = pre.children[0];
     code.properties['data-language'] = lang;
     code.properties['data-theme'] = mode;
+
+    if (inline) {
+      return code;
+    }
 
     return pre;
   });
@@ -97,7 +101,7 @@ export function prettyCode(options = {}) {
           }
         }
 
-        toFragment({node, trees, lang: isLang ? meta : '.token'});
+        toFragment({node, trees, lang: isLang ? meta : '.token', inline: true});
       }
 
       if (
