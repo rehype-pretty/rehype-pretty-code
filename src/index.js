@@ -74,11 +74,12 @@ export function prettyCode(options = {}) {
         // TODO: allow escape characters to break out of highlighting
         const stippedValue = value.replace(/{:[a-zA-Z.-]+}/, '');
         const meta = value.match(/{:([a-zA-Z.-]+)}$/)?.[1];
-        const isLang = meta[0] !== '.';
 
         if (!meta) {
           return;
         }
+
+        const isLang = meta[0] !== '.';
 
         const trees = {};
         for (const [mode, highlighter] of highlighterCache.entries()) {
