@@ -31,7 +31,7 @@ export function Layout({children}: {children: React.ReactNode}) {
         <title>MDX Pretty Code</title>
         <meta
           name="description"
-          content="Beautiful syntax highlighting for your MDX docs"
+          content="Beautiful syntax highlighting for your MD/MDX docs"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -40,26 +40,12 @@ export function Layout({children}: {children: React.ReactNode}) {
           className="text-zinc-100 mx-auto mt-12 text-4xl sm:text-5xl md:text-6xl font-black text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500"
           style={{lineHeight: '1.2'}}
         >
-          MDX Pretty Code
+          Rehype Pretty Code
         </h1>
 
         <article className="text-zinc-400">
           <MDXProvider
             components={{
-              span(props: Record<string, any>) {
-                if (props['data-mdx-pretty-code'] != null) {
-                  return (
-                    <code
-                      data-theme={props['data-theme']}
-                      style={{color: props['data-color']}}
-                    >
-                      {props.children.props.children}
-                    </code>
-                  );
-                }
-
-                return <span {...props} />;
-              },
               h2: linkify('h2'),
               h3: linkify('h3'),
               h4: linkify('h4'),

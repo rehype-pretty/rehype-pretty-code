@@ -8,7 +8,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@atomiks/mdx-pretty-code": "^0.1.0",
     "@mdx-js/loader": "^2.0.0-rc.2",
     "@mdx-js/react": "^1.6.22",
     "@next/mdx": "^12.0.7",
@@ -16,6 +15,7 @@
     "next": "12.0.7",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "rehype-pretty-code": "^0.0.3",
     "shiki": "^0.10.0"
   },
   "devDependencies": {
