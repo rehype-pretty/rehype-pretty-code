@@ -32,7 +32,8 @@
   },
   "author": "",
   "license": "MIT",
-  "repository": "github:atomiks/mdx-pretty-code",
+  "repository": "github:atomiks/rehype-pretty-code",
+  "homepage": "https://rehype-pretty-code.netlify.app",
   "prettier": {
     "bracketSpacing": false,
     "singleQuote": true,
