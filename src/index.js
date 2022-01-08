@@ -118,7 +118,10 @@ export default function rehypePrettyCode(options = {}) {
         node.children[0].properties.className[0].startsWith('language-')
       ) {
         const codeNode = node.children[0].children[0];
-        const lang = node.children[0].properties.className[0].replace('language-', '');
+        const lang = node.children[0].properties.className[0].replace(
+          'language-',
+          ''
+        );
         const meta =
           node.children[0].data?.meta ?? node.children[0].properties.metastring;
         const lineNumbers = meta
