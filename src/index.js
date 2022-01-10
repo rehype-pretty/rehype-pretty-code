@@ -3,6 +3,7 @@ import rangeParser from 'parse-numeric-range';
 import shiki from 'shiki';
 import {unified} from 'unified';
 import rehypeParse from 'rehype-parse';
+import wordHighlighter from './wordHighlighter';
 
 // Store only one highlighter per theme in a process
 const highlighterCache = new Map();
@@ -143,7 +144,7 @@ export default function rehypePrettyCode(options = {}) {
 
         Object.entries(trees).forEach(([mode, tree]) => {
           let lineCounter = 0;
-          let wordCounter = 0;
+          const wordOptions = {wordNumbers, wordCounter: 0};
 
           visit(tree, 'element', (node) => {
             if (node.properties.className?.[0] === 'line') {
@@ -156,58 +157,7 @@ export default function rehypePrettyCode(options = {}) {
                 onVisitHighlightedLine(node);
               }
 
-              // TODO: handle words that span across syntax boundaries/nodes.
-              // https://github.com/atomiks/mdx-pretty-code/issues/3
-              if (word) {
-                node.children.forEach((child) => {
-                  if (child.children?.[0]?.value.includes(word)) {
-                    if (
-                      wordNumbers.length === 0 ||
-                      wordNumbers.includes(++wordCounter)
-                    ) {
-                      const splits = child.children[0].value.split(word);
-                      const children = [];
-
-                      if (splits.length === 0) {
-                        onVisitHighlightedWord(child);
-                        return;
-                      }
-
-                      const node = {
-                        type: 'element',
-                        tagName: 'span',
-                        properties: {},
-                        children: [{type: 'text', value: word}],
-                      };
-
-                      splits.forEach((split, index) => {
-                        const splitNode = {
-                          type: 'element',
-                          tagName: 'span',
-                          properties: {},
-                          children: [{type: 'text', value: split}],
-                        };
-
-                        if (index !== splits.length - 1) {
-                          if (split !== '') {
-                            children.push(splitNode);
-                          }
-
-                          children.push(node);
-                        } else if (split !== '') {
-                          children.push(splitNode);
-                        }
-                      });
-
-                      if (children.length !== 0) {
-                        child.children = children;
-                      }
-
-                      onVisitHighlightedWord(node);
-                    }
-                  }
-                });
-              }
+              wordHighlighter(node, word, wordOptions, onVisitHighlightedWord);
             }
           });
         });
