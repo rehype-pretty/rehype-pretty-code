@@ -45,7 +45,7 @@ export default function rehypePrettyCode(options = {}) {
       theme?.hasOwnProperty('tokenColors')
     ) {
       if (!highlighterCache.has('default')) {
-        highlighterCache.set('default', await shiki.getHighlighter({theme}));
+        highlighterCache.set('default', shiki.getHighlighter({theme}));
       }
     } else if (typeof theme === 'object') {
       // color mode object
@@ -53,10 +53,15 @@ export default function rehypePrettyCode(options = {}) {
         if (!highlighterCache.has(mode)) {
           highlighterCache.set(
             mode,
-            await shiki.getHighlighter({theme: value})
+            shiki.getHighlighter({theme: value})
           );
         }
       }
+    }
+
+    const highlighters = new Map()
+    for (const [mode, loadHighlighter] of highlighterCache.entries()) {
+      highlighters.set(mode, await loadHighlighter)
     }
 
     visit(tree, 'element', (node, index, parent) => {
@@ -82,11 +87,10 @@ export default function rehypePrettyCode(options = {}) {
         const isLang = meta[0] !== '.';
 
         const trees = {};
-        for (const [mode, highlighter] of highlighterCache.entries()) {
+        for (const [mode, highlighter] of highlighters.entries()) {
           if (!isLang) {
             const color =
-              highlighterCache
-                .get(mode)
+              highlighter
                 .getTheme()
                 .settings.find(({scope}) =>
                   scope?.includes(tokensMap[meta.slice(1)] ?? meta.slice(1))
@@ -133,7 +137,7 @@ export default function rehypePrettyCode(options = {}) {
           : [];
 
         const trees = {};
-        for (const [mode, highlighter] of highlighterCache.entries()) {
+        for (const [mode, highlighter] of highlighters.entries()) {
           trees[mode] = hastParser.parse(
             highlighter.codeToHtml(codeNode.value.replace(/\n$/, ''), lang)
           );
