@@ -9,7 +9,7 @@ const highlighterCache = new Map();
 const hastParser = unified().use(rehypeParse, {fragment: true});
 
 function toFragment({node, trees, lang, inline = false}) {
-  node.tagName = 'span';
+  node.tagName = inline ? 'span' : 'div';
   // User can replace this with a real Fragment at runtime
   node.properties = {'data-rehype-pretty-code-fragment': ''};
   node.children = Object.entries(trees).map(([mode, tree]) => {
