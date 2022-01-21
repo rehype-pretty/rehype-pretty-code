@@ -36,6 +36,7 @@ export default function rehypePrettyCode(options = {}) {
     onVisitLine = () => {},
     onVisitHighlightedLine = () => {},
     onVisitHighlightedWord = () => {},
+    getHighlighter = shiki.getHighlighter,
   } = options;
 
   return async (tree) => {
@@ -45,13 +46,13 @@ export default function rehypePrettyCode(options = {}) {
       theme?.hasOwnProperty('tokenColors')
     ) {
       if (!highlighterCache.has('default')) {
-        highlighterCache.set('default', shiki.getHighlighter({theme}));
+        highlighterCache.set('default', getHighlighter({theme}));
       }
     } else if (typeof theme === 'object') {
       // color mode object
       for (const [mode, value] of Object.entries(theme)) {
         if (!highlighterCache.has(mode)) {
-          highlighterCache.set(mode, shiki.getHighlighter({theme: value}));
+          highlighterCache.set(mode, getHighlighter({theme: value}));
         }
       }
     }

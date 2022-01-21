@@ -294,6 +294,44 @@ code > .line::before {
 }
 ```
 
+### Custom highlighter
+
+To completely configure the highlighter, use the `getHighlighter` option to
+provide a Shiki highlighter instance.
+
+In order to support light and dark modes, Rehype Pretty Code provides an
+`options` object for you to extend. The `options.theme` attribute is
+preconfigured with the light or dark theme based on your theme options.
+
+This is helpful if you'd like to configure other Shiki options, such as `langs`.
+
+```js
+const {getHighlighter, BUNDLED_LANGUAGES} = require('shiki');
+
+const options = {
+  theme: {
+    dark: JSON.parse(
+      fs.readFileSync(require.resolve('./themes/dark.json'), 'utf-8')
+    ),
+    light: JSON.parse(
+      fs.readFileSync(require.resolve('./themes/light.json'), 'utf-8')
+    ),
+  },
+  getHighlighter: (options) =>
+    getHighlighter({
+      ...options,
+      langs: [
+        ...BUNDLED_LANGUAGES,
+        {
+          id: 'groq',
+          scopeName: 'source.groq',
+          path: './langs/vscode-sanity/grammars/groq.json',
+        },
+      ],
+    }),
+};
+```
+
 ## License
 
 MIT • [View on GitHub](https://github.com/atomiks/rehype-pretty-code)
