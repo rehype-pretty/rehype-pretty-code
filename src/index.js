@@ -165,10 +165,10 @@ export default function rehypePrettyCode(options = {}) {
                       wordNumbers.length === 0 ||
                       wordNumbers.includes(++wordCounter)
                     ) {
-                      const [lhs, rhs] = child.children[0].value.split(word);
+                      const splits = child.children[0].value.split(word);
                       const children = [];
 
-                      if (!lhs && !rhs) {
+                      if (splits.length === 0) {
                         onVisitHighlightedWord(child);
                         return;
                       }
@@ -180,27 +180,24 @@ export default function rehypePrettyCode(options = {}) {
                         children: [{type: 'text', value: word}],
                       };
 
-                      if (lhs) {
-                        children.push({
+                      splits.forEach((split, index) => {
+                        const splitNode = {
                           type: 'element',
                           tagName: 'span',
                           properties: {},
-                          children: [{type: 'text', value: lhs}],
-                        });
-                      }
+                          children: [{type: 'text', value: split}],
+                        };
 
-                      if (lhs || rhs) {
-                        children.push(node);
-                      }
+                        if (index !== splits.length - 1) {
+                          if (split !== '') {
+                            children.push(splitNode);
+                          }
 
-                      if (rhs) {
-                        children.push({
-                          type: 'element',
-                          tagName: 'span',
-                          properties: {},
-                          children: [{type: 'text', value: rhs}],
-                        });
-                      }
+                          children.push(node);
+                        } else if (split !== '') {
+                          children.push(splitNode);
+                        }
+                      });
 
                       if (children.length !== 0) {
                         child.children = children;

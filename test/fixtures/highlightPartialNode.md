@@ -10,6 +10,12 @@ function carrot() {
 
 ```js /carrot/
 function carrot() {
+  //carrot carrot contains carrot and other words, carrot
+}
+```
+
+```js /carrot/
+function carrot() {
   // carrot
 }
 ```
