@@ -272,38 +272,19 @@ Now, you can use CSS to display the desired theme:
 }
 ```
 
-### Line numbers
-
-If you're wondering how to add line numbers, you can use CSS counters.
-
-```css
-code {
-  counter-reset: line;
-}
-
-code > .line::before {
-  counter-increment: line;
-  content: counter(line);
-
-  /* Other styling */
-  display: inline-block;
-  width: 1rem;
-  margin-right: 2rem;
-  text-align: right;
-  color: gray;
-}
-```
-
 ### Custom highlighter
 
-To completely configure the highlighter, use the `getHighlighter` option to
-provide a Shiki highlighter instance.
+To completely configure the highlighter, use the
+`getHighlighter{:.entity.name.function}` option to provide a Shiki highlighter
+instance.
 
 In order to support light and dark modes, Rehype Pretty Code provides an
-`options` object for you to extend. The `options.theme` attribute is
-preconfigured with the light or dark theme based on your theme options.
+`options{:.constant.language}` object for you to extend. The
+`theme{:.meta.object-literal.key}` property is preconfigured with the light or
+dark theme based on your theme options.
 
-This is helpful if you'd like to configure other Shiki options, such as `langs`.
+This is helpful if you'd like to configure other Shiki options, such as
+`langs{:.meta.object-literal.key}`.
 
 ```js
 const {getHighlighter, BUNDLED_LANGUAGES} = require('shiki');
@@ -330,6 +311,28 @@ const options = {
       ],
     }),
 };
+```
+
+### Line numbers
+
+If you're wondering how to add line numbers, you can use CSS counters.
+
+```css
+code {
+  counter-reset: line;
+}
+
+code > .line::before {
+  counter-increment: line;
+  content: counter(line);
+
+  /* Other styling */
+  display: inline-block;
+  width: 1rem;
+  margin-right: 2rem;
+  text-align: right;
+  color: gray;
+}
 ```
 
 ## License
