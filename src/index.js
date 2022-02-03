@@ -34,7 +34,10 @@ function toFragment({node, trees, lang, title, inline = false}) {
           {
             type: 'element',
             tagName: 'div',
-            properties: {'data-rehype-pretty-code-title': ''},
+            properties: {
+              'data-rehype-pretty-code-title': '',
+              'data-language': lang,
+            },
             children: [{type: 'text', value: title}],
           },
           pre,
