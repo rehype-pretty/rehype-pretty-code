@@ -1,0 +1,97 @@
+.App {
+  height: 100%;
+  padding: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.grid > div {
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+}
+
+@media screen and (min-width: 600px) {
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 2rem;
+    gap: 2rem;
+  }
+  .App {
+    padding: 4rem;
+  }
+}
+
+.options-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 2rem;
+}
+.options-container > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+input,
+select {
+  background: #2e3440ff;
+  outline: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  color: white;
+  margin-bottom: 1rem;
+  font-size: 18px;
+}
+
+label {
+  margin-bottom: 0.5rem;
+  color: #2e3440ff;
+  font-size: 14px;
+}
+
+.react-codemirror2 {
+  display: grid;
+  height: 100%;
+}
+
+.react-codemirror2 .cm-s-material.CodeMirror,
+.react-codemirror2 .cm-s-material .CodeMirror-gutters {
+  background-color: #2e3440ff;
+}
+
+.react-codemirror2 > .CodeMirror {
+  height: 100%;
+  font-size: 16px;
+  padding: 2rem calc(2rem - 21px);
+  box-sizing: border-box;
+}
+
+.word {
+  background-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.14);
+  border-radius: 2px;
+}
+
+.shiki-output {
+  display: flex;
+  background-color: #2e3440;
+  overflow: auto;
+}
+
+.shiki-output--html pre {
+  overflow: auto;
+}
+
+.shiki-output code {
+  display: grid;
+}
+
+.shiki-output pre {
+  margin: 0;
+  padding: 2rem 2rem 2.5rem 2rem;
+}
