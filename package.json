@@ -5,7 +5,8 @@
   "main": "./dist/rehype-pretty-code.cjs",
   "module": "./dist/rehype-pretty-code.js",
   "workspaces": [
-    "./website"
+    "./website",
+    "./word-highlighter-playground"
   ],
   "type": "module",
   "types": "index.d.ts",
@@ -22,7 +23,8 @@
   ],
   "scripts": {
     "build": "npx rollup -c",
-    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
+    "playground": "npm run dev --workspace=word-highlighter-playground"
   },
   "jest": {
     "transform": {}
@@ -46,6 +48,7 @@
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.1.1",
     "hast-util-to-html": "^8.0.3",
+    "hast-util-to-string": "^2.0.0",
     "jest": "^27.4.5",
     "jest-file-snapshot": "^0.5.0",
     "mdast-util-to-hast": "^12.1.0",
