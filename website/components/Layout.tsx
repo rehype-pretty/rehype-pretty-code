@@ -35,7 +35,7 @@ export function Layout({
         <title>Rehype Pretty Code</title>
         <meta
           name="description"
-          content="Beautiful syntax highlighting for your MD/MDX docs"
+          content="Beautiful code blocks for your MD/MDX docs"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
