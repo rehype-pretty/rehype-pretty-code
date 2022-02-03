@@ -8,7 +8,7 @@ import rehypeParse from 'rehype-parse';
 const highlighterCache = new Map();
 const hastParser = unified().use(rehypeParse, {fragment: true});
 
-function toFragment({node, trees, lang, inline = false}) {
+function toFragment({node, trees, lang, title, inline = false}) {
   node.tagName = inline ? 'span' : 'div';
   // User can replace this with a real Fragment at runtime
   node.properties = {'data-rehype-pretty-code-fragment': ''};
@@ -23,6 +23,23 @@ function toFragment({node, trees, lang, inline = false}) {
 
     if (inline) {
       return code;
+    }
+
+    if (title) {
+      return {
+        type: 'element',
+        tagName: 'div',
+        properties: {'data-rehype-pretty-code-fragment': ''},
+        children: [
+          {
+            type: 'element',
+            tagName: 'div',
+            properties: {'data-rehype-pretty-code-title': ''},
+            children: [{type: 'text', value: title}],
+          },
+          pre,
+        ],
+      };
     }
 
     return pre;
@@ -133,6 +150,7 @@ export default function rehypePrettyCode(options = {}) {
         const wordNumbers = meta
           ? rangeParser(meta.match(/\/.*\/([^\s]*)/)?.[1] ?? '')
           : [];
+        const title = meta?.match(/title="(.+)"/)?.[1] ?? null;
 
         const trees = {};
         for (const [mode, highlighter] of highlighters.entries()) {
@@ -212,7 +230,7 @@ export default function rehypePrettyCode(options = {}) {
           });
         });
 
-        toFragment({node, trees, lang});
+        toFragment({node, trees, lang, title});
       }
     });
   };
