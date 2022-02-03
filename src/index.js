@@ -146,6 +146,13 @@ export default function rehypePrettyCode(options = {}) {
           let wordCounter = 0;
 
           visit(tree, 'element', (node) => {
+            if (
+              node.tagName === 'code' &&
+              /(?<!\/.*?)showLineNumbers/.test(meta)
+            ) {
+              node.properties['data-line-numbers'] = '';
+            }
+
             if (node.properties.className?.[0] === 'line') {
               onVisitLine(node);
 
