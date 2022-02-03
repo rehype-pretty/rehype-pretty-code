@@ -229,6 +229,36 @@ const options = {
 The name of the function is `getStringLength{:.fn}`.
 ```
 
+### Line numbers
+
+CSS counters can be used to add line numbers.
+
+```css
+code {
+  counter-reset: line;
+}
+
+code > .line::before {
+  counter-increment: line;
+  content: counter(line);
+
+  /* Other styling */
+  display: inline-block;
+  width: 1rem;
+  margin-right: 2rem;
+  text-align: right;
+  color: gray;
+}
+```
+
+If you want to conditionally show them, use `showLineNumbers`:
+
+````md
+```js showLineNumbers
+// <code> will have a data-line-numbers attribute
+```
+````
+
 ### Multiple themes (dark/light mode)
 
 Because Shiki generates themes at build time, client-side theme switching
@@ -311,28 +341,6 @@ const options = {
       ],
     }),
 };
-```
-
-### Line numbers
-
-If you're wondering how to add line numbers, you can use CSS counters.
-
-```css
-code {
-  counter-reset: line;
-}
-
-code > .line::before {
-  counter-increment: line;
-  content: counter(line);
-
-  /* Other styling */
-  display: inline-block;
-  width: 1rem;
-  margin-right: 2rem;
-  text-align: right;
-  color: gray;
-}
 ```
 
 ## License
