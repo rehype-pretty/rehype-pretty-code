@@ -13,41 +13,39 @@ function toFragment({node, trees, lang, title, inline = false}) {
   node.tagName = inline ? 'span' : 'div';
   // User can replace this with a real Fragment at runtime
   node.properties = {'data-rehype-pretty-code-fragment': ''};
-  node.children = Object.entries(trees).map(([mode, tree]) => {
-    const pre = tree.children[0];
-    // Remove class="shiki" and the background-color
-    pre.properties = {};
+  node.children = Object.entries(trees)
+    .map(([mode, tree]) => {
+      const pre = tree.children[0];
+      // Remove class="shiki" and the background-color
+      pre.properties = {};
 
-    const code = pre.children[0];
-    code.properties['data-language'] = lang;
-    code.properties['data-theme'] = mode;
+      const code = pre.children[0];
+      code.properties['data-language'] = lang;
+      code.properties['data-theme'] = mode;
 
-    if (inline) {
-      return code;
-    }
+      if (inline) {
+        return code;
+      }
 
-    if (title) {
-      return {
-        type: 'element',
-        tagName: 'div',
-        properties: {'data-rehype-pretty-code-fragment': ''},
-        children: [
+      if (title) {
+        return [
           {
             type: 'element',
             tagName: 'div',
             properties: {
               'data-rehype-pretty-code-title': '',
               'data-language': lang,
+              'data-theme': mode,
             },
             children: [{type: 'text', value: title}],
           },
           pre,
-        ],
-      };
-    }
+        ];
+      }
 
-    return pre;
-  });
+      return pre;
+    })
+    .flatMap((c) => c);
 }
 
 export default function rehypePrettyCode(options = {}) {
