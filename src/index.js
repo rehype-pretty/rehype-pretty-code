@@ -1,6 +1,6 @@
 import {visit} from 'unist-util-visit';
 import rangeParser from 'parse-numeric-range';
-import shiki from 'shiki';
+import {getHighlighter as shikiHighlighter} from 'shiki';
 import {unified} from 'unified';
 import rehypeParse from 'rehype-parse';
 import wordHighlighter from './wordHighlighter';
@@ -55,7 +55,7 @@ export default function rehypePrettyCode(options = {}) {
     onVisitLine = () => {},
     onVisitHighlightedLine = () => {},
     onVisitHighlightedWord = () => {},
-    getHighlighter = shiki.getHighlighter,
+    getHighlighter = shikiHighlighter,
   } = options;
 
   return async (tree) => {
