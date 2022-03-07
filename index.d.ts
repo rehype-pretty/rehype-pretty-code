@@ -9,7 +9,7 @@ export type Options = {
   onVisitLine(node: any): void;
   onVisitHighlightedLine(node: any): void;
   onVisitHighlightedWord(node: any): void;
-  getHighlighter?: (options: Pick<Options, 'theme'>) => Highlighter;
+  getHighlighter?: (options: Pick<Options, 'theme'>) => Promise<Highlighter>;
 };
 
 declare const rehypePrettyCode: (options?: Partial<Options>) => any;
