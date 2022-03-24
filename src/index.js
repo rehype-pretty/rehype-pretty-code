@@ -147,9 +147,16 @@ export default function rehypePrettyCode(options = {}) {
 
         const trees = {};
         for (const [mode, highlighter] of highlighters.entries()) {
-          trees[mode] = hastParser.parse(
-            highlighter.codeToHtml(codeNode.value.replace(/\n$/, ''), lang)
-          );
+          try {
+            trees[mode] = hastParser.parse(
+              highlighter.codeToHtml(codeNode.value.replace(/\n$/, ''), lang)
+            );
+          } catch (e) {
+            // Fallback to plain text if a language has not been registered
+            trees[mode] = hastParser.parse(
+              highlighter.codeToHtml(codeNode.value.replace(/\n$/, ''), 'txt')
+            );
+          }
         }
 
         Object.entries(trees).forEach(([mode, tree]) => {
