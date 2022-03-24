@@ -17,6 +17,15 @@ module.exports = {
   theme: {
     extend: {
       typography: {
+        xl: {
+          css: {
+            pre: {
+              padding: '0.75rem 0',
+              lineHeight: '2.25',
+              fontSize: '1rem',
+            },
+          },
+        },
         lg: {
           css: {
             code: {

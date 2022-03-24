@@ -139,8 +139,8 @@ const options = {
     fs.readFileSync(require.resolve('./themes/dark.json'), 'utf-8')
   ),
   onVisitLine(node) {
-    // Prevent lines from collapsing in `display: grid` mode, and allow empty
-    // lines to be copy/pasted
+    // Prevent lines from collapsing in `display: grid` mode, and
+    // allow empty lines to be copy/pasted
     if (node.children.length === 0) {
       node.children = [{type: 'text', value: ' '}];
     }
