@@ -15,8 +15,8 @@
     "next": "12.0.7",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "rehype-pretty-code": "^0.0.5",
-    "shiki": "^0.10.0"
+    "rehype-pretty-code": "^0.2.5",
+    "shiki": "^0.10.1"
   },
   "devDependencies": {
     "@types/node": "17.0.8",
