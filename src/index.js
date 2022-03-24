@@ -5,10 +5,6 @@ import {unified} from 'unified';
 import rehypeParse from 'rehype-parse';
 import wordHighlighter from './wordHighlighter';
 
-// Store only one highlighter per theme in a process
-const highlighterCache = new Map();
-const hastParser = unified().use(rehypeParse, {fragment: true});
-
 function toFragment({node, trees, lang, title, inline = false}) {
   node.tagName = inline ? 'span' : 'div';
   // User can replace this with a real Fragment at runtime
@@ -59,27 +55,22 @@ export default function rehypePrettyCode(options = {}) {
   } = options;
 
   return async (tree) => {
+    const highlighters = new Map();
+
     if (
       theme == null ||
       typeof theme === 'string' ||
       theme?.hasOwnProperty('tokenColors')
     ) {
-      if (!highlighterCache.has('default')) {
-        highlighterCache.set('default', getHighlighter({theme}));
-      }
+      highlighters.set('default', await getHighlighter({theme}));
     } else if (typeof theme === 'object') {
       // color mode object
       for (const [mode, value] of Object.entries(theme)) {
-        if (!highlighterCache.has(mode)) {
-          highlighterCache.set(mode, getHighlighter({theme: value}));
-        }
+        highlighters.set(mode, await getHighlighter({theme: value}));
       }
     }
 
-    const highlighters = new Map();
-    for (const [mode, loadHighlighter] of highlighterCache.entries()) {
-      highlighters.set(mode, await loadHighlighter);
-    }
+    const hastParser = unified().use(rehypeParse, {fragment: true});
 
     visit(tree, 'element', (node, index, parent) => {
       // Inline code

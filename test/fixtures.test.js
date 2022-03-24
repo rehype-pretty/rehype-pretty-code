@@ -1,6 +1,8 @@
+import jest from 'jest-mock'
 import {toHast} from 'mdast-util-to-hast';
 import {toHtml} from 'hast-util-to-html';
 import {remark} from 'remark';
+import {getHighlighter as shikiHighlighter} from 'shiki';
 import {readdirSync, readFileSync, lstatSync} from 'fs';
 import {fileURLToPath} from 'url';
 import {join, parse, dirname} from 'path';
@@ -22,7 +24,7 @@ const getHTML = async (code, settings) => {
 };
 
 // To add a test, create a markdown file in the fixtures folder
-const runFixture = async (fixture, fixtureName) => {
+const runFixture = async (fixture, fixtureName, getHighlighter) => {
   const resultHTMLName = parse(fixtureName).name + '.html';
   const resultHTMLPath = join(resultsFolder, resultHTMLName);
 
@@ -42,6 +44,7 @@ const runFixture = async (fixture, fixtureName) => {
       node.properties.className = ['word'];
     },
     onVisitLine(node) {},
+    getHighlighter,
   });
 
   const htmlString = prettier.format(html, {parser: 'html'});
@@ -56,11 +59,14 @@ describe('with fixtures', () => {
     }
 
     it('Fixture: ' + fixtureName, async () => {
+      const getHighlighter = jest.fn(shikiHighlighter);
       const {htmlString, resultHTMLPath} = await runFixture(
         fixture,
-        fixtureName
+        fixtureName,
+        getHighlighter
       );
       expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);
+      expect(getHighlighter).toHaveBeenCalledTimes(1);
     });
   });
 });
