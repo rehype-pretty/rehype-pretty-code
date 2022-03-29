@@ -62,7 +62,7 @@ export function Layout({
         </article>
       </div>
 
-      <footer className="prose w-full max-w-none dark:prose-invert text-center border-t border-zinc-800 py-12">
+      <footer className="prose w-full max-w-none dark:prose-invert text-center border-t border-zinc-800 py-12 text-zinc-200">
         Created by <a href="https://twitter.com/atomiksdev">@atomiks</a> and{' '}
         <a href="https://twitter.com/ren_riz">@ren_riz</a>
       </footer>

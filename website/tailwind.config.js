@@ -37,6 +37,7 @@ module.exports = {
         },
         DEFAULT: {
           css: {
+            'h1,h2,h3,h4,h5,h6': {color: colors.white},
             'h2 a': linkHeadingStyles,
             'h3 a': linkHeadingStyles,
             'h4 a': linkHeadingStyles,

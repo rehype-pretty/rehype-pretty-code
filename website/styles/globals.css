@@ -4,4 +4,9 @@
 
 :root {
   color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+}
+
+code {
+  -webkit-font-smoothing: initial;
 }
