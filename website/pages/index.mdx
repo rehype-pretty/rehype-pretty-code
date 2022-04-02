@@ -293,20 +293,20 @@ const options = {
 };
 ```
 
-The `<code>{:html}` element will have a data attribute `data-theme="[key]"`, e.g
+The `<code>{:html}` and `<pre>{:html}` element will have a data attribute `data-theme="[key]"`, e.g
 `data-theme="light"`.
 
 Now, you can use CSS to display the desired theme:
 
 ```css
 @media (prefers-color-scheme: dark) {
-  code[data-theme='light'] {
+  pre[data-theme='light'], code[data-theme='light'] {
     display: none;
   }
 }
 
 @media (prefers-color-scheme: light), (prefers-color-scheme: no-preference) {
-  code[data-theme='dark'] {
+  pre[data-theme='dark'], code[data-theme='dark'] {
     display: none;
   }
 }
