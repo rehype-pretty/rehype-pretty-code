@@ -138,14 +138,18 @@ export default function rehypePrettyCode(options = {}) {
         );
         const meta =
           node.children[0].data?.meta ?? node.children[0].properties.metastring;
+        const titleMatch = meta?.match(/title="(.+)"/);
+        const title = titleMatch?.[1] ?? null;
+        const titleString = titleMatch?.[0] ?? '';
+        const metaWithoutTitle = meta?.replace(titleString, '');
+
         const lineNumbers = meta
-          ? rangeParser(meta.match(/{(.*)}/)?.[1] ?? '')
+          ? rangeParser(metaWithoutTitle.match(/{(.*)}/)?.[1] ?? '')
           : [];
-        const word = meta?.match(/\/(.*)\//)?.[1];
+        const word = metaWithoutTitle?.match(/\/(.*)\//)?.[1];
         const wordNumbers = meta
-          ? rangeParser(meta.match(/\/.*\/([^\s]*)/)?.[1] ?? '')
+          ? rangeParser(metaWithoutTitle.match(/\/.*\/([^\s]*)/)?.[1] ?? '')
           : [];
-        const title = meta?.match(/title="(.+)"/)?.[1] ?? null;
 
         const trees = {};
         for (const [mode, highlighter] of highlighters.entries()) {
