@@ -12,8 +12,7 @@ function toFragment({node, trees, lang, title, inline = false}) {
   node.children = Object.entries(trees)
     .map(([mode, tree]) => {
       const pre = tree.children[0];
-      // Remove class="shiki" and the background-color
-      pre.properties = {};
+
       pre.properties['data-language'] = lang;
       pre.properties['data-theme'] = mode;
 
