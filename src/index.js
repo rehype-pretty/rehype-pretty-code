@@ -56,23 +56,34 @@ export default function rehypePrettyCode(options = {}) {
     getHighlighter = shikiHighlighter,
   } = options;
 
-  return async (tree) => {
-    const highlighters = new Map();
+  // Cache highlighters per unified processor
+  const highlighterCache = new Map();
+  const hastParser = unified().use(rehypeParse, {fragment: true});
 
+  return async (tree) => {
     if (
       theme == null ||
       typeof theme === 'string' ||
       theme?.hasOwnProperty('tokenColors')
     ) {
-      highlighters.set('default', await getHighlighter({theme}));
+      if (!highlighterCache.has('default')) {
+        highlighterCache.set('default', getHighlighter({theme}));
+     }
     } else if (typeof theme === 'object') {
       // color mode object
       for (const [mode, value] of Object.entries(theme)) {
-        highlighters.set(mode, await getHighlighter({theme: value}));
+        if (!highlighterCache.has(mode)) {
+          highlighterCache.set(mode, getHighlighter({theme: value}));
+        }
       }
     }
 
     const hastParser = unified().use(rehypeParse, {fragment: true});
+
+    const highlighters = new Map();
+    for (const [mode, loadHighlighter] of highlighterCache.entries()) {
+      highlighters.set(mode, await loadHighlighter);
+    }
 
     visit(tree, 'element', (node, index, parent) => {
       // Inline code
