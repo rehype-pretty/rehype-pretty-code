@@ -71,6 +71,16 @@ describe('with fixtures', () => {
   });
 });
 
+it("highlighter caches don't overwrite each other", async () => {
+  const [html1, html2] = await Promise.all([
+    getHTML('`[1, 2, 3]{:js}`', {theme: 'github-light'}),
+    getHTML('`[1, 2, 3]{:js}`', {theme: 'light-plus'}),
+  ]);
+  // both highlighters are being cached under the same key, but in separate caches,
+  // that's what we're testing here by asserting that they yield different results
+  expect(html1).not.toBe(html2);
+});
+
 const defaultStyle = `
 <style>
   html {
