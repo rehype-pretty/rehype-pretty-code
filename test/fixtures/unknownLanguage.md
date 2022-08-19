@@ -1,5 +1,0 @@
-# Unknown language
-
-```console
-test
-```
