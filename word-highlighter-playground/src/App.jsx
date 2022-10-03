@@ -29,7 +29,7 @@ function App() {
   const [value, setValue] = useState();
   const [HTML, setHTML] = useState();
   const [isLoaded, setIsLoaded] = useState();
-  const [word, setWord] = useState('test = ()');
+  const [word, setWord] = useState(['test = ()', 'hello', 'world']);
   const [mode, setMode] = useState('javascript');
 
   const highlighter = useRef();
@@ -133,7 +133,7 @@ function App() {
           <input
             id="word-input"
             value={word}
-            onChange={(e) => setWord(e.target.value)}
+            onChange={(e) => setWord(e.target.value.split(','))}
           />
         </div>
         <div>

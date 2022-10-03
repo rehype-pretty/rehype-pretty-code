@@ -187,11 +187,25 @@ Literal text, like a regex. Note regex itself is not yet supported.
 ```
 ````
 
+````md
+```js /carrot/ /apple/
+
+```
+````
+
 Highlight only the third to fifth instances of `carrot`. Any numeric range can
 be placed after the last `/`.
 
 ````md
 ```js /carrot/3-5
+
+```
+````
+
+Highlight only the third to fifth instances of `carrot` and any instances of `apple`.
+
+````md
+```js /carrot/3-5 /apple/
 
 ```
 ````
