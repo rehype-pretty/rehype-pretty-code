@@ -168,7 +168,7 @@ export default function rehypePrettyCode(options = {}) {
 
         let wordNumbers = [];
         if (meta){
-          const wordNumbersMatch = metaWithoutTitle ? [...metaWithoutTitle.matchAll(/\/.*?\/([^\s]*)/g)] : undefined//default [];
+          const wordNumbersMatch = metaWithoutTitle ? [...metaWithoutTitle.matchAll(/\/.*?\/(\S*)/g)] : undefined;
           if(Array.isArray(wordNumbersMatch)) {
             wordNumbersMatch.forEach((name, index) => {
               wordNumbers.push(rangeParser(wordNumbersMatch[index][1]))

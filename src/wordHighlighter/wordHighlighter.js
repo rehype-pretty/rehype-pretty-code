@@ -20,7 +20,7 @@ export function wordHighlighter(node, word, options, onVisitHighlightedWord) {
   word.forEach((word, index) => {
     if (word && textContent?.includes(word)) {
       options.wordCounter = wordCounter + 1;
-      if (wordNumbers.length === 0 || wordNumbers[index]?.includes(options.wordCounter)) {
+      if (wordNumbers.length === 0 || wordNumbers[index]?.includes(options.wordCounter) || wordNumbers[index]?.length === 0 && !wordNumbers.every(subArr => subArr.length === 0) && wordNumbers.length > 1 || wordNumbers[index]?.length === 0 && wordNumbers.length === 1) {
         let textContent = toString(node);
         let startIndex = 0;
 
@@ -57,5 +57,5 @@ export function wordHighlighter(node, word, options, onVisitHighlightedWord) {
         });
       }
     }
-  })
+  });
 }
