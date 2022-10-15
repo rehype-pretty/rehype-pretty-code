@@ -68,7 +68,7 @@ export default function rehypePrettyCode(options = {}) {
     ) {
       if (!highlighterCache.has('default')) {
         highlighterCache.set('default', getHighlighter({theme}));
-     }
+      }
     } else if (typeof theme === 'object') {
       // color mode object
       for (const [mode, value] of Object.entries(theme)) {
@@ -159,7 +159,9 @@ export default function rehypePrettyCode(options = {}) {
           : [];
 
         let word = [];
-        const wordMatch = metaWithoutTitle ? [...metaWithoutTitle.matchAll(/\/(.*?)\//g)] : undefined;
+        const wordMatch = metaWithoutTitle
+          ? [...metaWithoutTitle.matchAll(/\/(.*?)\//g)]
+          : undefined;
         if (Array.isArray(wordMatch)) {
           wordMatch.forEach((name, index) => {
             word.push(wordMatch[index][1]);
@@ -167,12 +169,14 @@ export default function rehypePrettyCode(options = {}) {
         }
 
         let wordNumbers = [];
-        if (meta){
-          const wordNumbersMatch = metaWithoutTitle ? [...metaWithoutTitle.matchAll(/\/.*?\/(\S*)/g)] : undefined;
-          if(Array.isArray(wordNumbersMatch)) {
+        if (meta) {
+          const wordNumbersMatch = metaWithoutTitle
+            ? [...metaWithoutTitle.matchAll(/\/.*?\/(\S*)/g)]
+            : undefined;
+          if (Array.isArray(wordNumbersMatch)) {
             wordNumbersMatch.forEach((name, index) => {
-              wordNumbers.push(rangeParser(wordNumbersMatch[index][1]))
-            })
+              wordNumbers.push(rangeParser(wordNumbersMatch[index][1]));
+            });
           }
         }
 
