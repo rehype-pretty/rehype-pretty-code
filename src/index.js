@@ -208,7 +208,7 @@ export default function rehypePrettyCode(options = {}) {
               if (index === 0) {
                 const lineNumbersStartAtMatch = meta.match(/(?<!\/.*?)showLineNumbers(?:\{(\d+)})?/);
                 if (lineNumbersStartAtMatch[1])
-                  node.properties['style'] = `counter-set: line ${lineNumbersStartAtMatch[1]};`;
+                  node.properties['style'] = `counter-set: line ${lineNumbersStartAtMatch[1] - 1};`;
               }
             }
 
