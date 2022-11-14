@@ -58,31 +58,31 @@ export default function rehypePrettyCode(options = {}) {
 
   // Cache highlighters per unified processor
   const highlighterCache = new Map();
+  const highlighters = new Map();
   const hastParser = unified().use(rehypeParse, {fragment: true});
 
-  return async (tree) => {
-    if (
-      theme == null ||
-      typeof theme === 'string' ||
-      theme?.hasOwnProperty('tokenColors')
-    ) {
-      if (!highlighterCache.has('default')) {
-        highlighterCache.set('default', getHighlighter({theme}));
-      }
-    } else if (typeof theme === 'object') {
-      // color mode object
-      for (const [mode, value] of Object.entries(theme)) {
-        if (!highlighterCache.has(mode)) {
-          highlighterCache.set(mode, getHighlighter({theme: value}));
-        }
+  if (
+    theme == null ||
+    typeof theme === 'string' ||
+    theme?.hasOwnProperty('tokenColors')
+  ) {
+    if (!highlighterCache.has('default')) {
+      highlighterCache.set('default', getHighlighter({theme}));
+    }
+  } else if (typeof theme === 'object') {
+    // color mode object
+    for (const [mode, value] of Object.entries(theme)) {
+      if (!highlighterCache.has(mode)) {
+        highlighterCache.set(mode, getHighlighter({theme: value}));
       }
     }
+  }
 
-    const hastParser = unified().use(rehypeParse, {fragment: true});
-
-    const highlighters = new Map();
+  return async (tree) => {
     for (const [mode, loadHighlighter] of highlighterCache.entries()) {
-      highlighters.set(mode, await loadHighlighter);
+      if (!highlighters.get(mode)) {
+        highlighters.set(mode, await loadHighlighter);
+      }
     }
 
     visit(tree, 'element', (node, index, parent) => {
@@ -206,9 +206,13 @@ export default function rehypePrettyCode(options = {}) {
               node.properties['data-line-numbers'] = '';
 
               if (index === 0) {
-                const lineNumbersStartAtMatch = meta.match(/(?<!\/.*?)showLineNumbers(?:\{(\d+)})?/);
+                const lineNumbersStartAtMatch = meta.match(
+                  /(?<!\/.*?)showLineNumbers(?:\{(\d+)})?/
+                );
                 if (lineNumbersStartAtMatch[1])
-                  node.properties['style'] = `counter-set: line ${lineNumbersStartAtMatch[1] - 1};`;
+                  node.properties['style'] = `counter-set: line ${
+                    lineNumbersStartAtMatch[1] - 1
+                  };`;
               }
             }
 
