@@ -194,7 +194,7 @@ export default function rehypePrettyCode(options = {}) {
           }
         }
 
-        Object.entries(trees).forEach(([mode, tree]) => {
+        Object.entries(trees).forEach(([mode, tree], index) => {
           let lineCounter = 0;
           const wordOptions = {wordNumbers, wordCounter: 0};
 
@@ -204,6 +204,12 @@ export default function rehypePrettyCode(options = {}) {
               /(?<!\/.*?)showLineNumbers/.test(meta)
             ) {
               node.properties['data-line-numbers'] = '';
+
+              if (index === 0) {
+                const lineNumbersStartAtMatch = meta.match(/(?<!\/.*?)showLineNumbers(?:\{(\d+)})?/);
+                if (lineNumbersStartAtMatch[1])
+                  node.properties['style'] = `counter-set: line ${lineNumbersStartAtMatch[1] - 1};`;
+              }
             }
 
             if (node.properties.className?.[0] === 'line') {

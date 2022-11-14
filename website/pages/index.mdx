@@ -283,6 +283,14 @@ If you want to conditionally show them, use `showLineNumbers`:
 ```
 ````
 
+If you want to start line number at specific number, use `showLineNumbers{number}`:
+
+````md
+```js showLineNumbers{number}
+// the first line of this code block will start at {number}
+```
+````
+
 ### Multiple themes (dark/light mode)
 
 Because Shiki generates themes at build time, client-side theme switching

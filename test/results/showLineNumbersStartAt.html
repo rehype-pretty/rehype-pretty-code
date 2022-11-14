@@ -1,0 +1,60 @@
+
+<style>
+  html {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  body {
+    margin: 30px auto;
+    max-width: 800px;
+  }
+  pre {
+    background: black;
+    display: grid;
+    padding: 16px;
+  }
+  span > code {
+    background: black;
+    padding: 4px;
+  }
+  .highlighted, .word {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  code[data-line-numbers] {
+    counter-reset: line;
+  }
+  code[data-line-numbers]>.line:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 1rem;
+    margin-right: 2rem;
+    text-align: right;
+    color: gray;
+  }
+</style>
+<h2>showLineNumbersStartAt</h2>
+<p>showLineNumbersStartAt</p>
+<div data-rehype-pretty-code-fragment="">
+  <pre
+    data-language="js"
+    data-theme="default"
+  ><code data-line-numbers="" data-language="js" data-theme="default"><span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">a</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'a'</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">b</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'b'</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">c</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'c'</span><span style="color: #C9D1D9">;</span></span></code></pre>
+</div>
+<div data-rehype-pretty-code-fragment="">
+  <pre
+    data-language="js"
+    data-theme="default"
+  ><code data-line-numbers="" style="counter-set: line 4;" data-language="js" data-theme="default"><span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">a</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'a'</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">b</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'b'</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">c</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'c'</span><span style="color: #C9D1D9">;</span></span></code></pre>
+</div>
+<div data-rehype-pretty-code-fragment="">
+  <pre
+    data-language="js"
+    data-theme="default"
+  ><code data-line-numbers="" style="counter-set: line 99;" data-language="js" data-theme="default"><span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">a</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'a'</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">b</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'b'</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">c</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'c'</span><span style="color: #C9D1D9">;</span></span></code></pre>
+</div>

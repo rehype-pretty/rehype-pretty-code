@@ -102,5 +102,17 @@ const defaultStyle = `
   .highlighted, .word {
     background-color: rgba(255, 255, 255, 0.25);
   }
+  code[data-line-numbers] {
+    counter-reset: line;
+  }
+  code[data-line-numbers]>.line:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 1rem;
+    margin-right: 2rem;
+    text-align: right;
+    color: gray;
+  }
 </style>
 `;
