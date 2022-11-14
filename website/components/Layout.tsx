@@ -66,7 +66,7 @@ export function Layout({
         Created by <a href="https://twitter.com/atomiksdev">@atomiks</a>,{' '}
         <a href="https://twitter.com/ren_riz">@ren_riz</a>,{' '}
         <a href="https://twitter.com/silvenon">@silvenon</a>,{' '}
-        <a href="https://github.com/ttwrpz">@ttwrpz</a>, and other contributes
+        <a href="https://github.com/ttwrpz">@ttwrpz</a>, and other contributors
       </footer>
     </>
   );
