@@ -4,6 +4,7 @@ import {getHighlighter as shikiHighlighter} from 'shiki';
 import {unified} from 'unified';
 import rehypeParse from 'rehype-parse';
 import wordHighlighter from './wordHighlighter';
+import {reverseString} from './wordHighlighter/utils.js';
 
 function toFragment({node, trees, lang, title, inline = false}) {
   node.tagName = inline ? 'span' : 'div';
@@ -201,17 +202,17 @@ export default function rehypePrettyCode(options = {}) {
           visit(tree, 'element', (node) => {
             if (
               node.tagName === 'code' &&
-              /(?<!\/.*?)showLineNumbers/.test(meta)
+              /srebmuNeniLwohs(?!(.*)(\/))/.test(reverseString(meta))
             ) {
               node.properties['data-line-numbers'] = '';
 
               if (index === 0) {
-                const lineNumbersStartAtMatch = meta.match(
-                  /(?<!\/.*?)showLineNumbers(?:\{(\d+)})?/
+                const lineNumbersStartAtMatch = reverseString(meta).match(
+                  /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/
                 );
                 if (lineNumbersStartAtMatch[1])
                   node.properties['style'] = `counter-set: line ${
-                    lineNumbersStartAtMatch[1] - 1
+                    reverseString(lineNumbersStartAtMatch[1]) - 1
                   };`;
               }
             }
