@@ -48,3 +48,5 @@ export function findOverlap(a, b) {
 
   return findOverlap(a, b.substring(0, b.length - 1));
 }
+
+export const reverseString = s => s?.split('').reverse().join('');
