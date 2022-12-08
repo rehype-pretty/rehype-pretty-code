@@ -1,4 +1,4 @@
-import jest from 'jest-mock'
+import jest from 'jest-mock';
 import {toHast} from 'mdast-util-to-hast';
 import {toHtml} from 'hast-util-to-html';
 import {remark} from 'remark';
@@ -52,6 +52,8 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
 };
 
 describe('with fixtures', () => {
+  const getHighlighter = jest.fn(shikiHighlighter);
+
   readdirSync(fixturesFolder).forEach((fixtureName) => {
     const fixture = join(fixturesFolder, fixtureName);
     if (lstatSync(fixture).isDirectory()) {
@@ -59,7 +61,6 @@ describe('with fixtures', () => {
     }
 
     it('Fixture: ' + fixtureName, async () => {
-      const getHighlighter = jest.fn(shikiHighlighter);
       const {htmlString, resultHTMLPath} = await runFixture(
         fixture,
         fixtureName,
