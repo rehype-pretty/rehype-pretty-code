@@ -1,0 +1,49 @@
+
+<style>
+  html {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  body {
+    margin: 30px auto;
+    max-width: 800px;
+  }
+  pre {
+    background: black;
+    display: grid;
+    padding: 16px;
+  }
+  span > code {
+    background: black;
+    padding: 4px;
+  }
+  .highlighted, .word {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  code[data-line-numbers] {
+    counter-reset: line;
+  }
+  code[data-line-numbers]>.line:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 1rem;
+    margin-right: 2rem;
+    text-align: right;
+    color: gray;
+  }
+</style>
+<h2>Diff</h2>
+<div data-rehype-pretty-code-fragment="">
+  <pre
+    data-language="diff"
+    data-theme="default"
+  ><code data-language="diff" data-theme="default"><span class="line"><span style="color: #C9D1D9">import useSWR from 'swr'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">function Profile() {</span></span>
+<span class="line"><span style="color: #C9D1D9">  const { data, error } = useSWR('/api/user', fetcher)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FFA198">-  if (error) return &#x3C;div>failed to load&#x3C;/div></span></span>
+<span class="line"><span style="color: #7EE787">+  if (!data) return &#x3C;div>loading...&#x3C;/div></span></span>
+<span class="line"><span style="color: #C9D1D9">  return &#x3C;div>hello {data.name}!&#x3C;/div></span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+</div>

@@ -4,8 +4,8 @@ import {getHighlighter as shikiHighlighter} from 'shiki';
 import {unified} from 'unified';
 import rehypeParse from 'rehype-parse';
 import hashObj from 'hash-obj';
-import wordHighlighter from './wordHighlighter';
-import {reverseString} from './wordHighlighter/utils.js';
+import wordHighlighter from './word-highlighter';
+import {reverseString} from './word-highlighter/utils';
 
 function toFragment({node, trees, lang, title, inline = false}) {
   node.tagName = inline ? 'span' : 'div';
@@ -48,7 +48,7 @@ function toFragment({node, trees, lang, title, inline = false}) {
     .flatMap((c) => c);
 }
 
-const themeCache = new Map();
+const globalHighlighterCache = new Map();
 
 export default function rehypePrettyCode(options = {}) {
   const {
@@ -71,10 +71,10 @@ export default function rehypePrettyCode(options = {}) {
     },
     {algorithm: 'sha1'}
   );
-  let highlighterCache = themeCache.get(`${optionsHash}.highlighterCache`);
+  let highlighterCache = globalHighlighterCache.get(optionsHash);
   if (!highlighterCache) {
     highlighterCache = new Map();
-    themeCache.set(`${optionsHash}.highlighterCache`, highlighterCache);
+    globalHighlighterCache.set(optionsHash, highlighterCache);
   }
   const highlighters = new Map();
   const hastParser = unified().use(rehypeParse, {fragment: true});
