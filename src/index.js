@@ -54,6 +54,7 @@ export default function rehypePrettyCode(options = {}) {
   const {
     theme,
     tokensMap = {},
+    filterMetaString = (v) => v,
     onVisitLine = () => {},
     onVisitHighlightedLine = () => {},
     onVisitHighlightedWord = () => {},
@@ -116,7 +117,7 @@ export default function rehypePrettyCode(options = {}) {
         }
 
         // TODO: allow escape characters to break out of highlighting
-        const stippedValue = value.replace(/{:[a-zA-Z.-]+}/, '');
+        const strippedValue = value.replace(/{:[a-zA-Z.-]+}/, '');
         const meta = value.match(/{:([a-zA-Z.-]+)}$/)?.[1];
 
         if (!meta) {
@@ -136,11 +137,11 @@ export default function rehypePrettyCode(options = {}) {
                 )?.settings.foreground ?? 'inherit';
 
             trees[mode] = hastParser.parse(
-              `<pre><code><span style="color:${color}">${stippedValue}</span></code></pre>`
+              `<pre><code><span style="color:${color}">${strippedValue}</span></code></pre>`
             );
           } else {
             trees[mode] = hastParser.parse(
-              highlighter.codeToHtml(stippedValue, meta)
+              highlighter.codeToHtml(strippedValue, meta)
             );
           }
         }
@@ -165,23 +166,26 @@ export default function rehypePrettyCode(options = {}) {
           'language-',
           ''
         );
-        const meta =
-          node.children[0].data?.meta ?? node.children[0].properties.metastring;
-        const titleMatch = meta?.match(/title="(.+)"/);
-        const title = titleMatch?.[1] ?? null;
-        const titleString = titleMatch?.[0] ?? '';
-        const metaWithoutTitle = meta?.replace(titleString, '');
+        let meta = filterMetaString(
+          node.children[0].data?.meta ??
+            node.children[0].properties.metastring ??
+            ''
+        );
+
+        const tiltleMatch = meta.match(/title="(.+)"/);
+        const title = tiltleMatch?.[1] ?? null;
+        meta = meta.replace(tiltleMatch?.[0] ?? '', '');
 
         const lineNumbers = meta
-          ? rangeParser(metaWithoutTitle.match(/{(.*)}/)?.[1] ?? '')
+          ? rangeParser(meta.match(/{(.*)}/)?.[1] ?? '')
           : [];
 
         let words = [];
         let wordNumbers = [];
         const wordIdsMap = new Map();
 
-        const wordMatches = metaWithoutTitle
-          ? [...metaWithoutTitle.matchAll(/\/(.*?)\/(\S*)/g)]
+        const wordMatches = meta
+          ? [...meta.matchAll(/\/(.*?)\/(\S*)/g)]
           : undefined;
         if (Array.isArray(wordMatches)) {
           wordMatches.forEach((name, index) => {
