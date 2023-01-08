@@ -31,6 +31,7 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
   const code = readFileSync(fixture, 'utf8');
 
   const html = await getHTML(code, {
+    filterMetaString: (string) => string?.replace(/filename=".*"/, ''),
     theme: JSON.parse(
       readFileSync(
         join(__dirname, '../node_modules/shiki/themes/github-dark.json'),
