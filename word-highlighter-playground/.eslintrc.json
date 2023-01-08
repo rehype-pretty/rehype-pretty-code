@@ -1,4 +1,8 @@
 {
+  "env": {
+    "browser": true,
+    "es6": true
+  },
   "extends": [
     "plugin:react/jsx-runtime",
     "eslint:recommended",

@@ -8,7 +8,7 @@ import {unified} from 'unified';
 import rehypeParse from 'rehype-parse';
 import prettier from 'prettier/standalone';
 import {toHtml} from 'hast-util-to-html';
-import wordHighlighter from '../../src/wordHighlighter';
+import wordHighlighter from '../../src/word-highlighter';
 
 import 'codemirror/mode/xml/xml.js';
 import 'codemirror/mode/javascript/javascript.js';
@@ -96,7 +96,13 @@ function App() {
           DEFAULT_THEME
         );
       }
-      let options = {wordNumbers: [], wordCounter: 0};
+
+      let options = {
+        wordNumbers: [],
+        wordCounter: 0,
+        wordIdsMap: new Map(),
+      };
+
       if (container && container.querySelector('.line')) {
         container.querySelectorAll('.line').forEach((node) => {
           const n = hastParser.parse(node.innerHTML);
