@@ -142,7 +142,7 @@ const options = {
   // Keep the background or use a custom background color?
   keepBackground: true,
 
-  // Callback hooks to add custom logic to nodes when visitng
+  // Callback hooks to add custom logic to nodes when visiting
   // them.
   onVisitLine(node) {
     // Prevent lines from collapsing in `display: grid` mode, and
@@ -151,7 +151,6 @@ const options = {
       node.children = [{type: 'text', value: ' '}];
     }
   },
-  // Feel free to add classNames that suit your docs
   onVisitHighlightedLine(node) {
     // Each line node by default has `class="line"`.
     node.properties.className.push('highlighted');
