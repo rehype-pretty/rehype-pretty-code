@@ -1,6 +1,7 @@
 export function wrapHighlightedWords(
   parentNode,
   nodesToWrap,
+  options,
   onVisitHighlightedWord
 ) {
   if (!nodesToWrap || nodesToWrap.length === 0) return;
@@ -12,10 +13,19 @@ export function wrapHighlightedWords(
       children: nodesToWrap.map(({node}) => node),
     });
 
-    onVisitHighlightedWord(parentNode.children[nodesToWrap[0].index]);
+    const wordStr = parentNode.children[nodesToWrap[0].index].children.reduce(
+      (acc, node) => acc + node.children[0].value,
+      ''
+    );
+
+    onVisitHighlightedWord(
+      parentNode.children[nodesToWrap[0].index],
+      options.wordIdsMap.get(wordStr)
+    );
   } else {
     const [{node}] = nodesToWrap;
-    onVisitHighlightedWord(node);
+    const wordStr = node.children[0].value;
+    onVisitHighlightedWord(node, options.wordIdsMap.get(wordStr));
     // used to skip already parsed words
     node.properties['rehype-pretty-code-visited'] = '';
   }

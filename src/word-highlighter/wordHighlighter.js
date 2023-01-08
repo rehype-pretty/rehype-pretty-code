@@ -34,7 +34,13 @@ export function wordHighlighter(node, word, options, onVisitHighlightedWord) {
           // maybe throw / notify due to failure here
           if (nodesToWrap.length === 0) break;
 
-          wrapHighlightedWords(node, nodesToWrap, onVisitHighlightedWord);
+          wrapHighlightedWords(
+            node,
+            nodesToWrap,
+            options,
+            onVisitHighlightedWord
+          );
+
           // re-start from the 'last' node (the word or part of it may exist multiple times in the same node)
           // account for possible extra nodes added from split with - 2
           startIndex = Math.max(
