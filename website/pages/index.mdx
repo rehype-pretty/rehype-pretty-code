@@ -218,6 +218,25 @@ Highlight only the third to fifth instances of `carrot` and any instances of
 ```
 ````
 
+#### Group highlighted words by id
+
+Place an id after `#` after the literal text. This allows you to color words
+differently based on their id.
+
+````md
+```js /carrot/#a /apple/#b
+const carrot = 'apple';
+```
+````
+
+```js
+onVisitHighlightedWord(node, id) {
+  // id will be either `a` or `b`
+  const color = {a: 'red', b: 'blue'}[id]
+  node.properties.style = `color: ${color}`;
+}
+```
+
 #### Highlight inline code
 
 Append `{:lang}‎` (e.g. `{:js}‎`) to the end of inline code to highlight it like
