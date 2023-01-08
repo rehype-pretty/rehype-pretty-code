@@ -4,6 +4,7 @@ type theme = JSON | string;
 
 export type Options = {
   theme: theme | Record<any, theme>;
+  keepBackground: boolean;
   tokensMap: {[key: string]: string};
   filterMetaString: (string: string) => string;
   // TODO: strict types

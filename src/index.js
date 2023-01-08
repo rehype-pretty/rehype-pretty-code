@@ -7,15 +7,24 @@ import hashObj from 'hash-obj';
 import wordHighlighter from './word-highlighter';
 import {reverseString} from './word-highlighter/utils';
 
-function toFragment({node, trees, lang, title, inline = false}) {
+function toFragment({
+  node,
+  trees,
+  lang,
+  title,
+  inline = false,
+  keepBackground = false,
+}) {
   node.tagName = inline ? 'span' : 'div';
   // User can replace this with a real Fragment at runtime
   node.properties = {'data-rehype-pretty-code-fragment': ''};
   node.children = Object.entries(trees)
     .map(([mode, tree]) => {
       const pre = tree.children[0];
-      // Remove class="shiki" and the background-color
-      pre.properties = {};
+      // Remove class="shiki"
+      pre.properties.className = undefined;
+      if (!keepBackground) pre.properties = {};
+
       pre.properties['data-language'] = lang;
       pre.properties['data-theme'] = mode;
 
@@ -53,6 +62,7 @@ const globalHighlighterCache = new Map();
 export default function rehypePrettyCode(options = {}) {
   const {
     theme,
+    keepBackground,
     tokensMap = {},
     filterMetaString = (v) => v,
     onVisitLine = () => {},
@@ -261,7 +271,13 @@ export default function rehypePrettyCode(options = {}) {
           });
         });
 
-        toFragment({node, trees, lang, title});
+        toFragment({
+          node,
+          trees,
+          lang,
+          title,
+          keepBackground,
+        });
       }
     });
   };
