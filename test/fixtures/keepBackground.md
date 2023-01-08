@@ -1,0 +1,3 @@
+```js
+const x = true;
+```
