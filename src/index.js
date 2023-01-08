@@ -176,26 +176,29 @@ export default function rehypePrettyCode(options = {}) {
           ? rangeParser(metaWithoutTitle.match(/{(.*)}/)?.[1] ?? '')
           : [];
 
-        let word = [];
-        const wordMatch = metaWithoutTitle
-          ? [...metaWithoutTitle.matchAll(/\/(.*?)\//g)]
-          : undefined;
-        if (Array.isArray(wordMatch)) {
-          wordMatch.forEach((name, index) => {
-            word.push(wordMatch[index][1]);
-          });
-        }
-
+        let words = [];
         let wordNumbers = [];
-        if (meta) {
-          const wordNumbersMatch = metaWithoutTitle
-            ? [...metaWithoutTitle.matchAll(/\/.*?\/(\S*)/g)]
-            : undefined;
-          if (Array.isArray(wordNumbersMatch)) {
-            wordNumbersMatch.forEach((name, index) => {
-              wordNumbers.push(rangeParser(wordNumbersMatch[index][1]));
-            });
-          }
+        const wordIdsMap = new Map();
+
+        const wordMatches = metaWithoutTitle
+          ? [...metaWithoutTitle.matchAll(/\/(.*?)\/(\S*)/g)]
+          : undefined;
+        if (Array.isArray(wordMatches)) {
+          wordMatches.forEach((name, index) => {
+            const word = wordMatches[index][1];
+            const wordIdAndOrRange = wordMatches[index][2];
+            words.push(word);
+
+            const [range, id] = wordIdAndOrRange.split('#');
+
+            if (range) {
+              wordNumbers.push(rangeParser(range));
+            }
+
+            if (id) {
+              wordIdsMap.set(word, id);
+            }
+          });
         }
 
         const trees = {};
@@ -214,7 +217,12 @@ export default function rehypePrettyCode(options = {}) {
 
         Object.entries(trees).forEach(([mode, tree], index) => {
           let lineCounter = 0;
-          const wordOptions = {wordNumbers, wordCounter: 0};
+
+          const wordOptions = {
+            wordNumbers,
+            wordIdsMap,
+            wordCounter: 0,
+          };
 
           visit(tree, 'element', (node) => {
             if (
@@ -244,7 +252,7 @@ export default function rehypePrettyCode(options = {}) {
                 onVisitHighlightedLine(node);
               }
 
-              wordHighlighter(node, word, wordOptions, onVisitHighlightedWord);
+              wordHighlighter(node, words, wordOptions, onVisitHighlightedWord);
             }
           });
         });

@@ -40,8 +40,22 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
     onVisitHighlightedLine(node) {
       node.properties.className = ['highlighted'];
     },
-    onVisitHighlightedWord(node) {
+    onVisitHighlightedWord(node, id) {
       node.properties.className = ['word'];
+
+      if (id) {
+        const textColor = {a: 'pink', b: 'cyan', c: 'lightblue', id: 'white'};
+        const backgroundColor = {
+          a: 'rgba(255, 100, 200, 0.35)',
+          b: 'rgba(0, 255, 100, 0.25)',
+          c: 'rgba(100, 200, 255, 0.25)',
+          id: 'rgba(255, 255, 255, 0.25)',
+        };
+        node.properties.style = `
+          color: ${textColor[id]}; 
+          background-color: ${backgroundColor[id]}
+        `;
+      }
     },
     onVisitLine(node) {},
     getHighlighter,
