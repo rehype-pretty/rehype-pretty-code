@@ -12,12 +12,12 @@ import {toString} from 'hast-util-to-string';
 // its content is replaced with the matched part, and the
 // left and/or right parts are cloned to sibling nodes
 
-export function wordHighlighter(node, word, options, onVisitHighlightedWord) {
-  if (!word || !Array.isArray(word)) return;
+export function wordHighlighter(node, words, options, onVisitHighlightedWord) {
+  if (!words || !Array.isArray(words)) return;
   const {wordNumbers = [], wordCounter} = options;
   const textContent = toString(node);
 
-  word.forEach((word, index) => {
+  words.forEach((word, index) => {
     if (word && textContent?.includes(word)) {
       options.wordCounter = wordCounter + 1;
       if (
