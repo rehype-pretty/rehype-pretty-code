@@ -186,15 +186,17 @@ export default function rehypePrettyCode(options = {}) {
         if (Array.isArray(wordMatches)) {
           wordMatches.forEach((name, index) => {
             const word = wordMatches[index][1];
-            const wordIdOrRange = wordMatches[index][2];
+            const wordIdAndOrRange = wordMatches[index][2];
             words.push(word);
 
-            if (/[a-zA-Z]/.test(wordIdOrRange)) {
-              const id = wordIdOrRange;
-              wordIdsMap.set(word, id);
-            } else {
-              const range = wordIdOrRange;
+            const [range, id] = wordIdAndOrRange.split('#');
+
+            if (range) {
               wordNumbers.push(rangeParser(range));
+            }
+
+            if (id) {
+              wordIdsMap.set(word, id);
             }
           });
         }
