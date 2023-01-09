@@ -224,15 +224,15 @@ Place an id after `#` after the literal text. This allows you to color words
 differently based on their id.
 
 ````md
-```js /carrot/#a /apple/#b
-const carrot = 'apple';
+```js /carrot/#a /100/#b
+const carrot = 100;
 ```
 ````
 
 ```js
 onVisitHighlightedWord(node, id) {
-  // id will be either `a` or `b`
-  const color = {a: 'red', b: 'blue'}[id]
+  // `id` will be either 'a' or 'b'
+  const color = {a: 'red', b: 'blue'}[id];
   node.properties.style = `color: ${color}`;
 }
 ```
