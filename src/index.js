@@ -182,7 +182,7 @@ export default function rehypePrettyCode(options = {}) {
             ''
         );
 
-        const tiltleMatch = meta.match(/title="(.+)"/);
+        const tiltleMatch = meta.match(/title="([^"]*)"/);
         const title = tiltleMatch?.[1] ?? null;
         meta = meta.replace(tiltleMatch?.[0] ?? '', '');
 

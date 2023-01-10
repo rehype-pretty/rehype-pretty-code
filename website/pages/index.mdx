@@ -414,7 +414,7 @@ string before the library starts parsing it.
 
 ```js
 const options = {
-  filterMetaString: (string) => string.replace(/filename=".*"/, ''),
+  filterMetaString: (string) => string.replace(/filename="[^"]*"/, ''),
 };
 ```
 
