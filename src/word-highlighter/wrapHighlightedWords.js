@@ -2,9 +2,17 @@ export function wrapHighlightedWords(
   parentNode,
   nodesToWrap,
   options,
+  ignoreWord,
   onVisitHighlightedWord
 ) {
   if (!nodesToWrap || nodesToWrap.length === 0) return;
+  const [{node}] = nodesToWrap;
+
+  if (ignoreWord) {
+    node.properties['rehype-pretty-code-visited'] = '';
+    return;
+  }
+
   if (nodesToWrap.length > 1) {
     parentNode.children.splice(nodesToWrap[0].index, nodesToWrap.length, {
       type: 'element',

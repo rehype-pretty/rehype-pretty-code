@@ -14,63 +14,64 @@ import {toString} from 'hast-util-to-string';
 
 export function wordHighlighter(node, words, options, onVisitHighlightedWord) {
   if (!words || !Array.isArray(words)) return;
-  const {wordNumbers = [], wordCounter} = options;
+  const {wordNumbers = []} = options;
   const textContent = toString(node);
 
   words.forEach((word, index) => {
     if (word && textContent?.includes(word)) {
-      options.wordCounter = wordCounter + 1;
-      if (
-        wordNumbers.length === 0 ||
-        wordNumbers[index]?.includes(options.wordCounter) ||
-        wordNumbers[index]?.length === 0
-      ) {
-        let textContent = toString(node);
-        let startIndex = 0;
+      let textContent = toString(node);
+      let startIndex = 0;
 
-        while (textContent.includes(word)) {
-          const nodesToWrap = getNodesToHighlight(node, word, startIndex);
+      while (textContent.includes(word)) {
+        const currentWordRange = wordNumbers[index] || [];
+        const id = `${word}-${index}`;
+        options.wordCounter.set(id, (options.wordCounter.get(id) || 0) + 1);
 
-          // maybe throw / notify due to failure here
-          if (nodesToWrap.length === 0) break;
+        const ignoreWord =
+          currentWordRange.length > 0 &&
+          !currentWordRange.includes(options.wordCounter.get(id));
 
-          wrapHighlightedWords(
-            node,
-            nodesToWrap,
-            options,
-            onVisitHighlightedWord
-          );
+        const nodesToWrap = getNodesToHighlight(
+          node,
+          word,
+          startIndex,
+          ignoreWord
+        );
 
-          // re-start from the 'last' node (the word or part of it may exist multiple times in the same node)
-          // account for possible extra nodes added from split with - 2
-          startIndex = Math.max(
-            nodesToWrap[nodesToWrap.length - 1].index - 2,
-            0
-          );
-          textContent = node.children
-            ?.map((childNode) => {
-              if (
-                !childNode.properties.hasOwnProperty(
-                  'rehype-pretty-code-visited'
-                ) &&
-                !childNode.properties.hasOwnProperty(
-                  'data-rehype-pretty-code-wrapper'
-                )
-              ) {
-                return toString(childNode);
-              }
-            })
-            .join('');
-        }
+        // maybe throw / notify due to failure here
+        if (nodesToWrap.length === 0) break;
 
-        node.children?.forEach((childNode) => {
-          if (
-            childNode.properties.hasOwnProperty('rehype-pretty-code-visited')
-          ) {
-            delete childNode.properties['rehype-pretty-code-visited'];
-          }
-        });
+        wrapHighlightedWords(
+          node,
+          nodesToWrap,
+          options,
+          ignoreWord,
+          onVisitHighlightedWord
+        );
+        // re-start from the 'last' node (the word or part of it may exist multiple times in the same node)
+        // account for possible extra nodes added from split with - 2
+        startIndex = Math.max(nodesToWrap[nodesToWrap.length - 1].index - 2, 0);
+        textContent = node.children
+          ?.map((childNode) => {
+            if (
+              !childNode.properties.hasOwnProperty(
+                'rehype-pretty-code-visited'
+              ) &&
+              !childNode.properties.hasOwnProperty(
+                'data-rehype-pretty-code-wrapper'
+              )
+            ) {
+              return toString(childNode);
+            }
+          })
+          .join('');
       }
     }
+
+    node.children?.forEach((childNode) => {
+      if (childNode.properties.hasOwnProperty('rehype-pretty-code-visited')) {
+        delete childNode.properties['rehype-pretty-code-visited'];
+      }
+    });
   });
 }

@@ -235,7 +235,7 @@ export default function rehypePrettyCode(options = {}) {
           const wordOptions = {
             wordNumbers,
             wordIdsMap,
-            wordCounter: 0,
+            wordCounter: new Map(),
           };
 
           visit(tree, 'element', (node) => {
