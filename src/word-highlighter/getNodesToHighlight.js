@@ -5,9 +5,10 @@ export function getNodesToHighlight(
   node,
   word,
   startIndex = 0,
-  toWrap = [],
-  wordSoFar = ''
+  ignoreWord = false
 ) {
+  let toWrap = [];
+  let wordSoFar = '';
   if (node.children) {
     const nodes = node.children;
     for (let i = startIndex; i < nodes.length; i++) {
@@ -109,6 +110,7 @@ export function getNodesToHighlight(
               rest,
               nextNodeContinues,
               index: i,
+              ignoreWord,
             });
 
             wordSoFar += overlap;

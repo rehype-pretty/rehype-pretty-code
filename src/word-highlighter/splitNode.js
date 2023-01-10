@@ -7,8 +7,10 @@ export function splitNode({
   rest,
   nextNodeContinues,
   index,
+  ignoreWord,
 }) {
-  if (nodeToWrap?.children?.[0]?.type !== 'text') return [nodeToWrap, index];
+  if (nodeToWrap?.children?.[0]?.type !== 'text' || ignoreWord)
+    return [nodeToWrap, index];
 
   let newIndex = index;
 

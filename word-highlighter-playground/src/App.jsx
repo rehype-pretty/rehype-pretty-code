@@ -8,6 +8,7 @@ import {unified} from 'unified';
 import rehypeParse from 'rehype-parse';
 import prettier from 'prettier/standalone';
 import {toHtml} from 'hast-util-to-html';
+import rangeParser from 'parse-numeric-range';
 import wordHighlighter from '../../src/word-highlighter';
 
 import 'codemirror/mode/xml/xml.js';
@@ -29,9 +30,9 @@ function App() {
   const [value, setValue] = useState();
   const [HTML, setHTML] = useState();
   const [isLoaded, setIsLoaded] = useState();
-  const [word, setWord] = useState(['test = ()', 'hello', 'world']);
+  const [word, setWord] = useState(['test', 'hello', 'world']);
   const [mode, setMode] = useState('javascript');
-
+  const [wordNumbers, setWordNumbers] = useState('');
   const highlighter = useRef();
   const editorRef = useRef();
   const htmlRef = useRef();
@@ -96,13 +97,11 @@ function App() {
           DEFAULT_THEME
         );
       }
-
       let options = {
-        wordNumbers: [],
-        wordCounter: 0,
+        wordNumbers: word.map(() => rangeParser(wordNumbers)),
         wordIdsMap: new Map(),
+        wordCounter: new Map(),
       };
-
       if (container && container.querySelector('.line')) {
         container.querySelectorAll('.line').forEach((node) => {
           const n = hastParser.parse(node.innerHTML);
@@ -119,7 +118,7 @@ function App() {
         );
       }
     },
-    [word, value, mode]
+    [word, wordNumbers, value, mode]
   );
 
   React.useEffect(() => {
@@ -140,6 +139,16 @@ function App() {
             id="word-input"
             value={word}
             onChange={(e) => setWord(e.target.value.split(','))}
+          />
+        </div>
+        <div>
+          <label htmlFor="word-input">
+            Restrict highlighting to nth occurrence (range)
+          </label>
+          <input
+            value={wordNumbers}
+            placeholder="e.g 1,3"
+            onChange={(e) => setWordNumbers(e.target.value)}
           />
         </div>
         <div>
