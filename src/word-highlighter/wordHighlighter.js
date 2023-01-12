@@ -54,10 +54,10 @@ export function wordHighlighter(node, words, options, onVisitHighlightedWord) {
         textContent = node.children
           ?.map((childNode) => {
             if (
-              !childNode.properties.hasOwnProperty(
+              !childNode.properties?.hasOwnProperty(
                 'rehype-pretty-code-visited'
               ) &&
-              !childNode.properties.hasOwnProperty(
+              !childNode.properties?.hasOwnProperty(
                 'data-rehype-pretty-code-wrapper'
               )
             ) {
@@ -69,7 +69,7 @@ export function wordHighlighter(node, words, options, onVisitHighlightedWord) {
     }
 
     node.children?.forEach((childNode) => {
-      if (childNode.properties.hasOwnProperty('rehype-pretty-code-visited')) {
+      if (childNode.properties?.hasOwnProperty('rehype-pretty-code-visited')) {
         delete childNode.properties['rehype-pretty-code-visited'];
       }
     });

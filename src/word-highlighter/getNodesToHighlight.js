@@ -20,7 +20,7 @@ export function getNodesToHighlight(
         !nodes[i] ||
         nodes[i].type !== 'element' ||
         // ignore any previously matched words within
-        nodes[i]?.properties.hasOwnProperty('rehype-pretty-code-visited')
+        nodes[i]?.properties?.hasOwnProperty('rehype-pretty-code-visited')
       ) {
         continue;
       }
