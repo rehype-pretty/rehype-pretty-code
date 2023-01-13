@@ -1,9 +1,8 @@
-import {Options} from 'rehype-pretty-code';
-
 const rehypePrettyCode = require('rehype-pretty-code');
 const fs = require('fs');
 
-const options: Partial<Options> = {
+/** @type {import('rehype-pretty-code').Options} */
+const options = {
   theme: JSON.parse(
     fs.readFileSync(require.resolve('./assets/moonlight-ii.json'), 'utf-8')
   ),
@@ -34,7 +33,7 @@ const options: Partial<Options> = {
       }[id];
 
       if (node.properties['data-rehype-pretty-code-wrapper']) {
-        node.children.forEach((childNode: any) => {
+        node.children.forEach((childNode) => {
           childNode.properties.style = '';
         });
       }
