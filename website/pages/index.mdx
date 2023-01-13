@@ -49,15 +49,15 @@ the client. Your docs will be lightning fast.
 ### Line numbers and line highlighting are supported
 
 ```js {4}
-import {useFloating} from '@floating-ui/react-dom';
+import {useFloating} from '@floating-ui/react';
 
 function MyComponent() {
-  const {x, y, reference, floating} = useFloating();
+  const {x, y, refs} = useFloating();
 
   return (
     <>
-      <div ref={reference} />
-      <div ref={floating} />
+      <div ref={refs.setReference} />
+      <div ref={refs.setFloating} />
     </>
   );
 }
@@ -65,16 +65,16 @@ function MyComponent() {
 
 ### Word highlighting too
 
-```js /reference/
-import {useFloating} from '@floating-ui/react-dom';
+```js /refs/
+import {useFloating} from '@floating-ui/react';
 
 function MyComponent() {
-  const {x, y, reference, floating} = useFloating();
+  const {x, y, refs} = useFloating();
 
   return (
     <>
-      <div ref={reference} />
-      <div ref={floating} />
+      <div ref={refs.setReference} />
+      <div ref={refs.setFloating} />
     </>
   );
 }
@@ -224,16 +224,47 @@ Place an id after `#` after the literal text. This allows you to color words
 differently based on their id.
 
 ````md
-```js /carrot/#a /100/#b
-const carrot = 100;
+```js /age/#v /name/#v /setAge/#s /setName/#s /50/#i /'Taylor'/#i
+const [age, setAge] = useState(50);
+const [name, setName] = useState('Taylor');
 ```
 ````
 
+```js /age/#v /name/#v /setAge/#s /setName/#s /50/#i /'Taylor'/#i
+const [age, setAge] = useState(50);
+const [name, setName] = useState('Taylor');
+```
+
 ```js
 onVisitHighlightedWord(node, id) {
-  // `id` will be either 'a' or 'b'
-  const color = {a: 'red', b: 'blue'}[id];
-  node.properties.style = `color: ${color}`;
+  node.properties.className = ['word'];
+
+  // `id` will be either 'v', 's', or 'i'.
+  // State (v)alue, (s)etter, and (i)nitial value
+  if (id) {
+    const backgroundColor = {
+      v: 'rgb(196 42 94 / 59%)',
+      s: 'rgb(0 103 163 / 56%)',
+      i: 'rgb(100 50 255 / 35%)',
+    }[id];
+
+    const color = {
+      v: 'rgb(255 225 225 / 100%)',
+      s: 'rgb(175 255 255 / 100%)',
+      i: 'rgb(225 200 255 / 100%)',
+    }[id];
+
+    // If the word spans across syntax boundaries (e.g. punctuation), remove
+    // colors from the child nodes.
+    if (node.properties['data-rehype-pretty-code-wrapper']) {
+      node.children.forEach((childNode) => {
+        childNode.properties.style = '';
+      });
+    }
+
+    node.properties.style =
+      `background-color: ${backgroundColor}; color: ${color};`;
+  }
 }
 ```
 
