@@ -14,7 +14,7 @@ function toFragment({
   title,
   inline = false,
   keepBackground = false,
-  lineNumbersLength = 1,
+  lineNumbersMaxDigits = 1,
 }) {
   node.tagName = inline ? 'span' : 'div';
   // User can replace this with a real Fragment at runtime
@@ -38,13 +38,13 @@ function toFragment({
       }
 
       if ('data-line-numbers' in code.properties) {
-        const digit = `--line-numbers-length: ${
-          lineNumbersLength.toString().length
+        const cssVariable = `--line-numbers-max-digits: ${
+          lineNumbersMaxDigits.toString().length
         };`;
         if ('style' in code.properties) {
-          code.properties['style'] += digit;
+          code.properties.style += cssVariable;
         } else {
-          code.properties['style'] = digit;
+          code.properties.style = cssVariable;
         }
       }
 
@@ -201,7 +201,7 @@ export default function rehypePrettyCode(options = {}) {
         const lineNumbers = meta
           ? rangeParser(meta.match(/{(.*)}/)?.[1] ?? '')
           : [];
-        let lineNumbersLength = 0;
+        let lineNumbersMaxDigits = 0;
 
         let words = [];
         let wordNumbers = [];
@@ -264,7 +264,7 @@ export default function rehypePrettyCode(options = {}) {
                 );
                 if (lineNumbersStartAtMatch[1]) {
                   const startAt = reverseString(lineNumbersStartAtMatch[1]) - 1;
-                  lineNumbersLength = startAt;
+                  lineNumbersMaxDigits = startAt;
                   node.properties['style'] = `counter-set: line ${startAt};`;
                 }
               }
@@ -281,7 +281,7 @@ export default function rehypePrettyCode(options = {}) {
               }
 
               wordHighlighter(node, words, wordOptions, onVisitHighlightedWord);
-              lineNumbersLength++;
+              lineNumbersMaxDigits++;
             }
           });
         });
@@ -292,7 +292,7 @@ export default function rehypePrettyCode(options = {}) {
           lang,
           title,
           keepBackground,
-          lineNumbersLength,
+          lineNumbersMaxDigits,
         });
       }
     });
