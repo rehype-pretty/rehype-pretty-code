@@ -14,6 +14,7 @@ function toFragment({
   title,
   inline = false,
   keepBackground = false,
+  lineNumbersLength = 1,
 }) {
   node.tagName = inline ? 'span' : 'div';
   // User can replace this with a real Fragment at runtime
@@ -34,6 +35,17 @@ function toFragment({
 
       if (inline) {
         return code;
+      }
+
+      if ('data-line-numbers' in code.properties) {
+        const digit = `--line-numbers-length: ${
+          lineNumbersLength.toString().length
+        };`;
+        if ('style' in code.properties) {
+          code.properties['style'] += digit;
+        } else {
+          code.properties['style'] = digit;
+        }
       }
 
       if (title) {
@@ -189,6 +201,7 @@ export default function rehypePrettyCode(options = {}) {
         const lineNumbers = meta
           ? rangeParser(meta.match(/{(.*)}/)?.[1] ?? '')
           : [];
+        let lineNumbersLength = 0;
 
         let words = [];
         let wordNumbers = [];
@@ -249,10 +262,11 @@ export default function rehypePrettyCode(options = {}) {
                 const lineNumbersStartAtMatch = reverseString(meta).match(
                   /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/
                 );
-                if (lineNumbersStartAtMatch[1])
-                  node.properties['style'] = `counter-set: line ${
-                    reverseString(lineNumbersStartAtMatch[1]) - 1
-                  };`;
+                if (lineNumbersStartAtMatch[1]) {
+                  const startAt = reverseString(lineNumbersStartAtMatch[1]) - 1;
+                  lineNumbersLength = startAt;
+                  node.properties['style'] = `counter-set: line ${startAt};`;
+                }
               }
             }
 
@@ -267,6 +281,7 @@ export default function rehypePrettyCode(options = {}) {
               }
 
               wordHighlighter(node, words, wordOptions, onVisitHighlightedWord);
+              lineNumbersLength++;
             }
           });
         });
@@ -277,6 +292,7 @@ export default function rehypePrettyCode(options = {}) {
           lang,
           title,
           keepBackground,
+          lineNumbersLength,
         });
       }
     });
