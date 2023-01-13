@@ -295,7 +295,7 @@ code > .line::before {
 
   /* Other styling */
   display: inline-block;
-  width: 1rem;
+  width: calc(var(--line-numbers-length) * 1rem);
   margin-right: 2rem;
   text-align: right;
   color: gray;
@@ -306,7 +306,7 @@ If you want to conditionally show them, use `showLineNumbers`:
 
 ````md
 ```js showLineNumbers
-// <code> will have a `data-line-numbers` attribute
+// <code> will have a `data-line-numbers` attribute and CSS variable `--line-numbers-length`
 ```
 ````
 
