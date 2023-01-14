@@ -38,14 +38,8 @@ function toFragment({
       }
 
       if ('data-line-numbers' in code.properties) {
-        const cssVariable = `--line-numbers-max-digits: ${
-          lineNumbersMaxDigits.toString().length
-        };`;
-        if ('style' in code.properties) {
-          code.properties.style += cssVariable;
-        } else {
-          code.properties.style = cssVariable;
-        }
+        code.properties['data-line-numbers-max-digits'] =
+          lineNumbersMaxDigits.toString().length;
       }
 
       if (title) {
