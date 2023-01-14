@@ -326,10 +326,18 @@ code > .line::before {
 
   /* Other styling */
   display: inline-block;
-  width: calc(var(--line-numbers-max-digits) * 1rem);
+  width: 1rem;
   margin-right: 2rem;
   text-align: right;
   color: gray;
+}
+
+code[data-line-numbers-max-digits="2"] > .line::before {
+  width: 2rem;
+}
+
+code[data-line-numbers-max-digits="3"] > .line::before {
+  width: 3rem;
 }
 ```
 
@@ -337,8 +345,8 @@ If you want to conditionally show them, use `showLineNumbers`:
 
 ````md
 ```js showLineNumbers
-// <code> will have a `data-line-numbers` attribute and
-// CSS variable `--line-numbers-max-digits`
+// <code> will have attributes `data-line-numbers` and
+// `data-line-numbers-max-digits="n"`
 ```
 ````
 
