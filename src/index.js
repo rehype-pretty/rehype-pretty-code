@@ -34,6 +34,7 @@ function toFragment({
       code.properties['data-theme'] = mode;
 
       if (inline) {
+        if (keepBackground) code.properties['style'] = pre.properties['style'];
         return code;
       }
 
@@ -162,7 +163,7 @@ export default function rehypePrettyCode(options = {}) {
           }
         }
 
-        toFragment({node, trees, lang: isLang ? meta : '.token', inline: true});
+        toFragment({node, trees, lang: isLang ? meta : '.token', inline: true, keepBackground});
       }
 
       if (
