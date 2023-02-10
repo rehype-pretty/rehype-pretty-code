@@ -235,7 +235,7 @@ export default function rehypePrettyCode(options = {}) {
             if (lang === 'ansi' && highlighter.ansiToHtml) {
               html = highlighter.ansiToHtml(strippedValue);
             } else {
-              html = highlighter.codeToHtml(strippedValue);
+              html = highlighter.codeToHtml(strippedValue, lang);
             }
             trees[mode] = hastParser.parse(html);
           } catch (e) {
