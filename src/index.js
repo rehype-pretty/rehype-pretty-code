@@ -145,7 +145,7 @@ export default function rehypePrettyCode(options = {}) {
 
         const trees = {};
         for (const [mode, highlighter] of highlighters.entries()) {
-          if (!isLang) {
+          if (!isLang || (meta === 'ansi' && !highlighter.ansiToHtml)) {
             const color =
               highlighter
                 .getTheme()
@@ -157,9 +157,13 @@ export default function rehypePrettyCode(options = {}) {
               `<pre><code><span style="color:${color}">${strippedValue}</span></code></pre>`
             );
           } else {
-            trees[mode] = hastParser.parse(
-              highlighter.codeToHtml(strippedValue, meta)
-            );
+            let html;
+            if (meta === 'ansi') {
+              html = highlighter.ansiToHtml(strippedValue);
+            } else {
+              html = highlighter.codeToHtml(strippedValue, meta);
+            }
+            trees[mode] = hastParser.parse(html);
           }
         }
 
@@ -223,16 +227,21 @@ export default function rehypePrettyCode(options = {}) {
           });
         }
 
+        const strippedValue = codeNode.value.replace(/\n$/, '');
         const trees = {};
         for (const [mode, highlighter] of highlighters.entries()) {
           try {
-            trees[mode] = hastParser.parse(
-              highlighter.codeToHtml(codeNode.value.replace(/\n$/, ''), lang)
-            );
+            let html;
+            if (lang === 'ansi' && highlighter.ansiToHtml) {
+              html = highlighter.ansiToHtml(strippedValue);
+            } else {
+              html = highlighter.codeToHtml(strippedValue, lang);
+            }
+            trees[mode] = hastParser.parse(html);
           } catch (e) {
             // Fallback to plain text if a language has not been registered
             trees[mode] = hastParser.parse(
-              highlighter.codeToHtml(codeNode.value.replace(/\n$/, ''), 'txt')
+              highlighter.codeToHtml(strippedValue, 'txt')
             );
           }
         }
