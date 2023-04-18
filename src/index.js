@@ -198,7 +198,7 @@ export default function rehypePrettyCode(options = {}) {
         meta = meta.replace(tiltleMatch?.[0] ?? '', '');
 
         const lineNumbers = meta
-          ? rangeParser(meta.match(/{(.*)}/)?.[1] ?? '')
+          ? rangeParser(meta.match(/(?<!\S){(.*?)}/)?.[1] ?? '')
           : [];
         let lineNumbersMaxDigits = 0;
 
