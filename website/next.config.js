@@ -3,9 +3,7 @@ const fs = require('fs');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    mdxRs: false,
-  },
+  output: 'export',
 };
 
 /** @type {import('rehype-pretty-code').Options} */
