@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: dark;
+}
+
 body {
   @apply bg-zinc-900 text-zinc-100;
   -webkit-font-smoothing: antialiased;

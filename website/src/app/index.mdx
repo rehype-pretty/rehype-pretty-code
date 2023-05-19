@@ -182,8 +182,8 @@ const withMDX = require('@next/mdx')({
 });
 ```
 
-> Note: Make sure you have disabled the `mdxRs{:.objectKey}` option for Next.js
-> 13/app dir, as it currently does not support Rehype plugins.
+> **Make sure you have disabled** the `mdxRs{:.meta.object-literal.key}` option
+> for Next.js 13 / app dir, as it currently does not support Rehype plugins.
 
 ### Meta strings
 
@@ -362,7 +362,7 @@ If you want to conditionally show them, use `showLineNumbers`:
 ```
 ````
 
-If you want to start line number at specific number, use
+If you want to start line numbers at a specific number, use
 `showLineNumbers{number}`:
 
 ````md
