@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-zinc-900 text-zinc-100;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.word {
+  @apply bg-zinc-600/50 rounded;
+  box-shadow: 0 0 0 4px rgb(82 82 91 / 0.5);
+}
+
+[data-word-id] {
+  @apply shadow-none p-1;
+}
+
+[data-word-id='v'] {
+  @apply text-pink-300 bg-rose-800/50 font-bold;
+}
+
+[data-word-id='s'] {
+  @apply text-teal-300 bg-teal-800/50 font-bold;
+}
+
+[data-word-id='i'] {
+  @apply text-blue-200 bg-blue-800/50 font-bold;
+}

@@ -10,10 +10,7 @@ const linkHeadingStyles = {
 
 module.exports = {
   plugins: [require('@tailwindcss/typography')],
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx,md,mdx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx,md,mdx}'],
   theme: {
     extend: {
       typography: {
@@ -94,18 +91,11 @@ module.exports = {
             pre: {
               opacity: 0.98,
               background: 'rgba(200,200,255,0.05)',
-              padding: '0.75rem 0',
               lineHeight: 2,
 
               '> code': {
                 display: 'grid',
                 counterReset: 'line',
-
-                '.word': {
-                  background: 'rgba(200,200,255,0.15)',
-                  padding: '0.25rem',
-                  borderRadius: '0.25rem',
-                },
                 '> .line': {
                   padding: '0 1.25rem',
                   borderLeft: `2px solid transparent`,
@@ -115,12 +105,6 @@ module.exports = {
                   borderLeftColor: colors.blue[400],
                 },
               },
-            },
-            ':not(pre) > code': {
-              background: 'rgba(200,200,255,0.1)',
-              padding: '0.25rem',
-              fontSize: '0.95rem !important',
-              borderRadius: '0.25rem',
             },
           },
         },

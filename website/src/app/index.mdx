@@ -1,6 +1,3 @@
-import {Layout} from '../components/Layout';
-export default Layout;
-
 ## What's this?
 
 This package is a Rehype plugin that provides beautiful code blocks for your
@@ -185,6 +182,9 @@ const withMDX = require('@next/mdx')({
 });
 ```
 
+> Note: Make sure you have disabled the `mdxRs{:.objectKey}` option for Next.js
+> 13/app dir, as it currently does not support Rehype plugins.
+
 ### Meta strings
 
 Code blocks are configured via the meta string on the top codeblock fence.
@@ -250,25 +250,14 @@ const [age, setAge] = useState(50);
 const [name, setName] = useState('Taylor');
 ```
 
+Here, arbitrary ids are used representing the syntax (`v`alue, `s`etter,
+`i`nitial value).
+
 ```js
 onVisitHighlightedWord(node, id) {
   node.properties.className = ['word'];
 
-  // `id` will be either 'v', 's', or 'i'.
-  // State (v)alue, (s)etter, and (i)nitial value
   if (id) {
-    const backgroundColor = {
-      v: 'rgb(196 42 94 / 59%)',
-      s: 'rgb(0 103 163 / 56%)',
-      i: 'rgb(100 50 255 / 35%)',
-    }[id];
-
-    const color = {
-      v: 'rgb(255 225 225 / 100%)',
-      s: 'rgb(175 255 255 / 100%)',
-      i: 'rgb(225 200 255 / 100%)',
-    }[id];
-
     // If the word spans across syntax boundaries (e.g. punctuation), remove
     // colors from the child nodes.
     if (node.properties['data-rehype-pretty-code-wrapper']) {
@@ -277,9 +266,17 @@ onVisitHighlightedWord(node, id) {
       });
     }
 
-    node.properties.style =
-      `background-color: ${backgroundColor}; color: ${color};`;
+    node.properties.style = '';
+    node.properties['data-word-id'] = id;
   }
+}
+```
+
+```css
+/* State word */
+[data-word-id='s'] {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: pink;
 }
 ```
 
@@ -347,11 +344,11 @@ code > .line::before {
   color: gray;
 }
 
-code[data-line-numbers-max-digits="2"] > .line::before {
+code[data-line-numbers-max-digits='2'] > .line::before {
   width: 2rem;
 }
 
-code[data-line-numbers-max-digits="3"] > .line::before {
+code[data-line-numbers-max-digits='3'] > .line::before {
   width: 3rem;
 }
 ```

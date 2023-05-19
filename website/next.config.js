@@ -1,6 +1,13 @@
 const rehypePrettyCode = require('rehype-pretty-code');
 const fs = require('fs');
 
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    mdxRs: false,
+  },
+};
+
 /** @type {import('rehype-pretty-code').Options} */
 const options = {
   theme: JSON.parse(
@@ -20,25 +27,16 @@ const options = {
     node.properties.className = ['word'];
 
     if (id) {
-      const backgroundColor = {
-        v: 'rgb(196 42 94 / 59%)',
-        s: 'rgb(0 103 163 / 56%)',
-        i: 'rgb(100 50 255 / 35%)',
-      }[id];
-
-      const color = {
-        v: 'rgb(255 225 225 / 100%)',
-        s: 'rgb(175 255 255 / 100%)',
-        i: 'rgb(225 200 255 / 100%)',
-      }[id];
-
+      // If the word spans across syntax boundaries (e.g. punctuation), remove
+      // colors from the child nodes.
       if (node.properties['data-rehype-pretty-code-wrapper']) {
         node.children.forEach((childNode) => {
           childNode.properties.style = '';
         });
       }
 
-      node.properties.style = `background-color: ${backgroundColor}; color: ${color};`;
+      node.properties.style = '';
+      node.properties['data-word-id'] = id;
     }
   },
 };
@@ -52,7 +50,4 @@ const withMDX = require('@next/mdx')({
 });
 
 /** @type {import('next').NextConfig} */
-module.exports = withMDX({
-  experimental: {esmExternals: true},
-  pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
-});
+module.exports = withMDX(nextConfig);

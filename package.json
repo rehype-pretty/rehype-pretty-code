@@ -5,7 +5,6 @@
   "main": "./dist/rehype-pretty-code.cjs",
   "module": "./dist/rehype-pretty-code.js",
   "workspaces": [
-    "./website",
     "./word-highlighter-playground"
   ],
   "type": "module",
