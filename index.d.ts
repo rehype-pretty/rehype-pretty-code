@@ -1,19 +1,21 @@
-import {Highlighter} from 'shiki';
+import type {Highlighter} from 'shiki';
+import type {Transformer, Node} from 'unified';
 
 type Theme = JSON | string;
 
-export type Options = {
-  theme: Theme | Record<any, Theme>;
+export interface Options {
+  theme: Theme | Record<string, Theme>;
   keepBackground: boolean;
-  tokensMap: {[key: string]: string};
-  filterMetaString: (string: string) => string;
-  // TODO: strict types
-  onVisitLine(node: any): void;
-  onVisitHighlightedLine(node: any): void;
-  onVisitHighlightedWord(node: any, id: string | undefined): void;
+  tokensMap: Record<string, string>;
+  filterMetaString: (str: string) => string;
+  onVisitLine(node: Node): void;
+  onVisitHighlightedLine(node: Node): void;
+  onVisitHighlightedWord(node: Node, id: string | undefined): void;
   getHighlighter: (options: Pick<Options, 'theme'>) => Promise<Highlighter>;
-};
+}
 
-declare const rehypePrettyCode: (options?: Partial<Options>) => any;
+declare const rehypePrettyCode: (
+  options?: Partial<Options>
+) => Transformer<Root, Root>;
 
 export default rehypePrettyCode;

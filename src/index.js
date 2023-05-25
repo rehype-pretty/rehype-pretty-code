@@ -66,6 +66,9 @@ function toFragment({
 
 const globalHighlighterCache = new Map();
 
+/**
+ * @type {import('unified').Plugin<[Options?] | void[], Root>}
+ */
 export default function rehypePrettyCode(options = {}) {
   const {
     theme,
@@ -167,7 +170,13 @@ export default function rehypePrettyCode(options = {}) {
           }
         }
 
-        toFragment({node, trees, lang: isLang ? meta : '.token', inline: true, keepBackground});
+        toFragment({
+          node,
+          trees,
+          lang: isLang ? meta : '.token',
+          inline: true,
+          keepBackground,
+        });
       }
 
       if (
