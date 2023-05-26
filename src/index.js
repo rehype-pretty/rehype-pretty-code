@@ -88,6 +88,8 @@ export default function rehypePrettyCode(options = {}) {
   const {
     theme,
     keepBackground,
+    defaultCodeBlockLang,
+    defaultInlineCodeLang,
     tokensMap = {},
     filterMetaString = (v) => v,
     onVisitLine = () => {},
@@ -153,7 +155,7 @@ export default function rehypePrettyCode(options = {}) {
 
         // TODO: allow escape characters to break out of highlighting
         const strippedValue = value.replace(/{:[a-zA-Z.-]+}/, '');
-        const meta = value.match(/{:([a-zA-Z.-]+)}$/)?.[1];
+        const meta = value.match(/{:([a-zA-Z.-]+)}$/)?.[1] || defaultInlineCodeLang;
 
         if (!meta) {
           return;
@@ -202,15 +204,22 @@ export default function rehypePrettyCode(options = {}) {
         node.children.length === 1 &&
         node.children[0].tagName === 'code' &&
         typeof node.children[0].properties === 'object' &&
-        Array.isArray(node.children[0].properties.className) &&
-        typeof node.children[0].properties.className[0] === 'string' &&
-        node.children[0].properties.className[0].startsWith('language-')
+        typeof node.children[0].children[0] === 'object' &&
+        typeof node.children[0].children[0].value === 'string'
       ) {
         const codeNode = node.children[0].children[0];
-        const lang = node.children[0].properties.className[0].replace(
-          'language-',
-          ''
-        );
+
+        let lang = defaultCodeBlockLang;
+        if (
+            Array.isArray(node.children[0].properties.className) &&
+            typeof node.children[0].properties.className[0] === 'string'
+        ) {
+          lang = node.children[0].properties.className[0].replace(
+            'language-',
+            ''
+          ) || defaultCodeBlockLang;
+        }
+
         let meta = filterMetaString(
           node.children[0].data?.meta ??
             node.children[0].properties.metastring ??

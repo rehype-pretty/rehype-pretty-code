@@ -6,6 +6,8 @@ type Theme = JSON | string;
 export interface Options {
   theme: Theme | Record<string, Theme>;
   keepBackground: boolean;
+  defaultCodeBlockLang: string;
+  defaultInlineCodeLang: string;
   tokensMap: Record<string, string>;
   filterMetaString: (str: string) => string;
   onVisitLine(node: Node): void;
