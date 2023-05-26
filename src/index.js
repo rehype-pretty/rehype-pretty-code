@@ -12,6 +12,7 @@ function toFragment({
   trees,
   lang,
   title,
+  caption,
   inline = false,
   keepBackground = false,
   lineNumbersMaxDigits = 1,
@@ -43,23 +44,37 @@ function toFragment({
           lineNumbersMaxDigits.toString().length;
       }
 
+      const fragments = [];
+
       if (title) {
-        return [
-          {
-            type: 'element',
-            tagName: 'div',
-            properties: {
-              'data-rehype-pretty-code-title': '',
-              'data-language': lang,
-              'data-theme': mode,
-            },
-            children: [{type: 'text', value: title}],
+        fragments.push({
+          type: 'element',
+          tagName: 'div',
+          properties: {
+            'data-rehype-pretty-code-title': '',
+            'data-language': lang,
+            'data-theme': mode,
           },
-          pre,
-        ];
+          children: [{type: 'text', value: title}],
+        });
       }
 
-      return pre;
+      fragments.push(pre);
+
+      if (caption) {
+        fragments.push({
+          type: 'element',
+          tagName: 'div',
+          properties: {
+            'data-rehype-pretty-code-caption': '',
+            'data-language': lang,
+            'data-theme': mode,
+          },
+          children: [{type: 'text', value: caption}],
+        });
+      }
+
+      return fragments;
     })
     .flatMap((c) => c);
 }
@@ -206,6 +221,10 @@ export default function rehypePrettyCode(options = {}) {
         const title = tiltleMatch?.[1] ?? null;
         meta = meta.replace(tiltleMatch?.[0] ?? '', '');
 
+        const captionMatch = meta.match(/caption="([^"]*)"/);
+        const caption = captionMatch?.[1] ?? null;
+        meta = meta.replace(captionMatch?.[0] ?? '', '');
+
         const lineNumbers = meta
           ? rangeParser(meta.match(/(?:^|\s){(.*?)}/)?.[1] ?? '')
           : [];
@@ -304,6 +323,7 @@ export default function rehypePrettyCode(options = {}) {
           trees,
           lang,
           title,
+          caption,
           keepBackground,
           lineNumbersMaxDigits,
         });
