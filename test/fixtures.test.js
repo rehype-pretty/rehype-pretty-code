@@ -3,7 +3,7 @@ import {toHast} from 'mdast-util-to-hast';
 import {toHtml} from 'hast-util-to-html';
 import {remark} from 'remark';
 import {getHighlighter as shikiHighlighter} from 'shiki';
-import {readdirSync, readFileSync, lstatSync} from 'fs';
+import {readdirSync, readFileSync, lstatSync, writeFileSync} from 'fs';
 import {fileURLToPath} from 'url';
 import {join, parse, dirname} from 'path';
 import {toMatchFile} from 'jest-file-snapshot';
@@ -23,9 +23,39 @@ const getHTML = async (code, settings) => {
   return toHtml(hAST, {allowDangerousHtml: true});
 };
 
+const getTheme = (multiple) => {
+  const singleTheme = JSON.parse(
+    readFileSync(
+      join(__dirname, '../node_modules/shiki/themes/github-dark.json'),
+      'utf-8'
+    )
+  );
+
+  const multipleTheme = {
+    dark: JSON.parse(
+      readFileSync(
+        join(__dirname, '../node_modules/shiki/themes/github-dark.json'),
+        'utf-8'
+      )
+    ),
+    light: JSON.parse(
+      readFileSync(
+        join(__dirname, '../node_modules/shiki/themes/github-light.json'),
+        'utf-8'
+      )
+    ),
+  };
+  return multiple ? multipleTheme : singleTheme;
+};
+
+const isMultipleThemeTest = (fixtureName) => {
+  return fixtureName.toLowerCase().includes('multipletheme');
+};
+
 // To add a test, create a markdown file in the fixtures folder
 const runFixture = async (fixture, fixtureName, getHighlighter) => {
-  const resultHTMLName = parse(fixtureName).name + '.html';
+  const testName = parse(fixtureName).name;
+  const resultHTMLName = testName + '.html';
   const resultHTMLPath = join(resultsFolder, resultHTMLName);
 
   const code = readFileSync(fixture, 'utf8');
@@ -33,12 +63,7 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
   const html = await getHTML(code, {
     keepBackground: resultHTMLName.includes('keepBackground'),
     filterMetaString: (string) => string?.replace(/filename=".*"/, ''),
-    theme: JSON.parse(
-      readFileSync(
-        join(__dirname, '../node_modules/shiki/themes/github-dark.json'),
-        'utf-8'
-      )
-    ),
+    theme: getTheme(isMultipleThemeTest(testName)),
     onVisitHighlightedLine(node) {
       node.properties.className = ['highlighted'];
     },
@@ -67,10 +92,12 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
   return {htmlString, resultHTMLPath};
 };
 
-describe('with fixtures', () => {
+describe('Single theme', () => {
   const getHighlighter = jest.fn(shikiHighlighter);
-
+  
   readdirSync(fixturesFolder).forEach((fixtureName) => {
+    if(isMultipleThemeTest(fixtureName)) return;
+    
     const fixture = join(fixturesFolder, fixtureName);
     if (lstatSync(fixture).isDirectory()) {
       return;
@@ -82,8 +109,33 @@ describe('with fixtures', () => {
         fixtureName,
         getHighlighter
       );
+      
       expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);
       expect(getHighlighter).toHaveBeenCalledTimes(1);
+    });
+  });
+});
+
+describe('Multiple theme', () => {
+  const getHighlighter = jest.fn(shikiHighlighter);
+  
+  readdirSync(fixturesFolder).forEach((fixtureName) => {
+    if(!isMultipleThemeTest(fixtureName)) return;
+    
+    const fixture = join(fixturesFolder, fixtureName);
+    if (lstatSync(fixture).isDirectory()) {
+      return;
+    }
+
+    it('Fixture: ' + fixtureName, async () => {
+      const {htmlString, resultHTMLPath} = await runFixture(
+        fixture,
+        fixtureName,
+        getHighlighter
+      );
+      
+      expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);
+      expect(getHighlighter).toHaveBeenCalledTimes(2);
     });
   });
 });

@@ -290,15 +290,13 @@ export default function rehypePrettyCode(options = {}) {
             ) {
               node.properties['data-line-numbers'] = '';
 
-              if (index === 0) {
-                const lineNumbersStartAtMatch = reverseString(meta).match(
-                  /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/
-                );
-                if (lineNumbersStartAtMatch[1]) {
-                  const startAt = reverseString(lineNumbersStartAtMatch[1]) - 1;
-                  lineNumbersMaxDigits = startAt;
-                  node.properties['style'] = `counter-set: line ${startAt};`;
-                }
+              const lineNumbersStartAtMatch = reverseString(meta).match(
+                /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/
+              );
+              if (lineNumbersStartAtMatch[1]) {
+                const startAt = reverseString(lineNumbersStartAtMatch[1]) - 1;
+                lineNumbersMaxDigits = startAt;
+                node.properties['style'] = `counter-set: line ${startAt};`;
               }
             }
 
