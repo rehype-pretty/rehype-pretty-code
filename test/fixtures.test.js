@@ -50,7 +50,8 @@ const getTheme = (multiple) => {
 
 // To add a test, create a markdown file in the fixtures folder
 const runFixture = async (fixture, fixtureName, getHighlighter) => {
-  const resultHTMLName = parse(fixtureName).name + '.html';
+  const testName = parse(fixtureName).name;
+  const resultHTMLName = testName + '.html';
   const resultHTMLPath = join(resultsFolder, resultHTMLName);
   const isMultipleThemeTest = resultHTMLName.toLowerCase().includes('multipletheme');
   const code = readFileSync(fixture, 'utf8');
