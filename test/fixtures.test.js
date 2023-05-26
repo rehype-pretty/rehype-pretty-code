@@ -48,18 +48,22 @@ const getTheme = (multiple) => {
   return multiple ? multipleTheme : singleTheme;
 };
 
+const isMultipleThemeTest = (fixtureName) => {
+  return fixtureName.toLowerCase().includes('multipletheme');
+};
+
 // To add a test, create a markdown file in the fixtures folder
 const runFixture = async (fixture, fixtureName, getHighlighter) => {
   const testName = parse(fixtureName).name;
   const resultHTMLName = testName + '.html';
   const resultHTMLPath = join(resultsFolder, resultHTMLName);
-  const isMultipleThemeTest = resultHTMLName.toLowerCase().includes('multipletheme');
+
   const code = readFileSync(fixture, 'utf8');
 
   const html = await getHTML(code, {
     keepBackground: resultHTMLName.includes('keepBackground'),
     filterMetaString: (string) => string?.replace(/filename=".*"/, ''),
-    theme: getTheme(isMultipleThemeTest),
+    theme: getTheme(isMultipleThemeTest(testName)),
     onVisitHighlightedLine(node) {
       node.properties.className = ['highlighted'];
     },
@@ -88,10 +92,12 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
   return {htmlString, resultHTMLPath};
 };
 
-describe('with fixtures', () => {
+describe('Single theme', () => {
   const getHighlighter = jest.fn(shikiHighlighter);
-
+  
   readdirSync(fixturesFolder).forEach((fixtureName) => {
+    if(isMultipleThemeTest(fixtureName)) return;
+    
     const fixture = join(fixturesFolder, fixtureName);
     if (lstatSync(fixture).isDirectory()) {
       return;
@@ -106,6 +112,30 @@ describe('with fixtures', () => {
       
       expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);
       expect(getHighlighter).toHaveBeenCalledTimes(1);
+    });
+  });
+});
+
+describe('Multiple theme', () => {
+  const getHighlighter = jest.fn(shikiHighlighter);
+  
+  readdirSync(fixturesFolder).forEach((fixtureName) => {
+    if(!isMultipleThemeTest(fixtureName)) return;
+    
+    const fixture = join(fixturesFolder, fixtureName);
+    if (lstatSync(fixture).isDirectory()) {
+      return;
+    }
+
+    it('Fixture: ' + fixtureName, async () => {
+      const {htmlString, resultHTMLPath} = await runFixture(
+        fixture,
+        fixtureName,
+        getHighlighter
+      );
+      
+      expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);
+      expect(getHighlighter).toHaveBeenCalledTimes(2);
     });
   });
 });
