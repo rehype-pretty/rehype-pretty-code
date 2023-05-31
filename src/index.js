@@ -88,8 +88,7 @@ export default function rehypePrettyCode(options = {}) {
   const {
     theme,
     keepBackground,
-    defaultCodeBlockLang,
-    defaultInlineCodeLang,
+    defaultLang,
     tokensMap = {},
     filterMetaString = (v) => v,
     onVisitLine = () => {},
@@ -116,6 +115,9 @@ export default function rehypePrettyCode(options = {}) {
   }
   const highlighters = new Map();
   const hastParser = unified().use(rehypeParse, {fragment: true});
+
+  const defaultCodeBlockLang = typeof defaultLang === 'string' ? defaultLang : defaultLang?.block;
+  const defaultInlineCodeLang = typeof defaultLang === 'string' ? defaultLang : defaultLang?.inline;
 
   if (
     theme == null ||

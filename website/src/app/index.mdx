@@ -154,10 +154,10 @@ const options = {
   // Keep the background or use a custom background color?
   keepBackground: true,
 
-  // When not specify language at code block, use this as default language for highlighting
-  defaultCodeBlockLang: 'plaintext',
-  // When not specify language at inline code, use this as default language for highlighting
-  defaultInlineCodeLang: 'plaintext',
+  // When not specify language at code block or inline code, use this as default language for highlighting
+  defaultLang: 'plaintext',
+  // Or specify default language for code blocks or inline code separately
+  defaultLang: { block: 'plaintext'; inline: 'plaintext' },
 
   // Callback hooks to add custom logic to nodes when visiting
   // them.
