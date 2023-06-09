@@ -15,9 +15,6 @@ export interface Options {
   getHighlighter?(options: Pick<Options, 'theme'>): Promise<Highlighter>;
 }
 
-/**
- * @see https://rehype-pretty-code.netlify.app
- */
 export default function rehypePrettyCode(
-  options?: void | Options
+  options?: void | Options | undefined
 ): void | Transformer<Root, Root>;
