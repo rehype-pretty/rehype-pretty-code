@@ -1,3 +1,10 @@
+/**
+ * @typedef {import('../').Options} Options
+ * @typedef {import('hast').Root} Root
+ * @typedef {import('hast').Element} Element
+ * @typedef {Root|Root['children'][number]} Node
+ */
+
 import {visit} from 'unist-util-visit';
 import rangeParser from 'parse-numeric-range';
 import {getHighlighter as shikiHighlighter} from 'shiki';
@@ -82,7 +89,8 @@ function toFragment({
 const globalHighlighterCache = new Map();
 
 /**
- * @type {import('unified').Plugin<[Options?] | void[], Root>}
+ * @see https://rehype-pretty-code.netlify.app
+ * @type {import('unified').Plugin<[Options?] | Array<void>, Root>}
  */
 export default function rehypePrettyCode(options = {}) {
   const {
