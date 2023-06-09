@@ -1,3 +1,8 @@
+/**
+ * @typedef {import('mdast').Root} Root
+ * @typedef {import('../').Options} Options
+ */
+
 import {visit} from 'unist-util-visit';
 import rangeParser from 'parse-numeric-range';
 import {getHighlighter as shikiHighlighter} from 'shiki';
