@@ -165,7 +165,7 @@ const options = {
   },
   onVisitHighlightedLine(element) {
     // Each line element by default has `class="line"`.
-    element.properties.className.push('highlighted');
+    element.properties.className?.push('highlighted');
   },
   onVisitHighlightedWord(element) {
     // Each word element has no className by default.
