@@ -136,13 +136,63 @@ npm install rehype-pretty-code shiki
 
 ## Usage
 
-The following example shows how to use this package with Next.js and MDX (this
-website's stack).
+### Unified
+
+```js /rehypePrettyCode/
+import {unified} from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+import rehypePrettyCode from 'rehype-pretty-code';
+
+async function main() {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkRehype)
+    .use(rehypePrettyCode, {
+      // See Options section below.
+    })
+    .use(rehypeStringify)
+    .process('`const numbers = [1, 2, 3]{:js}`');
+
+  console.log(String(file));
+}
+
+main();
+```
+
+### MDX
+
+The following example shows how to use this package with Next.js.
 
 ```js
 const rehypePrettyCode = require('rehype-pretty-code');
 const fs = require('fs');
 
+const options = {
+  // See Options section below.
+};
+
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [[rehypePrettyCode, options]],
+  },
+});
+```
+
+> **Make sure you have disabled** the `mdxRs{:.meta.object-literal.key}` option
+> for Next.js 13 / app dir, as it currently does not support Rehype plugins.
+
+## Options
+
+To customize the theme, background color, and highlighting, options can be
+specified.
+
+```js
 const options = {
   // Use one of Shiki's packaged themes
   theme: 'one-dark-pro',
@@ -172,22 +222,16 @@ const options = {
     element.properties.className = ['word'];
   },
 };
-
-const withMDX = require('@next/mdx')({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [],
-    rehypePlugins: [[rehypePrettyCode, options]],
-  },
-});
 ```
-
-> **Make sure you have disabled** the `mdxRs{:.meta.object-literal.key}` option
-> for Next.js 13 / app dir, as it currently does not support Rehype plugins.
 
 ### Meta strings
 
 Code blocks are configured via the meta string on the top codeblock fence.
+
+This behavior is enabled by specifying the style (e.g. className or data
+attribute) via the visitor callback hooks
+(`onVisitHighlightedLine{:.entity.name.function}`,
+`onVisitHighlightedWord{:.entity.name.function}`).
 
 #### Highlight lines
 
