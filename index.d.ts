@@ -4,10 +4,8 @@ import type {Root, Element, Properties} from 'hast';
 
 type Theme = JSON | string;
 
-export type HighlightedElement = Omit<Element, 'properties'> & {
-  properties: Properties & {
-    className?: string[];
-  };
+export type VisitableElement = Omit<Element, 'properties'> & {
+  properties: Properties & {className?: string[]};
 };
 
 export interface Options {
@@ -15,10 +13,10 @@ export interface Options {
   keepBackground?: boolean;
   tokensMap?: Record<string, string>;
   filterMetaString?(str: string): string;
-  onVisitLine?(element: Element): void;
-  onVisitHighlightedLine?(element: HighlightedElement): void;
+  onVisitLine?(element: VisitableElement): void;
+  onVisitHighlightedLine?(element: VisitableElement): void;
   onVisitHighlightedWord?(
-    element: HighlightedElement,
+    element: VisitableElement,
     id: string | undefined
   ): void;
   getHighlighter?(options: Pick<Options, 'theme'>): Promise<Highlighter>;
