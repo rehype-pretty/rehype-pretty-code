@@ -1,9 +1,9 @@
-import {nodeResolve} from '@rollup/plugin-node-resolve';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
 const common = {
   input: './src/index.js',
-  plugins: [commonjs(), nodeResolve({preferBuiltins: true})],
+  plugins: [commonjs(), nodeResolve({ preferBuiltins: true })],
   external: ['parse-numeric-range', 'shiki'],
 };
 

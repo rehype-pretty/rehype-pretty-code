@@ -5,8 +5,9 @@
   "main": "./dist/rehype-pretty-code.cjs",
   "module": "./dist/rehype-pretty-code.js",
   "workspaces": [
-    "./word-highlighter-playground"
-  ],
+		"./word-highlighter-playground",
+		"./website"
+	],
   "type": "module",
   "types": "index.d.ts",
   "exports": {
@@ -17,13 +18,12 @@
     },
     "./package.json": "./package.json"
   },
-  "files": [
-    "dist/",
-    "index.d.ts"
-  ],
+  "files": ["dist/", "index.d.ts"],
   "scripts": {
     "build": "npx rollup -c",
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
+    "lint": "rome check *.{js,ts,json} src test website word-highlighter-playground",
+    "lint:fix": "rome format *.{js,ts,json} src test website word-highlighter-playground --write",
     "playground": "npm run dev --workspace=word-highlighter-playground",
     "playground-website": "npm run dev --workspace=website"
   },
@@ -31,33 +31,30 @@
     "transform": {}
   },
   "engines": {
-    "node": "^12.16.0 || >=13.2.0"
+    "node": ">=16"
   },
   "author": "",
   "license": "MIT",
   "repository": "github:atomiks/rehype-pretty-code",
   "homepage": "https://rehype-pretty-code.netlify.app",
-  "prettier": {
-    "bracketSpacing": false,
-    "singleQuote": true,
-    "proseWrap": "always"
-  },
   "peerDependencies": {
     "shiki": "*"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.1.1",
+    "@types/jest": "^29.5.2",
+    "@types/node": "^20.3.1",
     "hast-util-to-html": "^8.0.3",
     "hast-util-to-string": "^2.0.0",
     "jest": "^27.4.5",
     "jest-file-snapshot": "^0.5.0",
     "jest-mock": "^27.5.1",
     "mdast-util-to-hast": "^12.1.0",
-    "prettier": "^2.5.1",
     "rehype-parse": "^8.0.3",
     "remark": "^14.0.2",
     "rollup": "^2.60.2",
+    "rome": "12.1.3",
     "shiki": "^0.14.0",
     "typescript": "^4.5.2",
     "unified": "^10.1.2",
