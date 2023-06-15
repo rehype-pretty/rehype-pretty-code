@@ -1,48 +1,48 @@
-import jest from 'jest-mock';
-import {toHast} from 'mdast-util-to-hast';
-import {toHtml} from 'hast-util-to-html';
-import {remark} from 'remark';
-import {getHighlighter as shikiHighlighter} from 'shiki';
-import {readdirSync, readFileSync, lstatSync, writeFileSync} from 'fs';
-import {fileURLToPath} from 'url';
-import {join, parse, dirname} from 'path';
-import {toMatchFile} from 'jest-file-snapshot';
-import prettier from 'prettier';
 import rehypePrettyCode from '../src';
+import { lstatSync, readFileSync, readdirSync } from 'fs';
+import { toHtml } from 'hast-util-to-html';
+import { toMatchFile } from 'jest-file-snapshot';
+import jest from 'jest-mock';
+import { toHast } from 'mdast-util-to-hast';
+import { dirname, join, parse } from 'path';
+import prettier from 'prettier';
+import { remark } from 'remark';
+import { getHighlighter as shikiHighlighter } from 'shiki';
+import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-expect.extend({toMatchFile});
+expect.extend({ toMatchFile });
 
 const fixturesFolder = join(__dirname, 'fixtures');
 const resultsFolder = join(__dirname, 'results');
 
 const getHTML = async (code, settings) => {
-  const hAST = toHast(remark().parse(code), {allowDangerousHtml: true});
+  const hAST = toHast(remark().parse(code), { allowDangerousHtml: true });
   await rehypePrettyCode(settings)(hAST);
-  return toHtml(hAST, {allowDangerousHtml: true});
+  return toHtml(hAST, { allowDangerousHtml: true });
 };
 
 const getTheme = (multiple) => {
   const singleTheme = JSON.parse(
     readFileSync(
       join(__dirname, '../node_modules/shiki/themes/github-dark.json'),
-      'utf-8'
-    )
+      'utf-8',
+    ),
   );
 
   const multipleTheme = {
     dark: JSON.parse(
       readFileSync(
         join(__dirname, '../node_modules/shiki/themes/github-dark.json'),
-        'utf-8'
-      )
+        'utf-8',
+      ),
     ),
     light: JSON.parse(
       readFileSync(
         join(__dirname, '../node_modules/shiki/themes/github-light.json'),
-        'utf-8'
-      )
+        'utf-8',
+      ),
     ),
   };
   return multiple ? multipleTheme : singleTheme;
@@ -55,7 +55,7 @@ const isMultipleThemeTest = (fixtureName) => {
 // To add a test, create a markdown file in the fixtures folder
 const runFixture = async (fixture, fixtureName, getHighlighter) => {
   const testName = parse(fixtureName).name;
-  const resultHTMLName = testName + '.html';
+  const resultHTMLName = `${testName}.html`;
   const resultHTMLPath = join(resultsFolder, resultHTMLName);
 
   const code = readFileSync(fixture, 'utf8');
@@ -71,7 +71,7 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
       node.properties.className = ['word'];
 
       if (id) {
-        const textColor = {a: 'pink', b: 'cyan', c: 'lightblue', id: 'white'};
+        const textColor = { a: 'pink', b: 'cyan', c: 'lightblue', id: 'white' };
         const backgroundColor = {
           a: 'rgba(255, 100, 200, 0.35)',
           b: 'rgba(0, 255, 100, 0.25)',
@@ -88,28 +88,28 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
     getHighlighter,
   });
 
-  const htmlString = prettier.format(html, {parser: 'html'});
-  return {htmlString, resultHTMLPath};
+  const htmlString = prettier.format(html, { parser: 'html' });
+  return { htmlString, resultHTMLPath };
 };
 
 describe('Single theme', () => {
   const getHighlighter = jest.fn(shikiHighlighter);
-  
+
   readdirSync(fixturesFolder).forEach((fixtureName) => {
-    if(isMultipleThemeTest(fixtureName)) return;
-    
+    if (isMultipleThemeTest(fixtureName)) return;
+
     const fixture = join(fixturesFolder, fixtureName);
     if (lstatSync(fixture).isDirectory()) {
       return;
     }
 
-    it('Fixture: ' + fixtureName, async () => {
-      const {htmlString, resultHTMLPath} = await runFixture(
+    it(`Fixture: ${fixtureName}`, async () => {
+      const { htmlString, resultHTMLPath } = await runFixture(
         fixture,
         fixtureName,
-        getHighlighter
+        getHighlighter,
       );
-      
+
       expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);
       expect(getHighlighter).toHaveBeenCalledTimes(1);
     });
@@ -118,22 +118,22 @@ describe('Single theme', () => {
 
 describe('Multiple theme', () => {
   const getHighlighter = jest.fn(shikiHighlighter);
-  
+
   readdirSync(fixturesFolder).forEach((fixtureName) => {
-    if(!isMultipleThemeTest(fixtureName)) return;
-    
+    if (!isMultipleThemeTest(fixtureName)) return;
+
     const fixture = join(fixturesFolder, fixtureName);
     if (lstatSync(fixture).isDirectory()) {
       return;
     }
 
-    it('Fixture: ' + fixtureName, async () => {
-      const {htmlString, resultHTMLPath} = await runFixture(
+    it(`Fixture: ${fixtureName}`, async () => {
+      const { htmlString, resultHTMLPath } = await runFixture(
         fixture,
         fixtureName,
-        getHighlighter
+        getHighlighter,
       );
-      
+
       expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);
       expect(getHighlighter).toHaveBeenCalledTimes(2);
     });
@@ -142,8 +142,8 @@ describe('Multiple theme', () => {
 
 it("highlighter caches don't overwrite each other", async () => {
   const [html1, html2] = await Promise.all([
-    getHTML('`[1, 2, 3]{:js}`', {theme: 'github-light'}),
-    getHTML('`[1, 2, 3]{:js}`', {theme: 'light-plus'}),
+    getHTML('`[1, 2, 3]{:js}`', { theme: 'github-light' }),
+    getHTML('`[1, 2, 3]{:js}`', { theme: 'light-plus' }),
   ]);
   // both highlighters are being cached under the same key, but in separate caches,
   // that's what we're testing here by asserting that they yield different results

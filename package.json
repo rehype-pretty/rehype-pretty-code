@@ -19,8 +19,8 @@
   "scripts": {
     "build": "npx rollup -c",
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
-    "lint": "rome check *.{js,ts,json} src test website word-highlighter-playground",
-    "lint:fix": "rome format *.{js,ts,json} src test website word-highlighter-playground --write",
+    "lint": "rome check *.{js,ts,json} src test",
+    "lint:fix": "rome format *.{js,ts,json} src test --write",
     "typecheck": "tsc --noEmit",
     "playground": "npm run dev --workspace=word-highlighter-playground",
     "playground-website": "npm run dev --workspace=website",

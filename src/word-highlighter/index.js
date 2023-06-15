@@ -1,3 +1,3 @@
-import {wordHighlighter} from './wordHighlighter';
+import { wordHighlighter } from './wordHighlighter';
 
 export default wordHighlighter;
