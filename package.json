@@ -4,10 +4,7 @@
   "description": "Beautiful code for your MD/MDX docs.",
   "main": "./dist/rehype-pretty-code.cjs",
   "module": "./dist/rehype-pretty-code.js",
-  "workspaces": [
-		"./word-highlighter-playground",
-		"./website"
-	],
+  "workspaces": ["./word-highlighter-playground"],
   "type": "module",
   "types": "index.d.ts",
   "exports": {
@@ -24,8 +21,12 @@
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
     "lint": "rome check *.{js,ts,json} src test website word-highlighter-playground",
     "lint:fix": "rome format *.{js,ts,json} src test website word-highlighter-playground --write",
+    "typecheck": "tsc --noEmit",
     "playground": "npm run dev --workspace=word-highlighter-playground",
-    "playground-website": "npm run dev --workspace=website"
+    "playground-website": "npm run dev --workspace=website",
+    "release": "bumpp package.json --commit --push --tag",
+    "prebuild": "rm -rf dist",
+    "prepublishOnly": "NODE_ENV='production' npm run build"
   },
   "jest": {
     "transform": {}
@@ -44,7 +45,9 @@
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.1.1",
     "@types/jest": "^29.5.2",
+    "prettier": "^2.5.1",
     "@types/node": "^20.3.1",
+    "bumpp": "^9.1.1",
     "hast-util-to-html": "^8.0.3",
     "hast-util-to-string": "^2.0.0",
     "jest": "^27.4.5",
