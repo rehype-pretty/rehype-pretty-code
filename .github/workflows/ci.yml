@@ -25,14 +25,15 @@ jobs:
       - name: 'Lint'
         run: npm run lint
 
-      - name: 'Lint Packaging Errors'
-        run: npx publint --strict
-
       - name: 'Typecheck'
         run: npm run typecheck
 
       - name: 'Build'
         run: npm run build
+
+        # lints npm package for packaging errors to ensure compatibility across environments (https://github.com/bluwy/publint).
+      - name: 'Lint Packaging Errors'
+        run: npx publint --strict
 
       - name: 'Test'
         run: npm run test
