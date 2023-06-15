@@ -1,6 +1,6 @@
-import {wrapHighlightedWords} from './wrapHighlightedWords';
-import {getNodesToHighlight} from './getNodesToHighlight';
-import {toString} from 'hast-util-to-string';
+import { getNodesToHighlight } from './getNodesToHighlight';
+import { wrapHighlightedWords } from './wrapHighlightedWords';
+import { toString } from 'hast-util-to-string';
 
 // Loops through the child nodes and finds the nodes that make up the word.
 
@@ -14,7 +14,7 @@ import {toString} from 'hast-util-to-string';
 
 export function wordHighlighter(node, words, options, onVisitHighlightedWord) {
   if (!words || !Array.isArray(words)) return;
-  const {wordNumbers = []} = options;
+  const { wordNumbers = [] } = options;
   const textContent = toString(node);
 
   words.forEach((word, index) => {
@@ -35,7 +35,7 @@ export function wordHighlighter(node, words, options, onVisitHighlightedWord) {
           node,
           word,
           startIndex,
-          ignoreWord
+          ignoreWord,
         );
 
         // maybe throw / notify due to failure here
@@ -46,7 +46,7 @@ export function wordHighlighter(node, words, options, onVisitHighlightedWord) {
           nodesToWrap,
           options,
           ignoreWord,
-          onVisitHighlightedWord
+          onVisitHighlightedWord,
         );
         // re-start from the 'last' node (the word or part of it may exist multiple times in the same node)
         // account for possible extra nodes added from split with - 2
@@ -54,11 +54,13 @@ export function wordHighlighter(node, words, options, onVisitHighlightedWord) {
         textContent = node.children
           ?.map((childNode) => {
             if (
-              !childNode.properties?.hasOwnProperty(
-                'rehype-pretty-code-visited'
+              !Object.hasOwn(
+                childNode.properties,
+                'rehype-pretty-code-visited',
               ) &&
-              !childNode.properties?.hasOwnProperty(
-                'data-rehype-pretty-code-wrapper'
+              !Object.hasOwn(
+                childNode.properties,
+                'data-rehype-pretty-code-wrapper',
               )
             ) {
               return toString(childNode);
@@ -69,8 +71,8 @@ export function wordHighlighter(node, words, options, onVisitHighlightedWord) {
     }
 
     node.children?.forEach((childNode) => {
-      if (childNode.properties?.hasOwnProperty('rehype-pretty-code-visited')) {
-        delete childNode.properties['rehype-pretty-code-visited'];
+      if (Object.hasOwn(childNode.properties, 'rehype-pretty-code-visited')) {
+        childNode.properties['rehype-pretty-code-visited'] = undefined;
       }
     });
   });

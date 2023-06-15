@@ -1,13 +1,13 @@
-import {findOverlap, nextNodeMaybeContinuesWord, getContent} from './utils';
-import {splitNode} from './splitNode';
+import { splitNode } from './splitNode';
+import { findOverlap, getContent, nextNodeMaybeContinuesWord } from './utils';
 
 export function getNodesToHighlight(
   node,
   word,
   startIndex = 0,
-  ignoreWord = false
+  ignoreWord = false,
 ) {
-  let toWrap = [];
+  const toWrap = [];
   let wordSoFar = '';
   if (node.children) {
     const nodes = node.children;
@@ -20,7 +20,7 @@ export function getNodesToHighlight(
         !nodes[i] ||
         nodes[i].type !== 'element' ||
         // ignore any previously matched words within
-        nodes[i]?.properties?.hasOwnProperty('rehype-pretty-code-visited')
+        Object.hasOwn(nodes[i].properties, 'rehype-pretty-code-visited')
       ) {
         continue;
       }
@@ -29,7 +29,7 @@ export function getNodesToHighlight(
 
       // node is the word, or it finishes the word
       if (content === word || wordSoFar + content === word) {
-        toWrap.push({node: nodes[i], index: i});
+        toWrap.push({ node: nodes[i], index: i });
         return toWrap;
       }
 
@@ -45,7 +45,7 @@ export function getNodesToHighlight(
             remainingPart: remaining.replace(content, ''),
           })
         ) {
-          toWrap.push({node: nodes[i], index: i});
+          toWrap.push({ node: nodes[i], index: i });
           wordSoFar += content;
           continue;
         }
@@ -87,9 +87,9 @@ export function getNodesToHighlight(
           const splitIndex = withNextNode.indexOf(nextNodeOverlap);
 
           if (word.endsWith(overlap) || word.startsWith(overlap)) {
-            let rightString = rightPart.replace(overlap);
+            const rightString = rightPart.replace(overlap);
             let leftString = '';
-            let innerString = overlap;
+            const innerString = overlap;
 
             leftString = content.substring(0, splitIndex);
 

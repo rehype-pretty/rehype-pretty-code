@@ -18,7 +18,7 @@ export function splitNode({
   nodeToWrap.children[0].value = innerString;
 
   let rightStr = rightString;
-  let leftStr = leftString;
+  const leftStr = leftString;
 
   // append any repetitions to the right if necesary
   if (rest.length > 0) {
@@ -30,7 +30,7 @@ export function splitNode({
   if (leftStr.length > 0) {
     nodes.splice(newIndex, 0, {
       ...nodeToWrap,
-      properties: {...nodeToWrap.properties},
+      properties: { ...nodeToWrap.properties },
       children: [
         {
           type: 'text',
@@ -44,7 +44,7 @@ export function splitNode({
     newIndex = leftStr.length > 0 ? newIndex + 2 : newIndex + 1;
     nodes.splice(newIndex, 0, {
       ...nodeToWrap,
-      properties: {...nodeToWrap.properties},
+      properties: { ...nodeToWrap.properties },
       children: [
         {
           type: 'text',

@@ -5,14 +5,14 @@
  * @typedef {Root|Root['children'][number]} Node
  */
 
-import {visit} from 'unist-util-visit';
-import rangeParser from 'parse-numeric-range';
-import {getHighlighter as shikiHighlighter} from 'shiki';
-import {unified} from 'unified';
-import rehypeParse from 'rehype-parse';
-import hashObj from 'hash-obj';
 import wordHighlighter from './word-highlighter';
-import {reverseString} from './word-highlighter/utils';
+import { reverseString } from './word-highlighter/utils';
+import hashObj from 'hash-obj';
+import rangeParser from 'parse-numeric-range';
+import rehypeParse from 'rehype-parse';
+import { getHighlighter as shikiHighlighter } from 'shiki';
+import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
 
 function toFragment({
   node,
@@ -26,7 +26,7 @@ function toFragment({
 }) {
   node.tagName = inline ? 'span' : 'div';
   // User can replace this with a real Fragment at runtime
-  node.properties = {'data-rehype-pretty-code-fragment': ''};
+  node.properties = { 'data-rehype-pretty-code-fragment': '' };
   node.children = Object.entries(trees)
     .map(([mode, tree]) => {
       const pre = tree.children[0];
@@ -62,7 +62,7 @@ function toFragment({
             'data-language': lang,
             'data-theme': mode,
           },
-          children: [{type: 'text', value: title}],
+          children: [{ type: 'text', value: title }],
         });
       }
 
@@ -77,7 +77,7 @@ function toFragment({
             'data-language': lang,
             'data-theme': mode,
           },
-          children: [{type: 'text', value: caption}],
+          children: [{ type: 'text', value: caption }],
         });
       }
 
@@ -113,7 +113,7 @@ export default function rehypePrettyCode(options = {}) {
       onVisitHighlightedWord,
       getHighlighter,
     },
-    {algorithm: 'sha1'}
+    { algorithm: 'sha1' },
   );
   let highlighterCache = globalHighlighterCache.get(optionsHash);
   if (!highlighterCache) {
@@ -121,21 +121,21 @@ export default function rehypePrettyCode(options = {}) {
     globalHighlighterCache.set(optionsHash, highlighterCache);
   }
   const highlighters = new Map();
-  const hastParser = unified().use(rehypeParse, {fragment: true});
+  const hastParser = unified().use(rehypeParse, { fragment: true });
 
   if (
     theme == null ||
     typeof theme === 'string' ||
-    theme?.hasOwnProperty('tokenColors')
+    Object.hasOwn(theme, 'tokenColors')
   ) {
     if (!highlighterCache.has('default')) {
-      highlighterCache.set('default', getHighlighter({theme}));
+      highlighterCache.set('default', getHighlighter({ theme }));
     }
   } else if (typeof theme === 'object') {
     // color mode object
     for (const [mode, value] of Object.entries(theme)) {
       if (!highlighterCache.has(mode)) {
-        highlighterCache.set(mode, getHighlighter({theme: value}));
+        highlighterCache.set(mode, getHighlighter({ theme: value }));
       }
     }
   }
@@ -175,12 +175,12 @@ export default function rehypePrettyCode(options = {}) {
             const color =
               highlighter
                 .getTheme()
-                .settings.find(({scope}) =>
-                  scope?.includes(tokensMap[meta.slice(1)] ?? meta.slice(1))
+                .settings.find(({ scope }) =>
+                  scope?.includes(tokensMap[meta.slice(1)] ?? meta.slice(1)),
                 )?.settings.foreground ?? 'inherit';
 
             trees[mode] = hastParser.parse(
-              `<pre><code><span style="color:${color}">${strippedValue}</span></code></pre>`
+              `<pre><code><span style="color:${color}">${strippedValue}</span></code></pre>`,
             );
           } else {
             let html;
@@ -217,12 +217,12 @@ export default function rehypePrettyCode(options = {}) {
         const codeNode = node.children[0].children[0];
         const lang = node.children[0].properties.className[0].replace(
           'language-',
-          ''
+          '',
         );
         let meta = filterMetaString(
           node.children[0].data?.meta ??
             node.children[0].properties.metastring ??
-            ''
+            '',
         );
 
         const tiltleMatch = meta.match(/title="([^"]*)"/);
@@ -238,8 +238,8 @@ export default function rehypePrettyCode(options = {}) {
           : [];
         let lineNumbersMaxDigits = 0;
 
-        let words = [];
-        let wordNumbers = [];
+        const words = [];
+        const wordNumbers = [];
         const wordIdsMap = new Map();
 
         const wordMatches = meta
@@ -277,7 +277,7 @@ export default function rehypePrettyCode(options = {}) {
           } catch (e) {
             // Fallback to plain text if a language has not been registered
             trees[mode] = hastParser.parse(
-              highlighter.codeToHtml(strippedValue, 'txt')
+              highlighter.codeToHtml(strippedValue, 'txt'),
             );
           }
         }
@@ -299,7 +299,7 @@ export default function rehypePrettyCode(options = {}) {
               node.properties['data-line-numbers'] = '';
 
               const lineNumbersStartAtMatch = reverseString(meta).match(
-                /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/
+                /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/,
               );
               if (lineNumbersStartAtMatch[1]) {
                 const startAt = reverseString(lineNumbersStartAtMatch[1]) - 1;

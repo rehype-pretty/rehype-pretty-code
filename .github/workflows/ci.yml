@@ -7,12 +7,33 @@ on:
 
 jobs:
   checks:
-    name: Tests
+    name: Lint/Typecheck/Build/Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v3
         with:
-          node-version: '18'
-      - run: npm install
-      - run: npm test
+          cache: 'npm'
+          node-version: 'lts/*'
+
+      - name: 'Install Dependencies'
+        run: npm clean-install
+
+      - name: 'Lint'
+        run: npm run lint
+
+      - name: 'Typecheck'
+        run: npm run typecheck
+
+      - name: 'Build'
+        run: npm run build
+
+        # lints npm package for packaging errors to ensure compatibility across environments (https://github.com/bluwy/publint).
+      - name: 'Lint Packaging Errors'
+        run: npx publint --strict
+
+      - name: 'Test'
+        run: npm run test

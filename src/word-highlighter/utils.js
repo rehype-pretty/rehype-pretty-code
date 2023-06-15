@@ -1,8 +1,12 @@
-import {toString} from 'hast-util-to-string';
+import { toString } from 'hast-util-to-string';
 
 // look ahead to determine if further
 // sibling nodes continue the string
-export function nextNodeMaybeContinuesWord({nodes, nextIndex, remainingPart}) {
+export function nextNodeMaybeContinuesWord({
+  nodes,
+  nextIndex,
+  remainingPart,
+}) {
   if (remainingPart === '') return false;
   const nextNode = nodes[nextIndex];
   const content = getContent(nextNode);
@@ -49,4 +53,4 @@ export function findOverlap(a, b) {
   return findOverlap(a, b.substring(0, b.length - 1));
 }
 
-export const reverseString = s => s?.split('').reverse().join('');
+export const reverseString = (s) => s?.split('').reverse().join('');
