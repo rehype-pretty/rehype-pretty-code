@@ -52,9 +52,7 @@ export function wrapHighlightedWords(
     }, '');
 
     onVisitHighlightedWord?.(
-      parentElement.children[
-        elementsToWrap[0].index
-      ] as unknown as VisitableElement,
+      parentElement.children[elementsToWrap[0].index] as VisitableElement,
       options.wordIdsMap.get(wordStr)
     );
   } else {
@@ -66,7 +64,7 @@ export function wrapHighlightedWords(
     }
 
     onVisitHighlightedWord?.(
-      element as unknown as VisitableElement,
+      element as VisitableElement,
       options.wordIdsMap.get(textElement.value)
     );
     // used to skip already parsed words
