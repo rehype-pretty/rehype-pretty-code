@@ -18,7 +18,7 @@ export function wordHighlighter(
   element: Element,
   words: string[],
   options: WordHighlighterOptions,
-  onVisitHighlightedWord: (
+  onVisitHighlightedWord?: (
     element: VisitableElement,
     id: string | undefined
   ) => void
