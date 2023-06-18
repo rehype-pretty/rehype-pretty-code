@@ -1,8 +1,8 @@
 import type { Highlighter, IShikiTheme } from 'shiki';
 import type { Transformer } from 'unified';
 import type { Root } from 'hast';
-
-export type { VisitableElement } from './src/types';
+import type { VisitableElement } from './src/types';
+export type { VisitableElement };
 
 type Theme = IShikiTheme | string;
 

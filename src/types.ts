@@ -1,4 +1,4 @@
-import type { Properties } from 'hast';
+import type { Properties, Element } from 'hast';
 
 export interface WordHighlighterOptions {
   wordNumbers: Array<number[]>;

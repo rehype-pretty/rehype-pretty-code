@@ -359,15 +359,13 @@ export default function rehypePrettyCode(
               Array.isArray(element.properties?.className) &&
               element.properties?.className?.[0] === 'line'
             ) {
-              onVisitLine?.(element as unknown as VisitableElement);
+              onVisitLine?.(element as VisitableElement);
 
               if (
                 lineNumbers.length !== 0 &&
                 lineNumbers.includes(++lineCounter)
               ) {
-                onVisitHighlightedLine?.(
-                  element as unknown as VisitableElement
-                );
+                onVisitHighlightedLine?.(element as VisitableElement);
               }
 
               wordHighlighter(
