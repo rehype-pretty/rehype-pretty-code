@@ -1,16 +1,28 @@
 import { toString } from 'hast-util-to-string';
+import { Element } from 'hast';
 
-// look ahead to determine if further
-// sibling nodes continue the string
-export function nextNodeMaybeContinuesWord({
-  nodes,
+/**
+ * Look ahead to determine if further, sibling nodes continue the string.
+ */
+export function nextElementMaybeContinuesWord({
+  elements,
   nextIndex,
   remainingPart,
-}) {
-  if (remainingPart === '') return false;
-  const nextNode = nodes[nextIndex];
+}: {
+  elements: Element[];
+  nextIndex: number;
+  remainingPart: string;
+}): boolean {
+  if (remainingPart === '') {
+    return false;
+  }
+
+  const nextNode = elements[nextIndex];
   const content = getContent(nextNode);
-  if (!content) return;
+
+  if (!content) {
+    return false;
+  }
 
   const includesNext =
     content.startsWith(remainingPart) || remainingPart.startsWith(content);
@@ -22,22 +34,22 @@ export function nextNodeMaybeContinuesWord({
   }
 
   if (includesNext) {
-    return nextNodeMaybeContinuesWord({
-      nodes,
+    return nextElementMaybeContinuesWord({
+      elements,
       nextIndex: nextIndex + 1,
       remainingPart: remainingPart.replace(content, ''),
     });
-  } else {
-    return false;
   }
+
+  return false;
 }
 
-export function getContent(node) {
+export function getContent(node: Element) {
   if (!node) return;
   return toString(node);
 }
 
-export function findOverlap(a, b) {
+export function findOverlap(a: string, b: string): string {
   if (b.length === 0) {
     return '';
   }
@@ -53,4 +65,6 @@ export function findOverlap(a, b) {
   return findOverlap(a, b.substring(0, b.length - 1));
 }
 
-export const reverseString = (s) => s?.split('').reverse().join('');
+export function reverseString(s: string) {
+  return s.split('').reverse().join('');
+}

@@ -1,13 +1,13 @@
-import React, {useRef, useState} from 'react';
-import {Controlled as CodeMirror} from 'react-codemirror2';
+import React, { useRef, useState } from 'react';
+import { Controlled as CodeMirror } from 'react-codemirror2';
 
-import {getHighlighter, setCDN} from 'shiki';
+import { getHighlighter, setCDN } from 'shiki';
 import htmlParser from 'prettier/parser-html';
 
-import {unified} from 'unified';
+import { unified } from 'unified';
 import rehypeParse from 'rehype-parse';
 import prettier from 'prettier/standalone';
-import {toHtml} from 'hast-util-to-html';
+import { toHtml } from 'hast-util-to-html';
 import rangeParser from 'parse-numeric-range';
 import wordHighlighter from '../../src/word-highlighter';
 
@@ -24,7 +24,7 @@ const initialValue = `const test = () => {
 }`;
 const DEFAULT_THEME = 'nord';
 
-const hastParser = unified().use(rehypeParse, {fragment: true});
+const hastParser = unified().use(rehypeParse, { fragment: true });
 
 function App() {
   const [value, setValue] = useState();
@@ -186,7 +186,7 @@ function App() {
           <div
             ref={htmlRef}
             className="shiki-output"
-            dangerouslySetInnerHTML={{__html: HTML}}
+            dangerouslySetInnerHTML={{ __html: HTML }}
           ></div>
         </div>
       </section>

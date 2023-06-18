@@ -5,7 +5,11 @@ export const metadata = {
   description: 'Beautiful code blocks for your MD/MDX docs.',
 };
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>{children}</body>

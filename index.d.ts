@@ -1,12 +1,10 @@
-import type { Element, Properties, Root } from 'hast';
-import type { Highlighter } from 'shiki';
+import type { Highlighter, IShikiTheme } from 'shiki';
 import type { Transformer } from 'unified';
+import type { Root } from 'hast';
 
-type Theme = JSON | string;
+export type { VisitableElement } from './src/types';
 
-export type VisitableElement = Omit<Element, 'properties'> & {
-  properties: Properties & { className?: string[] };
-};
+type Theme = IShikiTheme | string;
 
 export interface Options {
   theme?: Theme | Record<string, Theme>;
@@ -17,11 +15,11 @@ export interface Options {
   onVisitHighlightedLine?(element: VisitableElement): void;
   onVisitHighlightedWord?(
     element: VisitableElement,
-    id: string | undefined,
+    id: string | undefined
   ): void;
   getHighlighter?(options: Pick<Options, 'theme'>): Promise<Highlighter>;
 }
 
 export default function rehypePrettyCode(
-  options?: void | Options | undefined,
+  options?: void | Options | undefined
 ): void | Transformer<Root, Root>;
