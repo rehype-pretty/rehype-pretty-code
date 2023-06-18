@@ -3,8 +3,8 @@ import { VisitableElement, WordHighlighterOptions } from '../types';
 import { isElement, isText } from '../utils';
 
 export function wrapHighlightedWords(
-  parentNode: Element,
-  nodesToWrap: Array<{ node: Element; index: number }>,
+  parentElement: Element,
+  elementsToWrap: Array<{ element: Element; index: number }>,
   options: WordHighlighterOptions,
   ignoreWord: boolean,
   onVisitHighlightedWord?: (
@@ -12,25 +12,32 @@ export function wrapHighlightedWords(
     id: string | undefined
   ) => void
 ) {
-  if (!nodesToWrap || nodesToWrap.length === 0) return;
-  const [{ node }] = nodesToWrap;
+  if (!elementsToWrap || elementsToWrap.length === 0) {
+    return;
+  }
+
+  const [{ element }] = elementsToWrap;
 
   if (ignoreWord) {
-    if (node.properties) {
-      node.properties['rehype-pretty-code-visited'] = '';
+    if (element.properties) {
+      element.properties['rehype-pretty-code-visited'] = '';
     }
     return;
   }
 
-  if (nodesToWrap.length > 1) {
-    parentNode.children.splice(nodesToWrap[0].index, nodesToWrap.length, {
-      type: 'element',
-      tagName: 'span',
-      properties: { 'data-rehype-pretty-code-wrapper': true },
-      children: nodesToWrap.map(({ node }) => node),
-    });
+  if (elementsToWrap.length > 1) {
+    parentElement.children.splice(
+      elementsToWrap[0].index,
+      elementsToWrap.length,
+      {
+        type: 'element',
+        tagName: 'span',
+        properties: { 'data-rehype-pretty-code-wrapper': true },
+        children: elementsToWrap.map(({ element }) => element),
+      }
+    );
 
-    const element = parentNode.children[nodesToWrap[0].index];
+    const element = parentElement.children[elementsToWrap[0].index];
 
     if (!isElement(element)) {
       return;
@@ -45,24 +52,26 @@ export function wrapHighlightedWords(
     }, '');
 
     onVisitHighlightedWord?.(
-      parentNode.children[nodesToWrap[0].index] as unknown as VisitableElement,
+      parentElement.children[
+        elementsToWrap[0].index
+      ] as unknown as VisitableElement,
       options.wordIdsMap.get(wordStr)
     );
   } else {
-    const [{ node }] = nodesToWrap;
-    const textElement = node.children[0];
+    const [{ element }] = elementsToWrap;
+    const textElement = element.children[0];
+
     if (!isText(textElement)) {
       return;
     }
 
-    const wordStr = textElement.value;
     onVisitHighlightedWord?.(
-      node as unknown as VisitableElement,
-      options.wordIdsMap.get(wordStr)
+      element as unknown as VisitableElement,
+      options.wordIdsMap.get(textElement.value)
     );
     // used to skip already parsed words
-    if (node.properties) {
-      node.properties['rehype-pretty-code-visited'] = '';
+    if (element.properties) {
+      element.properties['rehype-pretty-code-visited'] = '';
     }
   }
 }

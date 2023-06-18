@@ -1,40 +1,41 @@
 import { isElement, isText } from '../utils';
 import { Element } from 'hast';
 
-interface SplitNodeProps {
-  nodes: Element[];
-  nodeToWrap: Element;
+interface SplitElementProps {
+  elements: Element[];
+  elementToWrap: Element;
   innerString: string;
   rightString: string;
   leftString: string;
   rest: string[];
-  nextNodeContinues: boolean;
+  nextElementContinues: boolean;
   index: number;
   ignoreWord: boolean;
 }
 
-export function splitNode({
-  nodes,
-  nodeToWrap,
+export function splitElement({
+  elements,
+  elementToWrap,
   innerString,
   rightString,
   leftString,
   rest,
-  nextNodeContinues,
+  nextElementContinues,
   index,
   ignoreWord,
-}: SplitNodeProps) {
+}: SplitElementProps) {
   if (
-    (isElement(nodeToWrap) && nodeToWrap?.children?.[0]?.type !== 'text') ||
+    (isElement(elementToWrap) &&
+      elementToWrap.children?.[0]?.type !== 'text') ||
     ignoreWord
   ) {
-    return [nodeToWrap, index] as const;
+    return [elementToWrap, index] as const;
   }
 
   let newIndex = index;
 
-  // assign the matched value to the current node
-  const textElement = nodeToWrap.children[0];
+  // assign the matched value to the current element
+  const textElement = elementToWrap.children[0];
   if (isText(textElement)) {
     textElement.value = innerString;
   }
@@ -42,7 +43,7 @@ export function splitNode({
   let rightStr = rightString;
   const leftStr = leftString;
 
-  // append any repetitions to the right if necesary
+  // append any repetitions to the right if necessary
   if (rest.length > 0) {
     rightStr += rest
       .map((s) => (s === '' ? innerString : innerString + s))
@@ -50,9 +51,9 @@ export function splitNode({
   }
 
   if (leftStr.length > 0) {
-    nodes.splice(newIndex, 0, {
-      ...nodeToWrap,
-      properties: { ...nodeToWrap.properties },
+    elements.splice(newIndex, 0, {
+      ...elementToWrap,
+      properties: { ...elementToWrap.properties },
       children: [
         {
           type: 'text',
@@ -62,11 +63,11 @@ export function splitNode({
     });
   }
 
-  if (rightStr.length > 0 && !nextNodeContinues) {
+  if (rightStr.length > 0 && !nextElementContinues) {
     newIndex = leftStr.length > 0 ? newIndex + 2 : newIndex + 1;
-    nodes.splice(newIndex, 0, {
-      ...nodeToWrap,
-      properties: { ...nodeToWrap.properties },
+    elements.splice(newIndex, 0, {
+      ...elementToWrap,
+      properties: { ...elementToWrap.properties },
       children: [
         {
           type: 'text',
@@ -76,5 +77,5 @@ export function splitNode({
     });
   }
 
-  return [nodeToWrap, index + 1] as const;
+  return [elementToWrap, index + 1] as const;
 }
