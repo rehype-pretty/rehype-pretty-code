@@ -9,5 +9,5 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended"
   ],
-  "parserOptions": {"sourceType": "module", "ecmaVersion": "latest"}
+  "parserOptions": { "sourceType": "module", "ecmaVersion": "latest" }
 }

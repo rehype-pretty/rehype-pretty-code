@@ -11,13 +11,13 @@ of its themes ecosystem, powered by [Shiki](https://github.com/shikijs/shiki).
 No missing tokens or unexpected broken syntax highlighting.
 
 ```js
-import Document, {Html, Head, Main, NextScript} from 'next/document';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 // 🔥 Super granular and accurate highlighting
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx);
-    return {...initialProps};
+    return { ...initialProps };
   }
 
   render() {
@@ -46,10 +46,10 @@ the client. Your docs will be lightning fast.
 ### Line numbers and line highlighting are supported
 
 ```js {4}
-import {useFloating} from '@floating-ui/react';
+import { useFloating } from '@floating-ui/react';
 
 function MyComponent() {
-  const {x, y, refs} = useFloating();
+  const { x, y, refs } = useFloating();
 
   return (
     <>
@@ -63,10 +63,10 @@ function MyComponent() {
 ### Word highlighting too
 
 ```js /refs/
-import {useFloating} from '@floating-ui/react';
+import { useFloating } from '@floating-ui/react';
 
 function MyComponent() {
-  const {x, y, refs} = useFloating();
+  const { x, y, refs } = useFloating();
 
   return (
     <>
@@ -139,7 +139,7 @@ npm install rehype-pretty-code shiki
 ### Unified
 
 ```js /rehypePrettyCode/
-import {unified} from 'unified';
+import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
@@ -210,7 +210,7 @@ const options = {
     // Prevent lines from collapsing in `display: grid` mode, and
     // allow empty lines to be copy/pasted
     if (element.children.length === 0) {
-      element.children = [{type: 'text', value: ' '}];
+      element.children = [{ type: 'text', value: ' ' }];
     }
   },
   onVisitHighlightedLine(element) {
@@ -485,7 +485,7 @@ This is helpful if you'd like to configure other Shiki options, such as
 `langs{:.meta.object-literal.key}`.
 
 ```js
-const {getHighlighter, BUNDLED_LANGUAGES} = require('shiki');
+const { getHighlighter, BUNDLED_LANGUAGES } = require('shiki');
 
 const options = {
   theme: {

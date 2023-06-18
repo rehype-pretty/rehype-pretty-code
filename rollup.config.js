@@ -1,12 +1,20 @@
 import commonjs from '@rollup/plugin-commonjs';
+import { babel } from '@rollup/plugin-babel';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { defineConfig } from 'rollup';
 
 /** @type {import('rollup').RollupOptions} */
 const common = {
-  input: './src/index.js',
-  plugins: [commonjs(), nodeResolve({ preferBuiltins: true })],
-  external: ['parse-numeric-range', 'shiki'],
+  input: './src/index.ts',
+  plugins: [
+    commonjs(),
+    nodeResolve({ extensions: ['.ts'] }),
+    babel({
+      babelHelpers: 'bundled',
+      extensions: ['.ts'],
+    }),
+  ],
+  external: ['parse-numeric-range', 'shiki', 'unified'],
 };
 
 export default defineConfig([

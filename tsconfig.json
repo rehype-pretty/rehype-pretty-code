@@ -9,7 +9,8 @@
     "noUnusedLocals": true,
     "types": ["node"],
     "allowJs": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "downlevelIteration": true
   },
   "include": ["src/**/*", "index.d.ts"],
   "exclude": ["node_modules"]
