@@ -7,7 +7,7 @@ export default function Home() {
         Rehype Pretty Code
       </h1>
       <main>
-        <article className="text-zinc-400">
+        <article className="text-zinc-400 prose prose-invert">
           <Index />
         </article>
       </main>

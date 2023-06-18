@@ -13,7 +13,16 @@ body {
 }
 
 pre {
-  @apply !px-0;
+  @apply !px-0 !leading-loose;
+}
+
+pre > code {
+  @apply grid;
+  counter-reset: line;
+}
+
+.prose {
+  @apply max-w-[50rem] md:text-xl md:leading-loose;
 }
 
 .word {

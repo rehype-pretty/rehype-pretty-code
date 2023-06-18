@@ -17,8 +17,6 @@ module.exports = {
         xl: {
           css: {
             pre: {
-              padding: '0.75rem 0',
-              lineHeight: '2.25',
               fontSize: '1rem',
             },
           },
@@ -34,7 +32,6 @@ module.exports = {
         },
         DEFAULT: {
           css: {
-            'h1,h2,h3,h4,h5,h6': { color: colors.white },
             'h2 a': linkHeadingStyles,
             'h3 a': linkHeadingStyles,
             'h4 a': linkHeadingStyles,
@@ -89,13 +86,8 @@ module.exports = {
               },
             },
             pre: {
-              opacity: 0.98,
               background: 'rgba(200,200,255,0.05)',
-              lineHeight: 2,
-
               '> code': {
-                display: 'grid',
-                counterReset: 'line',
                 '> .line': {
                   padding: '0 1.25rem',
                   borderLeft: `2px solid transparent`,
