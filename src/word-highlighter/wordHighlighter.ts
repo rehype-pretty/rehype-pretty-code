@@ -1,8 +1,8 @@
-import { getElementsToHighlight } from './getElementsToHighlight';
+import { getNodesToHighlight } from './getNodesToHighlight';
 import { wrapHighlightedWords } from './wrapHighlightedWords';
 import { toString } from 'hast-util-to-string';
-import type { Element } from 'hast';
 import { hasOwnProperty, isElement } from '../utils';
+import { Element } from 'hast';
 import { VisitableElement, WordHighlighterOptions } from '../types';
 
 // Loops through the child nodes and finds the nodes that make up the word.
@@ -16,91 +16,81 @@ import { VisitableElement, WordHighlighterOptions } from '../types';
 // left and/or right parts are cloned to sibling nodes
 
 export function wordHighlighter(
-  element: Element,
+  node: Element,
   words: string[],
   options: WordHighlighterOptions,
-  onVisitHighlightedWord?: (
+  onVisitHighlightedWord: (
     element: VisitableElement,
     id: string | undefined
   ) => void
 ) {
   if (!words || !Array.isArray(words)) return;
   const { wordNumbers = [] } = options;
-  const textContent = toString(element);
+  const textContent = toString(node);
 
   words.forEach((word, index) => {
     if (word && textContent?.includes(word)) {
-      let textContent = toString(element);
+      let textContent = toString(node);
       let startIndex = 0;
 
       while (textContent.includes(word)) {
         const currentWordRange = wordNumbers[index] || [];
         const id = `${word}-${index}`;
-        const counterForId = options.wordCounter.get(id);
-
-        options.wordCounter.set(id, (counterForId || 0) + 1);
+        options.wordCounter.set(id, (options.wordCounter.get(id) || 0) + 1);
 
         const ignoreWord =
           currentWordRange.length > 0 &&
-          !currentWordRange.includes(counterForId || -1);
+          !currentWordRange.includes(options.wordCounter.get(id) ?? -1);
 
-        const elementsToWrap = getElementsToHighlight(
-          element,
+        const nodesToWrap = getNodesToHighlight(
+          node,
           word,
           startIndex,
           ignoreWord
         );
 
         // maybe throw / notify due to failure here
-        if (elementsToWrap.length === 0) break;
+        if (nodesToWrap.length === 0) break;
 
         wrapHighlightedWords(
-          element,
-          elementsToWrap,
+          node,
+          nodesToWrap,
           options,
           ignoreWord,
           onVisitHighlightedWord
         );
         // re-start from the 'last' node (the word or part of it may exist multiple times in the same node)
         // account for possible extra nodes added from split with - 2
-        startIndex = Math.max(
-          elementsToWrap[elementsToWrap.length - 1].index - 2,
-          0
-        );
-        textContent = element.children
-          ?.map((childElement) => {
+        startIndex = Math.max(nodesToWrap[nodesToWrap.length - 1].index - 2, 0);
+        textContent = node.children
+          ?.map((childNode) => {
             if (
               !hasOwnProperty(
-                isElement(childElement) && childElement.properties
-                  ? childElement.properties
-                  : {},
+                isElement(childNode) ? childNode.properties || {} : {},
                 'rehype-pretty-code-visited'
               ) &&
               !hasOwnProperty(
-                isElement(childElement) && childElement.properties
-                  ? childElement.properties
-                  : {},
+                isElement(childNode) ? childNode.properties || {} : {},
                 'data-rehype-pretty-code-wrapper'
               )
             ) {
-              return toString(childElement);
+              return toString(childNode);
             }
           })
           .join('');
       }
     }
 
-    element.children?.forEach((childElement) => {
+    node.children?.forEach((childNode) => {
+      if (!isElement(childNode)) {
+        return;
+      }
+
       if (
-        hasOwnProperty(
-          isElement(childElement) && childElement.properties
-            ? childElement.properties
-            : {},
-          'rehype-pretty-code-visited'
-        )
+        hasOwnProperty(childNode.properties ?? {}, 'rehype-pretty-code-visited')
       ) {
-        if (isElement(childElement) && childElement.properties) {
-          childElement.properties['rehype-pretty-code-visited'] = undefined;
+        if (childNode.properties) {
+          childNode.properties['rehype-pretty-code-visited'] = undefined;
         }
       }
     });

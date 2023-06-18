@@ -1,19 +1,19 @@
-import { Element } from 'hast';
 import { toString } from 'hast-util-to-string';
+import { Element } from 'hast';
 
 // look ahead to determine if further
 // sibling nodes continue the string
 export function nextNodeMaybeContinuesWord({
-  elements,
+  nodes,
   nextIndex,
   remainingPart,
 }: {
-  elements: Element[];
+  nodes: Element[];
   nextIndex: number;
   remainingPart: string;
 }): boolean {
   if (remainingPart === '') return false;
-  const nextNode = elements[nextIndex];
+  const nextNode = nodes[nextIndex];
   const content = getContent(nextNode);
   if (!content) return false;
 
@@ -28,7 +28,7 @@ export function nextNodeMaybeContinuesWord({
 
   if (includesNext) {
     return nextNodeMaybeContinuesWord({
-      elements,
+      nodes,
       nextIndex: nextIndex + 1,
       remainingPart: remainingPart.replace(content, ''),
     });

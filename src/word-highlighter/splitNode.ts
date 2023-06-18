@@ -1,35 +1,43 @@
-import type { Element } from 'hast';
+import { isElement, isText } from '../utils';
+import { Element } from 'hast';
 
-interface SplitElementProps {
-  elements: Element[];
-  elementToWrap: Element;
+interface SplitNodeProps {
+  nodes: Element[];
+  nodeToWrap: Element;
   innerString: string;
   rightString: string;
   leftString: string;
   rest: string[];
-  nextElementContinues: boolean;
+  nextNodeContinues: boolean;
   index: number;
   ignoreWord: boolean;
 }
 
-export function splitElement({
-  elements,
-  elementToWrap,
+export function splitNode({
+  nodes,
+  nodeToWrap,
   innerString,
   rightString,
   leftString,
   rest,
-  nextElementContinues,
+  nextNodeContinues,
   index,
   ignoreWord,
-}: SplitElementProps) {
-  if (elementToWrap?.children?.[0]?.type !== 'text' || ignoreWord)
-    return [elementToWrap, index] as const;
+}: SplitNodeProps) {
+  if (
+    (isElement(nodeToWrap) && nodeToWrap?.children?.[0]?.type !== 'text') ||
+    ignoreWord
+  ) {
+    return [nodeToWrap, index] as const;
+  }
 
   let newIndex = index;
 
   // assign the matched value to the current node
-  elementToWrap.children[0].value = innerString;
+  const textElement = nodeToWrap.children[0];
+  if (isText(textElement)) {
+    textElement.value = innerString;
+  }
 
   let rightStr = rightString;
   const leftStr = leftString;
@@ -42,9 +50,9 @@ export function splitElement({
   }
 
   if (leftStr.length > 0) {
-    elements.splice(newIndex, 0, {
-      ...elementToWrap,
-      properties: { ...elementToWrap.properties },
+    nodes.splice(newIndex, 0, {
+      ...nodeToWrap,
+      properties: { ...nodeToWrap.properties },
       children: [
         {
           type: 'text',
@@ -54,11 +62,11 @@ export function splitElement({
     });
   }
 
-  if (rightStr.length > 0 && !nextElementContinues) {
+  if (rightStr.length > 0 && !nextNodeContinues) {
     newIndex = leftStr.length > 0 ? newIndex + 2 : newIndex + 1;
-    elements.splice(newIndex, 0, {
-      ...elementToWrap,
-      properties: { ...elementToWrap.properties },
+    nodes.splice(newIndex, 0, {
+      ...nodeToWrap,
+      properties: { ...nodeToWrap.properties },
       children: [
         {
           type: 'text',
@@ -68,5 +76,5 @@ export function splitElement({
     });
   }
 
-  return [elementToWrap, index + 1] as const;
+  return [nodeToWrap, index + 1] as const;
 }
