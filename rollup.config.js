@@ -8,10 +8,10 @@ const common = {
   input: './src/index.ts',
   plugins: [
     commonjs(),
-    nodeResolve({ extensions: ['.ts'] }),
+    nodeResolve({ extensions: ['.ts', '.js'] }),
     babel({
       babelHelpers: 'bundled',
-      extensions: ['.ts'],
+      extensions: ['.ts', '.js'],
     }),
   ],
   external: ['parse-numeric-range', 'shiki'],
