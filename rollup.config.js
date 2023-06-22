@@ -14,7 +14,7 @@ const common = {
       extensions: ['.ts'],
     }),
   ],
-  external: ['parse-numeric-range', 'shiki', 'unified'],
+  external: ['parse-numeric-range', 'shiki'],
 };
 
 export default defineConfig([
