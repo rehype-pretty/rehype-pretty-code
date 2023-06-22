@@ -1,5 +1,6 @@
-import { Element } from 'hast';
-import { VisitableElement, WordHighlighterOptions } from '../types';
+import type { Element } from 'hast';
+import type { WordHighlighterOptions } from '../types';
+import type { VisitableElement } from '../..';
 import { isElement, isText } from '../utils';
 
 export function wrapHighlightedWords(

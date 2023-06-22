@@ -1,6 +1,6 @@
 import type { Highlighter, IShikiTheme } from 'shiki';
 import type { Transformer } from 'unified';
-import type { Root } from 'hast';
+import type { Root, Element } from 'hast';
 
 export type VisitableElement = Omit<Element, 'properties'> & {
   properties: Properties & { className?: string[] };

@@ -3,7 +3,8 @@ import { wrapHighlightedWords } from './wrapHighlightedWords';
 import { toString } from 'hast-util-to-string';
 import { hasOwnProperty, isElement } from '../utils';
 import { Element } from 'hast';
-import { VisitableElement, WordHighlighterOptions } from '../types';
+import type { WordHighlighterOptions } from '../types';
+import type { VisitableElement } from '../..';
 
 /**
  * Loops through the child nodes and finds the nodes that make up the word.
