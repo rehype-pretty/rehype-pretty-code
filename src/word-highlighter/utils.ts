@@ -1,5 +1,5 @@
+import type { Element } from 'hast';
 import { toString } from 'hast-util-to-string';
-import { Element } from 'hast';
 
 /**
  * Look ahead to determine if further, sibling nodes continue the string.

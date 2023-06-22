@@ -1,10 +1,10 @@
+import type { Element } from 'hast';
 import { splitElement } from './splitElement';
 import {
   findOverlap,
   getContent,
   nextElementMaybeContinuesWord,
 } from './utils';
-import { Element } from 'hast';
 import { hasOwnProperty } from '../utils';
 
 export function getElementsToHighlight(

@@ -1,5 +1,5 @@
 import type { Element, ElementContent, Root, RootContent, Text } from 'hast';
-import { IShikiTheme } from 'shiki';
+import type { IShikiTheme } from 'shiki';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isJSON(value: any): value is IShikiTheme {

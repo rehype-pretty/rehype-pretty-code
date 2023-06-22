@@ -1,5 +1,5 @@
+import type { Element } from 'hast';
 import { isElement, isText } from '../utils';
-import { Element } from 'hast';
 
 interface SplitElementProps {
   elements: Element[];

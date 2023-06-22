@@ -1,15 +1,17 @@
 import type { Element, ElementContent, Root } from 'hast';
 import type { Options, VisitableElement } from '../';
+import type { WordHighlighterOptions } from './types';
+import type { Highlighter } from 'shiki';
+import type { Transformer } from 'unified';
 import { visit } from 'unist-util-visit';
 import rangeParser from 'parse-numeric-range';
-import { getHighlighter as shikiHighlighter, Highlighter } from 'shiki';
-import { Transformer, unified } from 'unified';
+import { getHighlighter as shikiHighlighter } from 'shiki';
+import { unified } from 'unified';
 import rehypeParse from 'rehype-parse';
 import hashObj from 'hash-obj';
 import { wordHighlighter } from './word-highlighter/wordHighlighter';
 import { reverseString } from './word-highlighter/utils';
 import { isElement, isJSON, isText } from './utils';
-import { WordHighlighterOptions } from './types';
 
 interface ToFragmentProps {
   trees: Record<string, Root>;
