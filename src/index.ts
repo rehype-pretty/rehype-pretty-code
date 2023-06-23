@@ -370,7 +370,7 @@ export default function rehypePrettyCode(
                 element.children = [{ type: 'text', value: ' ' }];
               }
 
-              element.properties.className = [];
+              element.properties.className = undefined;
               element.properties['data-line'] = '';
               onVisitLine?.(element as LineElement);
 
