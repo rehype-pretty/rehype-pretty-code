@@ -3,7 +3,7 @@ import { unified } from 'unified';
 
 unified().use(rehypePrettyCode, {
   theme: 'one-dark-pro',
-  keepBackground: true,
+  keepBackground: false,
   onVisitLine(element) {
     if (element.children.length === 0) {
       element.children = [{ type: 'text', value: ' ' }];
@@ -12,7 +12,7 @@ unified().use(rehypePrettyCode, {
   onVisitHighlightedLine(element) {
     element.properties.className?.push('highlighted');
   },
-  onVisitHighlightedWord(element) {
+  onVisitHighlightedChars(element) {
     element.properties.className = ['word'];
   },
 });

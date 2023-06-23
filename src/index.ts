@@ -1,6 +1,6 @@
 import type { Element, ElementContent, Root } from 'hast';
 import type { Options, VisitableElement } from '../';
-import type { WordHighlighterOptions } from './types';
+import type { CharsHighlighterOptions } from './types';
 import type { Highlighter } from 'shiki';
 import type { Transformer } from 'unified';
 import { visit } from 'unist-util-visit';
@@ -9,9 +9,9 @@ import { getHighlighter as shikiHighlighter } from 'shiki';
 import { unified } from 'unified';
 import rehypeParse from 'rehype-parse';
 import hashObj from 'hash-obj';
-import { wordHighlighter } from './word-highlighter/wordHighlighter';
-import { reverseString } from './word-highlighter/utils';
-import { isElement, isJSON, isText } from './utils';
+import { charsHighlighter } from './chars/charsHighlighter';
+import { reverseString } from './chars/utils';
+import { isElement, isShikiTheme, isText } from './utils';
 
 interface ToFragmentProps {
   trees: Record<string, Root>;
@@ -31,7 +31,7 @@ function toFragment(
     title,
     caption,
     inline = false,
-    keepBackground = false,
+    keepBackground = true,
     lineNumbersMaxDigits = 1,
   }: ToFragmentProps
 ) {
@@ -118,13 +118,14 @@ export default function rehypePrettyCode(
   options: Options = {}
 ): void | Transformer<Root, Root> {
   const {
+    grid = true,
     theme,
-    keepBackground,
+    keepBackground = true,
     tokensMap = {},
     filterMetaString = (v) => v,
     onVisitLine,
     onVisitHighlightedLine,
-    onVisitHighlightedWord,
+    onVisitHighlightedChars,
     getHighlighter = shikiHighlighter,
   } = options;
 
@@ -134,7 +135,7 @@ export default function rehypePrettyCode(
       tokensMap,
       onVisitLine,
       onVisitHighlightedLine,
-      onVisitHighlightedWord,
+      onVisitHighlightedChars,
       getHighlighter,
     },
     { algorithm: 'sha1' }
@@ -147,7 +148,7 @@ export default function rehypePrettyCode(
   const highlighters = new Map();
   const hastParser = unified().use(rehypeParse, { fragment: true });
 
-  if (theme == null || typeof theme === 'string' || isJSON(theme)) {
+  if (theme == null || typeof theme === 'string' || isShikiTheme(theme)) {
     if (!highlighterCache.has('default')) {
       highlighterCache.set('default', getHighlighter({ theme }));
     }
@@ -251,6 +252,10 @@ export default function rehypePrettyCode(
           return;
         }
 
+        if (grid && codeElement.properties) {
+          codeElement.properties.style += 'display: grid;';
+        }
+
         const lang = element.children[0].properties.className[0].replace(
           'language-',
           ''
@@ -327,10 +332,10 @@ export default function rehypePrettyCode(
         Object.entries(trees).forEach(([, tree]) => {
           let lineCounter = 0;
 
-          const wordOptions: WordHighlighterOptions = {
-            wordNumbers,
-            wordIdsMap,
-            wordCounter: new Map(),
+          const wordOptions: CharsHighlighterOptions = {
+            ranges: wordNumbers,
+            idsMap: wordIdsMap,
+            counterMap: new Map(),
           };
 
           visit(tree, 'element', (element) => {
@@ -361,21 +366,29 @@ export default function rehypePrettyCode(
               Array.isArray(element.properties?.className) &&
               element.properties?.className?.[0] === 'line'
             ) {
+              if (grid && element.children.length === 0) {
+                element.children = [{ type: 'text', value: ' ' }];
+              }
+
+              element.properties.className = undefined;
+              element.properties['data-line'] = '';
               onVisitLine?.(element as VisitableElement);
 
               if (
                 lineNumbers.length !== 0 &&
                 lineNumbers.includes(++lineCounter)
               ) {
+                element.properties['data-highlighted-line'] = '';
                 onVisitHighlightedLine?.(element as VisitableElement);
               }
 
-              wordHighlighter(
+              charsHighlighter(
                 element,
                 words,
                 wordOptions,
-                onVisitHighlightedWord
+                onVisitHighlightedChars
               );
+
               lineNumbersMaxDigits++;
             }
           });

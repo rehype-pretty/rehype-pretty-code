@@ -37,13 +37,13 @@
   <pre
     data-language="diff"
     data-theme="default"
-  ><code data-language="diff" data-theme="default"><span class="line"><span style="color: #E1E4E8">import useSWR from 'swr'</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E1E4E8">function Profile() {</span></span>
-<span class="line"><span style="color: #E1E4E8">  const { data, error } = useSWR('/api/user', fetcher)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #FDAEB7">-  if (error) return &#x3C;div>failed to load&#x3C;/div></span></span>
-<span class="line"><span style="color: #85E89D">+  if (!data) return &#x3C;div>loading...&#x3C;/div></span></span>
-<span class="line"><span style="color: #E1E4E8">  return &#x3C;div>hello {data.name}!&#x3C;/div></span></span>
-<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+  ><code data-language="diff" data-theme="default"><span data-line=""><span style="color: #E1E4E8">import useSWR from 'swr'</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color: #E1E4E8">function Profile() {</span></span>
+<span data-line=""><span style="color: #E1E4E8">  const { data, error } = useSWR('/api/user', fetcher)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color: #FDAEB7">-  if (error) return &#x3C;div>failed to load&#x3C;/div></span></span>
+<span data-line=""><span style="color: #85E89D">+  if (!data) return &#x3C;div>loading...&#x3C;/div></span></span>
+<span data-line=""><span style="color: #E1E4E8">  return &#x3C;div>hello {data.name}!&#x3C;/div></span></span>
+<span data-line=""><span style="color: #E1E4E8">}</span></span></code></pre>
 </div>

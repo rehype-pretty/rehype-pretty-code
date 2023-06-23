@@ -9,13 +9,14 @@ export type VisitableElement = Omit<Element, 'properties'> & {
 type Theme = IShikiTheme | string;
 
 export interface Options {
+  grid?: boolean;
   theme?: Theme | Record<string, Theme>;
   keepBackground?: boolean;
   tokensMap?: Record<string, string>;
   filterMetaString?(str: string): string;
   onVisitLine?(element: VisitableElement): void;
   onVisitHighlightedLine?(element: VisitableElement): void;
-  onVisitHighlightedWord?(
+  onVisitHighlightedChars?(
     element: VisitableElement,
     id: string | undefined
   ): void;

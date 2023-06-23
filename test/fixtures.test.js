@@ -68,7 +68,7 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
     onVisitHighlightedLine(node) {
       node.properties.className = ['highlighted'];
     },
-    onVisitHighlightedWord(node, id) {
+    onVisitHighlightedChars(node, id) {
       node.properties.className = ['word'];
 
       if (id) {

@@ -4,7 +4,13 @@ module.exports = {
     es2021: true,
   },
   ignorePatterns: ['website/', 'dist/'],
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+  ],
   overrides: [
     {
       env: {
@@ -23,4 +29,9 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {},
+  settings: {
+    react: {
+      version: '18',
+    },
+  },
 };

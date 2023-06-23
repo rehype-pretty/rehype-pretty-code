@@ -4,9 +4,6 @@
   "description": "Beautiful code for your MD/MDX docs.",
   "main": "./dist/rehype-pretty-code.cjs",
   "module": "./dist/rehype-pretty-code.js",
-  "workspaces": [
-    "./word-highlighter-playground"
-  ],
   "type": "module",
   "types": "index.d.ts",
   "exports": {
@@ -61,6 +58,8 @@
     "@typescript-eslint/parser": "^5.59.11",
     "bumpp": "^9.1.1",
     "eslint": "^8.43.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "hast-util-to-html": "^8.0.3",
     "hast-util-to-string": "^2.0.0",
     "jest-file-snapshot": "^0.5.0",

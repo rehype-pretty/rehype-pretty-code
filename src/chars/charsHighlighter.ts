@@ -1,63 +1,63 @@
 import type { Element } from 'hast';
-import type { WordHighlighterOptions } from '../types';
+import type { CharsHighlighterOptions } from '../types';
 import type { VisitableElement } from '../..';
 import { getElementsToHighlight } from './getElementsToHighlight';
-import { wrapHighlightedWords } from './wrapHighlightedWords';
+import { wrapHighlightedChars } from './wrapHighlightedChars';
 import { toString } from 'hast-util-to-string';
 import { hasOwnProperty, isElement } from '../utils';
 
 /**
- * Loops through the child nodes and finds the nodes that make up the word.
- * If the word crosses node boundaries, those nodes are wrapped with
+ * Loops through the child nodes and finds the nodes that make up the chars.
+ * If the chars cross node boundaries, those nodes are wrapped with
  * <span data-rehype-pretty-code-wrapper/>, and that node is passed to
- * onVisitHighlightedWord.
+ * onVisitHighlightedChars.
  *
- * If a node partially matches the word, its content is replaced with the
+ * If a node partially matches the chars, its content is replaced with the
  * matched part, and the left and/or right parts are cloned to sibling nodes.
  */
-export function wordHighlighter(
+export function charsHighlighter(
   element: Element,
-  words: string[],
-  options: WordHighlighterOptions,
-  onVisitHighlightedWord?: (
+  charsList: string[],
+  options: CharsHighlighterOptions,
+  onVisitHighlightedChars?: (
     element: VisitableElement,
     id: string | undefined
   ) => void
 ) {
-  const { wordNumbers = [] } = options;
+  const { ranges = [] } = options;
   const textContent = toString(element);
 
-  words.forEach((word, index) => {
-    if (word && textContent?.includes(word)) {
+  charsList.forEach((chars, index) => {
+    if (chars && textContent?.includes(chars)) {
       let textContent = toString(element);
       let startIndex = 0;
 
-      while (textContent.includes(word)) {
-        const currentWordRange = wordNumbers[index] || [];
-        const id = `${word}-${index}`;
+      while (textContent.includes(chars)) {
+        const currentCharsRange = ranges[index] || [];
+        const id = `${chars}-${index}`;
 
-        options.wordCounter.set(id, (options.wordCounter.get(id) || 0) + 1);
+        options.counterMap.set(id, (options.counterMap.get(id) || 0) + 1);
 
-        const ignoreWord =
-          currentWordRange.length > 0 &&
-          !currentWordRange.includes(options.wordCounter.get(id) ?? -1);
+        const ignoreChars =
+          currentCharsRange.length > 0 &&
+          !currentCharsRange.includes(options.counterMap.get(id) ?? -1);
 
         const elementsToWrap = getElementsToHighlight(
           element,
-          word,
+          chars,
           startIndex,
-          ignoreWord
+          ignoreChars
         );
 
         // maybe throw / notify due to failure here
         if (elementsToWrap.length === 0) break;
 
-        wrapHighlightedWords(
+        wrapHighlightedChars(
           element,
           elementsToWrap,
           options,
-          ignoreWord,
-          onVisitHighlightedWord
+          ignoreChars,
+          onVisitHighlightedChars
         );
 
         // re-start from the 'last' node (the word or part of it may exist multiple times in the same node)
@@ -68,11 +68,10 @@ export function wordHighlighter(
         );
 
         textContent = element.children
-          ?.map((childNode) => {
-            const props = isElement(childNode)
-              ? childNode.properties || {}
-              : {};
+          .map((childNode) => {
+            const props = isElement(childNode) ? childNode.properties : {};
             if (
+              props &&
               !hasOwnProperty(props, 'rehype-pretty-code-visited') &&
               !hasOwnProperty(props, 'data-rehype-pretty-code-wrapper')
             ) {
@@ -92,7 +91,7 @@ export function wordHighlighter(
         hasOwnProperty(childNode.properties ?? {}, 'rehype-pretty-code-visited')
       ) {
         if (childNode.properties) {
-          childNode.properties['rehype-pretty-code-visited'] = undefined;
+          delete childNode.properties['rehype-pretty-code-visited'];
         }
       }
     });

@@ -4,7 +4,7 @@ import { toString } from 'hast-util-to-string';
 /**
  * Look ahead to determine if further, sibling nodes continue the string.
  */
-export function nextElementMaybeContinuesWord({
+export function nextElementMaybeContinuesChars({
   elements,
   nextIndex,
   remainingPart,
@@ -34,7 +34,7 @@ export function nextElementMaybeContinuesWord({
   }
 
   if (includesNext) {
-    return nextElementMaybeContinuesWord({
+    return nextElementMaybeContinuesChars({
       elements,
       nextIndex: nextIndex + 1,
       remainingPart: remainingPart.replace(content, ''),

@@ -1,14 +1,14 @@
 import type { Element } from 'hast';
-import type { WordHighlighterOptions } from '../types';
+import type { CharsHighlighterOptions } from '../types';
 import type { VisitableElement } from '../..';
 import { isElement, isText } from '../utils';
 
-export function wrapHighlightedWords(
+export function wrapHighlightedChars(
   parentElement: Element,
   elementsToWrap: Array<{ element: Element; index: number }>,
-  options: WordHighlighterOptions,
+  options: CharsHighlighterOptions,
   ignoreWord: boolean,
-  onVisitHighlightedWord?: (
+  onVisitHighlightedChars?: (
     element: VisitableElement,
     id: string | undefined
   ) => void
@@ -52,9 +52,13 @@ export function wrapHighlightedWords(
       return acc;
     }, '');
 
-    onVisitHighlightedWord?.(
-      parentElement.children[elementsToWrap[0].index] as VisitableElement,
-      options.wordIdsMap.get(wordStr)
+    if (element.properties) {
+      element.properties['data-highlighted-chars'] = '';
+    }
+
+    onVisitHighlightedChars?.(
+      element as VisitableElement,
+      options.idsMap.get(wordStr)
     );
   } else {
     const [{ element }] = elementsToWrap;
@@ -64,13 +68,15 @@ export function wrapHighlightedWords(
       return;
     }
 
-    onVisitHighlightedWord?.(
-      element as VisitableElement,
-      options.wordIdsMap.get(textElement.value)
-    );
     // used to skip already parsed words
     if (element.properties) {
       element.properties['rehype-pretty-code-visited'] = '';
+      element.properties['data-highlighted-chars'] = '';
     }
+
+    onVisitHighlightedChars?.(
+      element as VisitableElement,
+      options.idsMap.get(textElement.value)
+    );
   }
 }
