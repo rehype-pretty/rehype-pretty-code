@@ -119,7 +119,7 @@ export default function rehypePrettyCode(
 ): void | Transformer<Root, Root> {
   const {
     grid = true,
-    theme = 'dark-plus',
+    theme = 'github-dark-dimmed',
     keepBackground = true,
     tokensMap = {},
     filterMetaString = (v) => v,
