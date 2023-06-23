@@ -8,21 +8,19 @@
     max-width: 800px;
   }
   pre {
-    background: black;
-    display: grid;
     padding: 16px;
   }
   span > code {
     background: black;
     padding: 4px;
   }
-  .highlighted, .word {
+  [data-highlighted-line], [data-highlighted-chars] {
     background-color: rgba(255, 255, 255, 0.25);
   }
   code[data-line-numbers] {
     counter-reset: line;
   }
-  code[data-line-numbers]>.line:before {
+  code[data-line-numbers]>[data-line]::before {
     counter-increment: line;
     content: counter(line);
     display: inline-block;
@@ -36,6 +34,8 @@
 <p>/age/#a /name/#a /setAge/#b /setName/#b /42/#c /'Taylor'/#c</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> [</span><span style="
@@ -62,6 +62,8 @@
 <p><code>/&#x3C;div/#a /id="true">/#b</code></p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span data-highlighted-chars-wrapper="" data-highlighted-chars="" data-chars-id="a" class="word" style="
@@ -75,6 +77,8 @@
 <p>/age/#id</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="
@@ -88,6 +92,8 @@
 <p>/age/2</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">age</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'</span><span style="color: #9ECBFF" data-highlighted-chars="" class="word">age</span><span style="color: #9ECBFF">'</span><span style="color: #E1E4E8">; </span><span style="color: #6A737D">// age;</span></span></code></pre>
@@ -95,6 +101,8 @@
 <p>/car/1</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF" data-highlighted-chars="" class="word">car</span><span style="color: #79B8FF">rotcar</span><span style="color: #E1E4E8">,</span><span style="color: #79B8FF">carcarrot</span><span style="color: #E1E4E8">;</span></span>

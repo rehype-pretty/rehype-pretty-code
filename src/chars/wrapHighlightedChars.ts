@@ -1,5 +1,5 @@
 import type { Element } from 'hast';
-import { CharsElement } from '../..';
+import type { CharsElement } from '../..';
 import type { CharsHighlighterOptions } from '../types';
 import { isElement, isText } from '../utils';
 

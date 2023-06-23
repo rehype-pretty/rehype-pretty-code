@@ -8,21 +8,19 @@
     max-width: 800px;
   }
   pre {
-    background: black;
-    display: grid;
     padding: 16px;
   }
   span > code {
     background: black;
     padding: 4px;
   }
-  .highlighted, .word {
+  [data-highlighted-line], [data-highlighted-chars] {
     background-color: rgba(255, 255, 255, 0.25);
   }
   code[data-line-numbers] {
     counter-reset: line;
   }
-  code[data-line-numbers]>.line:before {
+  code[data-line-numbers]>[data-line]::before {
     counter-increment: line;
     content: counter(line);
     display: inline-block;
@@ -36,6 +34,8 @@
 <p>/&#x3C;span class="test/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="html"
     data-theme="default"
   ><code data-language="html" data-theme="default"><span data-line=""><span data-highlighted-chars-wrapper="" data-highlighted-chars="" class="word"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">class</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"test</span></span><span style="color: #9ECBFF">"</span><span style="color: #E1E4E8">>&#x3C;/</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8">></span></span></code></pre>
@@ -43,6 +43,8 @@
 <p>/span class="test"/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="html"
     data-theme="default"
   ><code data-language="html" data-theme="default"><span data-line=""><span style="color: #E1E4E8">&#x3C;</span><span data-highlighted-chars-wrapper="" data-highlighted-chars="" class="word"><span style="color: #85E89D">span</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">class</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"test"</span></span><span style="color: #E1E4E8">>&#x3C;/</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8">></span></span></code></pre>
@@ -50,6 +52,8 @@
 <p>/test"/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="html"
     data-theme="default"
   ><code data-language="html" data-theme="default"><span data-line=""><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">class</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"</span><span style="color: #9ECBFF" data-highlighted-chars="" class="word">test"</span><span style="color: #E1E4E8">>&#x3C;/</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8">></span></span></code></pre>
@@ -57,6 +61,8 @@
 <p>/"test/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="html"
     data-theme="default"
   ><code data-language="html" data-theme="default"><span data-line=""><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">class</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF" data-highlighted-chars="" class="word">"test</span><span style="color: #9ECBFF">"</span><span style="color: #E1E4E8">>&#x3C;/</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8">></span></span></code></pre>
@@ -64,6 +70,8 @@
 <p>/"te/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="html"
     data-theme="default"
   ><code data-language="html" data-theme="default"><span data-line=""><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">class</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF" data-highlighted-chars="" class="word">"te</span><span style="color: #9ECBFF">st"</span><span style="color: #E1E4E8">>&#x3C;/</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8">></span></span></code></pre>
@@ -71,6 +79,8 @@
 <p>/st"/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="html"
     data-theme="default"
   ><code data-language="html" data-theme="default"><span data-line=""><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">class</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"te</span><span style="color: #9ECBFF" data-highlighted-chars="" class="word">st"</span><span style="color: #E1E4E8">>&#x3C;/</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8">></span></span></code></pre>
@@ -78,6 +88,8 @@
 <p>/st">/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="html"
     data-theme="default"
   ><code data-language="html" data-theme="default"><span data-line=""><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">class</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"te</span><span data-highlighted-chars-wrapper="" data-highlighted-chars="" class="word"><span style="color: #9ECBFF">st"</span><span style="color: #E1E4E8">></span></span><span style="color: #E1E4E8">&#x3C;/</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8">></span></span></code></pre>
@@ -85,6 +97,8 @@
 <p>/="te/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="html"
     data-theme="default"
   ><code data-language="html" data-theme="default"><span data-line=""><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">class</span><span data-highlighted-chars-wrapper="" data-highlighted-chars="" class="word"><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"te</span></span><span style="color: #9ECBFF">st"</span><span style="color: #E1E4E8">>&#x3C;/</span><span style="color: #85E89D">span</span><span style="color: #E1E4E8">></span></span></code></pre>
@@ -92,6 +106,8 @@
 <p>/>/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="html"
     data-theme="default"
   ><code data-language="html" data-theme="default"><span data-line=""><span style="color: #FDAEB7; font-style: italic">&#x3C;</span><span style="color: #E1E4E8" data-highlighted-chars="" class="word">></span></span></code></pre>
@@ -99,6 +115,8 @@
 <p>/&#x3C;/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="html"
     data-theme="default"
   ><code data-language="html" data-theme="default"><span data-line=""><span style="color: #FDAEB7; font-style: italic" data-highlighted-chars="" class="word">&#x3C;</span><span style="color: #E1E4E8">></span></span></code></pre>
@@ -106,6 +124,8 @@
 <p>/&#x3C;>/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="html"
     data-theme="default"
   ><code data-language="html" data-theme="default"><span data-line=""><span data-highlighted-chars-wrapper="" data-highlighted-chars="" class="word"><span style="color: #FDAEB7; font-style: italic">&#x3C;</span><span style="color: #E1E4E8">></span></span></span></code></pre>
@@ -113,6 +133,8 @@
 <p>/theme: 'monokai'/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">options</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> {</span></span>
@@ -122,6 +144,8 @@
 <p>/ theme: /</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">options</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> {</span></span>
@@ -131,6 +155,8 @@
 <p>/light &#x26;&#x26; fluffy/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">options</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> {</span></span>
@@ -140,6 +166,8 @@
 <p>/car/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF" data-highlighted-chars="" class="word">car</span><span style="color: #79B8FF">rot</span><span style="color: #79B8FF" data-highlighted-chars="" class="word">car</span><span style="color: #E1E4E8">,</span><span style="color: #79B8FF" data-highlighted-chars="" class="word">car</span><span style="color: #79B8FF" data-highlighted-chars="" class="word">car</span><span style="color: #79B8FF">rot</span><span style="color: #E1E4E8">;</span></span>
@@ -148,6 +176,8 @@
 <p>/car,/2</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">carrotcar</span><span style="color: #E1E4E8">,</span><span style="color: #79B8FF">carcarrot</span><span style="color: #E1E4E8">;</span></span>
@@ -156,6 +186,8 @@
 <p>/,car/1</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">carrotcar</span><span data-highlighted-chars-wrapper="" data-highlighted-chars="" class="word"><span style="color: #E1E4E8">,</span><span style="color: #79B8FF">car</span></span><span style="color: #79B8FF">carrot</span><span style="color: #E1E4E8">;</span></span>
@@ -164,6 +196,8 @@
 <p>/ot,ca/</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">carr</span><span data-highlighted-chars-wrapper="" data-highlighted-chars="" class="word"><span style="color: #79B8FF">ot</span><span style="color: #E1E4E8">,</span><span style="color: #79B8FF">ca</span></span><span style="color: #79B8FF">rr</span><span data-highlighted-chars-wrapper="" data-highlighted-chars="" class="word"><span style="color: #79B8FF">ot</span><span style="color: #E1E4E8">,</span><span style="color: #79B8FF">ca</span></span><span style="color: #79B8FF">rr</span><span data-highlighted-chars-wrapper="" data-highlighted-chars="" class="word"><span style="color: #79B8FF">ot</span><span style="color: #E1E4E8">,</span><span style="color: #79B8FF">ca</span></span><span style="color: #79B8FF">rrot</span><span style="color: #E1E4E8">;</span></span></code></pre>

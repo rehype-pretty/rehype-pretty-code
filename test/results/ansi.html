@@ -8,21 +8,19 @@
     max-width: 800px;
   }
   pre {
-    background: black;
-    display: grid;
     padding: 16px;
   }
   span > code {
     background: black;
     padding: 4px;
   }
-  .highlighted, .word {
+  [data-highlighted-line], [data-highlighted-chars] {
     background-color: rgba(255, 255, 255, 0.25);
   }
   code[data-line-numbers] {
     counter-reset: line;
   }
-  code[data-line-numbers]>.line:before {
+  code[data-line-numbers]>[data-line]::before {
     counter-increment: line;
     content: counter(line);
     display: inline-block;
@@ -42,6 +40,8 @@
     vite --port 3123
   </div>
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="ansi"
     data-theme="default"
   ><code data-language="ansi" data-theme="default"><span data-line=""><span style="color: #39c5cf">  vite v2.8.6</span><span style="color: #34d058"> dev server running at:</span></span>

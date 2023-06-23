@@ -8,21 +8,19 @@
     max-width: 800px;
   }
   pre {
-    background: black;
-    display: grid;
     padding: 16px;
   }
   span > code {
     background: black;
     padding: 4px;
   }
-  .highlighted, .word {
+  [data-highlighted-line], [data-highlighted-chars] {
     background-color: rgba(255, 255, 255, 0.25);
   }
   code[data-line-numbers] {
     counter-reset: line;
   }
-  code[data-line-numbers]>.line:before {
+  code[data-line-numbers]>[data-line]::before {
     counter-increment: line;
     content: counter(line);
     display: inline-block;
@@ -39,6 +37,8 @@
     app.js
   </div>
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">code</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">true</span><span style="color: #E1E4E8">;</span></span></code></pre>
@@ -49,6 +49,8 @@
     ./components/index.js
   </div>
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">title</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'components'</span><span style="color: #E1E4E8">;</span></span></code></pre>
@@ -59,6 +61,8 @@
     ./components/{4}.js
   </div>
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
   ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF" data-highlighted-chars="" class="word">title</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'components'</span><span style="color: #E1E4E8">;</span></span></code></pre>
