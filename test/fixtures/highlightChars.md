@@ -1,4 +1,4 @@
-## Highlighted word
+## Highlight chars
 
 /carrot/
 

@@ -1,4 +1,4 @@
-## Highlighted words differently
+## Highlight chars by id
 
 /age/#a /name/#a /setAge/#b /setName/#b /42/#c /'Taylor'/#c
 
