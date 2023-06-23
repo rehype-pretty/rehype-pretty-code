@@ -31,7 +31,7 @@ export function getElementsToHighlight(
       if (
         !maybeElement ||
         maybeElement.type !== 'element' ||
-        // ignore any previously matched words within
+        // ignore any previously matched chars within
         hasOwnProperty(
           maybeElement.properties ?? {},
           'rehype-pretty-code-visited'
@@ -42,17 +42,17 @@ export function getElementsToHighlight(
 
       const content = getContent(maybeElement) || '';
 
-      // node is the word, or it finishes the word
+      // node is the chars, or it finishes the chars
       if (content === chars || charsSoFar + content === chars) {
         toWrap.push({ element: maybeElement, index: i });
         return toWrap;
       }
 
-      // check if the whole node is a continuation of the word
+      // check if the whole node is a continuation of the chars
       if (chars.startsWith(charsSoFar + content)) {
         // make sure we continue here only if further siblings
-        // complete the word. Otherwise an earlier repetition
-        // of a section of the word will lead us down the wrong path
+        // complete the chars. Otherwise an earlier repetition
+        // of a section of the chars will lead us down the wrong path
         if (
           nextElementMaybeContinuesChars({
             elements,
@@ -90,9 +90,9 @@ export function getElementsToHighlight(
 
         if (rightPart || leftPart || rest.length > 0) {
           // One of the below scenarios should be true
-          // 1. the whole word is inside the string (at least once) ca[rro]t
-          // 2. the word finishes or starts & ends on the beginnning of the string ...[carr]ot
-          // 3. the word starts or starts & ends from the end of the string carr[ot]...
+          // 1. the whole set of chars are inside the string (at least once) ca[rro]t
+          // 2. the chars finish or start & end on the beginning of the string ...[carr]ot
+          // 3. the chars start or start & end from the end of the string carr[ot]...
 
           const withNextNode =
             content +

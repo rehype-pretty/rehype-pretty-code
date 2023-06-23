@@ -1,6 +1,6 @@
 import type { Element } from 'hast';
 import type { CharsHighlighterOptions } from '../types';
-import type { VisitableElement } from '../..';
+import type { CharsElement } from '../..';
 import { getElementsToHighlight } from './getElementsToHighlight';
 import { wrapHighlightedChars } from './wrapHighlightedChars';
 import { toString } from 'hast-util-to-string';
@@ -20,7 +20,7 @@ export function charsHighlighter(
   charsList: string[],
   options: CharsHighlighterOptions,
   onVisitHighlightedChars?: (
-    element: VisitableElement,
+    element: CharsElement,
     id: string | undefined
   ) => void
 ) {
@@ -60,7 +60,8 @@ export function charsHighlighter(
           onVisitHighlightedChars
         );
 
-        // re-start from the 'last' node (the word or part of it may exist multiple times in the same node)
+        // re-start from the 'last' node (the chars or part of them may exist
+        // multiple times in the same node)
         // account for possible extra nodes added from split with - 2
         startIndex = Math.max(
           elementsToWrap[elementsToWrap.length - 1].index - 2,

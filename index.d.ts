@@ -1,9 +1,18 @@
 import type { Highlighter, IShikiTheme } from 'shiki';
 import type { Transformer } from 'unified';
-import type { Root, Element } from 'hast';
+import type { Root, Element, Properties } from 'hast';
 
-export type VisitableElement = Omit<Element, 'properties'> & {
+export type LineElement = Omit<Element, 'properties'> & {
+  properties: Properties & { className: string[] };
+};
+
+export type CharsElement = Omit<Element, 'properties' | 'children'> & {
   properties: Properties & { className?: string[] };
+  children: Array<
+    Omit<Element, 'properties'> & {
+      properties: Properties;
+    }
+  >;
 };
 
 type Theme = IShikiTheme | string;
@@ -14,12 +23,9 @@ export interface Options {
   keepBackground?: boolean;
   tokensMap?: Record<string, string>;
   filterMetaString?(str: string): string;
-  onVisitLine?(element: VisitableElement): void;
-  onVisitHighlightedLine?(element: VisitableElement): void;
-  onVisitHighlightedChars?(
-    element: VisitableElement,
-    id: string | undefined
-  ): void;
+  onVisitLine?(element: LineElement): void;
+  onVisitHighlightedLine?(element: LineElement): void;
+  onVisitHighlightedChars?(element: CharsElement, id: string | undefined): void;
   getHighlighter?(options: Pick<Options, 'theme'>): Promise<Highlighter>;
 }
 

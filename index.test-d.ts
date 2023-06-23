@@ -12,7 +12,20 @@ unified().use(rehypePrettyCode, {
   onVisitHighlightedLine(element) {
     element.properties.className?.push('highlighted');
   },
-  onVisitHighlightedChars(element) {
+  onVisitHighlightedChars(element, id) {
     element.properties.className = ['word'];
+
+    if (id) {
+      // If the word spans across syntax boundaries (e.g. punctuation), remove
+      // colors from the child elements.
+      if (element.properties['data-highlighted-chars-wrapper']) {
+        element.children.forEach((child) => {
+          child.properties.style = '';
+        });
+      }
+
+      element.properties.style = '';
+      element.properties['data-word-id'] = id;
+    }
   },
 });

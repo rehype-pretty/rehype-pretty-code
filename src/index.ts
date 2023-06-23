@@ -1,5 +1,5 @@
 import type { Element, ElementContent, Root } from 'hast';
-import type { Options, VisitableElement } from '../';
+import type { LineElement, Options } from '../';
 import type { CharsHighlighterOptions } from './types';
 import type { Highlighter } from 'shiki';
 import type { Transformer } from 'unified';
@@ -370,16 +370,16 @@ export default function rehypePrettyCode(
                 element.children = [{ type: 'text', value: ' ' }];
               }
 
-              element.properties.className = undefined;
+              element.properties.className = [];
               element.properties['data-line'] = '';
-              onVisitLine?.(element as VisitableElement);
+              onVisitLine?.(element as LineElement);
 
               if (
                 lineNumbers.length !== 0 &&
                 lineNumbers.includes(++lineCounter)
               ) {
                 element.properties['data-highlighted-line'] = '';
-                onVisitHighlightedLine?.(element as VisitableElement);
+                onVisitHighlightedLine?.(element as LineElement);
               }
 
               charsHighlighter(

@@ -1,6 +1,6 @@
 import type { Element } from 'hast';
+import { CharsElement } from '../..';
 import type { CharsHighlighterOptions } from '../types';
-import type { VisitableElement } from '../..';
 import { isElement, isText } from '../utils';
 
 export function wrapHighlightedChars(
@@ -9,7 +9,7 @@ export function wrapHighlightedChars(
   options: CharsHighlighterOptions,
   ignoreWord: boolean,
   onVisitHighlightedChars?: (
-    element: VisitableElement,
+    element: CharsElement,
     id: string | undefined
   ) => void
 ) {
@@ -33,7 +33,7 @@ export function wrapHighlightedChars(
       {
         type: 'element',
         tagName: 'span',
-        properties: { 'data-rehype-pretty-code-wrapper': true },
+        properties: { 'data-highlighted-chars-wrapper': '' },
         children: elementsToWrap.map(({ element }) => element),
       }
     );
@@ -53,13 +53,10 @@ export function wrapHighlightedChars(
     }, '');
 
     const id = options.idsMap.get(wordStr);
-
-    if (element.properties) {
-      element.properties['data-highlighted-chars'] = '';
-      element.properties['data-chars-id'] = id;
-    }
-
-    onVisitHighlightedChars?.(element as VisitableElement, id);
+    element.properties = element.properties || {};
+    element.properties['data-highlighted-chars'] = '';
+    element.properties['data-chars-id'] = id;
+    onVisitHighlightedChars?.(element as CharsElement, id);
   } else {
     const [{ element }] = elementsToWrap;
     const textElement = element.children[0];
@@ -70,13 +67,12 @@ export function wrapHighlightedChars(
 
     const id = options.idsMap.get(textElement.value);
 
-    if (element.properties) {
-      // used to skip already parsed words
-      element.properties['rehype-pretty-code-visited'] = '';
-      element.properties['data-highlighted-chars'] = '';
-      element.properties['data-chars-id'] = id;
-    }
+    element.properties = element.properties || {};
+    // used to skip already parsed chars
+    element.properties['rehype-pretty-code-visited'] = '';
+    element.properties['data-highlighted-chars'] = '';
+    element.properties['data-chars-id'] = id;
 
-    onVisitHighlightedChars?.(element as VisitableElement, id);
+    onVisitHighlightedChars?.(element as CharsElement, id);
   }
 }
