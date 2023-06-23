@@ -20,7 +20,9 @@ unified().use(rehypePrettyCode, {
       // colors from the child elements.
       if (element.properties['data-highlighted-chars-wrapper']) {
         element.children.forEach((child) => {
-          child.properties.style = '';
+          if ('properties' in child && child.properties) {
+            child.properties.style = '';
+          }
         });
       }
 

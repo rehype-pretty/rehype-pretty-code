@@ -8,11 +8,7 @@ export type LineElement = Omit<Element, 'properties'> & {
 
 export type CharsElement = Omit<Element, 'properties' | 'children'> & {
   properties: Properties & { className?: string[] };
-  children: Array<
-    Omit<Element, 'properties'> & {
-      properties: Properties;
-    }
-  >;
+  children: Array<Element | Text>;
 };
 
 type Theme = IShikiTheme | string;
