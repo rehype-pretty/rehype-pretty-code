@@ -52,14 +52,14 @@ export function wrapHighlightedChars(
       return acc;
     }, '');
 
+    const id = options.idsMap.get(wordStr);
+
     if (element.properties) {
       element.properties['data-highlighted-chars'] = '';
+      element.properties['data-chars-id'] = id;
     }
 
-    onVisitHighlightedChars?.(
-      element as VisitableElement,
-      options.idsMap.get(wordStr)
-    );
+    onVisitHighlightedChars?.(element as VisitableElement, id);
   } else {
     const [{ element }] = elementsToWrap;
     const textElement = element.children[0];
@@ -68,15 +68,15 @@ export function wrapHighlightedChars(
       return;
     }
 
-    // used to skip already parsed words
+    const id = options.idsMap.get(textElement.value);
+
     if (element.properties) {
+      // used to skip already parsed words
       element.properties['rehype-pretty-code-visited'] = '';
       element.properties['data-highlighted-chars'] = '';
+      element.properties['data-chars-id'] = id;
     }
 
-    onVisitHighlightedChars?.(
-      element as VisitableElement,
-      options.idsMap.get(textElement.value)
-    );
+    onVisitHighlightedChars?.(element as VisitableElement, id);
   }
 }
