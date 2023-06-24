@@ -1,9 +1,10 @@
 [Rehype Pretty Code](https://github.com/atomiks/rehype-pretty-code) is a Rehype
-plugin that provides beautiful code blocks for Markdown or MDX. It's fast since
-it avoids runtime syntax highlighting by executing at build-time, and works with
-new features like React Server Components.
+plugin powered by the [Shiki](https://github.com/shikijs/shiki) syntax
+highlighter that provides beautiful code blocks for Markdown or MDX. It's fast
+since it avoids runtime syntax highlighting by executing at build-time, and
+works with new features like React Server Components.
 
-### Perfect syntax highlighting
+## Perfect syntax highlighting
 
 Leverage the accuracy of VS Code's syntax highlighting engine and the popularity
 of its themes ecosystem — use any VS Code theme you want!
@@ -35,7 +36,7 @@ export default class MyDocument extends Document {
 > The theme is [Moonlight II](https://github.com/atomiks/moonlight-vscode-theme)
 > with a custom background color.
 
-### Line numbers and line highlighting are supported
+## Line numbers and line highlighting are supported
 
 ```js {4}
 import { useFloating } from '@floating-ui/react';
@@ -52,7 +53,7 @@ function MyComponent() {
 }
 ```
 
-### Word highlighting too
+## Word highlighting
 
 ```js /floatingStyles/
 import { useFloating } from '@floating-ui/react';
@@ -69,11 +70,11 @@ function MyComponent() {
 }
 ```
 
-### Inline code highlighting
+## Inline code highlighting
 
 The result of `[1, 2, 3].join('-'){:js}` is `'1-2-3'{:js}`.
 
-#### Context-aware inline code
+### Context-aware inline code
 
 For instance, if you had the following code block:
 
@@ -89,7 +90,7 @@ we can color it as a function. Same with `function{:.keyword}`, or
 you to semantically tie inline code with the nearest code block it's referring
 to.
 
-### ANSI highlighting
+## ANSI highlighting
 
 ```ansi
 [0;36m  vite v2.8.6[0;32m dev server running at:[0m
@@ -113,8 +114,6 @@ npm install rehype-pretty-code shiki
 ```
 
 ## Usage
-
-### Unified
 
 ```js /rehypePrettyCode/
 import { unified } from 'unified';
@@ -194,7 +193,7 @@ const options = {
 
 ### Theme
 
-Shiki has a bunch of
+The default theme is `github-dark-dimmed{:.string}`. Shiki has a bunch of
 [pre-packaged themes](https://unpkg.com/browse/shiki@0.14.2/themes/), which can
 be specified as a plain string:
 
