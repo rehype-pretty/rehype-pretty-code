@@ -21,6 +21,8 @@ interface ToFragmentProps {
   inline?: boolean;
   keepBackground?: boolean;
   lineNumbersMaxDigits?: number;
+  onVisitTitle?: (element: Element) => void;
+  onVisitCaption?: (element: Element) => void;
 }
 
 function toFragment(
@@ -33,6 +35,8 @@ function toFragment(
     inline = false,
     keepBackground = true,
     lineNumbersMaxDigits = 1,
+    onVisitTitle,
+    onVisitCaption,
   }: ToFragmentProps
 ) {
   element.tagName = inline ? 'span' : 'div';
@@ -50,7 +54,10 @@ function toFragment(
 
       // Remove class="shiki"
       pre.properties.className = undefined;
-      if (!keepBackground) pre.properties = {};
+
+      if (!keepBackground) {
+        pre.properties = {};
+      }
 
       pre.properties['data-language'] = lang;
       pre.properties['data-theme'] = mode;
@@ -63,7 +70,9 @@ function toFragment(
       code.properties['data-theme'] = mode;
 
       if (inline) {
-        if (keepBackground) code.properties['style'] = pre.properties['style'];
+        if (keepBackground) {
+          code.properties.style = pre.properties.style;
+        }
         return code;
       }
 
@@ -75,7 +84,7 @@ function toFragment(
       const fragments: ElementContent[] = [];
 
       if (title) {
-        const elementContent: ElementContent = {
+        const elementContent: Element = {
           type: 'element',
           tagName: 'div',
           properties: {
@@ -85,13 +94,14 @@ function toFragment(
           },
           children: [{ type: 'text', value: title }],
         };
+        onVisitTitle?.(elementContent);
         fragments.push(elementContent);
       }
 
       fragments.push(pre);
 
       if (caption) {
-        const elementContent: ElementContent = {
+        const elementContent: Element = {
           type: 'element',
           tagName: 'div',
           properties: {
@@ -101,6 +111,7 @@ function toFragment(
           },
           children: [{ type: 'text', value: caption }],
         };
+        onVisitCaption?.(elementContent);
         fragments.push(elementContent);
       }
 
@@ -113,6 +124,7 @@ const globalHighlighterCache = new Map<
   string,
   Map<string, Promise<Highlighter>>
 >();
+const hastParser = unified().use(rehypeParse, { fragment: true });
 
 export default function rehypePrettyCode(
   options: Options = {}
@@ -123,10 +135,12 @@ export default function rehypePrettyCode(
     keepBackground = true,
     tokensMap = {},
     filterMetaString = (v) => v,
+    getHighlighter = shikiHighlighter,
     onVisitLine,
     onVisitHighlightedLine,
     onVisitHighlightedChars,
-    getHighlighter = shikiHighlighter,
+    onVisitTitle,
+    onVisitCaption,
   } = options;
 
   const optionsHash = hashObj(
@@ -146,7 +160,6 @@ export default function rehypePrettyCode(
     globalHighlighterCache.set(optionsHash, highlighterCache);
   }
   const highlighters = new Map();
-  const hastParser = unified().use(rehypeParse, { fragment: true });
 
   if (theme == null || typeof theme === 'string' || isShikiTheme(theme)) {
     if (!highlighterCache.has('default')) {
@@ -260,17 +273,15 @@ export default function rehypePrettyCode(
           'language-',
           ''
         );
-        const metastring = isElement(codeElement)
-          ? (codeElement.data?.meta as string) ??
-            (codeElement.properties?.metastring as string) ??
-            ''
-          : '';
+        const metastring = (codeElement.data?.meta ??
+          codeElement.properties?.metastring ??
+          '') as string;
 
         let meta = filterMetaString(metastring);
 
-        const tiltleMatch = meta.match(/title="([^"]*)"/);
-        const title = tiltleMatch?.[1] ?? null;
-        meta = meta.replace(tiltleMatch?.[0] ?? '', '');
+        const titleMatch = meta.match(/title="([^"]*)"/);
+        const title = titleMatch?.[1] ?? null;
+        meta = meta.replace(titleMatch?.[0] ?? '', '');
 
         const captionMatch = meta.match(/caption="([^"]*)"/);
         const caption = captionMatch?.[1] ?? null;
@@ -401,6 +412,8 @@ export default function rehypePrettyCode(
           caption,
           keepBackground,
           lineNumbersMaxDigits,
+          onVisitTitle,
+          onVisitCaption,
         });
       }
     });

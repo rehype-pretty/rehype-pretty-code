@@ -88,6 +88,12 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
     onVisitLine(node) {
       node;
     },
+    onVisitTitle(node) {
+      node.properties.style = 'font-weight: bold;';
+    },
+    onVisitCaption(node) {
+      node.properties.style = 'color: red;';
+    },
     getHighlighter,
   });
 

@@ -30,4 +30,10 @@ unified().use(rehypePrettyCode, {
       element.properties['data-word-id'] = id;
     }
   },
+  onVisitTitle(element) {
+    element.tagName = 'h2';
+  },
+  onVisitCaption(element) {
+    element.tagName = 'figcaption';
+  },
 });

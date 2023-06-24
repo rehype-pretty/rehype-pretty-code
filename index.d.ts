@@ -19,10 +19,12 @@ export interface Options {
   keepBackground?: boolean;
   tokensMap?: Record<string, string>;
   filterMetaString?(str: string): string;
+  getHighlighter?(options: Pick<Options, 'theme'>): Promise<Highlighter>;
   onVisitLine?(element: LineElement): void;
   onVisitHighlightedLine?(element: LineElement): void;
   onVisitHighlightedChars?(element: CharsElement, id: string | undefined): void;
-  getHighlighter?(options: Pick<Options, 'theme'>): Promise<Highlighter>;
+  onVisitTitle?(element: Element): void;
+  onVisitCaption?(element: Element): void;
 }
 
 export default function rehypePrettyCode(
