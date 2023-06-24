@@ -171,6 +171,19 @@ const withMDX = require('@next/mdx')({
 
 To customize the theme and highlighting, options can be specified.
 
+### Code block styles
+
+Code blocks are unstyled by default to give you full control. Code blocks
+however have a `display: grid{:sass}` style by default to allow line
+highlighting to span the entire width of a horizontally scrollable code block.
+You can disable this setting if necessary:
+
+```js
+const options = {
+  grid: false,
+};
+```
+
 ### Theme
 
 Shiki has a bunch of
