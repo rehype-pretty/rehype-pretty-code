@@ -1,9 +1,7 @@
-[Rehype Pretty Code](https://github.com/atomiks/rehype-pretty-code) is a
-build-time (or server-side) Rehype plugin that provides beautiful code blocks
-for Markdown or MDX.
-
-It's fast since it avoids runtime syntax highlighting, and works with new
-features like React Server Components.
+[Rehype Pretty Code](https://github.com/atomiks/rehype-pretty-code) is a Rehype
+plugin that provides beautiful code blocks for Markdown or MDX. It's fast since
+it avoids runtime syntax highlighting by executing at build-time, and works with
+new features like React Server Components.
 
 ### Perfect syntax highlighting
 
@@ -151,6 +149,7 @@ The following example shows how to use this package with Next.js.
 const rehypePrettyCode = require('rehype-pretty-code');
 const fs = require('fs');
 
+/** @type {import('rehype-pretty-code').Options} */
 const options = {
   // See Options section below.
 };
@@ -173,10 +172,19 @@ To customize the theme and highlighting, options can be specified.
 
 ### Code block styles
 
-Code blocks are unstyled to give you full control. Code blocks however have a
-`display: grid{:sass}` style by default to allow line highlighting to span the
-entire width of a horizontally scrollable code block. You can disable this
-setting if necessary:
+Code blocks are unstyled to give you full control. Code blocks however assume a
+grid style, so ensure the following style is present:
+
+```css
+pre > code {
+  display: grid;
+}
+```
+
+This allows line highlighting to span the entire width of a
+horizontally-scrollable code block.
+
+You can disable this setting if necessary:
 
 ```js
 const options = {

@@ -2,9 +2,9 @@ const colors = require('tailwindcss/colors');
 
 const linkHeadingStyles = {
   color: colors.gray[100],
-  borderBottomColor: 'transparent !important',
+  borderBottomColor: 'transparent',
   '&:hover': {
-    color: `${colors.gray[900]} !important`,
+    color: `${colors.gray[900]}`,
   },
 };
 
@@ -14,24 +14,11 @@ module.exports = {
   theme: {
     extend: {
       typography: {
-        xl: {
-          css: {
-            pre: {
-              fontSize: '1rem',
-            },
-          },
-        },
-        lg: {
-          css: {
-            code: {
-              '> .line': {
-                borderLeft: `2px solid transparent`,
-              },
-            },
-          },
-        },
         DEFAULT: {
           css: {
+            pre: {
+              background: 'rgba(205, 200, 255, 0.05)',
+            },
             'h2 a': linkHeadingStyles,
             'h3 a': linkHeadingStyles,
             'h4 a': linkHeadingStyles,
@@ -41,12 +28,8 @@ module.exports = {
               fontSize: '90%',
               color: colors.zinc[500],
               borderLeftColor: colors.zinc[700],
-              'p::before': {
-                display: 'none',
-              },
-              'p::after': {
-                display: 'none',
-              },
+              'p::before': { display: 'none' },
+              'p::after': { display: 'none' },
             },
             a: {
               textDecoration: 'none',
@@ -62,16 +45,12 @@ module.exports = {
             },
             code: {
               color: '#86e1fc',
-              '&::before': {
-                content: `"" !important`,
-              },
-              '&::after': {
-                content: `"" !important`,
-              },
+              '&::before': { content: `"" !important` },
+              '&::after': { content: `"" !important` },
               fontWeight: 'normal',
             },
             '[data-rehype-pretty-code-fragment]:nth-of-type(2) pre': {
-              '.line::before': {
+              '[data-line]::before': {
                 content: 'counter(line)',
                 counterIncrement: 'line',
                 display: 'inline-block',
@@ -80,22 +59,8 @@ module.exports = {
                 textAlign: 'right',
                 color: colors.slate[600],
               },
-
-              '.line--highlighted::before': {
+              '[data-highlighted-line]::before': {
                 color: colors.slate[400],
-              },
-            },
-            pre: {
-              background: 'rgba(200,200,255,0.05)',
-              '> code': {
-                '> .line': {
-                  padding: '0 1.25rem',
-                  borderLeft: `2px solid transparent`,
-                },
-                '> .line.line--highlighted': {
-                  background: 'rgba(200,200,255,0.1)',
-                  borderLeftColor: colors.blue[400],
-                },
               },
             },
           },
