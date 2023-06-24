@@ -3,24 +3,24 @@ import { splitElement } from './splitElement';
 import {
   findOverlap,
   getContent,
-  nextElementMaybeContinuesWord,
+  nextElementMaybeContinuesChars,
 } from './utils';
 import { hasOwnProperty } from '../utils';
 
 export function getElementsToHighlight(
   element: Element,
-  word: string,
+  chars: string,
   startIndex = 0,
-  ignoreWord = false
+  ignoreChars = false
 ): Array<{ element: Element; index: number }> {
   const toWrap = [];
-  let wordSoFar = '';
+  let charsSoFar = '';
 
   if (element.children) {
     const elements = element.children as Element[];
 
     for (let i = startIndex; i < elements.length; i++) {
-      const remaining = wordSoFar ? word.replace(wordSoFar, '') : word;
+      const remaining = charsSoFar ? chars.replace(charsSoFar, '') : chars;
 
       if (remaining === '') {
         return toWrap;
@@ -31,7 +31,7 @@ export function getElementsToHighlight(
       if (
         !maybeElement ||
         maybeElement.type !== 'element' ||
-        // ignore any previously matched words within
+        // ignore any previously matched chars within
         hasOwnProperty(
           maybeElement.properties ?? {},
           'rehype-pretty-code-visited'
@@ -42,26 +42,26 @@ export function getElementsToHighlight(
 
       const content = getContent(maybeElement) || '';
 
-      // node is the word, or it finishes the word
-      if (content === word || wordSoFar + content === word) {
+      // node is the chars, or it finishes the chars
+      if (content === chars || charsSoFar + content === chars) {
         toWrap.push({ element: maybeElement, index: i });
         return toWrap;
       }
 
-      // check if the whole node is a continuation of the word
-      if (word.startsWith(wordSoFar + content)) {
+      // check if the whole node is a continuation of the chars
+      if (chars.startsWith(charsSoFar + content)) {
         // make sure we continue here only if further siblings
-        // complete the word. Otherwise an earlier repetition
-        // of a section of the word will lead us down the wrong path
+        // complete the chars. Otherwise an earlier repetition
+        // of a section of the chars will lead us down the wrong path
         if (
-          nextElementMaybeContinuesWord({
+          nextElementMaybeContinuesChars({
             elements,
             nextIndex: i + 1,
             remainingPart: remaining.replace(content, ''),
           })
         ) {
           toWrap.push({ element: elements[i], index: i });
-          wordSoFar += content;
+          charsSoFar += content;
           continue;
         }
       }
@@ -76,7 +76,7 @@ export function getElementsToHighlight(
         if (
           nextPart !== '' &&
           getContent(elements[i + 1]) &&
-          !nextElementMaybeContinuesWord({
+          !nextElementMaybeContinuesChars({
             elements,
             nextIndex: i + 1,
             remainingPart: nextPart,
@@ -90,9 +90,9 @@ export function getElementsToHighlight(
 
         if (rightPart || leftPart || rest.length > 0) {
           // One of the below scenarios should be true
-          // 1. the whole word is inside the string (at least once) ca[rro]t
-          // 2. the word finishes or starts & ends on the beginnning of the string ...[carr]ot
-          // 3. the word starts or starts & ends from the end of the string carr[ot]...
+          // 1. the whole set of chars are inside the string (at least once) ca[rro]t
+          // 2. the chars finish or start & end on the beginning of the string ...[carr]ot
+          // 3. the chars start or start & end from the end of the string carr[ot]...
 
           const withNextNode =
             content +
@@ -100,14 +100,15 @@ export function getElementsToHighlight(
           const nextNodeOverlap = findOverlap(withNextNode, remaining);
           const splitIndex = withNextNode.indexOf(nextNodeOverlap);
 
-          if (word.endsWith(overlap) || word.startsWith(overlap)) {
+          if (chars.endsWith(overlap) || chars.startsWith(overlap)) {
             const rightString = rightPart.replace(overlap, '');
             const innerString = overlap;
             const leftString = content.substring(0, splitIndex);
 
             // need to check this to avoid edge case where the right
-            // side will be duplicated when the matched part repeats within the current node
-            const nextElementContinues = nextElementMaybeContinuesWord({
+            // side will be duplicated when the matched part repeats within the
+            // current node
+            const nextElementContinues = nextElementMaybeContinuesChars({
               elements,
               nextIndex: i + 1,
               remainingPart: nextPart,
@@ -122,10 +123,10 @@ export function getElementsToHighlight(
               rest,
               nextElementContinues,
               index: i,
-              ignoreWord,
+              ignoreChars,
             });
 
-            wordSoFar += overlap;
+            charsSoFar += overlap;
 
             toWrap.push({
               element: newElement,

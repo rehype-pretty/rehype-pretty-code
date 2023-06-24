@@ -1,0 +1,46 @@
+
+<style>
+  html {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  body {
+    margin: 30px auto;
+    max-width: 800px;
+  }
+  pre {
+    padding: 16px;
+  }
+  span > code {
+    background: black;
+    padding: 4px;
+  }
+  [data-highlighted-line], [data-highlighted-chars] {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  code[data-line-numbers] {
+    counter-reset: line;
+  }
+  code[data-line-numbers]>[data-line]::before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 1rem;
+    margin-right: 2rem;
+    text-align: right;
+    color: gray;
+  }
+</style>
+<h2>Highlight multiple chars range</h2>
+<p>/getStringLength/1-2 /str/1,3</p>
+<div data-rehype-pretty-code-fragment="">
+  <pre
+    style="background-color: #24292e"
+    tabindex="0"
+    data-language="js"
+    data-theme="default"
+  ><code data-language="js" data-theme="default"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0" data-highlighted-chars="" class="word">getStringLength</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> (</span><span style="color: #FFAB70" data-highlighted-chars="" class="word">str</span><span style="color: #E1E4E8">) </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> str.</span><span style="color: #79B8FF">length</span><span style="color: #E1E4E8">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF" data-highlighted-chars="" class="word">str</span><span style="color: #79B8FF">Len</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0" data-highlighted-chars="" class="word">getStringLength</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'str'</span><span style="color: #E1E4E8">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">anotherStrLen</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">getStringLength</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'anotherStr'</span><span style="color: #E1E4E8">);</span></span></code></pre>
+</div>

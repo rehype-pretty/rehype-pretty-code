@@ -8,21 +8,19 @@
     max-width: 800px;
   }
   pre {
-    background: black;
-    display: grid;
     padding: 16px;
   }
   span > code {
     background: black;
     padding: 4px;
   }
-  .highlighted, .word {
+  [data-highlighted-line], [data-highlighted-chars] {
     background-color: rgba(255, 255, 255, 0.25);
   }
   code[data-line-numbers] {
     counter-reset: line;
   }
-  code[data-line-numbers]>.line:before {
+  code[data-line-numbers]>[data-line]::before {
     counter-increment: line;
     content: counter(line);
     display: inline-block;
@@ -36,25 +34,31 @@
 <p>showLineNumbersStartAt</p>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
-  ><code data-line-numbers="" data-language="js" data-theme="default" data-line-numbers-max-digits="1"><span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">a</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'a'</span><span style="color: #E1E4E8">;</span></span>
-<span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">b</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'b'</span><span style="color: #E1E4E8">;</span></span>
-<span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">c</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'c'</span><span style="color: #E1E4E8">;</span></span></code></pre>
+  ><code data-line-numbers="" data-language="js" data-theme="default" data-line-numbers-max-digits="1"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">a</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'a'</span><span style="color: #E1E4E8">;</span></span>
+<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">b</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'b'</span><span style="color: #E1E4E8">;</span></span>
+<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">c</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'c'</span><span style="color: #E1E4E8">;</span></span></code></pre>
 </div>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
-  ><code data-line-numbers="" style="counter-set: line 4;" data-language="js" data-theme="default" data-line-numbers-max-digits="1"><span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">a</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'a'</span><span style="color: #E1E4E8">;</span></span>
-<span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">b</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'b'</span><span style="color: #E1E4E8">;</span></span>
-<span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">c</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'c'</span><span style="color: #E1E4E8">;</span></span></code></pre>
+  ><code data-line-numbers="" style="counter-set: line 4;" data-language="js" data-theme="default" data-line-numbers-max-digits="1"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">a</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'a'</span><span style="color: #E1E4E8">;</span></span>
+<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">b</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'b'</span><span style="color: #E1E4E8">;</span></span>
+<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">c</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'c'</span><span style="color: #E1E4E8">;</span></span></code></pre>
 </div>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="js"
     data-theme="default"
-  ><code data-line-numbers="" style="counter-set: line 99;" data-language="js" data-theme="default" data-line-numbers-max-digits="3"><span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">a</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'a'</span><span style="color: #E1E4E8">;</span></span>
-<span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">b</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'b'</span><span style="color: #E1E4E8">;</span></span>
-<span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">c</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'c'</span><span style="color: #E1E4E8">;</span></span></code></pre>
+  ><code data-line-numbers="" style="counter-set: line 99;" data-language="js" data-theme="default" data-line-numbers-max-digits="3"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">a</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'a'</span><span style="color: #E1E4E8">;</span></span>
+<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">b</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'b'</span><span style="color: #E1E4E8">;</span></span>
+<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">c</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'c'</span><span style="color: #E1E4E8">;</span></span></code></pre>
 </div>

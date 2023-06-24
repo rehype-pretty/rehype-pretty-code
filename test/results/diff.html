@@ -8,21 +8,19 @@
     max-width: 800px;
   }
   pre {
-    background: black;
-    display: grid;
     padding: 16px;
   }
   span > code {
     background: black;
     padding: 4px;
   }
-  .highlighted, .word {
+  [data-highlighted-line], [data-highlighted-chars] {
     background-color: rgba(255, 255, 255, 0.25);
   }
   code[data-line-numbers] {
     counter-reset: line;
   }
-  code[data-line-numbers]>.line:before {
+  code[data-line-numbers]>[data-line]::before {
     counter-increment: line;
     content: counter(line);
     display: inline-block;
@@ -35,15 +33,17 @@
 <h2>Diff</h2>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="diff"
     data-theme="default"
-  ><code data-language="diff" data-theme="default"><span class="line"><span style="color: #E1E4E8">import useSWR from 'swr'</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E1E4E8">function Profile() {</span></span>
-<span class="line"><span style="color: #E1E4E8">  const { data, error } = useSWR('/api/user', fetcher)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #FDAEB7">-  if (error) return &#x3C;div>failed to load&#x3C;/div></span></span>
-<span class="line"><span style="color: #85E89D">+  if (!data) return &#x3C;div>loading...&#x3C;/div></span></span>
-<span class="line"><span style="color: #E1E4E8">  return &#x3C;div>hello {data.name}!&#x3C;/div></span></span>
-<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+  ><code data-language="diff" data-theme="default"><span data-line=""><span style="color: #E1E4E8">import useSWR from 'swr'</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color: #E1E4E8">function Profile() {</span></span>
+<span data-line=""><span style="color: #E1E4E8">  const { data, error } = useSWR('/api/user', fetcher)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color: #FDAEB7">-  if (error) return &#x3C;div>failed to load&#x3C;/div></span></span>
+<span data-line=""><span style="color: #85E89D">+  if (!data) return &#x3C;div>loading...&#x3C;/div></span></span>
+<span data-line=""><span style="color: #E1E4E8">  return &#x3C;div>hello {data.name}!&#x3C;/div></span></span>
+<span data-line=""><span style="color: #E1E4E8">}</span></span></code></pre>
 </div>

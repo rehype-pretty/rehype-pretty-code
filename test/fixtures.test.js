@@ -62,13 +62,13 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
   const code = readFileSync(fixture, 'utf8');
 
   const html = await getHTML(code, {
-    keepBackground: resultHTMLName.includes('keepBackground'),
+    keepBackground: !resultHTMLName.includes('keepBackground'),
     filterMetaString: (string) => string?.replace(/filename=".*"/, ''),
     theme: getTheme(isMultipleThemeTest(testName)),
     onVisitHighlightedLine(node) {
       node.properties.className = ['highlighted'];
     },
-    onVisitHighlightedWord(node, id) {
+    onVisitHighlightedChars(node, id) {
       node.properties.className = ['word'];
 
       if (id) {
@@ -87,6 +87,12 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
     },
     onVisitLine(node) {
       node;
+    },
+    onVisitTitle(node) {
+      node.properties.style = 'font-weight: bold;';
+    },
+    onVisitCaption(node) {
+      node.properties.style = 'color: red;';
     },
     getHighlighter,
   });
@@ -163,21 +169,19 @@ const defaultStyle = `
     max-width: 800px;
   }
   pre {
-    background: black;
-    display: grid;
     padding: 16px;
   }
   span > code {
     background: black;
     padding: 4px;
   }
-  .highlighted, .word {
+  [data-highlighted-line], [data-highlighted-chars] {
     background-color: rgba(255, 255, 255, 0.25);
   }
   code[data-line-numbers] {
     counter-reset: line;
   }
-  code[data-line-numbers]>.line:before {
+  code[data-line-numbers]>[data-line]::before {
     counter-increment: line;
     content: counter(line);
     display: inline-block;

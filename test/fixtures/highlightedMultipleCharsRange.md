@@ -1,4 +1,4 @@
-## Highlighted multiple words
+## Highlight multiple chars range
 
 /getStringLength/1-2 /str/1,3
 

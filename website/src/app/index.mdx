@@ -1,14 +1,14 @@
-## What's this?
+[Rehype Pretty Code](https://github.com/atomiks/rehype-pretty-code) is a
+build-time (or server-side) Rehype plugin that provides beautiful code blocks
+for Markdown or MDX.
 
-This package is a Rehype plugin that provides beautiful code blocks for your
-MD/MDX docs. It has advantages over other solutions such as Prism.
-[View on GitHub](https://github.com/atomiks/rehype-pretty-code).
+It's fast since it avoids runtime syntax highlighting, and works with new
+features like React Server Components.
 
-### VS Code's highlighting
+### Perfect syntax highlighting
 
 Leverage the accuracy of VS Code's syntax highlighting engine and the popularity
-of its themes ecosystem, powered by [Shiki](https://github.com/shikijs/shiki).
-No missing tokens or unexpected broken syntax highlighting.
+of its themes ecosystem — use any VS Code theme you want!
 
 ```js
 import Document, { Html, Head, Main, NextScript } from 'next/document';
@@ -37,24 +37,18 @@ export default class MyDocument extends Document {
 > The theme is [Moonlight II](https://github.com/atomiks/moonlight-vscode-theme)
 > with a custom background color.
 
-### There's no runtime or bundle size cost
-
-Shiki does its highlighting at build-time — there's no perf hit caused by
-runtime syntax highlighting or kilobytes of library code sent over the wire on
-the client. Your docs will be lightning fast.
-
 ### Line numbers and line highlighting are supported
 
 ```js {4}
 import { useFloating } from '@floating-ui/react';
 
 function MyComponent() {
-  const { x, y, refs } = useFloating();
+  const { refs, floatingStyles } = useFloating();
 
   return (
     <>
       <div ref={refs.setReference} />
-      <div ref={refs.setFloating} />
+      <div ref={refs.setFloating} style={floatingStyles} />
     </>
   );
 }
@@ -62,22 +56,22 @@ function MyComponent() {
 
 ### Word highlighting too
 
-```js /refs/
+```js /floatingStyles/
 import { useFloating } from '@floating-ui/react';
 
 function MyComponent() {
-  const { x, y, refs } = useFloating();
+  const { refs, floatingStyles } = useFloating();
 
   return (
     <>
       <div ref={refs.setReference} />
-      <div ref={refs.setFloating} />
+      <div ref={refs.setFloating} style={floatingStyles} />
     </>
   );
 }
 ```
 
-### Even inline code!
+### Inline code highlighting
 
 The result of `[1, 2, 3].join('-'){:js}` is `'1-2-3'{:js}`.
 
@@ -111,20 +105,6 @@ to.
 ```
 
 Inline ANSI: `> Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m{:ansi}`
-
-### Code blocks are unstyled
-
-No need to fight CSS rules, build the look from scratch. We recommend the
-following styles as a base though:
-
-```css
-pre > code {
-  display: grid;
-}
-```
-
-This allows line highlighting to span the width of a horizontally-scrollable
-code block on small viewport widths.
 
 ## Installation
 
@@ -189,49 +169,56 @@ const withMDX = require('@next/mdx')({
 
 ## Options
 
-To customize the theme, background color, and highlighting, options can be
-specified.
+To customize the theme and highlighting, options can be specified.
+
+### Code block styles
+
+Code blocks are unstyled by default to give you full control. Code blocks
+however have a `display: grid{:sass}` style by default to allow line
+highlighting to span the entire width of a horizontally scrollable code block.
+You can disable this setting if necessary:
 
 ```js
 const options = {
-  // Use one of Shiki's packaged themes
+  grid: false,
+};
+```
+
+### Theme
+
+Shiki has a bunch of
+[pre-packaged themes](https://unpkg.com/browse/shiki@0.14.2/themes/), which can
+be specified as a plain string:
+
+```js
+const options = {
   theme: 'one-dark-pro',
-  // Or your own JSON theme
+};
+```
+
+But you can use your own JSON theme as well by passing the theme JSON:
+
+```js
+// ESM
+const options = {
+  theme: JSON.parse(
+    readFileSync(new URL('./themes/theme.json', import.meta.url))
+  ),
+};
+```
+
+```js
+// CJS
+const options = {
   theme: JSON.parse(
     fs.readFileSync(require.resolve('./themes/dark.json'), 'utf-8')
   ),
-
-  // Keep the background or use a custom background color?
-  keepBackground: true,
-
-  // Callback hooks to add custom logic to elements when visiting
-  // them.
-  onVisitLine(element) {
-    // Prevent lines from collapsing in `display: grid` mode, and
-    // allow empty lines to be copy/pasted
-    if (element.children.length === 0) {
-      element.children = [{ type: 'text', value: ' ' }];
-    }
-  },
-  onVisitHighlightedLine(element) {
-    // Each line element by default has `class="line"`.
-    element.properties.className?.push('highlighted');
-  },
-  onVisitHighlightedWord(element) {
-    // Each word element has no className by default.
-    element.properties.className = ['word'];
-  },
 };
 ```
 
 ### Meta strings
 
 Code blocks are configured via the meta string on the top codeblock fence.
-
-This behavior is enabled by specifying the style (e.g. className or data
-attribute) via the visitor callback hooks
-(`onVisitHighlightedLine{:.entity.name.function}`,
-`onVisitHighlightedWord{:.entity.name.function}`).
 
 #### Highlight lines
 
@@ -243,9 +230,12 @@ Place a numeric range inside `{}`.
 ```
 ````
 
-#### Highlight words
+The line `<span>{:html}` receives a `data-highlighted-line` attribute to style
+via CSS.
 
-Literal text, like a regex. Note regex itself is not yet supported.
+#### Highlight chars
+
+A series of characters, like a literal regex.
 
 ````md
 ```js /carrot/
@@ -259,7 +249,10 @@ Literal text, like a regex. Note regex itself is not yet supported.
 ```
 ````
 
-Highlight only the third to fifth instances of `carrot`. Any numeric range can
+The chars `<span>{:html}` receives a `data-highlighted-chars` attribute to style
+via CSS.
+
+To highlight only the third to fifth instances of `carrot`, a numeric range can
 be placed after the last `/`.
 
 ````md
@@ -277,9 +270,9 @@ Highlight only the third to fifth instances of `carrot` and any instances of
 ```
 ````
 
-#### Group highlighted words by id
+#### Group highlighted chars by id
 
-Place an id after `#` after the literal text. This allows you to color words
+Place an id after `#` after the chars. This allows you to color chars
 differently based on their id.
 
 ````md
@@ -294,35 +287,8 @@ const [age, setAge] = useState(50);
 const [name, setName] = useState('Taylor');
 ```
 
-Here, arbitrary ids are used representing the syntax (`v`alue, `s`etter,
-`i`nitial value).
-
-```js
-onVisitHighlightedWord(element, id) {
-  element.properties.className = ['word'];
-
-  if (id) {
-    // If the word spans across syntax boundaries (e.g. punctuation), remove
-    // colors from the child elements.
-    if (element.properties['data-rehype-pretty-code-wrapper']) {
-      element.children.forEach((child) => {
-        child.properties.style = '';
-      });
-    }
-
-    element.properties.style = '';
-    element.properties['data-word-id'] = id;
-  }
-}
-```
-
-```css
-/* State word */
-[data-word-id='s'] {
-  background-color: rgba(255, 0, 0, 0.2);
-  color: pink;
-}
-```
+The chars `<span>{:html}` receives a `data-chars-id="<id>"` attribute to style
+via CSS.
 
 #### Highlight inline code
 
@@ -386,7 +352,7 @@ code {
   counter-reset: line;
 }
 
-code > .line::before {
+code > [data-line]::before {
   counter-increment: line;
   content: counter(line);
 
@@ -398,11 +364,11 @@ code > .line::before {
   color: gray;
 }
 
-code[data-line-numbers-max-digits='2'] > .line::before {
+code[data-line-numbers-max-digits='2'] > [data-line]::before {
   width: 2rem;
 }
 
-code[data-line-numbers-max-digits='3'] > .line::before {
+code[data-line-numbers-max-digits='3'] > [data-line]::before {
   width: 3rem;
 }
 ```
@@ -411,17 +377,19 @@ If you want to conditionally show them, use `showLineNumbers`:
 
 ````md
 ```js showLineNumbers
-// <code> will have attributes `data-line-numbers` and
-// `data-line-numbers-max-digits="n"`
+
 ```
 ````
+
+`<code>{:html}` will have attributes `data-line-numbers` and
+`data-line-numbers-max-digits="n"`.
 
 If you want to start line numbers at a specific number, use
 `showLineNumbers{number}`:
 
 ````md
 ```js showLineNumbers{number}
-// the first line of this code block will start at {number}
+
 ```
 ````
 
@@ -439,18 +407,14 @@ the color mode:
 ```js
 const options = {
   theme: {
-    dark: JSON.parse(
-      fs.readFileSync(require.resolve('./themes/dark.json'), 'utf-8')
-    ),
-    light: JSON.parse(
-      fs.readFileSync(require.resolve('./themes/light.json'), 'utf-8')
-    ),
+    dark: 'github-dark-dimmed',
+    light: 'github-light',
   },
 };
 ```
 
-The `<code>{:html}` and `<pre>{:html}` element will have a data attribute
-`data-theme="[key]"`, e.g `data-theme="light"`.
+The `<code>{:html}` and `<pre>{:html}` elements will have the data attribute
+`data-theme="<key>"`, e.g `data-theme="light"`.
 
 Now, you can use CSS to display the desired theme:
 
@@ -468,6 +432,31 @@ Now, you can use CSS to display the desired theme:
     display: none;
   }
 }
+```
+
+### Visitor hooks
+
+To customize the HTML output, you can use visitor callback hooks to manipulate
+the [hAST elements](https://github.com/syntax-tree/hast#element) directly:
+
+```js
+const options = {
+  onVisitLine(element) {
+    console.log('Visited line');
+  },
+  onVisitHighlightedLine(element) {
+    console.log('Visited highlighted line');
+  },
+  onVisitHighlightedChars(element) {
+    console.log('Visited highlighted chars');
+  },
+  onVisitTitle(element) {
+    console.log('Visited title');
+  },
+  onVisitCaption(element) {
+    console.log('Visited caption');
+  },
+};
 ```
 
 ### Custom highlighter
@@ -488,14 +477,6 @@ This is helpful if you'd like to configure other Shiki options, such as
 const { getHighlighter, BUNDLED_LANGUAGES } = require('shiki');
 
 const options = {
-  theme: {
-    dark: JSON.parse(
-      fs.readFileSync(require.resolve('./themes/dark.json'), 'utf-8')
-    ),
-    light: JSON.parse(
-      fs.readFileSync(require.resolve('./themes/light.json'), 'utf-8')
-    ),
-  },
   getHighlighter: (options) =>
     getHighlighter({
       ...options,

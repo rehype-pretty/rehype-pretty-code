@@ -9,7 +9,7 @@ import rehypeParse from 'rehype-parse';
 import prettier from 'prettier/standalone';
 import { toHtml } from 'hast-util-to-html';
 import rangeParser from 'parse-numeric-range';
-import wordHighlighter from '../../src/word-highlighter';
+import { charsHighlighter } from '../../../src/chars/charsHighlighter';
 
 import 'codemirror/mode/xml/xml.js';
 import 'codemirror/mode/javascript/javascript.js';
@@ -98,14 +98,14 @@ function App() {
         );
       }
       let options = {
-        wordNumbers: word.map(() => rangeParser(wordNumbers)),
-        wordIdsMap: new Map(),
-        wordCounter: new Map(),
+        ranges: word.map(() => rangeParser(wordNumbers)),
+        idsMap: new Map(),
+        counterMap: new Map(),
       };
       if (container && container.querySelector('.line')) {
         container.querySelectorAll('.line').forEach((node) => {
           const n = hastParser.parse(node.innerHTML);
-          wordHighlighter(n, word, options, onHighlightWord);
+          charsHighlighter(n, word, options, onHighlightWord);
           node.innerHTML = toHtml(n);
         });
       }

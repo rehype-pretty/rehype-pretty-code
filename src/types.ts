@@ -1,5 +1,5 @@
-export interface WordHighlighterOptions {
-  wordNumbers: Array<number[]>;
-  wordIdsMap: Map<string, string>;
-  wordCounter: Map<string, number>;
+export interface CharsHighlighterOptions {
+  ranges: Array<number[]>;
+  idsMap: Map<string, string>;
+  counterMap: Map<string, number>;
 }

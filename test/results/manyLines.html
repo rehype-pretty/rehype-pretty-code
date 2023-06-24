@@ -8,21 +8,19 @@
     max-width: 800px;
   }
   pre {
-    background: black;
-    display: grid;
     padding: 16px;
   }
   span > code {
     background: black;
     padding: 4px;
   }
-  .highlighted, .word {
+  [data-highlighted-line], [data-highlighted-chars] {
     background-color: rgba(255, 255, 255, 0.25);
   }
   code[data-line-numbers] {
     counter-reset: line;
   }
-  code[data-line-numbers]>.line:before {
+  code[data-line-numbers]>[data-line]::before {
     counter-increment: line;
     content: counter(line);
     display: inline-block;
@@ -35,33 +33,35 @@
 <h2>Many line</h2>
 <div data-rehype-pretty-code-fragment="">
   <pre
+    style="background-color: #24292e"
+    tabindex="0"
     data-language="css"
     data-theme="default"
-  ><code data-language="css" data-theme="default"><span class="line"><span style="color: #85E89D">html</span><span style="color: #E1E4E8"> {</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #FFAB70">--page-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">white</span><span style="color: #E1E4E8">;</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #FFAB70">--ink-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">black</span><span style="color: #E1E4E8">;</span></span>
-<span class="line"><span style="color: #E1E4E8">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #F97583">@media</span><span style="color: #E1E4E8"> (prefers-color-scheme: dark) {</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #85E89D">html</span><span style="color: #E1E4E8"> {</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #FFAB70">--page-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">black</span><span style="color: #E1E4E8">;</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #FFAB70">--ink-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">white</span><span style="color: #E1E4E8">;</span></span>
-<span class="line"><span style="color: #E1E4E8">  }</span></span>
-<span class="line"><span style="color: #E1E4E8">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #85E89D">body</span><span style="color: #E1E4E8"> {</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">background-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--page-color</span><span style="color: #E1E4E8">);</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--ink-color</span><span style="color: #E1E4E8">);</span></span>
-<span class="line"><span style="color: #E1E4E8">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #85E89D">input</span><span style="color: #E1E4E8"> {</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">background-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--page-color</span><span style="color: #E1E4E8">);</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--ink-color</span><span style="color: #E1E4E8">);</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">border-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--ink-color</span><span style="color: #E1E4E8">);</span></span>
-<span class="line"><span style="color: #E1E4E8">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #85E89D">button</span><span style="color: #E1E4E8"> {</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">background-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--ink-color</span><span style="color: #E1E4E8">);</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--page-color</span><span style="color: #E1E4E8">);</span></span>
-<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+  ><code data-language="css" data-theme="default"><span data-line=""><span style="color: #85E89D">html</span><span style="color: #E1E4E8"> {</span></span>
+<span data-line=""><span style="color: #E1E4E8">  </span><span style="color: #FFAB70">--page-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">white</span><span style="color: #E1E4E8">;</span></span>
+<span data-line=""><span style="color: #E1E4E8">  </span><span style="color: #FFAB70">--ink-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">black</span><span style="color: #E1E4E8">;</span></span>
+<span data-line=""><span style="color: #E1E4E8">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color: #F97583">@media</span><span style="color: #E1E4E8"> (prefers-color-scheme: dark) {</span></span>
+<span data-line=""><span style="color: #E1E4E8">  </span><span style="color: #85E89D">html</span><span style="color: #E1E4E8"> {</span></span>
+<span data-line=""><span style="color: #E1E4E8">    </span><span style="color: #FFAB70">--page-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">black</span><span style="color: #E1E4E8">;</span></span>
+<span data-line=""><span style="color: #E1E4E8">    </span><span style="color: #FFAB70">--ink-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">white</span><span style="color: #E1E4E8">;</span></span>
+<span data-line=""><span style="color: #E1E4E8">  }</span></span>
+<span data-line=""><span style="color: #E1E4E8">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color: #85E89D">body</span><span style="color: #E1E4E8"> {</span></span>
+<span data-line=""><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">background-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--page-color</span><span style="color: #E1E4E8">);</span></span>
+<span data-line=""><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--ink-color</span><span style="color: #E1E4E8">);</span></span>
+<span data-line=""><span style="color: #E1E4E8">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color: #85E89D">input</span><span style="color: #E1E4E8"> {</span></span>
+<span data-line=""><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">background-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--page-color</span><span style="color: #E1E4E8">);</span></span>
+<span data-line=""><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--ink-color</span><span style="color: #E1E4E8">);</span></span>
+<span data-line=""><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">border-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--ink-color</span><span style="color: #E1E4E8">);</span></span>
+<span data-line=""><span style="color: #E1E4E8">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color: #85E89D">button</span><span style="color: #E1E4E8"> {</span></span>
+<span data-line=""><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">background-color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--ink-color</span><span style="color: #E1E4E8">);</span></span>
+<span data-line=""><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">color</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">var</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">--page-color</span><span style="color: #E1E4E8">);</span></span>
+<span data-line=""><span style="color: #E1E4E8">}</span></span></code></pre>
 </div>

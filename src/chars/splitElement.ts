@@ -10,7 +10,7 @@ interface SplitElementProps {
   rest: string[];
   nextElementContinues: boolean;
   index: number;
-  ignoreWord: boolean;
+  ignoreChars: boolean;
 }
 
 export function splitElement({
@@ -22,12 +22,12 @@ export function splitElement({
   rest,
   nextElementContinues,
   index,
-  ignoreWord,
+  ignoreChars,
 }: SplitElementProps) {
   if (
     (isElement(elementToWrap) &&
       elementToWrap.children?.[0]?.type !== 'text') ||
-    ignoreWord
+    ignoreChars
   ) {
     return [elementToWrap, index] as const;
   }
@@ -54,12 +54,7 @@ export function splitElement({
     elements.splice(newIndex, 0, {
       ...elementToWrap,
       properties: { ...elementToWrap.properties },
-      children: [
-        {
-          type: 'text',
-          value: leftStr,
-        },
-      ],
+      children: [{ type: 'text', value: leftStr }],
     });
   }
 
@@ -68,12 +63,7 @@ export function splitElement({
     elements.splice(newIndex, 0, {
       ...elementToWrap,
       properties: { ...elementToWrap.properties },
-      children: [
-        {
-          type: 'text',
-          value: rightStr,
-        },
-      ],
+      children: [{ type: 'text', value: rightStr }],
     });
   }
 

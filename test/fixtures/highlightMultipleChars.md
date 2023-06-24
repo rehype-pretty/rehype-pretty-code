@@ -1,4 +1,4 @@
-## Highlighted multiple word
+## Highlighted multiple chars
 
 /carrot/ /return/
 

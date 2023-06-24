@@ -1,4 +1,4 @@
-## Highlighted words
+## Highlighted chars range
 
 /getStringLength/1-2
 

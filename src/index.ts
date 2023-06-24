@@ -1,6 +1,6 @@
 import type { Element, ElementContent, Root } from 'hast';
-import type { Options, VisitableElement } from '../';
-import type { WordHighlighterOptions } from './types';
+import type { LineElement, Options } from '../';
+import type { CharsHighlighterOptions } from './types';
 import type { Highlighter } from 'shiki';
 import type { Transformer } from 'unified';
 import { visit } from 'unist-util-visit';
@@ -9,9 +9,9 @@ import { getHighlighter as shikiHighlighter } from 'shiki';
 import { unified } from 'unified';
 import rehypeParse from 'rehype-parse';
 import hashObj from 'hash-obj';
-import { wordHighlighter } from './word-highlighter/wordHighlighter';
-import { reverseString } from './word-highlighter/utils';
-import { isElement, isJSON, isText } from './utils';
+import { charsHighlighter } from './chars/charsHighlighter';
+import { reverseString } from './chars/utils';
+import { isElement, isShikiTheme, isText } from './utils';
 
 interface ToFragmentProps {
   trees: Record<string, Root>;
@@ -21,6 +21,8 @@ interface ToFragmentProps {
   inline?: boolean;
   keepBackground?: boolean;
   lineNumbersMaxDigits?: number;
+  onVisitTitle?: (element: Element) => void;
+  onVisitCaption?: (element: Element) => void;
 }
 
 function toFragment(
@@ -31,8 +33,10 @@ function toFragment(
     title,
     caption,
     inline = false,
-    keepBackground = false,
+    keepBackground = true,
     lineNumbersMaxDigits = 1,
+    onVisitTitle,
+    onVisitCaption,
   }: ToFragmentProps
 ) {
   element.tagName = inline ? 'span' : 'div';
@@ -50,7 +54,10 @@ function toFragment(
 
       // Remove class="shiki"
       pre.properties.className = undefined;
-      if (!keepBackground) pre.properties = {};
+
+      if (!keepBackground) {
+        pre.properties = {};
+      }
 
       pre.properties['data-language'] = lang;
       pre.properties['data-theme'] = mode;
@@ -63,7 +70,9 @@ function toFragment(
       code.properties['data-theme'] = mode;
 
       if (inline) {
-        if (keepBackground) code.properties['style'] = pre.properties['style'];
+        if (keepBackground) {
+          code.properties.style = pre.properties.style;
+        }
         return code;
       }
 
@@ -75,7 +84,7 @@ function toFragment(
       const fragments: ElementContent[] = [];
 
       if (title) {
-        const elementContent: ElementContent = {
+        const elementContent: Element = {
           type: 'element',
           tagName: 'div',
           properties: {
@@ -85,13 +94,14 @@ function toFragment(
           },
           children: [{ type: 'text', value: title }],
         };
+        onVisitTitle?.(elementContent);
         fragments.push(elementContent);
       }
 
       fragments.push(pre);
 
       if (caption) {
-        const elementContent: ElementContent = {
+        const elementContent: Element = {
           type: 'element',
           tagName: 'div',
           properties: {
@@ -101,6 +111,7 @@ function toFragment(
           },
           children: [{ type: 'text', value: caption }],
         };
+        onVisitCaption?.(elementContent);
         fragments.push(elementContent);
       }
 
@@ -113,19 +124,23 @@ const globalHighlighterCache = new Map<
   string,
   Map<string, Promise<Highlighter>>
 >();
+const hastParser = unified().use(rehypeParse, { fragment: true });
 
 export default function rehypePrettyCode(
   options: Options = {}
 ): void | Transformer<Root, Root> {
   const {
-    theme,
-    keepBackground,
+    grid = true,
+    theme = 'github-dark-dimmed',
+    keepBackground = true,
     tokensMap = {},
     filterMetaString = (v) => v,
+    getHighlighter = shikiHighlighter,
     onVisitLine,
     onVisitHighlightedLine,
-    onVisitHighlightedWord,
-    getHighlighter = shikiHighlighter,
+    onVisitHighlightedChars,
+    onVisitTitle,
+    onVisitCaption,
   } = options;
 
   const optionsHash = hashObj(
@@ -134,7 +149,7 @@ export default function rehypePrettyCode(
       tokensMap,
       onVisitLine,
       onVisitHighlightedLine,
-      onVisitHighlightedWord,
+      onVisitHighlightedChars,
       getHighlighter,
     },
     { algorithm: 'sha1' }
@@ -145,9 +160,8 @@ export default function rehypePrettyCode(
     globalHighlighterCache.set(optionsHash, highlighterCache);
   }
   const highlighters = new Map();
-  const hastParser = unified().use(rehypeParse, { fragment: true });
 
-  if (theme == null || typeof theme === 'string' || isJSON(theme)) {
+  if (theme == null || typeof theme === 'string' || isShikiTheme(theme)) {
     if (!highlighterCache.has('default')) {
       highlighterCache.set('default', getHighlighter({ theme }));
     }
@@ -251,21 +265,23 @@ export default function rehypePrettyCode(
           return;
         }
 
+        if (grid && codeElement.properties) {
+          codeElement.properties.style += 'display: grid;';
+        }
+
         const lang = element.children[0].properties.className[0].replace(
           'language-',
           ''
         );
-        const metastring = isElement(codeElement)
-          ? (codeElement.data?.meta as string) ??
-            (codeElement.properties?.metastring as string) ??
-            ''
-          : '';
+        const metastring = (codeElement.data?.meta ??
+          codeElement.properties?.metastring ??
+          '') as string;
 
         let meta = filterMetaString(metastring);
 
-        const tiltleMatch = meta.match(/title="([^"]*)"/);
-        const title = tiltleMatch?.[1] ?? null;
-        meta = meta.replace(tiltleMatch?.[0] ?? '', '');
+        const titleMatch = meta.match(/title="([^"]*)"/);
+        const title = titleMatch?.[1] ?? null;
+        meta = meta.replace(titleMatch?.[0] ?? '', '');
 
         const captionMatch = meta.match(/caption="([^"]*)"/);
         const caption = captionMatch?.[1] ?? null;
@@ -327,10 +343,10 @@ export default function rehypePrettyCode(
         Object.entries(trees).forEach(([, tree]) => {
           let lineCounter = 0;
 
-          const wordOptions: WordHighlighterOptions = {
-            wordNumbers,
-            wordIdsMap,
-            wordCounter: new Map(),
+          const wordOptions: CharsHighlighterOptions = {
+            ranges: wordNumbers,
+            idsMap: wordIdsMap,
+            counterMap: new Map(),
           };
 
           visit(tree, 'element', (element) => {
@@ -361,21 +377,29 @@ export default function rehypePrettyCode(
               Array.isArray(element.properties?.className) &&
               element.properties?.className?.[0] === 'line'
             ) {
-              onVisitLine?.(element as VisitableElement);
+              if (grid && element.children.length === 0) {
+                element.children = [{ type: 'text', value: ' ' }];
+              }
+
+              element.properties.className = undefined;
+              element.properties['data-line'] = '';
+              onVisitLine?.(element as LineElement);
 
               if (
                 lineNumbers.length !== 0 &&
                 lineNumbers.includes(++lineCounter)
               ) {
-                onVisitHighlightedLine?.(element as VisitableElement);
+                element.properties['data-highlighted-line'] = '';
+                onVisitHighlightedLine?.(element as LineElement);
               }
 
-              wordHighlighter(
+              charsHighlighter(
                 element,
                 words,
                 wordOptions,
-                onVisitHighlightedWord
+                onVisitHighlightedChars
               );
+
               lineNumbersMaxDigits++;
             }
           });
@@ -388,6 +412,8 @@ export default function rehypePrettyCode(
           caption,
           keepBackground,
           lineNumbersMaxDigits,
+          onVisitTitle,
+          onVisitCaption,
         });
       }
     });

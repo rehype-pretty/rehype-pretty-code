@@ -1,15 +1,15 @@
 import type { Element } from 'hast';
-import type { WordHighlighterOptions } from '../types';
-import type { VisitableElement } from '../..';
+import type { CharsElement } from '../..';
+import type { CharsHighlighterOptions } from '../types';
 import { isElement, isText } from '../utils';
 
-export function wrapHighlightedWords(
+export function wrapHighlightedChars(
   parentElement: Element,
   elementsToWrap: Array<{ element: Element; index: number }>,
-  options: WordHighlighterOptions,
+  options: CharsHighlighterOptions,
   ignoreWord: boolean,
-  onVisitHighlightedWord?: (
-    element: VisitableElement,
+  onVisitHighlightedChars?: (
+    element: CharsElement,
     id: string | undefined
   ) => void
 ) {
@@ -33,7 +33,7 @@ export function wrapHighlightedWords(
       {
         type: 'element',
         tagName: 'span',
-        properties: { 'data-rehype-pretty-code-wrapper': true },
+        properties: { 'data-highlighted-chars-wrapper': '' },
         children: elementsToWrap.map(({ element }) => element),
       }
     );
@@ -52,10 +52,11 @@ export function wrapHighlightedWords(
       return acc;
     }, '');
 
-    onVisitHighlightedWord?.(
-      parentElement.children[elementsToWrap[0].index] as VisitableElement,
-      options.wordIdsMap.get(wordStr)
-    );
+    const id = options.idsMap.get(wordStr);
+    element.properties = element.properties || {};
+    element.properties['data-highlighted-chars'] = '';
+    element.properties['data-chars-id'] = id;
+    onVisitHighlightedChars?.(element as CharsElement, id);
   } else {
     const [{ element }] = elementsToWrap;
     const textElement = element.children[0];
@@ -64,13 +65,14 @@ export function wrapHighlightedWords(
       return;
     }
 
-    onVisitHighlightedWord?.(
-      element as VisitableElement,
-      options.wordIdsMap.get(textElement.value)
-    );
-    // used to skip already parsed words
-    if (element.properties) {
-      element.properties['rehype-pretty-code-visited'] = '';
-    }
+    const id = options.idsMap.get(textElement.value);
+
+    element.properties = element.properties || {};
+    // used to skip already parsed chars
+    element.properties['rehype-pretty-code-visited'] = '';
+    element.properties['data-highlighted-chars'] = '';
+    element.properties['data-chars-id'] = id;
+
+    onVisitHighlightedChars?.(element as CharsElement, id);
   }
 }
