@@ -36,7 +36,8 @@
     "node 16"
   ],
   "prettier": {
-    "singleQuote": true
+    "singleQuote": true,
+    "proseWrap": "always"
   },
   "author": "",
   "license": "MIT",
