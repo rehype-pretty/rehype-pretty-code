@@ -143,6 +143,7 @@ export default function rehypePrettyCode(
     grid = true,
     theme = 'github-dark-dimmed',
     keepBackground = true,
+    defaultLang = '',
     tokensMap = {},
     filterMetaString = (v) => v,
     getHighlighter = shikiHighlighter,
@@ -170,6 +171,11 @@ export default function rehypePrettyCode(
     globalHighlighterCache.set(optionsHash, highlighterCache);
   }
   const highlighters = new Map();
+
+  const defaultCodeBlockLang =
+    typeof defaultLang === 'string' ? defaultLang : defaultLang.block || '';
+  const defaultInlineCodeLang =
+    typeof defaultLang === 'string' ? defaultLang : defaultLang.inline || '';
 
   if (theme == null || typeof theme === 'string' || isShikiTheme(theme)) {
     if (!highlighterCache.has('default')) {
@@ -215,7 +221,8 @@ export default function rehypePrettyCode(
 
         // TODO: allow escape characters to break out of highlighting
         const strippedValue = value.replace(/{:[a-zA-Z.-]+}/, '');
-        const meta = value.match(/{:([a-zA-Z.-]+)}$/)?.[1];
+        const meta =
+          value.match(/{:([a-zA-Z.-]+)}$/)?.[1] || defaultInlineCodeLang;
 
         if (!meta) {
           return;
@@ -262,11 +269,7 @@ export default function rehypePrettyCode(
         Array.isArray(element.children) &&
         element.children.length === 1 &&
         isElement(element.children[0]) &&
-        element.children[0].tagName === 'code' &&
-        typeof element.children[0].properties === 'object' &&
-        Array.isArray(element.children[0].properties.className) &&
-        typeof element.children[0].properties.className[0] === 'string' &&
-        element.children[0].properties.className[0].startsWith('language-')
+        element.children[0].tagName === 'code'
       ) {
         const codeElement = element.children[0];
         const textElement = codeElement.children[0];
@@ -275,10 +278,16 @@ export default function rehypePrettyCode(
           return;
         }
 
-        const lang = element.children[0].properties.className[0].replace(
-          'language-',
-          ''
-        );
+        let lang = defaultCodeBlockLang;
+        if (
+          codeElement.properties &&
+          Array.isArray(codeElement.properties.className) &&
+          typeof codeElement.properties.className[0] === 'string' &&
+          codeElement.properties.className[0].startsWith('language-')
+        ) {
+          lang = codeElement.properties.className[0].replace('language-', '');
+        }
+
         const metastring = (codeElement.data?.meta ??
           codeElement.properties?.metastring ??
           '') as string;

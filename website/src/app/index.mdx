@@ -233,6 +233,28 @@ const options = {
 };
 ```
 
+#### Default code language
+
+When no code language is specified, inline code or code blocks will not be
+themed (nor will the background), which may appear incongruous with others.
+
+In this case, you can specify a default language:
+
+```js
+const options = {
+  defaultLang: 'plaintext',
+};
+```
+
+Or you can also specify default languages for inline code and code blocks
+separately:
+
+```js
+const options = {
+  defaultLang: { block: 'plaintext'; inline: 'plaintext' },
+};
+```
+
 ### Meta strings
 
 Code blocks are configured via the meta string on the top codeblock fence.

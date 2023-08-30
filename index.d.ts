@@ -17,6 +17,7 @@ export interface Options {
   grid?: boolean;
   theme?: Theme | Record<string, Theme>;
   keepBackground?: boolean;
+  defaultLang?: string | { block?: string; inline?: string };
   tokensMap?: Record<string, string>;
   filterMetaString?(str: string): string;
   getHighlighter?(options: Pick<Options, 'theme'>): Promise<Highlighter>;
