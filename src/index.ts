@@ -20,6 +20,7 @@ interface ToFragmentProps {
   caption?: string | null;
   inline?: boolean;
   keepBackground?: boolean;
+  grid?: boolean;
   lineNumbersMaxDigits?: number;
   onVisitTitle?: (element: Element) => void;
   onVisitCaption?: (element: Element) => void;
@@ -34,6 +35,7 @@ function toFragment(
     caption,
     inline = false,
     keepBackground = true,
+    grid = true,
     lineNumbersMaxDigits = 1,
     onVisitTitle,
     onVisitCaption,
@@ -74,6 +76,14 @@ function toFragment(
           code.properties.style = pre.properties.style;
         }
         return code;
+      }
+
+      if (grid) {
+        if (code.properties.style) {
+          code.properties.style += 'display: grid;';
+        } else {
+          code.properties.style = 'display: grid;';
+        }
       }
 
       if ('data-line-numbers' in code.properties) {
@@ -265,10 +275,6 @@ export default function rehypePrettyCode(
           return;
         }
 
-        if (grid && codeElement.properties) {
-          codeElement.properties.style += 'display: grid;';
-        }
-
         const lang = element.children[0].properties.className[0].replace(
           'language-',
           ''
@@ -411,6 +417,7 @@ export default function rehypePrettyCode(
           title,
           caption,
           keepBackground,
+          grid,
           lineNumbersMaxDigits,
           onVisitTitle,
           onVisitCaption,
