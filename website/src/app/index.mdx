@@ -171,17 +171,12 @@ To customize the theme and highlighting, options can be specified.
 
 ### Code block styles
 
-Code blocks are unstyled to give you full control. Code blocks however assume a
-grid style, so ensure the following style is present:
+Code blocks are fully unstyled to give you full control. The features are
+implemented as logical indicators in the form of attributes that allows you to
+apply CSS yourself.
 
-```css
-pre > code {
-  display: grid;
-}
-```
-
-This allows line highlighting to span the entire width of a
-horizontally-scrollable code block.
+A grid style is present by default which allows line highlighting to span the
+entire width of a horizontally-scrollable code block.
 
 You can disable this setting if necessary:
 
@@ -203,13 +198,13 @@ const options = {
 };
 ```
 
-But you can use your own theme as well by passing the theme JSON:
+You can use your own theme as well by passing the theme JSON:
 
 ```js
 // ESM
 const options = {
   theme: JSON.parse(
-    readFileSync(new URL('./themes/theme.json', import.meta.url))
+    readFileSync(new URL('./themes/my-theme.json', import.meta.url))
   ),
 };
 ```
@@ -218,14 +213,15 @@ const options = {
 // CJS
 const options = {
   theme: JSON.parse(
-    fs.readFileSync(require.resolve('./themes/dark.json'), 'utf-8')
+    fs.readFileSync(require.resolve('./themes/my-theme.json'), 'utf-8')
   ),
 };
 ```
 
 #### Theme background
 
-To apply a custom background instead of inheriting the background from theme:
+To apply a custom background instead of inheriting the background from the
+theme:
 
 ```js
 const options = {
@@ -251,7 +247,10 @@ separately:
 
 ```js
 const options = {
-  defaultLang: { block: 'plaintext'; inline: 'plaintext' },
+  defaultLang: {
+    block: 'plaintext',
+    inline: 'plaintext',
+  },
 };
 ```
 
@@ -386,7 +385,7 @@ Add a caption underneath your code block, with text inside double quotes (`""`):
 
 CSS counters can be used to add line numbers.
 
-```css
+```css {2,6-7}
 code {
   counter-reset: line;
 }
@@ -542,6 +541,45 @@ string before the library starts parsing it.
 const options = {
   filterMetaString: (string) => string.replace(/filename="[^"]*"/, ''),
 };
+```
+
+## Deployment and client-side highlighting
+
+Copy the following files to your public directory:
+
+```txt
+/node_modules/shiki/dist/onig.wasm  ->  public/dist/onig.wasm
+/node_modules/shiki/languages/      ->  public/languages/
+/node_modules/shiki/themes/         ->  public/themes/
+```
+
+Then set the CDN path:
+
+```js
+import { setCDN } from 'shiki';
+
+setCDN('/');
+```
+
+This will allow Shiki to load the WASM file and themes from your public
+directory to perform client-side highlighting.
+[More info here](https://github.com/atomiks/rehype-pretty-code/issues/95).
+
+```js
+import { unified } from 'unified';
+import rehypeStringify from 'rehype-stringify';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypePrettyCode from 'rehype-pretty-code';
+
+export default async function processMarkdown(text) {
+  return await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypePrettyCode)
+    .use(rehypeStringify)
+    .process(text);
+}
 ```
 
 ## License
