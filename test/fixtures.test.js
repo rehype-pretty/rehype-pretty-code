@@ -10,6 +10,7 @@ import prettier from 'prettier';
 import { remark } from 'remark';
 import { getHighlighter as shikiHighlighter } from 'shiki';
 import { fileURLToPath } from 'url';
+import qs from 'querystring';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -63,6 +64,16 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
 
   const html = await getHTML(code, {
     keepBackground: !resultHTMLName.includes('keepBackground'),
+    defaultLang: (() => {
+      const lang = testName.split('.')[1];
+      if (!lang) {
+        return undefined;
+      } else if (lang === 'js') {
+        return 'js';
+      } else {
+        return qs.parse(lang);
+      }
+    })(),
     filterMetaString: (string) => string?.replace(/filename=".*"/, ''),
     theme: getTheme(isMultipleThemeTest(testName)),
     onVisitHighlightedLine(node) {
