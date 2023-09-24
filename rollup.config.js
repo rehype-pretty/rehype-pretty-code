@@ -2,6 +2,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import { babel } from '@rollup/plugin-babel';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { defineConfig } from 'rollup';
+import packageJson from './package.json';
 
 /** @type {import('rollup').RollupOptions} */
 const common = {
@@ -14,7 +15,10 @@ const common = {
       extensions: ['.ts', '.js'],
     }),
   ],
-  external: ['parse-numeric-range', 'shiki'],
+  external: [
+    ...Object.keys(packageJson.dependencies),
+    ...Object.keys(packageJson.peerDependencies),
+  ],
 };
 
 export default defineConfig([
