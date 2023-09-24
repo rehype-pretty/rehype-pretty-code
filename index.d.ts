@@ -1,4 +1,9 @@
-import type { Highlighter, IShikiTheme } from 'shiki';
+import type {
+  BundledHighlighterOptions,
+  Highlighter,
+  BuiltinTheme,
+  ThemeRegistrationRaw,
+} from 'shikiji';
 import type { Transformer } from 'unified';
 import type { Root, Element, Properties } from 'hast';
 
@@ -11,7 +16,7 @@ export type CharsElement = Omit<Element, 'properties' | 'children'> & {
   children: Array<Element | Text>;
 };
 
-type Theme = IShikiTheme | string;
+type Theme = BuiltinTheme | ThemeRegistrationRaw;
 
 export interface Options {
   grid?: boolean;
@@ -20,7 +25,7 @@ export interface Options {
   defaultLang?: string | { block?: string; inline?: string };
   tokensMap?: Record<string, string>;
   filterMetaString?(str: string): string;
-  getHighlighter?(options: Pick<Options, 'theme'>): Promise<Highlighter>;
+  getHighlighter?(options: BundledHighlighterOptions): Promise<Highlighter>;
   onVisitLine?(element: LineElement): void;
   onVisitHighlightedLine?(element: LineElement): void;
   onVisitHighlightedChars?(element: CharsElement, id: string | undefined): void;

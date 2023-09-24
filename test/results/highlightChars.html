@@ -29,17 +29,30 @@
     text-align: right;
     color: gray;
   }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
 </style>
 <h2>Highlight chars</h2>
 <p>/carrot/</p>
-<div data-rehype-pretty-code-fragment="">
+<figure data-rehype-pretty-code-figure="">
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
     data-language="js"
-    data-theme="default"
-  ><code data-language="js" data-theme="default" style="display: grid;"><span data-line=""><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0" data-highlighted-chars="" class="word">carrot</span><span style="color: #E1E4E8">() {</span></span>
-<span data-line=""><span style="color: #E1E4E8">  </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'</span><span style="color: #9ECBFF" data-highlighted-chars="" class="word">carrot</span><span style="color: #9ECBFF">'</span><span style="color: #E1E4E8">;</span></span>
-<span data-line=""><span style="color: #E1E4E8">}</span></span></code></pre>
-</div>
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">function</span><span style="color:#B392F0"> </span><mark data-highlighted-chars="" class="word"><span style="color:#B392F0">carrot</span></mark><span style="color:#E1E4E8">() {</span></span>
+<span data-line=""><span style="color:#F97583">  return</span><span style="color:#9ECBFF"> '</span><mark data-highlighted-chars="" class="word"><span style="color:#9ECBFF">carrot</span></mark><span style="color:#9ECBFF">'</span><span style="color:#E1E4E8">;</span></span>
+<span data-line=""><span style="color:#E1E4E8">}</span></span></code></pre>
+</figure>

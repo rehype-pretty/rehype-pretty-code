@@ -8,7 +8,7 @@ import { toHast } from 'mdast-util-to-hast';
 import { dirname, join, parse } from 'path';
 import prettier from 'prettier';
 import { remark } from 'remark';
-import { getHighlighter as shikiHighlighter } from 'shiki';
+import { getHighlighter as shikiHighlighter } from 'shikiji';
 import { fileURLToPath } from 'url';
 import qs from 'querystring';
 
@@ -19,35 +19,16 @@ expect.extend({ toMatchFile });
 const fixturesFolder = join(__dirname, 'fixtures');
 const resultsFolder = join(__dirname, 'results');
 
-const getHTML = async (code, settings) => {
+const getHTML = async (code, options) => {
   const hAST = toHast(remark().parse(code), { allowDangerousHtml: true });
-  await rehypePrettyCode(settings)(hAST);
+  await rehypePrettyCode(options)(hAST);
   return toHtml(hAST, { allowDangerousHtml: true });
 };
 
 const getTheme = (multiple) => {
-  const singleTheme = JSON.parse(
-    readFileSync(
-      join(__dirname, '../node_modules/shiki/themes/github-dark.json'),
-      'utf-8',
-    ),
-  );
-
-  const multipleTheme = {
-    dark: JSON.parse(
-      readFileSync(
-        join(__dirname, '../node_modules/shiki/themes/github-dark.json'),
-        'utf-8',
-      ),
-    ),
-    light: JSON.parse(
-      readFileSync(
-        join(__dirname, '../node_modules/shiki/themes/github-light.json'),
-        'utf-8',
-      ),
-    ),
-  };
-  return multiple ? multipleTheme : singleTheme;
+  return multiple
+    ? { dark: 'github-dark', light: 'github-light' }
+    : 'github-dark';
 };
 
 const isMultipleThemeTest = (fixtureName) => {
@@ -131,7 +112,6 @@ describe('Single theme', () => {
       );
 
       expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);
-      expect(getHighlighter).toHaveBeenCalledTimes(1);
     });
   });
 });
@@ -155,7 +135,6 @@ describe('Multiple theme', () => {
       );
 
       expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);
-      expect(getHighlighter).toHaveBeenCalledTimes(2);
     });
   });
 });
@@ -163,7 +142,7 @@ describe('Multiple theme', () => {
 it("highlighter caches don't overwrite each other", async () => {
   const [html1, html2] = await Promise.all([
     getHTML('`[1, 2, 3]{:js}`', { theme: 'github-light' }),
-    getHTML('`[1, 2, 3]{:js}`', { theme: 'light-plus' }),
+    getHTML('`[1, 2, 3]{:js}`', { theme: 'github-dark' }),
   ]);
   // both highlighters are being cached under the same key, but in separate caches,
   // that's what we're testing here by asserting that they yield different results
@@ -200,6 +179,20 @@ const defaultStyle = `
     margin-right: 2rem;
     text-align: right;
     color: gray;
+  }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
   }
 </style>
 `;

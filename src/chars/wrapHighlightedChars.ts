@@ -32,8 +32,8 @@ export function wrapHighlightedChars(
       elementsToWrap.length,
       {
         type: 'element',
-        tagName: 'span',
-        properties: { 'data-highlighted-chars-wrapper': '' },
+        tagName: 'mark',
+        properties: { 'data-highlighted-chars-mark': '' },
         children: elementsToWrap.map(({ element }) => element),
       },
     );
@@ -56,6 +56,7 @@ export function wrapHighlightedChars(
     element.properties = element.properties || {};
     element.properties['data-highlighted-chars'] = '';
     element.properties['data-chars-id'] = id;
+    element.tagName = 'mark';
     onVisitHighlightedChars?.(element as CharsElement, id);
   } else {
     const [{ element }] = elementsToWrap;
@@ -72,6 +73,18 @@ export function wrapHighlightedChars(
     element.properties['rehype-pretty-code-visited'] = '';
     element.properties['data-highlighted-chars'] = '';
     element.properties['data-chars-id'] = id;
+    element.tagName = 'mark';
+    element.children = [
+      {
+        type: 'element',
+        tagName: 'span',
+        properties: {
+          style: element.properties.style,
+        },
+        children: element.children,
+      },
+    ];
+    element.properties.style = undefined;
 
     onVisitHighlightedChars?.(element as CharsElement, id);
   }

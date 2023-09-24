@@ -29,59 +29,70 @@
     text-align: right;
     color: gray;
   }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
 </style>
 <h2>Title</h2>
 <p>title="app.js"</p>
-<div data-rehype-pretty-code-fragment="">
-  <div
+<figure data-rehype-pretty-code-figure="">
+  <figcaption
     data-rehype-pretty-code-title=""
     data-language="js"
-    data-theme="default"
+    data-theme="github-dark"
     style="font-weight: bold"
   >
     app.js
-  </div>
+  </figcaption>
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
     data-language="js"
-    data-theme="default"
-  ><code data-language="js" data-theme="default" style="display: grid;"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">code</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">true</span><span style="color: #E1E4E8">;</span></span></code></pre>
-</div>
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> code</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span></code></pre>
+</figure>
 <p>title="./components/index.js"</p>
-<div data-rehype-pretty-code-fragment="">
-  <div
+<figure data-rehype-pretty-code-figure="">
+  <figcaption
     data-rehype-pretty-code-title=""
     data-language="js"
-    data-theme="default"
+    data-theme="github-dark"
     style="font-weight: bold"
   >
     ./components/index.js
-  </div>
+  </figcaption>
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
     data-language="js"
-    data-theme="default"
-  ><code data-language="js" data-theme="default" style="display: grid;"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">title</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'components'</span><span style="color: #E1E4E8">;</span></span></code></pre>
-</div>
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> title</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'components'</span><span style="color:#E1E4E8">;</span></span></code></pre>
+</figure>
 <p>title="./components/{4}.js" /title/</p>
-<div data-rehype-pretty-code-fragment="">
-  <div
+<figure data-rehype-pretty-code-figure="">
+  <figcaption
     data-rehype-pretty-code-title=""
     data-language="js"
-    data-theme="default"
+    data-theme="github-dark"
     style="font-weight: bold"
   >
     ./components/{4}.js
-  </div>
+  </figcaption>
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
     data-language="js"
-    data-theme="default"
-  ><code data-language="js" data-theme="default" style="display: grid;"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF" data-highlighted-chars="" class="word">title</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'components'</span><span style="color: #E1E4E8">;</span></span></code></pre>
-</div>
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> </span><mark data-highlighted-chars="" class="word"><span style="color:#79B8FF">title</span></mark><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'components'</span><span style="color:#E1E4E8">;</span></span></code></pre>
+</figure>

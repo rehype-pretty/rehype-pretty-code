@@ -9,7 +9,7 @@ import { hasOwnProperty, isElement } from '../utils';
 /**
  * Loops through the child nodes and finds the nodes that make up the chars.
  * If the chars cross node boundaries, those nodes are wrapped with
- * <span data-highlighted-chars-wrapper>, and that node is passed to
+ * <span data-highlighted-chars-mark>, and that node is passed to
  * onVisitHighlightedChars.
  *
  * If a node partially matches the chars, its content is replaced with the
@@ -74,7 +74,7 @@ export function charsHighlighter(
             if (
               props &&
               !hasOwnProperty(props, 'rehype-pretty-code-visited') &&
-              !hasOwnProperty(props, 'data-highlighted-chars-wrapper')
+              !hasOwnProperty(props, 'data-highlighted-chars-mark')
             ) {
               return toString(childNode);
             }

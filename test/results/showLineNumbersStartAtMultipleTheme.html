@@ -29,66 +29,65 @@
     text-align: right;
     color: gray;
   }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
 </style>
 <h2>showLineNumbersStartAt</h2>
 <p>showLineNumbersStartAt</p>
-<div data-rehype-pretty-code-fragment="">
+<figure data-rehype-pretty-code-figure="">
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="
+      --shiki-dark: #e1e4e8;
+      --shiki-light: #24292e;
+      --shiki-dark-bg: #24292e;
+      --shiki-light-bg: #fff;
+    "
     tabindex="0"
     data-language="js"
-    data-theme="dark"
-  ><code data-line-numbers="" data-language="js" data-theme="dark" style="display: grid;" data-line-numbers-max-digits="1"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">a</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'a'</span><span style="color: #E1E4E8">;</span></span>
-<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">b</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'b'</span><span style="color: #E1E4E8">;</span></span>
-<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">c</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'c'</span><span style="color: #E1E4E8">;</span></span></code></pre>
+    data-theme="github-dark github-light"
+  ><code data-line-numbers="" data-language="js" data-theme="github-dark github-light" style="display: grid;" data-line-numbers-max-digits="1"><span data-line=""><span style="--shiki-dark:#F97583;--shiki-light:#D73A49">const</span><span style="--shiki-dark:#79B8FF;--shiki-light:#005CC5"> a</span><span style="--shiki-dark:#F97583;--shiki-light:#D73A49"> =</span><span style="--shiki-dark:#9ECBFF;--shiki-light:#032F62"> 'a'</span><span style="--shiki-dark:#E1E4E8;--shiki-light:#24292E">;</span></span>
+<span data-line=""><span style="--shiki-dark:#F97583;--shiki-light:#D73A49">const</span><span style="--shiki-dark:#79B8FF;--shiki-light:#005CC5"> b</span><span style="--shiki-dark:#F97583;--shiki-light:#D73A49"> =</span><span style="--shiki-dark:#9ECBFF;--shiki-light:#032F62"> 'b'</span><span style="--shiki-dark:#E1E4E8;--shiki-light:#24292E">;</span></span>
+<span data-line=""><span style="--shiki-dark:#F97583;--shiki-light:#D73A49">const</span><span style="--shiki-dark:#79B8FF;--shiki-light:#005CC5"> c</span><span style="--shiki-dark:#F97583;--shiki-light:#D73A49"> =</span><span style="--shiki-dark:#9ECBFF;--shiki-light:#032F62"> 'c'</span><span style="--shiki-dark:#E1E4E8;--shiki-light:#24292E">;</span></span></code></pre>
+</figure>
+<figure data-rehype-pretty-code-figure="">
   <pre
-    class="github-light"
-    style="background-color: #fff"
+    style="
+      --shiki-dark: #e1e4e8;
+      --shiki-light: #24292e;
+      --shiki-dark-bg: #24292e;
+      --shiki-light-bg: #fff;
+    "
     tabindex="0"
     data-language="js"
-    data-theme="light"
-  ><code data-line-numbers="" data-language="js" data-theme="light" style="display: grid;" data-line-numbers-max-digits="1"><span data-line=""><span style="color: #D73A49">const</span><span style="color: #24292E"> </span><span style="color: #005CC5">a</span><span style="color: #24292E"> </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #032F62">'a'</span><span style="color: #24292E">;</span></span>
-<span data-line=""><span style="color: #D73A49">const</span><span style="color: #24292E"> </span><span style="color: #005CC5">b</span><span style="color: #24292E"> </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #032F62">'b'</span><span style="color: #24292E">;</span></span>
-<span data-line=""><span style="color: #D73A49">const</span><span style="color: #24292E"> </span><span style="color: #005CC5">c</span><span style="color: #24292E"> </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #032F62">'c'</span><span style="color: #24292E">;</span></span></code></pre>
-</div>
-<div data-rehype-pretty-code-fragment="">
+    data-theme="github-dark github-light"
+  ><code data-line-numbers="" style="counter-set: line 4;display: grid;" data-language="js" data-theme="github-dark github-light" data-line-numbers-max-digits="1"><span data-line=""><span style="--shiki-dark:#F97583;--shiki-light:#D73A49">const</span><span style="--shiki-dark:#79B8FF;--shiki-light:#005CC5"> a</span><span style="--shiki-dark:#F97583;--shiki-light:#D73A49"> =</span><span style="--shiki-dark:#9ECBFF;--shiki-light:#032F62"> 'a'</span><span style="--shiki-dark:#E1E4E8;--shiki-light:#24292E">;</span></span>
+<span data-line=""><span style="--shiki-dark:#F97583;--shiki-light:#D73A49">const</span><span style="--shiki-dark:#79B8FF;--shiki-light:#005CC5"> b</span><span style="--shiki-dark:#F97583;--shiki-light:#D73A49"> =</span><span style="--shiki-dark:#9ECBFF;--shiki-light:#032F62"> 'b'</span><span style="--shiki-dark:#E1E4E8;--shiki-light:#24292E">;</span></span>
+<span data-line=""><span style="--shiki-dark:#F97583;--shiki-light:#D73A49">const</span><span style="--shiki-dark:#79B8FF;--shiki-light:#005CC5"> c</span><span style="--shiki-dark:#F97583;--shiki-light:#D73A49"> =</span><span style="--shiki-dark:#9ECBFF;--shiki-light:#032F62"> 'c'</span><span style="--shiki-dark:#E1E4E8;--shiki-light:#24292E">;</span></span></code></pre>
+</figure>
+<figure data-rehype-pretty-code-figure="">
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="
+      --shiki-dark: #e1e4e8;
+      --shiki-light: #24292e;
+      --shiki-dark-bg: #24292e;
+      --shiki-light-bg: #fff;
+    "
     tabindex="0"
     data-language="js"
-    data-theme="dark"
-  ><code data-line-numbers="" style="counter-set: line 4;display: grid;" data-language="js" data-theme="dark" data-line-numbers-max-digits="1"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">a</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'a'</span><span style="color: #E1E4E8">;</span></span>
-<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">b</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'b'</span><span style="color: #E1E4E8">;</span></span>
-<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">c</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'c'</span><span style="color: #E1E4E8">;</span></span></code></pre>
-  <pre
-    class="github-light"
-    style="background-color: #fff"
-    tabindex="0"
-    data-language="js"
-    data-theme="light"
-  ><code data-line-numbers="" style="counter-set: line 4;display: grid;" data-language="js" data-theme="light" data-line-numbers-max-digits="1"><span data-line=""><span style="color: #D73A49">const</span><span style="color: #24292E"> </span><span style="color: #005CC5">a</span><span style="color: #24292E"> </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #032F62">'a'</span><span style="color: #24292E">;</span></span>
-<span data-line=""><span style="color: #D73A49">const</span><span style="color: #24292E"> </span><span style="color: #005CC5">b</span><span style="color: #24292E"> </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #032F62">'b'</span><span style="color: #24292E">;</span></span>
-<span data-line=""><span style="color: #D73A49">const</span><span style="color: #24292E"> </span><span style="color: #005CC5">c</span><span style="color: #24292E"> </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #032F62">'c'</span><span style="color: #24292E">;</span></span></code></pre>
-</div>
-<div data-rehype-pretty-code-fragment="">
-  <pre
-    class="github-dark"
-    style="background-color: #24292e"
-    tabindex="0"
-    data-language="js"
-    data-theme="dark"
-  ><code data-line-numbers="" style="counter-set: line 99;display: grid;" data-language="js" data-theme="dark" data-line-numbers-max-digits="3"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">a</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'a'</span><span style="color: #E1E4E8">;</span></span>
-<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">b</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'b'</span><span style="color: #E1E4E8">;</span></span>
-<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">c</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'c'</span><span style="color: #E1E4E8">;</span></span></code></pre>
-  <pre
-    class="github-light"
-    style="background-color: #fff"
-    tabindex="0"
-    data-language="js"
-    data-theme="light"
-  ><code data-line-numbers="" style="counter-set: line 99;display: grid;" data-language="js" data-theme="light" data-line-numbers-max-digits="3"><span data-line=""><span style="color: #D73A49">const</span><span style="color: #24292E"> </span><span style="color: #005CC5">a</span><span style="color: #24292E"> </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #032F62">'a'</span><span style="color: #24292E">;</span></span>
-<span data-line=""><span style="color: #D73A49">const</span><span style="color: #24292E"> </span><span style="color: #005CC5">b</span><span style="color: #24292E"> </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #032F62">'b'</span><span style="color: #24292E">;</span></span>
-<span data-line=""><span style="color: #D73A49">const</span><span style="color: #24292E"> </span><span style="color: #005CC5">c</span><span style="color: #24292E"> </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #032F62">'c'</span><span style="color: #24292E">;</span></span></code></pre>
-</div>
+    data-theme="github-dark github-light"
+  ><code data-line-numbers="" style="counter-set: line 99;display: grid;" data-language="js" data-theme="github-dark github-light" data-line-numbers-max-digits="3"><span data-line=""><span style="--shiki-dark:#F97583;--shiki-light:#D73A49">const</span><span style="--shiki-dark:#79B8FF;--shiki-light:#005CC5"> a</span><span style="--shiki-dark:#F97583;--shiki-light:#D73A49"> =</span><span style="--shiki-dark:#9ECBFF;--shiki-light:#032F62"> 'a'</span><span style="--shiki-dark:#E1E4E8;--shiki-light:#24292E">;</span></span>
+<span data-line=""><span style="--shiki-dark:#F97583;--shiki-light:#D73A49">const</span><span style="--shiki-dark:#79B8FF;--shiki-light:#005CC5"> b</span><span style="--shiki-dark:#F97583;--shiki-light:#D73A49"> =</span><span style="--shiki-dark:#9ECBFF;--shiki-light:#032F62"> 'b'</span><span style="--shiki-dark:#E1E4E8;--shiki-light:#24292E">;</span></span>
+<span data-line=""><span style="--shiki-dark:#F97583;--shiki-light:#D73A49">const</span><span style="--shiki-dark:#79B8FF;--shiki-light:#005CC5"> c</span><span style="--shiki-dark:#F97583;--shiki-light:#D73A49"> =</span><span style="--shiki-dark:#9ECBFF;--shiki-light:#032F62"> 'c'</span><span style="--shiki-dark:#E1E4E8;--shiki-light:#24292E">;</span></span></code></pre>
+</figure>

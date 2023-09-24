@@ -50,19 +50,28 @@
   <span data-rehype-pretty-code-figure=""
     ><code
       data-language="js"
-      data-theme="github-dark"
-      style="background-color: #24292e; color: #e1e4e8"
+      data-theme="github-dark github-light"
+      style="
+        --shiki-dark: #e1e4e8;
+        --shiki-light: #24292e;
+        --shiki-dark-bg: #24292e;
+        --shiki-light-bg: #fff;
+      "
       ><span class="line"
-        ><span style="color: #f97583">const</span
-        ><span style="color: #b392f0"> getStringLength</span
-        ><span style="color: #f97583"> =</span
-        ><span style="color: #e1e4e8"> (</span
-        ><span style="color: #ffab70">str</span
-        ><span style="color: #e1e4e8">) </span
-        ><span style="color: #f97583">=></span
-        ><span style="color: #e1e4e8"> str.</span
-        ><span style="color: #79b8ff">length</span
-        ><span style="color: #e1e4e8">;</span></span
+        ><span style="--shiki-dark: #f97583; --shiki-light: #d73a49">const</span
+        ><span style="--shiki-dark: #b392f0; --shiki-light: #6f42c1">
+          getStringLength</span
+        ><span style="--shiki-dark: #f97583; --shiki-light: #d73a49"> =</span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e"> (</span
+        ><span style="--shiki-dark: #ffab70; --shiki-light: #e36209">str</span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e">) </span
+        ><span style="--shiki-dark: #f97583; --shiki-light: #d73a49">=></span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e"> str.</span
+        ><span style="--shiki-dark: #79b8ff; --shiki-light: #005cc5"
+          >length</span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e"
+          >;</span
+        ></span
       ></code
     ></span
   >
@@ -70,8 +79,10 @@
 <p>.support</p>
 <p>
   <span data-rehype-pretty-code-figure=""
-    ><code data-language=".token" data-theme="github-dark"
-      ><span style="color: #79b8ff">getStringLength</span></code
+    ><code data-language=".token" data-theme="github-dark github-light"
+      ><span style="--shiki-dark: #79b8ff; --shiki-light: #005cc5"
+        >getStringLength</span
+      ></code
     ></span
   >
 </p>

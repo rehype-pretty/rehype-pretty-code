@@ -29,14 +29,27 @@
     text-align: right;
     color: gray;
   }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
 </style>
 <h1>Unknown language</h1>
-<div data-rehype-pretty-code-fragment="">
+<figure data-rehype-pretty-code-figure="">
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
     data-language="console"
-    data-theme="default"
-  ><code data-language="console" data-theme="default" style="display: grid;"><span data-line=""><span style="color: #79B8FF">test</span></span></code></pre>
-</div>
+    data-theme="github-dark"
+  ><code data-language="console" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#79B8FF">test</span></span></code></pre>
+</figure>
