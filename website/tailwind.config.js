@@ -45,8 +45,8 @@ module.exports = {
             },
             code: {
               color: '#86e1fc',
-              '&::before': { content: `"" !important` },
-              '&::after': { content: `"" !important` },
+              '&::before': { content: `unset !important` },
+              '&::after': { content: `unset !important` },
               fontWeight: 'normal',
             },
             '[data-rehype-pretty-code-fragment]:nth-of-type(2) pre': {
