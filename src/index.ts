@@ -61,7 +61,7 @@ function toFragment(
       }
 
       if (!keepBackground) {
-        pre.properties = {};
+        pre.properties.style = undefined;
       }
 
       pre.properties['data-language'] = lang;
