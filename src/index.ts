@@ -55,10 +55,13 @@ function toFragment(
       const code = pre.children[0];
 
       // Remove class="shiki"
-      pre.properties.className = undefined;
+      if (Array.isArray(pre.properties?.className) && pre.properties?.className.includes('shiki')) {
+        const className = pre.properties.className.filter(c => c !== 'shiki');
+        pre.properties.className = className.length > 0 ? className : undefined;
+      }
 
       if (!keepBackground) {
-        pre.properties = {};
+        pre.properties.style = undefined;
       }
 
       pre.properties['data-language'] = lang;
@@ -396,7 +399,8 @@ export default function rehypePrettyCode(
                 element.children = [{ type: 'text', value: ' ' }];
               }
 
-              element.properties.className = undefined;
+              const className = element.properties.className.filter(c => c !== 'line');
+              element.properties.className = className.length > 0 ? className : undefined;
               element.properties['data-line'] = '';
               onVisitLine?.(element as LineElement);
 
