@@ -9,6 +9,15 @@ works with new features like React Server Components.
 Leverage the accuracy of VS Code's syntax highlighting engine and the popularity
 of its themes ecosystem — use any VS Code theme you want!
 
+**Note:** _recent releases are `ESM`-only. If you need `CommonJS` support you should use
+`v0.10`. You can use the latest version (`ESM`) in `Next.js`, just make sure
+your next config file is `ESM`: `next.config.mjs`._<br /> _Here's an example:
+[github.com/atomiks/rehype-pretty-code/website/next.config.mjs](https://github.com/atomiks/rehype-pretty-code/blob/master/website/next.config.mjs)_
+
+```sh
+npm install rehype-pretty-code@0.10.0
+```
+
 ```js
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
@@ -330,8 +339,8 @@ via CSS.
 
 #### Highlight inline code
 
-Append `{:lang}‎` (e.g. `{:js}‎`) to the end of inline code to highlight it like
-a regular code block.
+Append `{:lang}‎` (e.g. `{:js}‎`) to the end of inline code to highlight it
+like a regular code block.
 
 ```md
 This is an array `[1, 2, 3]{:js}` of numbers 1 through 3.
