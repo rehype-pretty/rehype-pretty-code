@@ -9,15 +9,6 @@ works with new features like React Server Components.
 Leverage the accuracy of VS Code's syntax highlighting engine and the popularity
 of its themes ecosystem — use any VS Code theme you want!
 
-**Note:** _recent releases are `ESM`-only. If you need `CommonJS` support you should use
-`v0.10`. You can use the latest version (`ESM`) in `Next.js`, just make sure
-your next config file is `ESM`: `next.config.mjs`._<br /> _Here's an example:
-[github.com/atomiks/rehype-pretty-code/website/next.config.mjs](https://github.com/atomiks/rehype-pretty-code/blob/master/website/next.config.mjs)_
-
-```sh
-npm install rehype-pretty-code@0.10.0
-```
-
 ```js
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
@@ -122,6 +113,12 @@ Install via your terminal:
 npm install rehype-pretty-code shiki
 ```
 
+> **Note:** _versions above `0.10.0` are `ESM`-only. If you need `CommonJS`
+> support you should use `v0.10.0`. You can use the latest version (`ESM`) in
+> `Next.js`, just make sure your next config file is `ESM`: `next.config.mjs`.
+> Here's a full example:
+> [rehype-pretty-code/website/next.config.mjs](https://github.com/atomiks/rehype-pretty-code/blob/master/website/next.config.mjs)_
+
 ## Usage
 
 ```js /rehypePrettyCode/
@@ -154,21 +151,28 @@ main();
 The following example shows how to use this package with Next.js.
 
 ```js
-const rehypePrettyCode = require('rehype-pretty-code');
-const fs = require('fs');
+// next.config.mjs
+import fs from 'node:fs';
+import nextMDX from '@next/mdx';
+import rehypePrettyCode from 'rehype-pretty-code';
 
 /** @type {import('rehype-pretty-code').Options} */
 const options = {
   // See Options section below.
 };
 
-const withMDX = require('@next/mdx')({
+const withMDX = nextMDX({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [],
     rehypePlugins: [[rehypePrettyCode, options]],
   },
 });
+
+/** @type {import('next').NextConfig} */
+const nextConfig = { reactStrictMode: true };
+
+export default withMDX(nextConfig);
 ```
 
 > **Make sure you have disabled** the `mdxRs{:.meta.object-literal.key}` option
@@ -213,7 +217,10 @@ You can use your own theme as well by passing the theme JSON:
 // ESM
 const options = {
   theme: JSON.parse(
-    readFileSync(new URL('./themes/my-theme.json', import.meta.url))
+    fs.readFileSync(
+      new URL('./themes/moonlight-ii.json', import.meta.url),
+      'utf-8'
+    )
   ),
 };
 ```
@@ -222,7 +229,7 @@ const options = {
 // CJS
 const options = {
   theme: JSON.parse(
-    fs.readFileSync(require.resolve('./themes/my-theme.json'), 'utf-8')
+    fs.readFileSync(fs.realpathSync('./themes/my-theme.json'), 'utf-8')
   ),
 };
 ```
