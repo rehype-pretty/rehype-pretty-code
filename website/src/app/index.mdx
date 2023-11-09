@@ -396,7 +396,7 @@ code {
   counter-reset: line;
 }
 
-code > [data-line]::before {
+code[data-line-numbers] > [data-line]::before {
   counter-increment: line;
   content: counter(line);
 
