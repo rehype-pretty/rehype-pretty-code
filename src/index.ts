@@ -310,6 +310,13 @@ export default function rehypePrettyCode(
           : [];
         let lineNumbersMaxDigits = 0;
 
+        const addHighlights = meta
+          ? rangeParser(meta.match(/(?:^|\s)\+{(.*?)}/)?.[1] ?? '')
+          : [];
+        const removeHighlights = meta
+          ? rangeParser(meta.match(/(?:^|\s)-{(.*?)}/)?.[1] ?? '')
+          : [];
+
         const words: string[] = [];
         const wordNumbers: Array<number[]> = [];
         const wordIdsMap = new Map();
@@ -410,6 +417,20 @@ export default function rehypePrettyCode(
               ) {
                 element.properties['data-highlighted-line'] = '';
                 onVisitHighlightedLine?.(element as LineElement);
+              }
+
+              if (
+                addHighlights.length !== 0 &&
+                addHighlights.includes(++lineCounter)
+              ) {
+                element.properties['data-added-line'] = '';
+              }
+
+              if (
+                removeHighlights.length !== 0 &&
+                removeHighlights.includes(++lineCounter)
+              ) {
+                element.properties['data-removed-line'] = '';
               }
 
               charsHighlighter(

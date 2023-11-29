@@ -38,6 +38,16 @@ pre > code {
   @apply border-l-blue-400;
 }
 
+[data-added-line] {
+  background: rgba(200, 255, 200, 0.1);
+  @apply border-l-green-400;
+}
+
+[data-removed-line] {
+  background: rgba(255, 200, 200, 0.1);
+  @apply border-l-red-400;
+}
+
 [data-highlighted-chars] {
   @apply bg-zinc-600/50 rounded;
   box-shadow: 0 0 0 4px rgb(82 82 91 / 0.5);
