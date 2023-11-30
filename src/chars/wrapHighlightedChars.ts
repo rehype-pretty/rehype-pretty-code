@@ -10,8 +10,8 @@ export function wrapHighlightedChars(
   ignoreWord: boolean,
   onVisitHighlightedChars?: (
     element: CharsElement,
-    id: string | undefined
-  ) => void
+    id: string | undefined,
+  ) => void,
 ) {
   if (!elementsToWrap || elementsToWrap.length === 0) {
     return;
@@ -35,7 +35,7 @@ export function wrapHighlightedChars(
         tagName: 'span',
         properties: { 'data-highlighted-chars-wrapper': '' },
         children: elementsToWrap.map(({ element }) => element),
-      }
+      },
     );
 
     const element = parentElement.children[elementsToWrap[0].index];

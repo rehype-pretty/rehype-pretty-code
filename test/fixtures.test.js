@@ -29,22 +29,22 @@ const getTheme = (multiple) => {
   const singleTheme = JSON.parse(
     readFileSync(
       join(__dirname, '../node_modules/shiki/themes/github-dark.json'),
-      'utf-8'
-    )
+      'utf-8',
+    ),
   );
 
   const multipleTheme = {
     dark: JSON.parse(
       readFileSync(
         join(__dirname, '../node_modules/shiki/themes/github-dark.json'),
-        'utf-8'
-      )
+        'utf-8',
+      ),
     ),
     light: JSON.parse(
       readFileSync(
         join(__dirname, '../node_modules/shiki/themes/github-light.json'),
-        'utf-8'
-      )
+        'utf-8',
+      ),
     ),
   };
   return multiple ? multipleTheme : singleTheme;
@@ -108,7 +108,7 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
     getHighlighter,
   });
 
-  const htmlString = prettier.format(html, { parser: 'html' });
+  const htmlString = await prettier.format(html, { parser: 'html' });
   return { htmlString, resultHTMLPath };
 };
 
@@ -127,7 +127,7 @@ describe('Single theme', () => {
       const { htmlString, resultHTMLPath } = await runFixture(
         fixture,
         fixtureName,
-        getHighlighter
+        getHighlighter,
       );
 
       expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);
@@ -151,7 +151,7 @@ describe('Multiple theme', () => {
       const { htmlString, resultHTMLPath } = await runFixture(
         fixture,
         fixtureName,
-        getHighlighter
+        getHighlighter,
       );
 
       expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);

@@ -39,7 +39,7 @@ function toFragment(
     lineNumbersMaxDigits = 1,
     onVisitTitle,
     onVisitCaption,
-  }: ToFragmentProps
+  }: ToFragmentProps,
 ) {
   element.tagName = inline ? 'span' : 'div';
   // User can replace this with a real Fragment at runtime
@@ -55,8 +55,11 @@ function toFragment(
       const code = pre.children[0];
 
       // Remove class="shiki"
-      if (Array.isArray(pre.properties?.className) && pre.properties?.className.includes('shiki')) {
-        const className = pre.properties.className.filter(c => c !== 'shiki');
+      if (
+        Array.isArray(pre.properties?.className) &&
+        pre.properties?.className.includes('shiki')
+      ) {
+        const className = pre.properties.className.filter((c) => c !== 'shiki');
         pre.properties.className = className.length > 0 ? className : undefined;
       }
 
@@ -140,7 +143,7 @@ const globalHighlighterCache = new Map<
 const hastParser = unified().use(rehypeParse, { fragment: true });
 
 export default function rehypePrettyCode(
-  options: Options = {}
+  options: Options = {},
 ): void | Transformer<Root, Root> {
   const {
     grid = true,
@@ -166,7 +169,7 @@ export default function rehypePrettyCode(
       onVisitHighlightedChars,
       getHighlighter,
     },
-    { algorithm: 'sha1' }
+    { algorithm: 'sha1' },
   );
   let highlighterCache = globalHighlighterCache.get(optionsHash);
   if (!highlighterCache) {
@@ -239,12 +242,13 @@ export default function rehypePrettyCode(
             const color =
               highlighter
                 .getTheme()
-                .settings.find(({ scope }: { scope?: string[] }) =>
-                  scope?.includes(tokensMap[meta.slice(1)] ?? meta.slice(1))
+                .settings.find(
+                  ({ scope }: { scope?: string[] }) =>
+                    scope?.includes(tokensMap[meta.slice(1)] ?? meta.slice(1)),
                 )?.settings.foreground ?? 'inherit';
 
             trees[mode] = hastParser.parse(
-              `<pre><code><span style="color:${color}">${strippedValue}</span></code></pre>`
+              `<pre><code><span style="color:${color}">${strippedValue}</span></code></pre>`,
             );
           } else {
             let html;
@@ -353,7 +357,7 @@ export default function rehypePrettyCode(
           } catch (e) {
             // Fallback to plain text if a language has not been registered
             trees[mode] = hastParser.parse(
-              highlighter.codeToHtml(strippedValue, 'txt')
+              highlighter.codeToHtml(strippedValue, 'txt'),
             );
           }
         }
@@ -377,7 +381,7 @@ export default function rehypePrettyCode(
               }
 
               const lineNumbersStartAtMatch = reverseString(meta).match(
-                /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/
+                /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/,
               );
               const startNumberString = lineNumbersStartAtMatch?.[1];
               if (startNumberString) {
@@ -399,8 +403,11 @@ export default function rehypePrettyCode(
                 element.children = [{ type: 'text', value: ' ' }];
               }
 
-              const className = element.properties.className.filter(c => c !== 'line');
-              element.properties.className = className.length > 0 ? className : undefined;
+              const className = element.properties.className.filter(
+                (c) => c !== 'line',
+              );
+              element.properties.className =
+                className.length > 0 ? className : undefined;
               element.properties['data-line'] = '';
               onVisitLine?.(element as LineElement);
 
@@ -416,7 +423,7 @@ export default function rehypePrettyCode(
                 element,
                 words,
                 wordOptions,
-                onVisitHighlightedChars
+                onVisitHighlightedChars,
               );
 
               lineNumbersMaxDigits++;

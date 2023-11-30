@@ -7,7 +7,7 @@ export function isShikiTheme(value: any): value is IShikiTheme {
 }
 
 export function isElement(
-  value: ElementContent | Element | Root | RootContent | null
+  value: ElementContent | Element | Root | RootContent | null | undefined,
 ): value is Element {
   return value ? value.type === 'element' : false;
 }
@@ -18,7 +18,7 @@ export function isText(value: ElementContent | null): value is Text {
 
 export function hasOwnProperty(
   object: Record<string, unknown>,
-  string: string
+  string: string,
 ) {
   return {}.hasOwnProperty.call(object, string);
 }
