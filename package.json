@@ -2,15 +2,14 @@
   "name": "rehype-pretty-code",
   "version": "0.10.2",
   "description": "Beautiful code for your MD/MDX docs.",
-  "main": "./dist/rehype-pretty-code.cjs",
+  "main": "./dist/rehype-pretty-code.js",
   "module": "./dist/rehype-pretty-code.js",
   "type": "module",
   "types": "index.d.ts",
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./dist/rehype-pretty-code.js",
-      "require": "./dist/rehype-pretty-code.cjs"
+      "import": "./dist/rehype-pretty-code.js"
     },
     "./package.json": "./package.json"
   },
