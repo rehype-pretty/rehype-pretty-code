@@ -30,12 +30,4 @@ export default defineConfig([
       format: 'esm',
     },
   },
-  {
-    ...common,
-    output: {
-      exports: 'default',
-      file: './dist/rehype-pretty-code.cjs',
-      format: 'cjs',
-    },
-  },
 ]);
