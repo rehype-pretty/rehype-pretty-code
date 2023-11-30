@@ -108,7 +108,7 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
     getHighlighter,
   });
 
-  const htmlString = prettier.format(html, { parser: 'html' });
+  const htmlString = await prettier.format(html, { parser: 'html' });
   return { htmlString, resultHTMLPath };
 };
 
