@@ -366,7 +366,7 @@ export default function rehypePrettyCode(
         }
 
         Object.entries(trees).forEach(([, tree]) => {
-          let lineCounter = 0;
+          let lineCounter = 1;
 
           const wordOptions: CharsHighlighterOptions = {
             ranges: wordNumbers,
@@ -413,7 +413,7 @@ export default function rehypePrettyCode(
 
               if (
                 lineNumbers.length !== 0 &&
-                lineNumbers.includes(++lineCounter)
+                lineNumbers.includes(lineCounter)
               ) {
                 element.properties['data-highlighted-line'] = '';
                 onVisitHighlightedLine?.(element as LineElement);
@@ -421,18 +421,19 @@ export default function rehypePrettyCode(
 
               if (
                 addHighlights.length !== 0 &&
-                addHighlights.includes(++lineCounter)
+                addHighlights.includes(lineCounter)
               ) {
                 element.properties['data-added-line'] = '';
               }
 
               if (
                 removeHighlights.length !== 0 &&
-                removeHighlights.includes(++lineCounter)
+                removeHighlights.includes(lineCounter)
               ) {
                 element.properties['data-removed-line'] = '';
               }
 
+              lineCounter += 1;
               charsHighlighter(
                 element,
                 words,

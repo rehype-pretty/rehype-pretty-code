@@ -1,6 +1,6 @@
 ## Added lines
 
--{1, 3, 6-8}
++{1, 3, 6-8}
 
 ```js +{1, 3, 6-8}
 const getStringLength = (str) => str.length;
