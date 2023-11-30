@@ -11,7 +11,7 @@ export function getElementsToHighlight(
   element: Element,
   chars: string,
   startIndex = 0,
-  ignoreChars = false
+  ignoreChars = false,
 ): Array<{ element: Element; index: number }> {
   const toWrap = [];
   let charsSoFar = '';
@@ -34,7 +34,7 @@ export function getElementsToHighlight(
         // ignore any previously matched chars within
         hasOwnProperty(
           maybeElement.properties ?? {},
-          'rehype-pretty-code-visited'
+          'rehype-pretty-code-visited',
         )
       ) {
         continue;

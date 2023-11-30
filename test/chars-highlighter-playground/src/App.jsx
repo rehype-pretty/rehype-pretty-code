@@ -70,8 +70,8 @@ function App() {
         highlighter.current.codeToHtml(
           editorRef.current.getDoc().getValue('\n'),
           mode,
-          DEFAULT_THEME
-        )
+          DEFAULT_THEME,
+        ),
       );
     }
     if (highlighter.current) {
@@ -82,8 +82,8 @@ function App() {
             plugins: [htmlParser],
           }),
           'html',
-          DEFAULT_THEME
-        )
+          DEFAULT_THEME,
+        ),
       );
     }
   }, [mode]);
@@ -94,7 +94,7 @@ function App() {
         container.innerHTML = highlighter.current.codeToHtml(
           editorRef.current.getDoc().getValue('\n'),
           mode,
-          DEFAULT_THEME
+          DEFAULT_THEME,
         );
       }
       let options = {
@@ -114,11 +114,11 @@ function App() {
           `Something went wrong with highlighting!
           
           expect: ${container.textContent}
-          got: ${value}`
+          got: ${value}`,
         );
       }
     },
-    [word, wordNumbers, value, mode]
+    [word, wordNumbers, value, mode],
   );
 
   React.useEffect(() => {
