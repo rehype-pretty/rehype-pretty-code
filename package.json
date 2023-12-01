@@ -1,6 +1,6 @@
 {
   "name": "rehype-pretty-code",
-  "version": "0.11.0",
+  "version": "0.12.0-beta.0",
   "description": "Beautiful code for your MD/MDX docs.",
   "main": "./dist/rehype-pretty-code.js",
   "module": "./dist/rehype-pretty-code.js",
