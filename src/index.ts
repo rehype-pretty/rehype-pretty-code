@@ -12,7 +12,6 @@ import rangeParser from 'parse-numeric-range';
 import { getHighlighter as defaultGetHighlighter } from 'shikiji';
 import { unified } from 'unified';
 import rehypeParse from 'rehype-parse';
-import hashObj from 'hash-obj';
 import { charsHighlighter } from './chars/charsHighlighter';
 import { reverseString } from './chars/utils';
 import {
@@ -158,7 +157,7 @@ function apply(
     .flatMap((c) => c);
 }
 
-const globalHighlighterCache = new Map<string, Promise<Highlighter>>();
+const globalHighlighterCache = new WeakMap<Options, Promise<Highlighter>>();
 const hastParser = unified().use(rehypeParse, { fragment: true });
 
 export default function rehypePrettyCode(
@@ -179,18 +178,7 @@ export default function rehypePrettyCode(
     onVisitCaption,
   } = options;
 
-  const optionsHash = hashObj(
-    {
-      theme,
-      tokensMap,
-      onVisitLine,
-      onVisitHighlightedLine,
-      onVisitHighlightedChars,
-      getHighlighter,
-    },
-    { algorithm: 'sha1' },
-  );
-  let cachedHighlighter = globalHighlighterCache.get(optionsHash);
+  let cachedHighlighter = globalHighlighterCache.get(options);
   if (!cachedHighlighter) {
     cachedHighlighter = getHighlighter({
       themes:
@@ -199,7 +187,7 @@ export default function rehypePrettyCode(
           : Object.values(theme),
       langs: ['plaintext'],
     });
-    globalHighlighterCache.set(optionsHash, cachedHighlighter);
+    globalHighlighterCache.set(options, cachedHighlighter);
   }
 
   const defaultCodeBlockLang =
