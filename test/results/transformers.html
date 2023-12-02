@@ -51,20 +51,16 @@
     background-color: rgba(255, 100, 200, 0.35);
   }
 </style>
-<h2>Diff</h2>
+<h1>Transformers</h1>
+<p>Diff</p>
 <figure data-rehype-pretty-code-figure="">
   <pre
+    class="has-diff"
     style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
-    data-language="diff"
+    data-language="js"
     data-theme="github-dark"
-  ><code data-language="diff" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#E1E4E8">import useSWR from 'swr'</span></span>
-<span data-line=""> </span>
-<span data-line=""><span style="color:#E1E4E8">function Profile() {</span></span>
-<span data-line=""><span style="color:#E1E4E8">  const { data, error } = useSWR('/api/user', fetcher)</span></span>
-<span data-line=""> </span>
-<span data-line=""><span style="color:#FDAEB7">-  if (error) return &#x3C;div>failed to load&#x3C;/div></span></span>
-<span data-line=""><span style="color:#85E89D">+  if (!data) return &#x3C;div>loading...&#x3C;/div></span></span>
-<span data-line=""><span style="color:#E1E4E8">  return &#x3C;div>hello {data.name}!&#x3C;/div></span></span>
-<span data-line=""><span style="color:#E1E4E8">}</span></span></code></pre>
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span class="diff add" data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> added</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">; </span></span>
+<span class="diff remove" data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> removed</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">; </span></span>
+<span data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> blank</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span></code></pre>
 </figure>

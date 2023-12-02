@@ -1,11 +1,7 @@
 import type { Element, ElementContent, Root } from 'hast';
 import type { Options, Theme } from '../';
 import type { CharsHighlighterOptions } from './types';
-import {
-  Highlighter,
-  CodeToHastOptions,
-  CodeOptionsMultipleThemes,
-} from 'shikiji';
+import { Highlighter, CodeToHastOptions } from 'shikiji';
 import type { Transformer } from 'unified';
 import { visit } from 'unist-util-visit';
 import rangeParser from 'parse-numeric-range';
@@ -37,8 +33,8 @@ interface ApplyProps {
   grid?: boolean;
   lineNumbersMaxDigits?: number;
   theme: Theme | Record<string, Theme>;
-  onVisitTitle?: (element: Element) => void;
-  onVisitCaption?: (element: Element) => void;
+  onVisitTitle?(element: Element): void;
+  onVisitCaption?(element: Element): void;
 }
 
 function apply(
@@ -173,6 +169,7 @@ export default function rehypePrettyCode(
     tokensMap = {},
     filterMetaString = (v) => v,
     getHighlighter = defaultGetHighlighter,
+    transformers,
     onVisitLine,
     onVisitHighlightedLine,
     onVisitHighlightedChars,
@@ -205,10 +202,11 @@ export default function rehypePrettyCode(
 
     return {
       lang,
+      transformers,
       defaultColor: typeof theme === 'string' ? theme : false,
-      ...((multipleThemes
+      ...(multipleThemes
         ? { themes: multipleThemes }
-        : { theme: singleTheme }) as CodeOptionsMultipleThemes<string>),
+        : { theme: singleTheme as Theme }),
     };
   }
 

@@ -11,6 +11,7 @@ import { remark } from 'remark';
 import { getHighlighter as shikiHighlighter } from 'shikiji';
 import { fileURLToPath } from 'url';
 import qs from 'querystring';
+import { transformerNotationDiff } from 'shikiji-transformers';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -87,6 +88,7 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
       node.properties.style = 'color: red;';
     },
     getHighlighter,
+    transformers: [transformerNotationDiff()],
   });
 
   const htmlString = await prettier.format(html, { parser: 'html' });
@@ -193,6 +195,13 @@ const defaultStyle = `
       color: var(--shiki-dark) !important;
       background-color: var(--shiki-dark-bg) !important;
     }
+  }
+
+  .diff.add {
+    background-color: rgba(0, 255, 100, 0.25);
+  }
+  .diff.remove {
+    background-color: rgba(255, 100, 200, 0.35);
   }
 </style>
 `;

@@ -3,6 +3,7 @@ import type {
   Highlighter,
   BuiltinTheme,
   ThemeRegistrationRaw,
+  ShikijiTransformer,
 } from 'shikiji';
 import type { Transformer } from 'unified';
 import type { Root, Element, Properties } from 'hast';
@@ -31,8 +32,9 @@ export interface Options {
   onVisitHighlightedChars?(element: CharsElement, id: string | undefined): void;
   onVisitTitle?(element: Element): void;
   onVisitCaption?(element: Element): void;
+  transformers?: ShikijiTransformer[];
 }
 
 export default function rehypePrettyCode(
-  options?: void | Options | undefined
+  options?: void | Options | undefined,
 ): void | Transformer<Root, Root>;
