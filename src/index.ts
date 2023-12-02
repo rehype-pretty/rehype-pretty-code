@@ -261,9 +261,11 @@ export default function rehypePrettyCode(
     });
 
     // https://github.com/antfu/shikiji/issues/35
-    const hasMd = langsToLoad.has('md');
+    const hasMd = langsToLoad.has('md') || langsToLoad.has('markdown');
     const langsWithoutMd = hasMd
-      ? Array.from(langsToLoad).filter((lang) => lang !== 'md')
+      ? Array.from(langsToLoad).filter(
+          (lang) => !['md', 'markdown'].includes(lang),
+        )
       : Array.from(langsToLoad);
     await Promise.all(
       langsWithoutMd.map((lang) =>
