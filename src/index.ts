@@ -260,14 +260,20 @@ export default function rehypePrettyCode(
       }
     });
 
-    for (const lang of langsToLoad) {
-      try {
-        await highlighter.loadLanguage(
+    // https://github.com/antfu/shikiji/issues/35
+    const hasMd = langsToLoad.has('md');
+    const langsWithoutMd = hasMd
+      ? Array.from(langsToLoad).filter((lang) => lang !== 'md')
+      : Array.from(langsToLoad);
+    await Promise.all(
+      langsWithoutMd.map((lang) =>
+        highlighter.loadLanguage(
           lang as Parameters<typeof highlighter.loadLanguage>[0],
-        );
-      } catch (e) {
-        console.error('[rehype-pretty-code] Unsupported language:', lang);
-      }
+        ),
+      ),
+    );
+    if (hasMd) {
+      await highlighter.loadLanguage('md');
     }
 
     visit(tree, 'element', (element, _, parent) => {
