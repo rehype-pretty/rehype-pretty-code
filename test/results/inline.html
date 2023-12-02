@@ -52,7 +52,7 @@
       data-language="js"
       data-theme="github-dark"
       style="background-color: #24292e; color: #e1e4e8"
-      ><span class="line"
+      ><span data-line=""
         ><span style="color: #f97583">const</span
         ><span style="color: #b392f0"> getStringLength</span
         ><span style="color: #f97583"> =</span
@@ -67,6 +67,26 @@
     ></span
   >
 </p>
+<p>{:html}</p>
+<p>
+  <span data-rehype-pretty-code-figure=""
+    ><code
+      data-language="html"
+      data-theme="github-dark"
+      style="background-color: #24292e; color: #e1e4e8"
+      ><span data-line=""
+        ><span style="color: #e1e4e8">&#x3C;</span
+        ><span style="color: #85e89d">div</span
+        ><span style="color: #b392f0"> class</span
+        ><span style="color: #e1e4e8">=</span
+        ><span style="color: #9ecbff">"foo"</span
+        ><span style="color: #e1e4e8">>bar&#x3C;/</span
+        ><span style="color: #85e89d">div</span
+        ><span style="color: #e1e4e8">></span></span
+      ></code
+    ></span
+  >
+</p>
 <p>.support</p>
 <p>
   <span data-rehype-pretty-code-figure=""
@@ -75,3 +95,9 @@
     ></span
   >
 </p>
+<p>Escape</p>
+<ul>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>{:html}</code></li>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>\{:html}</code></li>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>\\{:html}</code></li>
+</ul>
