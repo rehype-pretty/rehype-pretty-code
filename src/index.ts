@@ -1,5 +1,5 @@
 import type { Element, ElementContent, Root } from 'hast';
-import type { LineElement, Options, Theme } from '../';
+import type { Options, Theme } from '../';
 import type { CharsHighlighterOptions } from './types';
 import {
   Highlighter,
@@ -23,6 +23,8 @@ import {
   getInlineCodeLang,
   isInlineCode,
   getThemeNames,
+  replaceLineClass,
+  hasOwnProperty,
 } from './utils';
 
 interface ApplyProps {
@@ -70,10 +72,10 @@ function apply(
 
       const code = pre.children[0];
 
-      // Remove class="shiki"
+      // Remove extraneous classes
       if (
-        Array.isArray(pre.properties?.className) &&
-        pre.properties?.className.includes('shiki')
+        Array.isArray(pre.properties.className) &&
+        pre.properties.className.includes('shiki')
       ) {
         const className = pre.properties.className.filter(
           (c) =>
@@ -113,7 +115,7 @@ function apply(
         }
       }
 
-      if ('data-line-numbers' in code.properties) {
+      if (hasOwnProperty(code.properties, 'data-line-numbers')) {
         code.properties['data-line-numbers-max-digits'] =
           lineNumbersMaxDigits.toString().length;
       }
@@ -198,11 +200,8 @@ export default function rehypePrettyCode(
   function getOptions(lang: string): CodeToHastOptions<string, string> {
     const multipleThemes =
       !isJSONTheme(theme) && typeof theme === 'object' ? theme : null;
-    const singleTheme = isJSONTheme(theme)
-      ? theme
-      : typeof theme === 'string'
-        ? theme
-        : null;
+    const singleTheme =
+      isJSONTheme(theme) || typeof theme === 'string' ? theme : null;
 
     return {
       lang,
@@ -215,9 +214,7 @@ export default function rehypePrettyCode(
 
   return async (tree) => {
     const langsToLoad = new Set<string>();
-
     const highlighter = await cachedHighlighter;
-
     if (!highlighter) return;
 
     visit(tree, 'element', (element, _, parent) => {
@@ -226,9 +223,7 @@ export default function rehypePrettyCode(
         if (!isText(textElement)) return;
         const value = textElement.value;
         if (!value) return;
-
         const lang = getInlineCodeLang(value, defaultInlineCodeLang);
-
         if (lang[0] !== '.') {
           langsToLoad.add(lang);
         }
@@ -244,44 +239,40 @@ export default function rehypePrettyCode(
           defaultCodeBlockLang,
         );
 
-        langsToLoad.add(lang);
+        if (lang) {
+          langsToLoad.add(lang);
+        }
       }
     });
 
-    // https://github.com/antfu/shikiji/issues/35
-    const hasMd = langsToLoad.has('md') || langsToLoad.has('markdown');
-    const langsWithoutMd = hasMd
-      ? Array.from(langsToLoad).filter(
-          (lang) => !['md', 'markdown'].includes(lang),
-        )
-      : Array.from(langsToLoad);
     await Promise.all(
-      langsWithoutMd.map((lang) =>
+      Array.from(langsToLoad).map((lang) =>
         highlighter.loadLanguage(
           lang as Parameters<typeof highlighter.loadLanguage>[0],
         ),
       ),
     );
-    if (hasMd) {
-      await highlighter.loadLanguage('md');
-    }
 
     visit(tree, 'element', (element, _, parent) => {
       if (isInlineCode(element, parent)) {
         const textElement = element.children[0];
         if (!isText(textElement)) return;
-
         const value = textElement.value;
         if (!value) return;
 
-        // TODO: allow escape characters to break out of highlighting
-        const strippedValue = value.replace(/{:[a-zA-Z.-]+}/, '');
-        const lang = getInlineCodeLang(value, defaultInlineCodeLang);
+        const keepLangPart = /\\{:[a-zA-Z.-]+}$/.test(value);
+        const strippedValue = keepLangPart
+          ? value.replace(/\\({:[a-zA-Z.-]+})$/, '$1')
+          : value.replace(/{:[a-zA-Z.-]+}$/, '');
+        textElement.value = strippedValue;
+        const lang = keepLangPart
+          ? ''
+          : getInlineCodeLang(value, defaultInlineCodeLang);
+        const isLang = lang[0] !== '.';
         if (!lang) return;
 
-        const isLang = lang[0] !== '.';
-
         let codeTree: Root;
+
         if (!isLang) {
           const themeNames = getThemeNames(theme);
           const isMultiTheme = typeof theme === 'object' && !isJSONTheme(theme);
@@ -291,7 +282,7 @@ export default function rehypePrettyCode(
               ? highlighter
                   .getTheme(name)
                   .settings.find(
-                    ({ scope }: { scope?: string[] }) =>
+                    ({ scope }) =>
                       scope?.includes(
                         tokensMap[lang.slice(1)] ?? lang.slice(1),
                       ),
@@ -311,10 +302,18 @@ export default function rehypePrettyCode(
             );
           }
         } else {
-          codeTree = hastParser.parse(
-            highlighter.codeToHtml(strippedValue, getOptions(lang)),
-          );
+          try {
+            codeTree = hastParser.parse(
+              highlighter.codeToHtml(strippedValue, getOptions(lang)),
+            );
+          } catch (e) {
+            codeTree = hastParser.parse(
+              highlighter.codeToHtml(strippedValue, getOptions('plaintext')),
+            );
+          }
         }
+
+        visit(codeTree, 'element', replaceLineClass);
 
         apply(element, {
           tree: codeTree,
@@ -326,9 +325,9 @@ export default function rehypePrettyCode(
       }
 
       if (isBlockCode(element)) {
-        const codeElement = element.children[0] as Element;
+        const codeElement = element.children[0];
+        if (!isElement(codeElement)) return;
         const textElement = codeElement.children[0];
-
         if (!isElement(codeElement)) return;
 
         const { title, caption, meta, lang } = parseBlockMetaString(
@@ -342,37 +341,29 @@ export default function rehypePrettyCode(
           : [];
         let lineNumbersMaxDigits = 0;
 
-        const words: string[] = [];
-        const wordNumbers: Array<number[]> = [];
-        const wordIdsMap = new Map();
-
-        const wordMatches = meta
+        const charsList: string[] = [];
+        const charsListNumbers: Array<number[]> = [];
+        const charsListIdMap = new Map();
+        const charsMatches = meta
           ? [...meta.matchAll(/\/(.*?)\/(\S*)/g)]
           : undefined;
-        if (Array.isArray(wordMatches)) {
-          wordMatches.forEach((_, index) => {
-            const word = wordMatches[index][1];
-            const wordIdAndOrRange = wordMatches[index][2];
-            words.push(word);
 
-            const [range, id] = wordIdAndOrRange.split('#');
-
-            if (range) {
-              wordNumbers.push(rangeParser(range));
-            }
-
-            if (id) {
-              wordIdsMap.set(word, id);
-            }
+        if (Array.isArray(charsMatches)) {
+          charsMatches.forEach((_, index) => {
+            const word = charsMatches[index][1];
+            const charsIdOrRange = charsMatches[index][2];
+            const [range, id] = charsIdOrRange.split('#');
+            charsList.push(word);
+            range && charsListNumbers.push(rangeParser(range));
+            id && charsListIdMap.set(word, id);
           });
         }
 
-        if (!isText(textElement)) {
-          return;
-        }
+        if (!isText(textElement)) return;
 
         const strippedValue = textElement.value.replace(/\n$/, '');
         let codeTree: Root;
+
         try {
           codeTree = hastParser.parse(
             highlighter.codeToHtml(strippedValue, getOptions(lang)),
@@ -385,10 +376,10 @@ export default function rehypePrettyCode(
 
         let lineCounter = 0;
 
-        const wordOptions: CharsHighlighterOptions = {
-          ranges: wordNumbers,
-          idsMap: wordIdsMap,
-          counterMap: new Map(),
+        const charsHighlighterOptions: CharsHighlighterOptions = {
+          ranges: charsListNumbers,
+          idsMap: charsListIdMap,
+          counterMap: new Map<string, number>(),
         };
 
         visit(codeTree, 'element', (element) => {
@@ -423,26 +414,21 @@ export default function rehypePrettyCode(
               element.children = [{ type: 'text', value: ' ' }];
             }
 
-            const className = element.properties.className.filter(
-              (c) => c !== 'line',
-            );
-            element.properties.className =
-              className.length > 0 ? className : undefined;
-            element.properties['data-line'] = '';
-            onVisitLine?.(element as LineElement);
+            replaceLineClass(element);
+            onVisitLine?.(element);
 
             if (
               lineNumbers.length !== 0 &&
               lineNumbers.includes(++lineCounter)
             ) {
               element.properties['data-highlighted-line'] = '';
-              onVisitHighlightedLine?.(element as LineElement);
+              onVisitHighlightedLine?.(element);
             }
 
             charsHighlighter(
               element,
-              words,
-              wordOptions,
+              charsList,
+              charsHighlighterOptions,
               onVisitHighlightedChars,
             );
 

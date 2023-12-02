@@ -46,8 +46,14 @@ export function isBlockCode(element: Element): element is Element {
   );
 }
 
-export function getInlineCodeLang(meta: string, defaultFallback: string) {
-  return meta.match(/{:([a-zA-Z.-]+)}$/)?.[1] || defaultFallback;
+export function getInlineCodeLang(meta: string, defaultFallbackLang: string) {
+  const placeholder = '\u0000';
+  let temp = meta.replace(/\\\\/g, placeholder);
+  temp = temp.replace(/\\({:[a-zA-Z.-]+})$/, '$1');
+  const lang = temp.match(/{:([a-zA-Z.-]+)}$/)?.[1];
+  return (
+    lang?.replace(new RegExp(placeholder, 'g'), '\\') || defaultFallbackLang
+  );
 }
 
 export function parseBlockMetaString(
@@ -94,5 +100,16 @@ export function getThemeNames(theme: Theme | Record<string, Theme>) {
     return Object.values(theme).map((theme) =>
       typeof theme === 'string' ? theme : theme.name,
     );
+  }
+}
+
+export function replaceLineClass(element: Element) {
+  if (
+    Array.isArray(element.properties?.className) &&
+    element.properties.className.includes('line')
+  ) {
+    const className = element.properties.className.filter((c) => c !== 'line');
+    element.properties.className = className.length > 0 ? className : undefined;
+    element.properties['data-line'] = '';
   }
 }
