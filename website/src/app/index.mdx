@@ -1,10 +1,11 @@
 [Rehype Pretty Code](https://github.com/atomiks/rehype-pretty-code) is a Rehype
-plugin powered by the [Shiki](https://github.com/shikijs/shiki) syntax
-highlighter that provides beautiful code blocks for Markdown or MDX. It's fast
-since it avoids runtime syntax highlighting by executing at build-time, and
-works with new features like React Server Components.
+plugin powered by the [Shikiji](https://github.com/antfu/shikiji) syntax
+highlighter that provides beautiful code blocks for Markdown or MDX.
 
-## Perfect syntax highlighting
+It works on both the server at build-time (avoiding runtime syntax highlighting)
+and on the client for dynamic highlighting.
+
+## Editor-Grade Highlighting
 
 Leverage the accuracy of VS Code's syntax highlighting engine and the popularity
 of its themes ecosystem — use any VS Code theme you want!
@@ -36,9 +37,9 @@ export default class MyDocument extends Document {
 > The theme is [Moonlight II](https://github.com/atomiks/moonlight-vscode-theme)
 > with a custom background color.
 
-## Line numbers and line highlighting are supported
+## Line Numbers and Line Highlighting
 
-```js {4}
+```js {4} showLineNumbers
 import { useFloating } from '@floating-ui/react';
 
 function MyComponent() {
@@ -53,7 +54,7 @@ function MyComponent() {
 }
 ```
 
-## Word highlighting
+## Word Highlighting
 
 ```js /floatingStyles/
 import { useFloating } from '@floating-ui/react';
@@ -70,11 +71,11 @@ function MyComponent() {
 }
 ```
 
-## Inline code highlighting
+## Inline Code Highlighting
 
 The result of `[1, 2, 3].join('-'){:js}` is `'1-2-3'{:js}`.
 
-### Context-aware inline code
+### Context Aware Inline Code
 
 For instance, if you had the following code block:
 
@@ -90,7 +91,7 @@ we can color it as a function. Same with `function{:.keyword}`, or
 you to semantically tie inline code with the nearest code block it's referring
 to.
 
-## ANSI highlighting
+## ANSI Highlighting
 
 ```ansi
 [0;36m  vite v2.8.6[0;32m dev server running at:[0m
@@ -110,16 +111,19 @@ Inline ANSI: `> Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m{:ansi}`
 Install via your terminal:
 
 ```shell
-npm install rehype-pretty-code shiki
+npm install rehype-pretty-code
 ```
 
-> **Note:** _`v0.10.2`+ is `ESM`-only. If you need `CommonJS`
-> support you should use `v0.10.1`. You can use the latest version (`ESM`) in
-> `Next.js`, just make sure your next config file is `ESM`: `next.config.mjs`.
-> Here's a full example:
-> [rehype-pretty-code/website/next.config.mjs](https://github.com/atomiks/rehype-pretty-code/blob/master/website/next.config.mjs)_
+> **Note:** This package is `ESM`-only. If you need `CJS` support you should use
+> `v0.10.1`, which uses Shiki instead of Shikiji
+> ([v0.10.1 docs here](https://github.com/atomiks/rehype-pretty-code/blob/00e5451e3aac7b86f748b01267e255bf345d1550/website/src/app/index.mdx)).
+> You can use the latest version in Next.js, just make sure your next config
+> file is `ESM`: `next.config.mjs`. Here's a full example:
+> [rehype-pretty-code/website/next.config.mjs](https://github.com/atomiks/rehype-pretty-code/blob/master/website/next.config.mjs)\_
 
 ## Usage
+
+The following works both on the server and on the client.
 
 ```js /rehypePrettyCode/
 import { unified } from 'unified';
@@ -150,8 +154,7 @@ main();
 
 The following example shows how to use this package with Next.js.
 
-```js
-// next.config.mjs
+```js title="next.config.mjs"
 import fs from 'node:fs';
 import nextMDX from '@next/mdx';
 import rehypePrettyCode from 'rehype-pretty-code';
@@ -182,7 +185,7 @@ export default withMDX(nextConfig);
 
 To customize the theme and highlighting, options can be specified.
 
-### Code block styles
+### Code Block Styles
 
 Code blocks are fully unstyled to give you full control. The features are
 implemented as logical indicators in the form of attributes that allows you to
@@ -201,9 +204,9 @@ const options = {
 
 ### Theme
 
-The default theme is `github-dark-dimmed{:.string}`. Shiki has a bunch of
-[pre-packaged themes](https://unpkg.com/browse/shiki@0.14.2/themes/), which can
-be specified as a plain string:
+The default theme is `github-dark-dimmed{:.string}`. Shikiji has a bunch of
+[pre-packaged themes](https://github.com/antfu/shikiji/blob/main/docs/themes.md),
+which can be specified as a plain string:
 
 ```js
 const options = {
@@ -218,13 +221,13 @@ const options = {
   theme: JSON.parse(
     fs.readFileSync(
       new URL('./themes/moonlight-ii.json', import.meta.url),
-      'utf-8'
-    )
+      'utf-8',
+    ),
   ),
 };
 ```
 
-#### Theme background
+#### Theme Background
 
 To apply a custom background instead of inheriting the background from the
 theme:
@@ -235,7 +238,7 @@ const options = {
 };
 ```
 
-#### Default code language
+#### Default Code Language
 
 When no code language is specified, inline code or code blocks will not be
 themed (nor will the background), which may appear incongruous with others.
@@ -260,11 +263,22 @@ const options = {
 };
 ```
 
-### Meta strings
+### Meta Strings
 
 Code blocks are configured via the meta string on the top codeblock fence.
 
-#### Highlight lines
+> If your library also parses code blocks' meta strings, it may
+> [cause conflicts](https://github.com/atomiks/rehype-pretty-code/issues/52)
+> with `rehype-pretty-code`. This option allows you to filter out some part of
+> the meta string before the library starts parsing it.
+>
+> ```js
+> const options = {
+>   filterMetaString: (string) => string.replace(/filename="[^"]*"/, ''),
+> };
+> ```
+
+#### Highlight Lines
 
 Place a numeric range inside `{}`.
 
@@ -277,7 +291,7 @@ Place a numeric range inside `{}`.
 The line `<span>{:html}` receives a `data-highlighted-line` attribute to style
 via CSS.
 
-#### Highlight chars
+#### Highlight Chars
 
 A series of characters, like a literal regex.
 
@@ -314,7 +328,7 @@ Highlight only the third to fifth instances of `carrot` and any instances of
 ```
 ````
 
-#### Group highlighted chars by id
+#### Group Highlighted Chars By Id
 
 Place an id after `#` after the chars. This allows you to color chars
 differently based on their id.
@@ -334,18 +348,18 @@ const [name, setName] = useState('Taylor');
 The chars `<span>{:html}` receives a `data-chars-id="<id>"` attribute to style
 via CSS.
 
-#### Highlight inline code
+#### Highlight Inline Code
 
-Append `{:lang}‎` (e.g. `{:js}‎`) to the end of inline code to highlight it
-like a regular code block.
+Append `{:lang}‎` (e.g. `\{:js}`) to the end of inline code to highlight it like
+a regular code block.
 
 ```md
 This is an array `[1, 2, 3]{:js}` of numbers 1 through 3.
 ```
 
-#### Highlight plain text
+#### Highlight Plain text
 
-Append `{:.token}‎` to the end of the inline code to highlight it based on a
+Append `\{:.token}` to the end of the inline code to highlight it based on a
 token specified in your VS Code theme. Tokens start with a `.` to differentiate
 them from a language.
 
@@ -387,7 +401,7 @@ Add a caption underneath your code block, with text inside double quotes (`""`):
 ```
 ````
 
-### Line numbers
+### Line Numbers
 
 CSS counters can be used to add line numbers.
 
@@ -437,13 +451,7 @@ If you want to start line numbers at a specific number, use
 ```
 ````
 
-### Multiple themes (dark/light mode)
-
-Because Shiki generates themes at build time, client-side theme switching
-support is not built in. There are two popular options for supporting something
-like Dark Mode with Shiki. See the
-[Shiki docs](https://github.com/shikijs/shiki/blob/main/docs/themes.md#dark-mode-support)
-for more info.
+### Multiple Themes (Dark and Light Mode)
 
 Pass your themes to `theme{:.meta.object-literal.key}`, where the keys represent
 the color mode:
@@ -457,28 +465,34 @@ const options = {
 };
 ```
 
-The `<code>{:html}` and `<pre>{:html}` elements will have the data attribute
-`data-theme="<key>"`, e.g `data-theme="light"`.
+Now, use the following CSS to display the variable colors — if a space is found
+in the theme name, then CSS variable keys based on the object are available
+([more info](https://github.com/antfu/shikiji#lightdark-dual-themes)):
 
-Now, you can use CSS to display the desired theme:
-
-```css
-@media (prefers-color-scheme: dark) {
-  pre[data-theme='light'],
-  code[data-theme='light'] {
-    display: none;
-  }
+```scss
+code[data-theme*=' '],
+code[data-theme*=' '] span {
+  color: var(--shiki-light) !important;
+  background-color: var(--shiki-light-bg) !important;
 }
 
-@media (prefers-color-scheme: light), (prefers-color-scheme: no-preference) {
-  pre[data-theme='dark'],
-  code[data-theme='dark'] {
-    display: none;
+@media (prefers-color-scheme: dark) {
+  code[data-theme*=' '],
+  code[data-theme*=' '] span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
   }
 }
 ```
 
-### Visitor hooks
+The `<code>{:html}` and `<pre>{:html}` elements will have the data attribute
+`data-theme="...themes"`, listing each theme value space-separated:
+
+```html
+<code data-theme="github-dark-dimmed github-light"></code>
+```
+
+### Visitor Hooks
 
 To customize the HTML output, you can use visitor callback hooks to manipulate
 the [hAST elements](https://github.com/syntax-tree/hast#element) directly:
@@ -503,89 +517,25 @@ const options = {
 };
 ```
 
-### Custom highlighter
+### Custom Highlighter
 
 To completely configure the highlighter, use the
-`getHighlighter{:.entity.name.function}` option to provide a Shiki highlighter
-instance.
-
-In order to support light and dark modes, Rehype Pretty Code provides an
-`options{:.constant.language}` object for you to extend. The
-`theme{:.meta.object-literal.key}` property is preconfigured with the light or
-dark theme based on your theme options.
-
-This is helpful if you'd like to configure other Shiki options, such as
-`langs{:.meta.object-literal.key}`.
+`getHighlighter{:.entity.name.function}` option. This is helpful if you'd like
+to configure other Shikiji options, such as `langs{:.meta.object-literal.key}`.
 
 ```js
-import { getHighlighter, BUNDLED_LANGUAGES } from 'shiki';
+import { getHighlighter } from 'shikiji';
 
 const options = {
   getHighlighter: (options) =>
     getHighlighter({
       ...options,
       langs: [
-        ...BUNDLED_LANGUAGES,
-        {
-          id: 'groq',
-          scopeName: 'source.groq',
-          path: './langs/vscode-sanity/grammars/groq.json',
-        },
+        'plaintext',
+        async () => JSON.parse(await readFile('my-grammar.json', 'utf-8')),
       ],
     }),
 };
-```
-
-### Filter meta string
-
-If your library also parses code blocks' meta strings, it may
-[cause conflicts](https://github.com/atomiks/rehype-pretty-code/issues/52) with
-`rehype-pretty-code`. This option allows you to filter out some part of the meta
-string before the library starts parsing it.
-
-```js
-const options = {
-  filterMetaString: (string) => string.replace(/filename="[^"]*"/, ''),
-};
-```
-
-## Deployment and client-side highlighting
-
-Copy the following files to your public directory:
-
-```txt
-/node_modules/shiki/dist/onig.wasm  ->  public/dist/onig.wasm
-/node_modules/shiki/languages/      ->  public/languages/
-/node_modules/shiki/themes/         ->  public/themes/
-```
-
-Then set the CDN path:
-
-```js
-import { setCDN } from 'shiki';
-
-setCDN('/');
-```
-
-This will allow Shiki to load the WASM file and themes from your public
-directory to perform client-side highlighting.
-[More info here](https://github.com/atomiks/rehype-pretty-code/issues/95).
-
-```js
-import { unified } from 'unified';
-import rehypeStringify from 'rehype-stringify';
-import remarkParse from 'remark-parse';
-import remarkRehype from 'remark-rehype';
-import rehypePrettyCode from 'rehype-pretty-code';
-
-export default async function processMarkdown(text) {
-  return await unified()
-    .use(remarkParse)
-    .use(remarkRehype)
-    .use(rehypePrettyCode)
-    .use(rehypeStringify)
-    .process(text);
-}
 ```
 
 ## License

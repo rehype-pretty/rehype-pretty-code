@@ -22,8 +22,8 @@ const options = {
   theme: JSON.parse(
     fs.readFileSync(
       new URL('./assets/moonlight-ii.json', import.meta.url),
-      'utf-8'
-    )
+      'utf-8',
+    ),
   ),
 };
 
@@ -34,7 +34,7 @@ plugins.push(
       remarkPlugins: [],
       rehypePlugins: [[rehypePrettyCode, options]],
     },
-  })
+  }),
 );
 
 export default () => plugins.reduce((_, plugin) => plugin(_), nextConfig);
