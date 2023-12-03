@@ -1,20 +1,30 @@
 import type { Element, ElementContent, Root } from 'hast';
-import type { LineElement, Options } from '../';
+import type { Options, Theme } from '../';
 import type { CharsHighlighterOptions } from './types';
-import type { Highlighter } from 'shiki';
+import { Highlighter, CodeToHastOptions } from 'shikiji';
 import type { Transformer } from 'unified';
 import { visit } from 'unist-util-visit';
 import rangeParser from 'parse-numeric-range';
-import { getHighlighter as shikiHighlighter } from 'shiki';
+import { getHighlighter as defaultGetHighlighter } from 'shikiji';
 import { unified } from 'unified';
 import rehypeParse from 'rehype-parse';
-import hashObj from 'hash-obj';
 import { charsHighlighter } from './chars/charsHighlighter';
 import { reverseString } from './chars/utils';
-import { isElement, isShikiTheme, isText } from './utils';
+import {
+  isElement,
+  isText,
+  isJSONTheme,
+  parseBlockMetaString,
+  isBlockCode,
+  getInlineCodeLang,
+  isInlineCode,
+  getThemeNames,
+  replaceLineClass,
+  hasOwnProperty,
+} from './utils';
 
-interface ToFragmentProps {
-  trees: Record<string, Root>;
+interface ApplyProps {
+  tree: Root;
   lang: string;
   title?: string | null;
   caption?: string | null;
@@ -22,14 +32,15 @@ interface ToFragmentProps {
   keepBackground?: boolean;
   grid?: boolean;
   lineNumbersMaxDigits?: number;
-  onVisitTitle?: (element: Element) => void;
-  onVisitCaption?: (element: Element) => void;
+  theme: Theme | Record<string, Theme>;
+  onVisitTitle?(element: Element): void;
+  onVisitCaption?(element: Element): void;
 }
 
-function toFragment(
+function apply(
   element: Element,
   {
-    trees,
+    tree,
     lang,
     title,
     caption,
@@ -37,16 +48,19 @@ function toFragment(
     keepBackground = true,
     grid = true,
     lineNumbersMaxDigits = 1,
+    theme,
     onVisitTitle,
     onVisitCaption,
-  }: ToFragmentProps,
+  }: ApplyProps,
 ) {
-  element.tagName = inline ? 'span' : 'div';
+  element.tagName = inline ? 'span' : 'figure';
   // User can replace this with a real Fragment at runtime
-  element.properties = { 'data-rehype-pretty-code-fragment': '' };
-  element.children = Object.entries(trees)
-    .map(([mode, tree]) => {
+  element.properties = { 'data-rehype-pretty-code-figure': '' };
+  element.children = [tree]
+    .map((tree) => {
       const pre = tree.children[0];
+      const themeNames = getThemeNames(theme);
+      const themeNamesString = themeNames.join(' ');
 
       if (!isElement(pre) || !pre.properties) {
         return [];
@@ -54,12 +68,17 @@ function toFragment(
 
       const code = pre.children[0];
 
-      // Remove class="shiki"
+      // Remove extraneous classes
       if (
-        Array.isArray(pre.properties?.className) &&
-        pre.properties?.className.includes('shiki')
+        Array.isArray(pre.properties.className) &&
+        pre.properties.className.includes('shiki')
       ) {
-        const className = pre.properties.className.filter((c) => c !== 'shiki');
+        const className = pre.properties.className.filter(
+          (c) =>
+            c !== 'shiki' &&
+            c !== 'shiki-themes' &&
+            (typeof c === 'string' ? !themeNames.includes(c) : true),
+        );
         pre.properties.className = className.length > 0 ? className : undefined;
       }
 
@@ -68,14 +87,14 @@ function toFragment(
       }
 
       pre.properties['data-language'] = lang;
-      pre.properties['data-theme'] = mode;
+      pre.properties['data-theme'] = themeNamesString;
 
       if (!isElement(code) || !code.properties) {
         return [];
       }
 
       code.properties['data-language'] = lang;
-      code.properties['data-theme'] = mode;
+      code.properties['data-theme'] = themeNamesString;
 
       if (inline) {
         if (keepBackground) {
@@ -92,7 +111,7 @@ function toFragment(
         }
       }
 
-      if ('data-line-numbers' in code.properties) {
+      if (hasOwnProperty(code.properties, 'data-line-numbers')) {
         code.properties['data-line-numbers-max-digits'] =
           lineNumbersMaxDigits.toString().length;
       }
@@ -102,11 +121,11 @@ function toFragment(
       if (title) {
         const elementContent: Element = {
           type: 'element',
-          tagName: 'div',
+          tagName: caption ? 'div' : 'figcaption',
           properties: {
             'data-rehype-pretty-code-title': '',
             'data-language': lang,
-            'data-theme': mode,
+            'data-theme': themeNamesString,
           },
           children: [{ type: 'text', value: title }],
         };
@@ -119,11 +138,11 @@ function toFragment(
       if (caption) {
         const elementContent: Element = {
           type: 'element',
-          tagName: 'div',
+          tagName: 'figcaption',
           properties: {
             'data-rehype-pretty-code-caption': '',
             'data-language': lang,
-            'data-theme': mode,
+            'data-theme': themeNamesString,
           },
           children: [{ type: 'text', value: caption }],
         };
@@ -136,10 +155,7 @@ function toFragment(
     .flatMap((c) => c);
 }
 
-const globalHighlighterCache = new Map<
-  string,
-  Map<string, Promise<Highlighter>>
->();
+const globalHighlighterCache = new WeakMap<Options, Promise<Highlighter>>();
 const hastParser = unified().use(rehypeParse, { fragment: true });
 
 export default function rehypePrettyCode(
@@ -152,7 +168,8 @@ export default function rehypePrettyCode(
     defaultLang = '',
     tokensMap = {},
     filterMetaString = (v) => v,
-    getHighlighter = shikiHighlighter,
+    getHighlighter = defaultGetHighlighter,
+    transformers,
     onVisitLine,
     onVisitHighlightedLine,
     onVisitHighlightedChars,
@@ -160,285 +177,276 @@ export default function rehypePrettyCode(
     onVisitCaption,
   } = options;
 
-  const optionsHash = hashObj(
-    {
-      theme,
-      tokensMap,
-      onVisitLine,
-      onVisitHighlightedLine,
-      onVisitHighlightedChars,
-      getHighlighter,
-    },
-    { algorithm: 'sha1' },
-  );
-  let highlighterCache = globalHighlighterCache.get(optionsHash);
-  if (!highlighterCache) {
-    highlighterCache = new Map();
-    globalHighlighterCache.set(optionsHash, highlighterCache);
+  let cachedHighlighter = globalHighlighterCache.get(options);
+  if (!cachedHighlighter) {
+    cachedHighlighter = getHighlighter({
+      themes:
+        isJSONTheme(theme) || typeof theme === 'string'
+          ? [theme]
+          : Object.values(theme),
+      langs: ['plaintext'],
+    });
+    globalHighlighterCache.set(options, cachedHighlighter);
   }
-  const highlighters = new Map();
 
   const defaultCodeBlockLang =
     typeof defaultLang === 'string' ? defaultLang : defaultLang.block || '';
   const defaultInlineCodeLang =
     typeof defaultLang === 'string' ? defaultLang : defaultLang.inline || '';
 
-  if (theme == null || typeof theme === 'string' || isShikiTheme(theme)) {
-    if (!highlighterCache.has('default')) {
-      highlighterCache.set('default', getHighlighter({ theme }));
-    }
-  } else if (typeof theme === 'object') {
-    // color mode object
-    for (const [mode, value] of Object.entries(theme)) {
-      if (!highlighterCache.has(mode)) {
-        highlighterCache.set(mode, getHighlighter({ theme: value }));
-      }
-    }
+  function getOptions(lang: string): CodeToHastOptions<string, string> {
+    const multipleThemes =
+      !isJSONTheme(theme) && typeof theme === 'object' ? theme : null;
+    const singleTheme =
+      isJSONTheme(theme) || typeof theme === 'string' ? theme : null;
+
+    return {
+      lang,
+      transformers,
+      defaultColor: typeof theme === 'string' ? theme : false,
+      ...(multipleThemes
+        ? { themes: multipleThemes }
+        : { theme: singleTheme as Theme }),
+    };
   }
 
   return async (tree) => {
-    if (!highlighterCache) return;
+    const langsToLoad = new Set<string>();
+    const highlighter = await cachedHighlighter;
+    if (!highlighter) return;
 
-    for (const [mode, loadHighlighter] of highlighterCache.entries()) {
-      if (!highlighters.get(mode)) {
-        highlighters.set(mode, await loadHighlighter);
+    visit(tree, 'element', (element, _, parent) => {
+      if (isInlineCode(element, parent)) {
+        const textElement = element.children[0];
+        if (!isText(textElement)) return;
+        const value = textElement.value;
+        if (!value) return;
+        const lang = getInlineCodeLang(value, defaultInlineCodeLang);
+        if (lang && lang[0] !== '.') {
+          langsToLoad.add(lang);
+        }
       }
+
+      if (isBlockCode(element)) {
+        const codeElement = element.children[0];
+        if (!isElement(codeElement)) return;
+
+        const { lang } = parseBlockMetaString(
+          codeElement,
+          filterMetaString,
+          defaultCodeBlockLang,
+        );
+
+        if (lang) {
+          langsToLoad.add(lang);
+        }
+      }
+    });
+
+    try {
+      await Promise.allSettled(
+        Array.from(langsToLoad).map((lang) => {
+          try {
+            return highlighter.loadLanguage(
+              lang as Parameters<typeof highlighter.loadLanguage>[0],
+            );
+          } catch (e) {
+            return Promise.reject(e);
+          }
+        }),
+      );
+    } catch (e) {
+      console.error(e);
     }
 
-    visit(tree, 'element', (element, index, parent) => {
-      // Inline code
-      if (
-        (element.tagName === 'code' &&
-          isElement(parent) &&
-          parent.tagName !== 'pre') ||
-        element.tagName === 'inlineCode'
-      ) {
+    visit(tree, 'element', (element, _, parent) => {
+      if (isInlineCode(element, parent)) {
         const textElement = element.children[0];
-
-        if (!isText(textElement)) {
-          return;
-        }
-
+        if (!isText(textElement)) return;
         const value = textElement.value;
+        if (!value) return;
 
-        if (!value) {
-          return;
-        }
+        const keepLangPart = /\\{:[a-zA-Z.-]+}$/.test(value);
+        const strippedValue = keepLangPart
+          ? value.replace(/\\({:[a-zA-Z.-]+})$/, '$1')
+          : value.replace(/{:[a-zA-Z.-]+}$/, '');
+        textElement.value = strippedValue;
+        const lang = keepLangPart
+          ? ''
+          : getInlineCodeLang(value, defaultInlineCodeLang);
+        const isLang = lang[0] !== '.';
+        if (!lang) return;
 
-        // TODO: allow escape characters to break out of highlighting
-        const strippedValue = value.replace(/{:[a-zA-Z.-]+}/, '');
-        const meta =
-          value.match(/{:([a-zA-Z.-]+)}$/)?.[1] || defaultInlineCodeLang;
+        let codeTree: Root;
 
-        if (!meta) {
-          return;
-        }
+        if (!isLang) {
+          const themeNames = getThemeNames(theme);
+          const isMultiTheme = typeof theme === 'object' && !isJSONTheme(theme);
+          const themeKeys = isMultiTheme ? Object.keys(theme) : null;
+          const colorsByTheme = themeNames.map((name) =>
+            name
+              ? highlighter
+                  .getTheme(name)
+                  .settings.find(
+                    ({ scope }) =>
+                      scope?.includes(
+                        tokensMap[lang.slice(1)] ?? lang.slice(1),
+                      ),
+                  )?.settings.foreground ?? 'inherit'
+              : 'inherit',
+          );
 
-        const isLang = meta[0] !== '.';
-
-        const trees: Record<string, Root> = {};
-        for (const [mode, highlighter] of highlighters.entries()) {
-          if (!isLang || (meta === 'ansi' && !highlighter.ansiToHtml)) {
-            const color =
-              highlighter
-                .getTheme()
-                .settings.find(
-                  ({ scope }: { scope?: string[] }) =>
-                    scope?.includes(tokensMap[meta.slice(1)] ?? meta.slice(1)),
-                )?.settings.foreground ?? 'inherit';
-
-            trees[mode] = hastParser.parse(
-              `<pre><code><span style="color:${color}">${strippedValue}</span></code></pre>`,
+          if (isMultiTheme && themeKeys) {
+            codeTree = hastParser.parse(
+              `<pre><code><span style="${themeKeys
+                .map((key, i) => `--shiki-${key}:${colorsByTheme[i]}`)
+                .join(';')}">${strippedValue}</span></code></pre>`,
             );
           } else {
-            let html;
-            if (meta === 'ansi') {
-              html = highlighter.ansiToHtml(strippedValue);
-            } else {
-              html = highlighter.codeToHtml(strippedValue, meta);
-            }
-            trees[mode] = hastParser.parse(html);
+            codeTree = hastParser.parse(
+              `<pre><code><span style="color:${colorsByTheme[0]}">${strippedValue}</span></code></pre>`,
+            );
+          }
+        } else {
+          try {
+            codeTree = hastParser.parse(
+              highlighter.codeToHtml(strippedValue, getOptions(lang)),
+            );
+          } catch (e) {
+            codeTree = hastParser.parse(
+              highlighter.codeToHtml(strippedValue, getOptions('plaintext')),
+            );
           }
         }
 
-        toFragment(element, {
-          trees,
-          lang: isLang ? meta : '.token',
+        visit(codeTree, 'element', replaceLineClass);
+
+        apply(element, {
+          tree: codeTree,
+          lang: isLang ? lang : '.token',
           inline: true,
           keepBackground,
+          theme,
         });
       }
 
-      if (
-        // Block code
-        // Check from https://github.com/leafac/rehype-shiki
-        element.tagName === 'pre' &&
-        Array.isArray(element.children) &&
-        element.children.length === 1 &&
-        isElement(element.children[0]) &&
-        element.children[0].tagName === 'code'
-      ) {
+      if (isBlockCode(element)) {
         const codeElement = element.children[0];
+        if (!isElement(codeElement)) return;
         const textElement = codeElement.children[0];
 
-        if (!isElement(codeElement)) {
-          return;
-        }
-
-        let lang = defaultCodeBlockLang;
-        if (
-          codeElement.properties &&
-          Array.isArray(codeElement.properties.className) &&
-          typeof codeElement.properties.className[0] === 'string' &&
-          codeElement.properties.className[0].startsWith('language-')
-        ) {
-          lang = codeElement.properties.className[0].replace('language-', '');
-        }
-
-        const metastring = (codeElement.data?.meta ??
-          codeElement.properties?.metastring ??
-          '') as string;
-
-        let meta = filterMetaString(metastring);
-
-        const titleMatch = meta.match(/title="([^"]*)"/);
-        const title = titleMatch?.[1] ?? null;
-        meta = meta.replace(titleMatch?.[0] ?? '', '');
-
-        const captionMatch = meta.match(/caption="([^"]*)"/);
-        const caption = captionMatch?.[1] ?? null;
-        meta = meta.replace(captionMatch?.[0] ?? '', '');
+        const { title, caption, meta, lang } = parseBlockMetaString(
+          codeElement,
+          filterMetaString,
+          defaultCodeBlockLang,
+        );
 
         const lineNumbers = meta
           ? rangeParser(meta.match(/(?:^|\s){(.*?)}/)?.[1] ?? '')
           : [];
         let lineNumbersMaxDigits = 0;
 
-        const words: string[] = [];
-        const wordNumbers: Array<number[]> = [];
-        const wordIdsMap = new Map();
-
-        const wordMatches = meta
+        const charsList: string[] = [];
+        const charsListNumbers: Array<number[]> = [];
+        const charsListIdMap = new Map();
+        const charsMatches = meta
           ? [...meta.matchAll(/\/(.*?)\/(\S*)/g)]
           : undefined;
-        if (Array.isArray(wordMatches)) {
-          wordMatches.forEach((_, index) => {
-            const word = wordMatches[index][1];
-            const wordIdAndOrRange = wordMatches[index][2];
-            words.push(word);
 
-            const [range, id] = wordIdAndOrRange.split('#');
-
-            if (range) {
-              wordNumbers.push(rangeParser(range));
-            }
-
-            if (id) {
-              wordIdsMap.set(word, id);
-            }
+        if (Array.isArray(charsMatches)) {
+          charsMatches.forEach((_, index) => {
+            const word = charsMatches[index][1];
+            const charsIdOrRange = charsMatches[index][2];
+            const [range, id] = charsIdOrRange.split('#');
+            charsList.push(word);
+            range && charsListNumbers.push(rangeParser(range));
+            id && charsListIdMap.set(word, id);
           });
         }
 
-        if (!isText(textElement)) {
-          return;
-        }
+        if (!isText(textElement)) return;
 
         const strippedValue = textElement.value.replace(/\n$/, '');
-        const trees: Record<string, Root> = {};
-        for (const [mode, highlighter] of highlighters.entries()) {
-          try {
-            let html;
-            if (lang === 'ansi' && highlighter.ansiToHtml) {
-              html = highlighter.ansiToHtml(strippedValue);
-            } else {
-              html = highlighter.codeToHtml(strippedValue, lang);
-            }
-            trees[mode] = hastParser.parse(html);
-          } catch (e) {
-            // Fallback to plain text if a language has not been registered
-            trees[mode] = hastParser.parse(
-              highlighter.codeToHtml(strippedValue, 'txt'),
-            );
-          }
+        let codeTree: Root;
+
+        try {
+          codeTree = hastParser.parse(
+            highlighter.codeToHtml(strippedValue, getOptions(lang)),
+          );
+        } catch (e) {
+          codeTree = hastParser.parse(
+            highlighter.codeToHtml(strippedValue, getOptions('plaintext')),
+          );
         }
 
-        Object.entries(trees).forEach(([, tree]) => {
-          let lineCounter = 0;
+        let lineCounter = 0;
 
-          const wordOptions: CharsHighlighterOptions = {
-            ranges: wordNumbers,
-            idsMap: wordIdsMap,
-            counterMap: new Map(),
-          };
+        const charsHighlighterOptions: CharsHighlighterOptions = {
+          ranges: charsListNumbers,
+          idsMap: charsListIdMap,
+          counterMap: new Map<string, number>(),
+        };
 
-          visit(tree, 'element', (element) => {
-            if (
-              element.tagName === 'code' &&
-              /srebmuNeniLwohs(?!(.*)(\/))/.test(reverseString(meta))
-            ) {
+        visit(codeTree, 'element', (element) => {
+          if (
+            element.tagName === 'code' &&
+            /srebmuNeniLwohs(?!(.*)(\/))/.test(reverseString(meta))
+          ) {
+            if (element.properties) {
+              element.properties['data-line-numbers'] = '';
+            }
+
+            const lineNumbersStartAtMatch = reverseString(meta).match(
+              /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/,
+            );
+            const startNumberString = lineNumbersStartAtMatch?.[1];
+            if (startNumberString) {
+              const startAt = startNumberString
+                ? Number(reverseString(startNumberString)) - 1
+                : 0;
+              lineNumbersMaxDigits = startAt;
               if (element.properties) {
-                element.properties['data-line-numbers'] = '';
-              }
-
-              const lineNumbersStartAtMatch = reverseString(meta).match(
-                /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/,
-              );
-              const startNumberString = lineNumbersStartAtMatch?.[1];
-              if (startNumberString) {
-                const startAt = startNumberString
-                  ? Number(reverseString(startNumberString)) - 1
-                  : 0;
-                lineNumbersMaxDigits = startAt;
-                if (element.properties) {
-                  element.properties.style = `counter-set: line ${startAt};`;
-                }
+                element.properties.style = `counter-set: line ${startAt};`;
               }
             }
+          }
 
-            if (
-              Array.isArray(element.properties?.className) &&
-              element.properties?.className?.[0] === 'line'
-            ) {
-              if (grid && element.children.length === 0) {
-                element.children = [{ type: 'text', value: ' ' }];
-              }
-
-              const className = element.properties.className.filter(
-                (c) => c !== 'line',
-              );
-              element.properties.className =
-                className.length > 0 ? className : undefined;
-              element.properties['data-line'] = '';
-              onVisitLine?.(element as LineElement);
-
-              if (
-                lineNumbers.length !== 0 &&
-                lineNumbers.includes(++lineCounter)
-              ) {
-                element.properties['data-highlighted-line'] = '';
-                onVisitHighlightedLine?.(element as LineElement);
-              }
-
-              charsHighlighter(
-                element,
-                words,
-                wordOptions,
-                onVisitHighlightedChars,
-              );
-
-              lineNumbersMaxDigits++;
+          if (
+            Array.isArray(element.properties?.className) &&
+            element.properties?.className?.[0] === 'line'
+          ) {
+            if (grid && element.children.length === 0) {
+              element.children = [{ type: 'text', value: ' ' }];
             }
-          });
+
+            replaceLineClass(element);
+            onVisitLine?.(element);
+
+            if (lineNumbers.includes(++lineCounter)) {
+              element.properties['data-highlighted-line'] = '';
+              onVisitHighlightedLine?.(element);
+            }
+
+            charsHighlighter(
+              element,
+              charsList,
+              charsHighlighterOptions,
+              onVisitHighlightedChars,
+            );
+
+            lineNumbersMaxDigits++;
+          }
         });
 
-        toFragment(element, {
-          trees,
+        apply(element, {
+          tree: codeTree,
           lang,
           title,
           caption,
           keepBackground,
           grid,
           lineNumbersMaxDigits,
+          theme,
           onVisitTitle,
           onVisitCaption,
         });

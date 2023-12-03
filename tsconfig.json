@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "es2019"],
+    "lib": ["dom", "es2022"],
     "skipLibCheck": true,
     "moduleResolution": "node",
     "noEmit": true,

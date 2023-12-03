@@ -1,4 +1,10 @@
-import type { Highlighter, IShikiTheme } from 'shiki';
+import type {
+  BundledHighlighterOptions,
+  Highlighter,
+  BuiltinTheme,
+  ThemeRegistrationRaw,
+  ShikijiTransformer,
+} from 'shikiji';
 import type { Transformer } from 'unified';
 import type { Root, Element, Properties } from 'hast';
 
@@ -11,7 +17,7 @@ export type CharsElement = Omit<Element, 'properties' | 'children'> & {
   children: Array<Element | Text>;
 };
 
-type Theme = IShikiTheme | string;
+type Theme = BuiltinTheme | ThemeRegistrationRaw;
 
 export interface Options {
   grid?: boolean;
@@ -19,8 +25,9 @@ export interface Options {
   keepBackground?: boolean;
   defaultLang?: string | { block?: string; inline?: string };
   tokensMap?: Record<string, string>;
+  transformers?: ShikijiTransformer[];
   filterMetaString?(str: string): string;
-  getHighlighter?(options: Pick<Options, 'theme'>): Promise<Highlighter>;
+  getHighlighter?(options: BundledHighlighterOptions): Promise<Highlighter>;
   onVisitLine?(element: LineElement): void;
   onVisitHighlightedLine?(element: LineElement): void;
   onVisitHighlightedChars?(element: CharsElement, id: string | undefined): void;
@@ -29,5 +36,5 @@ export interface Options {
 }
 
 export default function rehypePrettyCode(
-  options?: void | Options | undefined
+  options?: void | Options | undefined,
 ): void | Transformer<Root, Root>;

@@ -29,21 +29,40 @@
     text-align: right;
     color: gray;
   }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
+
+  .diff.add {
+    background-color: rgba(0, 255, 100, 0.25);
+  }
+  .diff.remove {
+    background-color: rgba(255, 100, 200, 0.35);
+  }
 </style>
 <h2>Inline</h2>
 <p>{:js}</p>
 <p>
-  <span data-rehype-pretty-code-fragment=""
+  <span data-rehype-pretty-code-figure=""
     ><code
       data-language="js"
-      data-theme="default"
-      style="background-color: #24292e"
-      ><span class="line"
+      data-theme="github-dark"
+      style="background-color: #24292e; color: #e1e4e8"
+      ><span data-line=""
         ><span style="color: #f97583">const</span
-        ><span style="color: #e1e4e8"> </span
-        ><span style="color: #b392f0">getStringLength</span
-        ><span style="color: #e1e4e8"> </span
-        ><span style="color: #f97583">=</span
+        ><span style="color: #b392f0"> getStringLength</span
+        ><span style="color: #f97583"> =</span
         ><span style="color: #e1e4e8"> (</span
         ><span style="color: #ffab70">str</span
         ><span style="color: #e1e4e8">) </span
@@ -55,3 +74,50 @@
     ></span
   >
 </p>
+<p>{:html}</p>
+<p>
+  <span data-rehype-pretty-code-figure=""
+    ><code
+      data-language="html"
+      data-theme="github-dark"
+      style="background-color: #24292e; color: #e1e4e8"
+      ><span data-line=""
+        ><span style="color: #e1e4e8">&#x3C;</span
+        ><span style="color: #85e89d">div</span
+        ><span style="color: #b392f0"> class</span
+        ><span style="color: #e1e4e8">=</span
+        ><span style="color: #9ecbff">"foo"</span
+        ><span style="color: #e1e4e8">>bar&#x3C;/</span
+        ><span style="color: #85e89d">div</span
+        ><span style="color: #e1e4e8">></span></span
+      ></code
+    ></span
+  >
+</p>
+<p>.support</p>
+<p>
+  <span data-rehype-pretty-code-figure=""
+    ><code data-language=".token" data-theme="github-dark"
+      ><span style="color: #79b8ff">getStringLength</span></code
+    ></span
+  >
+</p>
+<p>Escape</p>
+<ul>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>{:html}</code></li>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>\{:html}</code></li>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>\\{:html}</code></li>
+  <li>
+    <span data-rehype-pretty-code-figure=""
+      ><code
+        data-language="unsupportedlang"
+        data-theme="github-dark"
+        style="background-color: #24292e; color: #e1e4e8"
+        ><span data-line=""
+          ><span>&#x3C;div class="foo">bar&#x3C;/div></span></span
+        ></code
+      ></span
+    >
+  </li>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>{:unsupportedlang}</code></li>
+</ul>

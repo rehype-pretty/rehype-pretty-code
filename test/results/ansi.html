@@ -29,29 +29,49 @@
     text-align: right;
     color: gray;
   }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
+
+  .diff.add {
+    background-color: rgba(0, 255, 100, 0.25);
+  }
+  .diff.remove {
+    background-color: rgba(255, 100, 200, 0.35);
+  }
 </style>
 <h2>ANSI</h2>
-<div data-rehype-pretty-code-fragment="">
-  <div
+<figure data-rehype-pretty-code-figure="">
+  <figcaption
     data-rehype-pretty-code-title=""
     data-language="ansi"
-    data-theme="default"
+    data-theme="github-dark"
     style="font-weight: bold"
   >
     vite --port 3123
-  </div>
+  </figcaption>
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
     data-language="ansi"
-    data-theme="default"
-  ><code data-language="ansi" data-theme="default" style="display: grid;"><span data-line=""><span style="color: #39c5cf">  vite v2.8.6</span><span style="color: #34d058"> dev server running at:</span></span>
+    data-theme="github-dark"
+  ><code data-language="ansi" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#39c5cf">  vite v2.8.6</span><span style="color:#34d058"> dev server running at:</span></span>
 <span data-line=""> </span>
-<span data-line=""><span style="color: #e1e4e8">  > Local: </span><span style="color: #39c5cf">http://localhost:</span><span style="color: #39c5cf; font-weight: bold">3123</span><span style="color: #39c5cf">/</span></span>
-<span data-line=""><span style="color: #e1e4e8">  > Network: </span><span style="color: #e1e4e880">use `--host` to expose</span></span>
+<span data-line=""><span style="color:#e1e4e8">  > Local: </span><span style="color:#39c5cf">http://localhost:</span><span style="color:#39c5cf;font-weight:bold">3123</span><span style="color:#39c5cf">/</span></span>
+<span data-line=""><span style="color:#e1e4e8">  > Network: </span><span style="color:#e1e4e880">use `--host` to expose</span></span>
 <span data-line=""> </span>
-<span data-line=""><span style="color: #e1e4e8">  </span><span style="color: #39c5cf">ready in 125ms.</span></span>
+<span data-line=""><span style="color:#39c5cf">  ready in 125ms.</span></span>
 <span data-line=""> </span>
-<span data-line=""><span style="color: #e1e4e880">8:38:02 PM</span><span style="color: #e1e4e8"> </span><span style="color: #39c5cf; font-weight: bold">[vite]</span><span style="color: #e1e4e8"> </span><span style="color: #34d058">hmr update </span><span style="color: #e1e4e880">/src/App.jsx</span></span></code></pre>
-</div>
+<span data-line=""><span style="color:#e1e4e880">8:38:02 PM</span><span style="color:#39c5cf;font-weight:bold"> [vite]</span><span style="color:#34d058"> hmr update </span><span style="color:#e1e4e880">/src/App.jsx</span></span></code></pre>
+</figure>

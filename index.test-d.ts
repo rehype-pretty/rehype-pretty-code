@@ -18,7 +18,7 @@ unified().use(rehypePrettyCode, {
     if (id) {
       // If the word spans across syntax boundaries (e.g. punctuation), remove
       // colors from the child elements.
-      if (element.properties['data-highlighted-chars-wrapper']) {
+      if (element.properties['data-highlighted-chars-mark']) {
         element.children.forEach((child) => {
           if ('properties' in child && child.properties) {
             child.properties.style = '';

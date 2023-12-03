@@ -29,18 +29,38 @@
     text-align: right;
     color: gray;
   }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
+
+  .diff.add {
+    background-color: rgba(0, 255, 100, 0.25);
+  }
+  .diff.remove {
+    background-color: rgba(255, 100, 200, 0.35);
+  }
 </style>
 <h1>Hyphenated language</h1>
-<div data-rehype-pretty-code-fragment="">
+<figure data-rehype-pretty-code-figure="">
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
     data-language="git-rebase"
-    data-theme="default"
-  ><code data-language="git-rebase" data-theme="default" style="display: grid;"><span data-line=""><span style="color: #79B8FF">pick</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">e0662b2</span><span style="color: #E1E4E8"> Improve a11y of the logo image</span></span>
-<span data-line=""><span style="color: #79B8FF">fixup</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">41aac9e</span><span style="color: #E1E4E8"> fixup! e0662b2</span></span>
-<span data-line=""><span style="color: #79B8FF">pick</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">d3942e9</span><span style="color: #E1E4E8"> Use SVG format for the logo</span></span>
-<span data-line=""><span style="color: #79B8FF">fixup</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">f5409b6</span><span style="color: #E1E4E8"> fixup! d3942e9</span></span>
-<span data-line=""><span style="color: #79B8FF">pick</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">5dae451</span><span style="color: #E1E4E8"> Link logo to the site root</span></span></code></pre>
-</div>
+    data-theme="github-dark"
+  ><code data-language="git-rebase" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#79B8FF">pick</span><span style="color:#79B8FF"> e0662b2</span><span style="color:#E1E4E8"> Improve a11y of the logo image</span></span>
+<span data-line=""><span style="color:#79B8FF">fixup</span><span style="color:#79B8FF"> 41aac9e</span><span style="color:#E1E4E8"> fixup! e0662b2</span></span>
+<span data-line=""><span style="color:#79B8FF">pick</span><span style="color:#79B8FF"> d3942e9</span><span style="color:#E1E4E8"> Use SVG format for the logo</span></span>
+<span data-line=""><span style="color:#79B8FF">fixup</span><span style="color:#79B8FF"> f5409b6</span><span style="color:#E1E4E8"> fixup! d3942e9</span></span>
+<span data-line=""><span style="color:#79B8FF">pick</span><span style="color:#79B8FF"> 5dae451</span><span style="color:#E1E4E8"> Link logo to the site root</span></span></code></pre>
+</figure>

@@ -1,4 +1,4 @@
-## Inline
+## Inline multiple themes
 
 {:js}
 

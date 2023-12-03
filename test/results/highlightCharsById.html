@@ -29,87 +29,103 @@
     text-align: right;
     color: gray;
   }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
+
+  .diff.add {
+    background-color: rgba(0, 255, 100, 0.25);
+  }
+  .diff.remove {
+    background-color: rgba(255, 100, 200, 0.35);
+  }
 </style>
 <h2>Highlight chars by id</h2>
 <p>/age/#a /name/#a /setAge/#b /setName/#b /42/#c /'Taylor'/#c</p>
-<div data-rehype-pretty-code-fragment="">
+<figure data-rehype-pretty-code-figure="">
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
     data-language="js"
-    data-theme="default"
-  ><code data-language="js" data-theme="default" style="display: grid;"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> [</span><span style="
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><mark style="
           color: pink; 
           background-color: rgba(255, 100, 200, 0.35)
-        " data-highlighted-chars="" data-chars-id="a" class="word">age</span><span style="color: #E1E4E8">, </span><span style="
+        " data-highlighted-chars="" data-chars-id="a" class="word"><span style="color:#79B8FF">age</span></mark><span style="color:#E1E4E8">, </span><mark style="
           color: cyan; 
           background-color: rgba(0, 255, 100, 0.25)
-        " data-highlighted-chars="" data-chars-id="b" class="word">setAge</span><span style="color: #E1E4E8">] </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">useState</span><span style="color: #E1E4E8">(</span><span style="
+        " data-highlighted-chars="" data-chars-id="b" class="word"><span style="color:#79B8FF">setAge</span></mark><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useState</span><span style="color:#E1E4E8">(</span><mark style="
           color: lightblue; 
           background-color: rgba(100, 200, 255, 0.25)
-        " data-highlighted-chars="" data-chars-id="c" class="word">42</span><span style="color: #E1E4E8">);</span></span>
-<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> [</span><span style="
+        " data-highlighted-chars="" data-chars-id="c" class="word"><span style="color:#79B8FF">42</span></mark><span style="color:#E1E4E8">);</span></span>
+<span data-line=""><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><mark style="
           color: pink; 
           background-color: rgba(255, 100, 200, 0.35)
-        " data-highlighted-chars="" data-chars-id="a" class="word">name</span><span style="color: #E1E4E8">, </span><span style="
+        " data-highlighted-chars="" data-chars-id="a" class="word"><span style="color:#79B8FF">name</span></mark><span style="color:#E1E4E8">, </span><mark style="
           color: cyan; 
           background-color: rgba(0, 255, 100, 0.25)
-        " data-highlighted-chars="" data-chars-id="b" class="word">setName</span><span style="color: #E1E4E8">] </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">useState</span><span style="color: #E1E4E8">(</span><span style="
+        " data-highlighted-chars="" data-chars-id="b" class="word"><span style="color:#79B8FF">setName</span></mark><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useState</span><span style="color:#E1E4E8">(</span><mark style="
           color: lightblue; 
           background-color: rgba(100, 200, 255, 0.25)
-        " data-highlighted-chars="" data-chars-id="c" class="word">'Taylor'</span><span style="color: #E1E4E8">);</span></span></code></pre>
-</div>
+        " data-highlighted-chars="" data-chars-id="c" class="word"><span style="color:#9ECBFF">'Taylor'</span></mark><span style="color:#E1E4E8">);</span></span></code></pre>
+</figure>
 <p><code>/&#x3C;div/#a /id="true">/#b</code></p>
-<div data-rehype-pretty-code-fragment="">
+<figure data-rehype-pretty-code-figure="">
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
     data-language="js"
-    data-theme="default"
-  ><code data-language="js" data-theme="default" style="display: grid;"><span data-line=""><span data-highlighted-chars-wrapper="" data-highlighted-chars="" data-chars-id="a" class="word" style="
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><mark data-highlighted-chars-mark="" data-highlighted-chars="" data-chars-id="a" class="word" style="
           color: pink; 
           background-color: rgba(255, 100, 200, 0.35)
-        "><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">div</span></span><span style="color: #E1E4E8"> </span><span data-highlighted-chars-wrapper="" data-highlighted-chars="" data-chars-id="b" class="word" style="
+        "><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">div</span></mark><span style="color:#B392F0"> </span><mark data-highlighted-chars-mark="" data-highlighted-chars="" data-chars-id="b" class="word" style="
           color: cyan; 
           background-color: rgba(0, 255, 100, 0.25)
-        "><span style="color: #B392F0">id</span><span style="color: #F97583">=</span><span style="color: #9ECBFF">"true"</span><span style="color: #E1E4E8">></span></span></span></code></pre>
-</div>
+        "><span style="color:#B392F0">id</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"true"</span><span style="color:#E1E4E8">></span></mark></span></code></pre>
+</figure>
 <p>/age/#id</p>
-<div data-rehype-pretty-code-fragment="">
+<figure data-rehype-pretty-code-figure="">
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
     data-language="js"
-    data-theme="default"
-  ><code data-language="js" data-theme="default" style="display: grid;"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> </span><mark style="
           color: white; 
           background-color: rgba(255, 255, 255, 0.25)
-        " data-highlighted-chars="" data-chars-id="id" class="word">age</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'</span><span style="
+        " data-highlighted-chars="" data-chars-id="id" class="word"><span style="color:#79B8FF">age</span></mark><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> '</span><mark style="
           color: white; 
           background-color: rgba(255, 255, 255, 0.25)
-        " data-highlighted-chars="" data-chars-id="id" class="word">age</span><span style="color: #9ECBFF">'</span><span style="color: #E1E4E8">;</span></span></code></pre>
-</div>
+        " data-highlighted-chars="" data-chars-id="id" class="word"><span style="color:#9ECBFF">age</span></mark><span style="color:#9ECBFF">'</span><span style="color:#E1E4E8">;</span></span></code></pre>
+</figure>
 <p>/age/2</p>
-<div data-rehype-pretty-code-fragment="">
+<figure data-rehype-pretty-code-figure="">
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
     data-language="js"
-    data-theme="default"
-  ><code data-language="js" data-theme="default" style="display: grid;"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">age</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'</span><span style="color: #9ECBFF" data-highlighted-chars="" class="word">age</span><span style="color: #9ECBFF">'</span><span style="color: #E1E4E8">; </span><span style="color: #6A737D">// age;</span></span></code></pre>
-</div>
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> age</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> '</span><mark data-highlighted-chars="" class="word"><span style="color:#9ECBFF">age</span></mark><span style="color:#9ECBFF">'</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// age;</span></span></code></pre>
+</figure>
 <p>/car/1</p>
-<div data-rehype-pretty-code-fragment="">
+<figure data-rehype-pretty-code-figure="">
   <pre
-    class="github-dark"
-    style="background-color: #24292e"
+    style="background-color: #24292e; color: #e1e4e8"
     tabindex="0"
     data-language="js"
-    data-theme="default"
-  ><code data-language="js" data-theme="default" style="display: grid;"><span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF" data-highlighted-chars="" class="word">car</span><span style="color: #79B8FF">rotcar</span><span style="color: #E1E4E8">,</span><span style="color: #79B8FF">carcarrot</span><span style="color: #E1E4E8">;</span></span>
-<span data-line=""><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">carrotcar</span><span style="color: #E1E4E8">,</span><span style="color: #79B8FF">carcarrot</span><span style="color: #E1E4E8">;</span></span></code></pre>
-</div>
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> </span><mark data-highlighted-chars="" class="word"><span style="color:#79B8FF">car</span></mark><span style="color:#79B8FF">rotcar</span><span style="color:#E1E4E8">,</span><span style="color:#79B8FF">carcarrot</span><span style="color:#E1E4E8">;</span></span>
+<span data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> carrotcar</span><span style="color:#E1E4E8">,</span><span style="color:#79B8FF">carcarrot</span><span style="color:#E1E4E8">;</span></span></code></pre>
+</figure>

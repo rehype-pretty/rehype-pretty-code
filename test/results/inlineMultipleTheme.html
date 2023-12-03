@@ -1,0 +1,149 @@
+
+<style>
+  html {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  body {
+    margin: 30px auto;
+    max-width: 800px;
+  }
+  pre {
+    padding: 16px;
+  }
+  span > code {
+    background: black;
+    padding: 4px;
+  }
+  [data-highlighted-line], [data-highlighted-chars] {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  code[data-line-numbers] {
+    counter-reset: line;
+  }
+  code[data-line-numbers]>[data-line]::before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 1rem;
+    margin-right: 2rem;
+    text-align: right;
+    color: gray;
+  }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
+
+  .diff.add {
+    background-color: rgba(0, 255, 100, 0.25);
+  }
+  .diff.remove {
+    background-color: rgba(255, 100, 200, 0.35);
+  }
+</style>
+<h2>Inline multiple themes</h2>
+<p>{:js}</p>
+<p>
+  <span data-rehype-pretty-code-figure=""
+    ><code
+      data-language="js"
+      data-theme="github-dark github-light"
+      style="
+        --shiki-dark: #e1e4e8;
+        --shiki-light: #24292e;
+        --shiki-dark-bg: #24292e;
+        --shiki-light-bg: #fff;
+      "
+      ><span data-line=""
+        ><span style="--shiki-dark: #f97583; --shiki-light: #d73a49">const</span
+        ><span style="--shiki-dark: #b392f0; --shiki-light: #6f42c1">
+          getStringLength</span
+        ><span style="--shiki-dark: #f97583; --shiki-light: #d73a49"> =</span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e"> (</span
+        ><span style="--shiki-dark: #ffab70; --shiki-light: #e36209">str</span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e">) </span
+        ><span style="--shiki-dark: #f97583; --shiki-light: #d73a49">=></span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e"> str.</span
+        ><span style="--shiki-dark: #79b8ff; --shiki-light: #005cc5"
+          >length</span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e"
+          >;</span
+        ></span
+      ></code
+    ></span
+  >
+</p>
+<p>{:html}</p>
+<p>
+  <span data-rehype-pretty-code-figure=""
+    ><code
+      data-language="html"
+      data-theme="github-dark github-light"
+      style="
+        --shiki-dark: #e1e4e8;
+        --shiki-light: #24292e;
+        --shiki-dark-bg: #24292e;
+        --shiki-light-bg: #fff;
+      "
+      ><span data-line=""
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e"
+          >&#x3C;</span
+        ><span style="--shiki-dark: #85e89d; --shiki-light: #22863a">div</span
+        ><span style="--shiki-dark: #b392f0; --shiki-light: #6f42c1">
+          class</span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e">=</span
+        ><span style="--shiki-dark: #9ecbff; --shiki-light: #032f62">"foo"</span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e"
+          >>bar&#x3C;/</span
+        ><span style="--shiki-dark: #85e89d; --shiki-light: #22863a">div</span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e"
+          >></span
+        ></span
+      ></code
+    ></span
+  >
+</p>
+<p>.support</p>
+<p>
+  <span data-rehype-pretty-code-figure=""
+    ><code data-language=".token" data-theme="github-dark github-light"
+      ><span style="--shiki-dark: #79b8ff; --shiki-light: #005cc5"
+        >getStringLength</span
+      ></code
+    ></span
+  >
+</p>
+<p>Escape</p>
+<ul>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>{:html}</code></li>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>\{:html}</code></li>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>\\{:html}</code></li>
+  <li>
+    <span data-rehype-pretty-code-figure=""
+      ><code
+        data-language="unsupportedlang"
+        data-theme="github-dark github-light"
+        style="
+          --shiki-dark: #e1e4e8;
+          --shiki-light: #24292e;
+          --shiki-dark-bg: #24292e;
+          --shiki-light-bg: #fff;
+        "
+        ><span data-line=""
+          ><span>&#x3C;div class="foo">bar&#x3C;/div></span></span
+        ></code
+      ></span
+    >
+  </li>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>{:unsupportedlang}</code></li>
+</ul>
