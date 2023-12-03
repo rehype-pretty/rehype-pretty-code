@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 
-import { getHighlighter, setCDN } from 'shiki';
-import htmlParser from 'prettier/parser-html';
+import { getHighlighter } from 'shikiji';
+import htmlParser from 'prettier/plugins/html';
 
 import { unified } from 'unified';
 import rehypeParse from 'rehype-parse';
@@ -22,34 +22,29 @@ import 'codemirror/theme/material.css';
 const initialValue = `const test = () => {
   return 'hello world';
 }`;
-const DEFAULT_THEME = 'nord';
 
 const hastParser = unified().use(rehypeParse, { fragment: true });
 
 function App() {
   const [value, setValue] = useState();
   const [HTML, setHTML] = useState();
-  const [isLoaded, setIsLoaded] = useState();
   const [word, setWord] = useState(['test', 'hello', 'world']);
-  const [mode, setMode] = useState('javascript');
+  const [lang, setLang] = useState('js');
   const [wordNumbers, setWordNumbers] = useState('');
-  const highlighter = useRef();
+  const [formattedHTML, setFormattedHTML] = useState();
+  const [highlighter, setHighlighter] = useState();
   const editorRef = useRef();
   const htmlRef = useRef();
 
-  const [formattedHTML, setFormattedHTML] = useState();
-
   React.useEffect(() => {
     const getShiki = async () => {
-      setCDN('https://unpkg.com/shiki/');
-      const highlighterPromise = getHighlighter({
-        theme: DEFAULT_THEME,
-        langs: ['js', 'html', 'css'],
-      });
-
-      const hi = await highlighterPromise;
-      highlighter.current = hi;
-      setIsLoaded(true);
+      setHighlighter(
+        await getHighlighter({
+          themes: ['github-dark-dimmed'],
+          langs: ['js', 'html', 'css'],
+        }),
+      );
+      setValue(initialValue);
     };
     getShiki();
   }, []);
@@ -58,43 +53,34 @@ function App() {
     node.properties.className = ['word'];
   };
 
-  React.useEffect(() => {
-    if (isLoaded) {
-      setValue(initialValue);
-    }
-  }, [isLoaded]);
-
-  const codeMirrorOnChange = React.useCallback(() => {
-    if (highlighter.current && editorRef.current) {
+  const codeMirrorOnChange = React.useCallback(async () => {
+    if (highlighter && editorRef.current) {
       setHTML(
-        highlighter.current.codeToHtml(
-          editorRef.current.getDoc().getValue('\n'),
-          mode,
-          DEFAULT_THEME,
-        ),
+        highlighter.codeToHtml(editorRef.current.getDoc().getValue('\n'), {
+          lang,
+          theme: 'github-dark-dimmed',
+        }),
       );
     }
-    if (highlighter.current) {
-      setFormattedHTML(
-        highlighter.current.codeToHtml(
-          prettier.format(htmlRef.current.innerHTML, {
-            parser: 'html',
-            plugins: [htmlParser],
-          }),
-          'html',
-          DEFAULT_THEME,
-        ),
+    if (highlighter) {
+      const html = highlighter.codeToHtml(
+        await prettier.format(htmlRef.current.innerHTML, {
+          parser: 'html',
+          plugins: [htmlParser],
+        }),
+        { lang: 'html', theme: 'github-dark-dimmed' },
       );
+
+      setFormattedHTML(html);
     }
-  }, [mode]);
+  }, [lang, highlighter]);
 
   const highlightWords = React.useCallback(
     (container) => {
       if (word && editorRef.current) {
-        container.innerHTML = highlighter.current.codeToHtml(
+        container.innerHTML = highlighter.codeToHtml(
           editorRef.current.getDoc().getValue('\n'),
-          mode,
-          DEFAULT_THEME,
+          { lang, theme: 'github-dark-dimmed' },
         );
       }
       let options = {
@@ -118,7 +104,7 @@ function App() {
         );
       }
     },
-    [word, wordNumbers, value, mode],
+    [word, wordNumbers, value, lang, highlighter],
   );
 
   React.useEffect(() => {
@@ -153,7 +139,7 @@ function App() {
         </div>
         <div>
           <label htmlFor="mode-select">Highlighter lang</label>
-          <select id="mode-select" onChange={(e) => setMode(e.target.value)}>
+          <select id="mode-select" onChange={(e) => setLang(e.target.value)}>
             <option>javascript</option>
             <option>html</option>
             <option>css</option>
@@ -167,7 +153,7 @@ function App() {
           <CodeMirror
             value={value}
             options={{
-              mode: mode === 'html' ? 'xml' : mode,
+              mode: lang === 'html' ? 'xml' : lang,
               theme: 'material',
               lineNumbers: true,
             }}
@@ -181,22 +167,19 @@ function App() {
           />
         </div>
         <div>
-          <p>result</p>
-
+          <p>Result</p>
           <div
             ref={htmlRef}
             className="shiki-output"
             dangerouslySetInnerHTML={{ __html: HTML }}
-          ></div>
+          />
         </div>
       </section>
       <section>
-        <p>output</p>
+        <p>Output</p>
         <div
           className="shiki-output--html shiki-output"
-          dangerouslySetInnerHTML={{
-            __html: htmlRef.current && highlighter.current && formattedHTML,
-          }}
+          dangerouslySetInnerHTML={{ __html: formattedHTML }}
         />
       </section>
     </main>

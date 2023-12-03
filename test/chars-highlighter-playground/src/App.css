@@ -59,6 +59,10 @@ label {
   height: 100%;
 }
 
+.CodeMirror-lines {
+  padding: 0 !important;
+}
+
 .react-codemirror2 .cm-s-material.CodeMirror,
 .react-codemirror2 .cm-s-material .CodeMirror-gutters {
   background-color: #2e3440ff;
@@ -67,7 +71,7 @@ label {
 .react-codemirror2 > .CodeMirror {
   height: 100%;
   font-size: 16px;
-  padding: 2rem calc(2rem - 21px);
+  padding: 1rem;
   box-sizing: border-box;
 }
 
@@ -93,5 +97,6 @@ label {
 
 .shiki-output pre {
   margin: 0;
-  padding: 2rem 2rem 2.5rem 2rem;
+  padding: 1rem;
+  width: 100%;
 }
