@@ -326,7 +326,6 @@ export default function rehypePrettyCode(
         const codeElement = element.children[0];
         if (!isElement(codeElement)) return;
         const textElement = codeElement.children[0];
-        if (!isElement(codeElement)) return;
 
         const { title, caption, meta, lang } = parseBlockMetaString(
           codeElement,
