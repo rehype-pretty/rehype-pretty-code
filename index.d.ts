@@ -25,6 +25,7 @@ export interface Options {
   keepBackground?: boolean;
   defaultLang?: string | { block?: string; inline?: string };
   tokensMap?: Record<string, string>;
+  transformers?: ShikijiTransformer[];
   filterMetaString?(str: string): string;
   getHighlighter?(options: BundledHighlighterOptions): Promise<Highlighter>;
   onVisitLine?(element: LineElement): void;
@@ -32,7 +33,6 @@ export interface Options {
   onVisitHighlightedChars?(element: CharsElement, id: string | undefined): void;
   onVisitTitle?(element: Element): void;
   onVisitCaption?(element: Element): void;
-  transformers?: ShikijiTransformer[];
 }
 
 export default function rehypePrettyCode(

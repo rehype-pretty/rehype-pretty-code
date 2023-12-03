@@ -114,12 +114,14 @@ Install via your terminal:
 npm install rehype-pretty-code shikiji@0.7.x
 ```
 
-> **Note:** This package is `ESM`-only. If you need `CJS` support you should use
-> `v0.10.1`, which uses Shiki instead of Shikiji
+This package is ESM-only.
+
+> **Note:** If you need `CJS` support you should use `v0.10.1`, which uses Shiki
+> instead of Shikiji
 > ([v0.10.1 docs here](https://github.com/atomiks/rehype-pretty-code/blob/00e5451e3aac7b86f748b01267e255bf345d1550/website/src/app/index.mdx)).
 > You can use the latest version in Next.js, just make sure your next config
 > file is `ESM`: `next.config.mjs`. Here's a full example:
-> [rehype-pretty-code/website/next.config.mjs](https://github.com/atomiks/rehype-pretty-code/blob/master/website/next.config.mjs)\_
+> [rehype-pretty-code/website/next.config.mjs](https://github.com/atomiks/rehype-pretty-code/blob/master/website/next.config.mjs)
 
 ## Usage
 
@@ -183,13 +185,31 @@ export default withMDX(nextConfig);
 
 ## Options
 
-To customize the theme and highlighting, options can be specified.
+```ts
+export interface Options {
+  grid?: boolean;
+  theme?: Theme | Record<string, Theme>;
+  keepBackground?: boolean;
+  defaultLang?: string | { block?: string; inline?: string };
+  tokensMap?: Record<string, string>;
+  transformers?: ShikijiTransformer[];
+  filterMetaString?(str: string): string;
+  getHighlighter?(options: BundledHighlighterOptions): Promise<Highlighter>;
+  onVisitLine?(element: LineElement): void;
+  onVisitHighlightedLine?(element: LineElement): void;
+  onVisitHighlightedChars?(element: CharsElement, id: string | undefined): void;
+  onVisitTitle?(element: Element): void;
+  onVisitCaption?(element: Element): void;
+}
+```
 
-### Code Block Styles
+Options can be specified to customize the behavior
 
 Code blocks are fully unstyled to give you full control. The features are
 implemented as logical indicators in the form of attributes that allows you to
 apply CSS yourself.
+
+### `grid{:.meta.object-literal.key}`
 
 A grid style is present by default which allows line highlighting to span the
 entire width of a horizontally-scrollable code block.
@@ -202,7 +222,7 @@ const options = {
 };
 ```
 
-### Theme
+### `theme{:.meta.object-literal.key}`
 
 The default theme is `github-dark-dimmed{:.string}`. Shikiji has a bunch of
 [pre-packaged themes](https://github.com/antfu/shikiji/blob/main/docs/themes.md),
@@ -227,7 +247,7 @@ const options = {
 };
 ```
 
-#### Theme Background
+### `keepBackground{:.meta.object-literal.key}`
 
 To apply a custom background instead of inheriting the background from the
 theme:
@@ -238,7 +258,7 @@ const options = {
 };
 ```
 
-#### Default Code Language
+### `defaultLang{:.meta.object-literal.key}`
 
 When no code language is specified, inline code or code blocks will not be
 themed (nor will the background), which may appear incongruous with others.
@@ -260,6 +280,22 @@ const options = {
     block: 'plaintext',
     inline: 'plaintext',
   },
+};
+```
+
+### `transformers{:.meta.object-literal.key}`
+
+[Transformers](https://github.com/antfu/shikiji#hast-transformers) are a
+Shikiji-native way to manipulate the `hAST` tree of the code blocks and further
+extend the behavior of this plugin. The
+[`shikiji-transformers`](https://www.npmjs.com/package/shikiji-transformers)
+package provides some useful transformers.
+
+```js
+import { transformerNotationDiff } from 'shikiji-transformers';
+
+const options = {
+  transformers: [transformerNotationDiff()],
 };
 ```
 
@@ -357,7 +393,7 @@ a regular code block.
 This is an array `[1, 2, 3]{:js}` of numbers 1 through 3.
 ```
 
-#### Highlight Plain text
+#### Highlight Plain Text
 
 Append `\{:.token}` to the end of the inline code to highlight it based on a
 token specified in your VS Code theme. Tokens start with a `.` to differentiate
@@ -472,15 +508,15 @@ in the theme name, then CSS variable keys based on the object are available
 ```scss
 code[data-theme*=' '],
 code[data-theme*=' '] span {
-  color: var(--shiki-light) !important;
-  background-color: var(--shiki-light-bg) !important;
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
 }
 
 @media (prefers-color-scheme: dark) {
   code[data-theme*=' '],
   code[data-theme*=' '] span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
   }
 }
 ```

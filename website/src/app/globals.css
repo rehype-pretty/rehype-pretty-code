@@ -12,6 +12,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+h3 code {
+  @apply !text-lg md:!text-xl;
+}
+
 pre {
   @apply !px-0 rounded-lg;
 }
@@ -26,15 +30,15 @@ pre > code {
 
 code[data-theme*=' '],
 code[data-theme*=' '] span {
-  color: var(--shiki-light) !important;
-  background-color: var(--shiki-light-bg) !important;
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
 }
 
 @media (prefers-color-scheme: dark) {
   code[data-theme*=' '],
   code[data-theme*=' '] span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
   }
 }
 
