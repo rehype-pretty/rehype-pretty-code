@@ -17,3 +17,5 @@ Escape
 - `<div class="foo">bar</div>\{:html}`
 - `<div class="foo">bar</div>\\{:html}`
 - `<div class="foo">bar</div>\\\{:html}`
+- `<div class="foo">bar</div>{:unsupportedlang}`
+- `<div class="foo">bar</div>\{:unsupportedlang}`

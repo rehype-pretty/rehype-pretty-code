@@ -222,7 +222,7 @@ export default function rehypePrettyCode(
         const value = textElement.value;
         if (!value) return;
         const lang = getInlineCodeLang(value, defaultInlineCodeLang);
-        if (lang[0] !== '.') {
+        if (lang && lang[0] !== '.') {
           langsToLoad.add(lang);
         }
       }
@@ -243,13 +243,21 @@ export default function rehypePrettyCode(
       }
     });
 
-    await Promise.all(
-      Array.from(langsToLoad).map((lang) =>
-        highlighter.loadLanguage(
-          lang as Parameters<typeof highlighter.loadLanguage>[0],
-        ),
-      ),
-    );
+    try {
+      await Promise.allSettled(
+        Array.from(langsToLoad).map((lang) => {
+          try {
+            return highlighter.loadLanguage(
+              lang as Parameters<typeof highlighter.loadLanguage>[0],
+            );
+          } catch (e) {
+            return Promise.reject(e);
+          }
+        }),
+      );
+    } catch (e) {
+      console.error(e);
+    }
 
     visit(tree, 'element', (element, _, parent) => {
       if (isInlineCode(element, parent)) {
