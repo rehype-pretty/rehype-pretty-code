@@ -74,7 +74,7 @@ export function charsHighlighter(
             if (
               props &&
               !hasOwnProperty(props, 'rehype-pretty-code-visited') &&
-              !hasOwnProperty(props, 'data-highlighted-chars-mark')
+              !Object.hasOwn(props, 'data-highlighted-chars-mark')
             ) {
               return toString(childNode);
             }
