@@ -422,10 +422,7 @@ export default function rehypePrettyCode(
             replaceLineClass(element);
             onVisitLine?.(element);
 
-            if (
-              lineNumbers.length !== 0 &&
-              lineNumbers.includes(++lineCounter)
-            ) {
+            if (lineNumbers.includes(++lineCounter)) {
               element.properties['data-highlighted-line'] = '';
               onVisitHighlightedLine?.(element);
             }

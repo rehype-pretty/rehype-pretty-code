@@ -1,9 +1,8 @@
-import { expect, describe, it } from 'vitest';
+import { expect, describe, it, vi } from 'vitest';
 import rehypePrettyCode from '../src';
 import { lstatSync, readFileSync, readdirSync } from 'fs';
 import { toHtml } from 'hast-util-to-html';
 import { toMatchFile } from 'jest-file-snapshot';
-import jest from 'jest-mock';
 import { toHast } from 'mdast-util-to-hast';
 import { dirname, join, parse } from 'path';
 import prettier from 'prettier';
@@ -96,7 +95,7 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
 };
 
 describe('Single theme', () => {
-  const getHighlighter = jest.fn(shikiHighlighter);
+  const getHighlighter = vi.fn(shikiHighlighter);
 
   readdirSync(fixturesFolder).forEach((fixtureName) => {
     if (isMultipleThemeTest(fixtureName)) return;
@@ -119,7 +118,7 @@ describe('Single theme', () => {
 });
 
 describe('Multiple theme', () => {
-  const getHighlighter = jest.fn(shikiHighlighter);
+  const getHighlighter = vi.fn(shikiHighlighter);
 
   readdirSync(fixturesFolder).forEach((fixtureName) => {
     if (!isMultipleThemeTest(fixtureName)) return;
