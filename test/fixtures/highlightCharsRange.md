@@ -20,7 +20,7 @@ const strLen = getStringLength('str');
 const anotherStrLen = getStringLength('anotherStr');
 ```
 
-/getStringLength/2,5,6
+/getStringLength/2,4,6
 
 ```js /getStringLength/2,4,6
 const getStringLength = (str) => str.length; // getStringLength
