@@ -51,7 +51,7 @@
     background-color: rgba(255, 100, 200, 0.35);
   }
 </style>
-<h2>Inline</h2>
+<h2>Inline multiple themes</h2>
 <p>{:js}</p>
 <p>
   <span data-rehype-pretty-code-figure=""
@@ -83,6 +83,36 @@
     ></span
   >
 </p>
+<p>{:html}</p>
+<p>
+  <span data-rehype-pretty-code-figure=""
+    ><code
+      data-language="html"
+      data-theme="github-dark github-light"
+      style="
+        --shiki-dark: #e1e4e8;
+        --shiki-light: #24292e;
+        --shiki-dark-bg: #24292e;
+        --shiki-light-bg: #fff;
+      "
+      ><span data-line=""
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e"
+          >&#x3C;</span
+        ><span style="--shiki-dark: #85e89d; --shiki-light: #22863a">div</span
+        ><span style="--shiki-dark: #b392f0; --shiki-light: #6f42c1">
+          class</span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e">=</span
+        ><span style="--shiki-dark: #9ecbff; --shiki-light: #032f62">"foo"</span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e"
+          >>bar&#x3C;/</span
+        ><span style="--shiki-dark: #85e89d; --shiki-light: #22863a">div</span
+        ><span style="--shiki-dark: #e1e4e8; --shiki-light: #24292e"
+          >></span
+        ></span
+      ></code
+    ></span
+  >
+</p>
 <p>.support</p>
 <p>
   <span data-rehype-pretty-code-figure=""
@@ -93,3 +123,27 @@
     ></span
   >
 </p>
+<p>Escape</p>
+<ul>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>{:html}</code></li>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>\{:html}</code></li>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>\\{:html}</code></li>
+  <li>
+    <span data-rehype-pretty-code-figure=""
+      ><code
+        data-language="unsupportedlang"
+        data-theme="github-dark github-light"
+        style="
+          --shiki-dark: #e1e4e8;
+          --shiki-light: #24292e;
+          --shiki-dark-bg: #24292e;
+          --shiki-light-bg: #fff;
+        "
+        ><span data-line=""
+          ><span>&#x3C;div class="foo">bar&#x3C;/div></span></span
+        ></code
+      ></span
+    >
+  </li>
+  <li><code>&#x3C;div class="foo">bar&#x3C;/div>{:unsupportedlang}</code></li>
+</ul>
