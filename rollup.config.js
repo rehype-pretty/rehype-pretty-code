@@ -12,7 +12,10 @@ export default defineConfig([
       nodeResolve({ extensions: ['.ts', '.js'] }),
       babel({ extensions: ['.ts', '.js'] }),
     ],
-    external: Object.keys(packageJson.dependencies),
+    external: [
+      ...Object.keys(packageJson.dependencies),
+      ...Object.keys(packageJson.peerDependencies),
+    ],
     output: {
       exports: 'default',
       file: './dist/rehype-pretty-code.js',
