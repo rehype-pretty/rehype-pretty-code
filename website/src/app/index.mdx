@@ -1,14 +1,15 @@
-[Rehype Pretty Code](https://github.com/atomiks/rehype-pretty-code) is a Rehype
-plugin powered by the [Shikiji](https://github.com/antfu/shikiji) syntax
-highlighter that provides beautiful code blocks for Markdown or MDX.
-
-It works on both the server at build-time (avoiding runtime syntax highlighting)
-and on the client for dynamic highlighting.
+{/* prettier-ignore */}
+<div>
+  [`rehype-pretty-code`](https://github.com/atomiks/rehype-pretty-code) <span className="mix-blend-plus-lighter text-zinc-400/80">is a Rehype plugin powered by the</span>
+  [`shikiji`](https://github.com/antfu/shikiji) <span className="mix-blend-plus-lighter text-zinc-400/80">syntax highlighter that provides beautiful code blocks for Markdown or MDX. It works on both the server at build-time (avoiding runtime syntax highlighting) and on the client for dynamic highlighting.</span>
+</div>
 
 ## Editor-Grade Highlighting
 
-Leverage the accuracy of VS Code's syntax highlighting engine and the popularity
-of its themes ecosystem — use any VS Code theme you want!
+<span className="mix-blend-plus-lighter text-zinc-400/80">
+  Leverage the accuracy of VS Code's syntax highlighting engine and the
+  popularity of its themes ecosystem — use any VS Code theme you want!
+</span>
 
 ```js
 import Document, { Html, Head, Main, NextScript } from 'next/document';
@@ -94,7 +95,7 @@ to.
 ## ANSI Highlighting
 
 ```ansi
-[0;36m  vite v2.8.6[0;32m dev server running at:[0m
+[0;36m  vite v5.0.0[0;32m dev server running at:[0m
 
   > Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m
   > Network: [0;2muse `--host` to expose[0m
@@ -186,7 +187,7 @@ export default withMDX(nextConfig);
 ## Options
 
 ```ts
-export interface Options {
+interface Options {
   grid?: boolean;
   theme?: Theme | Record<string, Theme>;
   keepBackground?: boolean;
@@ -573,7 +574,3 @@ const options = {
     }),
 };
 ```
-
-## License
-
-MIT • [View on GitHub](https://github.com/atomiks/rehype-pretty-code)

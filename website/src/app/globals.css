@@ -21,7 +21,7 @@ pre {
 }
 
 code {
-  @apply !text-sm md:!text-base !leading-loose md:!leading-loose;
+  @apply text-sm md:text-base !leading-loose;
 }
 
 pre > code {

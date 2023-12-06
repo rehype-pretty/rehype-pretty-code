@@ -3,8 +3,13 @@ const colors = require('tailwindcss/colors');
 const linkHeadingStyles = {
   color: colors.gray[100],
   borderBottomColor: 'transparent',
+  borderRadius: 3,
+  boxShadow: `0 0 0 0.4rem transparent`,
   '&:hover': {
-    color: `${colors.gray[900]}`,
+    color: 'none',
+    borderBottomColor: 'transparent',
+    background: colors.gray[100],
+    boxShadow: `0 0 0 0.4rem ${colors.gray[100]}`,
   },
 };
 
@@ -18,12 +23,25 @@ module.exports = {
           css: {
             pre: {
               background: 'rgba(205, 200, 255, 0.05)',
+              code: {
+                fontSize: '1rem',
+              },
             },
             'h2 a': linkHeadingStyles,
             'h3 a': linkHeadingStyles,
             'h4 a': linkHeadingStyles,
             'h5 a': linkHeadingStyles,
             'h6 a': linkHeadingStyles,
+            'h3 a:has(code)': {
+              boxShadow: `0 0 0 0.3rem transparent`,
+              '&:hover': {
+                background: colors.teal[900],
+                boxShadow: `0 0 0 0.3rem ${colors.teal[900]}`,
+              },
+            },
+            figure: {
+              margin: 0,
+            },
             blockquote: {
               fontSize: '90%',
               color: colors.zinc[500],
@@ -33,14 +51,17 @@ module.exports = {
             },
             a: {
               textDecoration: 'none',
-              borderBottom: `2px solid ${colors.cyan[800]}`,
-              color: colors.cyan[400],
-              transition:
-                'color 0.2s ease, border-color 0.2s ease, background 0.2s ease',
+              borderBottom: `1px solid ${colors.pink[300]}`,
+              color: colors.pink[200],
+              borderRadius: 1,
+              transitionProperty: 'color, border-color, background, box-shadow',
+              transitionDuration: '0.18s',
+              boxShadow: `0 0 0 0.2rem transparent`,
               '&:hover': {
-                color: `${colors.zinc[900]} !important`,
-                borderBottomColor: `${colors.cyan[200]} !important`,
-                background: colors.cyan[200],
+                color: `${colors.zinc[900]}`,
+                borderBottomColor: `${colors.pink[200]}`,
+                background: colors.pink[200],
+                boxShadow: `0 0 0 0.2rem ${colors.pink[200]}`,
               },
             },
             code: {
@@ -48,6 +69,9 @@ module.exports = {
               '&::before': { content: `unset !important` },
               '&::after': { content: `unset !important` },
               fontWeight: 'normal',
+            },
+            'a code': {
+              fontSize: '1em',
             },
             '[data-rehype-pretty-code-fragment]:nth-of-type(2) pre': {
               '[data-line]::before': {

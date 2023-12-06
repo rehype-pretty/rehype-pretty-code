@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import nextMDX from '@next/mdx';
 import rehypePrettyCode from 'rehype-pretty-code';
+import rehypeSlug from 'rehype-slug';
 
 /** @type {NextConfigPlugins} */
 const plugins = [];
@@ -31,8 +32,9 @@ plugins.push(
   nextMDX({
     extension: /\.mdx?$/,
     options: {
+      providerImportSource: '@mdx-js/react',
       remarkPlugins: [],
-      rehypePlugins: [[rehypePrettyCode, options]],
+      rehypePlugins: [[rehypePrettyCode, options], rehypeSlug],
     },
   }),
 );
