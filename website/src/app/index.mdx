@@ -7,31 +7,32 @@
 ## Editor-Grade Highlighting
 
 <span className="mix-blend-plus-lighter text-zinc-400/80">
-  Leverage the accuracy of VS Code's syntax highlighting engine and the
-  popularity of its themes ecosystem — use any VS Code theme you want!
+  Enjoy the accuracy and granularity of VS Code's syntax highlighting engine and
+  the popularity of its themes ecosystem — use any VS Code theme you want!
 </span>
 
-```js
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+```tsx
+import { useFloating, offset } from '@floating-ui/react';
 
-// 🔥 Super granular and accurate highlighting
-export default class MyDocument extends Document {
-  static async getInitialProps(ctx) {
-    const initialProps = await Document.getInitialProps(ctx);
-    return { ...initialProps };
-  }
+interface Props {
+  open: boolean;
+  onOpenChange(open: boolean): void;
+}
 
-  render() {
-    return (
-      <Html>
-        <Head />
-        <body className="bg-zinc-800 text-zinc-200">
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    );
-  }
+export function App({ open, onOpenChange }: Props) {
+  const { refs, floatingStyles } = useFloating({
+    open,
+    onOpenChange,
+    placement: 'left',
+    middleware: [offset(10)],
+  });
+
+  return (
+    <Container>
+      <div ref={refs.setReference} />
+      {open && <div ref={refs.setFloating} style={floatingStyles} />}
+    </Container>
+  );
 }
 ```
 
@@ -39,6 +40,8 @@ export default class MyDocument extends Document {
 > with a custom background color.
 
 ## Line Numbers and Line Highlighting
+
+Draw attention to a particular line of code.
 
 ```js {4} showLineNumbers
 import { useFloating } from '@floating-ui/react';
@@ -56,6 +59,8 @@ function MyComponent() {
 ```
 
 ## Word Highlighting
+
+Draw attention to a particular word or series of characters.
 
 ```js /floatingStyles/
 import { useFloating } from '@floating-ui/react';
@@ -112,26 +117,27 @@ Inline ANSI: `> Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m{:ansi}`
 Install via your terminal:
 
 ```shell
-npm install rehype-pretty-code shikiji@0.7.x
+npm install rehype-pretty-code shikiji@^0.7.0
 ```
 
-This package is ESM-only.
+This package is ESM-only and currently supports `shikiji{:.string}` v0.7.x.
 
-> **Note:** If you need `CJS` support you should use `v0.10.1`, which uses Shiki
-> instead of Shikiji
+> **Note:** If you need `CJS` support you should use
+> `rehype-pretty-code@0.10.1{:.string}`, which uses Shiki instead of Shikiji
 > ([v0.10.1 docs here](https://github.com/atomiks/rehype-pretty-code/blob/00e5451e3aac7b86f748b01267e255bf345d1550/website/src/app/index.mdx)).
-> You can use the latest version in Next.js, just make sure your next config
-> file is `ESM`: `next.config.mjs`. Here's a full example:
+> To use the latest version in Next.js, ensure your config file is `ESM`:
+> `next.config.mjs`. Here's a full example:
 > [rehype-pretty-code/website/next.config.mjs](https://github.com/atomiks/rehype-pretty-code/blob/master/website/next.config.mjs)
 
 ## Usage
 
 The following works both on the server and on the client.
 
+> `unified@11{:.string}` is used as a dependency.
+
 ```js /rehypePrettyCode/
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import rehypePrettyCode from 'rehype-pretty-code';
@@ -139,7 +145,6 @@ import rehypePrettyCode from 'rehype-pretty-code';
 async function main() {
   const file = await unified()
     .use(remarkParse)
-    .use(remarkGfm)
     .use(remarkRehype)
     .use(rehypePrettyCode, {
       // See Options section below.
@@ -203,12 +208,6 @@ interface Options {
   onVisitCaption?(element: Element): void;
 }
 ```
-
-Options can be specified to customize the behavior
-
-Code blocks are fully unstyled to give you full control. The features are
-implemented as logical indicators in the form of attributes that allows you to
-apply CSS yourself.
 
 ### `grid{:.meta.object-literal.key}`
 
