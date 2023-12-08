@@ -43,7 +43,7 @@
   "repository": "github:atomiks/rehype-pretty-code",
   "homepage": "https://rehype-pretty-code.netlify.app",
   "peerDependencies": {
-    "shikiji": "0.7.x"
+    "shikiji": "^0.7.0 || ^0.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",
