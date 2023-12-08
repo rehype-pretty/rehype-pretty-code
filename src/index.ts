@@ -349,17 +349,23 @@ export default function rehypePrettyCode(
         const charsListNumbers: Array<number[]> = [];
         const charsListIdMap = new Map();
         const charsMatches = meta
-          ? [...meta.matchAll(/\/(.*?)\/(\S*)/g)]
+          ? [
+              ...meta.matchAll(
+                /(?<delimiter>["/])(?<chars>.*?)\k<delimiter>(?<charsIdAndOrRange>\S*)/g,
+              ),
+            ]
           : undefined;
 
         if (Array.isArray(charsMatches)) {
-          charsMatches.forEach((_, index) => {
-            const word = charsMatches[index][1];
-            const charsIdOrRange = charsMatches[index][2];
-            const [range, id] = charsIdOrRange.split('#');
-            charsList.push(word);
+          charsMatches.forEach((name) => {
+            const { chars, charsIdAndOrRange } = name.groups as {
+              chars: string;
+              charsIdAndOrRange: string;
+            };
+            const [range, id] = charsIdAndOrRange.split('#');
+            charsList.push(chars);
             range && charsListNumbers.push(rangeParser(range));
-            id && charsListIdMap.set(word, id);
+            id && charsListIdMap.set(chars, id);
           });
         }
 
