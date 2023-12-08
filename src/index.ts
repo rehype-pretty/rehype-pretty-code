@@ -20,7 +20,6 @@ import {
   isInlineCode,
   getThemeNames,
   replaceLineClass,
-  hasOwnProperty,
   getLineId,
 } from './utils';
 
@@ -112,7 +111,7 @@ function apply(
         }
       }
 
-      if (hasOwnProperty(code.properties, 'data-line-numbers')) {
+      if (Object.hasOwn(code.properties, 'data-line-numbers')) {
         code.properties['data-line-numbers-max-digits'] =
           lineNumbersMaxDigits.toString().length;
       }
@@ -358,7 +357,11 @@ export default function rehypePrettyCode(
         const charsListNumbers: Array<number[]> = [];
         const charsListIdMap = new Map();
         const charsMatches = meta
-          ? [...meta.matchAll(/\/(.*?)\/(\S*)/g)]
+          ? [
+              ...meta.matchAll(
+                /(?<delimiter>["/])(?<chars>.*?)\k<delimiter>(?<charsIdAndOrRange>\S*)/g,
+              ),
+            ]
           : undefined;
 
         lineNumbers.forEach((lineNumber) => {
@@ -367,13 +370,15 @@ export default function rehypePrettyCode(
         });
 
         if (Array.isArray(charsMatches)) {
-          charsMatches.forEach((_, index) => {
-            const word = charsMatches[index][1];
-            const charsIdOrRange = charsMatches[index][2];
-            const [range, id] = charsIdOrRange.split('#');
-            charsList.push(word);
+          charsMatches.forEach((name) => {
+            const { chars, charsIdAndOrRange } = name.groups as {
+              chars: string;
+              charsIdAndOrRange: string;
+            };
+            const [range, id] = charsIdAndOrRange.split('#');
+            charsList.push(chars);
             range && charsListNumbers.push(rangeParser(range));
-            id && charsListIdMap.set(word, id);
+            id && charsListIdMap.set(chars, id);
           });
         }
 
