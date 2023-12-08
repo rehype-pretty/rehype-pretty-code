@@ -1,0 +1,68 @@
+
+<style>
+  html {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  body {
+    margin: 30px auto;
+    max-width: 800px;
+  }
+  pre {
+    padding: 16px;
+  }
+  span > code {
+    background: black;
+    padding: 4px;
+  }
+  [data-highlighted-line], [data-highlighted-chars] {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  code[data-line-numbers] {
+    counter-reset: line;
+  }
+  code[data-line-numbers]>[data-line]::before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 1rem;
+    margin-right: 2rem;
+    text-align: right;
+    color: gray;
+  }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
+
+  .diff.add {
+    background-color: rgba(0, 255, 100, 0.25);
+  }
+  .diff.remove {
+    background-color: rgba(255, 100, 200, 0.35);
+  }
+</style>
+<h2>Highlight lines by id</h2>
+<p>{1,2}#a {4-5}#b</p>
+<figure data-rehype-pretty-code-figure="">
+  <pre
+    style="background-color: #24292e; color: #e1e4e8"
+    tabindex="0"
+    data-language="js"
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span class="highlighted" data-line="" data-highlighted-line="" data-highlighted-line-id="a"><span style="color:#F97583">const</span><span style="color:#79B8FF"> line1</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="highlighted" data-line="" data-highlighted-line="" data-highlighted-line-id="a"><span style="color:#F97583">const</span><span style="color:#79B8FF"> line2</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> line3</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">;</span></span>
+<span class="highlighted" data-line="" data-highlighted-line="" data-highlighted-line-id="b"><span style="color:#F97583">const</span><span style="color:#79B8FF"> line4</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">;</span></span>
+<span class="highlighted" data-line="" data-highlighted-line="" data-highlighted-line-id="b"><span style="color:#F97583">const</span><span style="color:#79B8FF"> line5</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 5</span><span style="color:#E1E4E8">;</span></span>
+<span data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> line6</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 6</span><span style="color:#E1E4E8">;</span></span></code></pre>
+</figure>

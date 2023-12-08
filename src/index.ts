@@ -20,6 +20,7 @@ import {
   isInlineCode,
   getThemeNames,
   replaceLineClass,
+  getLineId,
 } from './utils';
 
 interface ApplyProps {
@@ -340,11 +341,18 @@ export default function rehypePrettyCode(
           defaultCodeBlockLang,
         );
 
-        const lineNumbers = meta
-          ? rangeParser(meta.match(/(?:^|\s){(.*?)}/)?.[1] ?? '')
-          : [];
-        let lineNumbersMaxDigits = 0;
+        const lineNumbers: number[] = [];
+        if (meta) {
+          const matches = meta.matchAll(/\{(.*?)\}/g);
+          for (const match of matches) {
+            if (match[1]) {
+              lineNumbers.push(...rangeParser(match[1]));
+            }
+          }
+        }
 
+        let lineNumbersMaxDigits = 0;
+        const lineIdMap = new Map<number, string>();
         const charsList: string[] = [];
         const charsListNumbers: Array<number[]> = [];
         const charsListIdMap = new Map();
@@ -355,6 +363,11 @@ export default function rehypePrettyCode(
               ),
             ]
           : undefined;
+
+        lineNumbers.forEach((lineNumber) => {
+          const id = getLineId(lineNumber, meta);
+          id && lineIdMap.set(lineNumber, id);
+        });
 
         if (Array.isArray(charsMatches)) {
           charsMatches.forEach((name) => {
@@ -427,9 +440,17 @@ export default function rehypePrettyCode(
             replaceLineClass(element);
             onVisitLine?.(element);
 
-            if (lineNumbers.includes(++lineCounter)) {
+            lineCounter++;
+
+            if (lineNumbers.includes(lineCounter)) {
               element.properties['data-highlighted-line'] = '';
-              onVisitHighlightedLine?.(element);
+
+              const lineId = lineIdMap.get(lineCounter);
+              if (lineId) {
+                element.properties['data-highlighted-line-id'] = lineId;
+              }
+
+              onVisitHighlightedLine?.(element, lineId);
             }
 
             charsHighlighter(
