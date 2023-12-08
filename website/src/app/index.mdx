@@ -328,15 +328,39 @@ Place a numeric range inside `{}`.
 The line `<span>{:html}` receives a `data-highlighted-line` attribute to style
 via CSS.
 
+#### Group Highlighted Lines By Id
+
+Place an id after `#` after the `{}`. This allows you to color or style lines
+differently based on their id.
+
+````md
+```js {1,2}#a {3,4}#b
+
+```
+````
+
+The line `<span>{:html}` receives a `data-highlighted-line-id="<id>"` attribute
+to style via CSS.
+
 #### Highlight Chars
 
-A series of characters, like a literal regex.
+You can use either `/`:
 
 ````md
 ```js /carrot/
 
 ```
 ````
+
+Or `"` as a delimiter:
+
+````md
+```js "carrot"
+
+```
+````
+
+Different segments of chars can also be highlighted:
 
 ````md
 ```js /carrot/ /apple/
@@ -387,7 +411,7 @@ via CSS.
 
 #### Highlight Inline Code
 
-Append `{:lang}‎` (e.g. `\{:js}`) to the end of inline code to highlight it like
+Append `\{:lang}` (e.g. `\{:js}`) to the end of inline code to highlight it like
 a regular code block.
 
 ```md
