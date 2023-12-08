@@ -1,6 +1,7 @@
 import type { Element, ElementContent, Root, RootContent, Text } from 'hast';
 import type { ThemeRegistrationRaw } from 'shikiji';
 import type { Theme } from '..';
+import rangeParser from 'parse-numeric-range';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isJSONTheme(value: any): value is ThemeRegistrationRaw {
@@ -112,4 +113,23 @@ export function replaceLineClass(element: Element) {
     element.properties.className = className.length > 0 ? className : undefined;
     element.properties['data-line'] = '';
   }
+}
+
+export function getLineId(lineNumber: number, meta: string) {
+  const segments = meta.match(/\{[^}]+\}#[a-zA-Z0-9]+/g);
+  if (!segments) return null;
+
+  for (const segment of segments) {
+    const [range, id] = segment.split('#');
+    if (!range || !id) continue;
+
+    const match = range.match(/\{(.*?)\}/);
+    const capture = match?.[1];
+
+    if (capture && rangeParser(capture).includes(lineNumber)) {
+      return id;
+    }
+  }
+
+  return null;
 }

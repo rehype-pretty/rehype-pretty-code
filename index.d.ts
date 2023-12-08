@@ -29,7 +29,7 @@ export interface Options {
   filterMetaString?(str: string): string;
   getHighlighter?(options: BundledHighlighterOptions): Promise<Highlighter>;
   onVisitLine?(element: LineElement): void;
-  onVisitHighlightedLine?(element: LineElement): void;
+  onVisitHighlightedLine?(element: LineElement, id: string | undefined): void;
   onVisitHighlightedChars?(element: CharsElement, id: string | undefined): void;
   onVisitTitle?(element: Element): void;
   onVisitCaption?(element: Element): void;
