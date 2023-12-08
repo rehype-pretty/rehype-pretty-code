@@ -20,7 +20,6 @@ import {
   isInlineCode,
   getThemeNames,
   replaceLineClass,
-  hasOwnProperty,
 } from './utils';
 
 interface ApplyProps {
@@ -111,7 +110,7 @@ function apply(
         }
       }
 
-      if (hasOwnProperty(code.properties, 'data-line-numbers')) {
+      if (Object.hasOwn(code.properties, 'data-line-numbers')) {
         code.properties['data-line-numbers-max-digits'] =
           lineNumbersMaxDigits.toString().length;
       }
