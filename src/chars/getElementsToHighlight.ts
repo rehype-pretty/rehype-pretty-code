@@ -5,7 +5,6 @@ import {
   getContent,
   nextElementMaybeContinuesChars,
 } from './utils';
-import { hasOwnProperty } from '../utils';
 
 export function getElementsToHighlight(
   element: Element,
@@ -32,7 +31,7 @@ export function getElementsToHighlight(
         !maybeElement ||
         maybeElement.type !== 'element' ||
         // ignore any previously matched chars within
-        hasOwnProperty(
+        Object.hasOwn(
           maybeElement.properties ?? {},
           'rehype-pretty-code-visited',
         )

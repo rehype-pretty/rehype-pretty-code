@@ -4,7 +4,7 @@ import type { Theme } from '..';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isJSONTheme(value: any): value is ThemeRegistrationRaw {
-  return value ? hasOwnProperty(value, 'tokenColors') : false;
+  return value ? Object.hasOwn(value, 'tokenColors') : false;
 }
 
 export function isElement(
@@ -15,13 +15,6 @@ export function isElement(
 
 export function isText(value: ElementContent | null): value is Text {
   return value ? value.type === 'text' : false;
-}
-
-export function hasOwnProperty(
-  object: Record<string, unknown>,
-  string: string,
-) {
-  return {}.hasOwnProperty.call(object, string);
 }
 
 export function isInlineCode(

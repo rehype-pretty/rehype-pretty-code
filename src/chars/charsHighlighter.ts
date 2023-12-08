@@ -4,7 +4,7 @@ import type { CharsElement } from '../..';
 import { getElementsToHighlight } from './getElementsToHighlight';
 import { wrapHighlightedChars } from './wrapHighlightedChars';
 import { toString } from 'hast-util-to-string';
-import { hasOwnProperty, isElement } from '../utils';
+import { isElement } from '../utils';
 
 /**
  * Loops through the child nodes and finds the nodes that make up the chars.
@@ -73,7 +73,7 @@ export function charsHighlighter(
             const props = isElement(childNode) ? childNode.properties : {};
             if (
               props &&
-              !hasOwnProperty(props, 'rehype-pretty-code-visited') &&
+              !Object.hasOwn(props, 'rehype-pretty-code-visited') &&
               !Object.hasOwn(props, 'data-highlighted-chars-mark')
             ) {
               return toString(childNode);
@@ -82,19 +82,12 @@ export function charsHighlighter(
           .join('');
       }
     }
+  });
 
-    element.children.forEach((childNode) => {
-      if (!isElement(childNode)) {
-        return;
-      }
-
-      if (
-        hasOwnProperty(childNode.properties ?? {}, 'rehype-pretty-code-visited')
-      ) {
-        if (childNode.properties) {
-          delete childNode.properties['rehype-pretty-code-visited'];
-        }
-      }
-    });
+  element.children.forEach((childNode) => {
+    if (!isElement(childNode)) return;
+    if (Object.hasOwn(childNode.properties, 'rehype-pretty-code-visited')) {
+      delete childNode.properties['rehype-pretty-code-visited'];
+    }
   });
 }
