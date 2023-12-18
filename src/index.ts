@@ -194,7 +194,7 @@ export default function rehypePrettyCode(
   const defaultInlineCodeLang =
     typeof defaultLang === 'string' ? defaultLang : defaultLang.inline || '';
 
-  function getOptions(lang: string): CodeToHastOptions<string, string> {
+  function getOptions(lang: string, meta?: string): CodeToHastOptions<string, string> {
     const multipleThemes =
       !isJSONTheme(theme) && typeof theme === 'object' ? theme : null;
     const singleTheme =
@@ -202,6 +202,7 @@ export default function rehypePrettyCode(
 
     return {
       lang,
+      meta: { __raw: meta },
       transformers,
       defaultColor: typeof theme === 'string' ? theme : false,
       ...(multipleThemes
@@ -389,11 +390,11 @@ export default function rehypePrettyCode(
 
         try {
           codeTree = hastParser.parse(
-            highlighter.codeToHtml(strippedValue, getOptions(lang)),
+            highlighter.codeToHtml(strippedValue, getOptions(lang, meta)),
           );
         } catch (e) {
           codeTree = hastParser.parse(
-            highlighter.codeToHtml(strippedValue, getOptions('plaintext')),
+            highlighter.codeToHtml(strippedValue, getOptions('plaintext', meta)),
           );
         }
 
