@@ -339,19 +339,6 @@ differently based on their id.
 ```
 ````
 
-For instance, if you wanted to use a "focus" state instead, you could mark the
-line with a particular id to differentiate it from regular highlighted lines:
-
-```js {4}#f
-// This line is out of focus.
-// This line is out of focus.
-// This line is out of focus.
-const notBlurry = true;
-// This line is out of focus.
-// This line is out of focus.
-// This line is out of focus.
-```
-
 The line `<span>{:html}` receives a `data-highlighted-line-id="<id>"` attribute
 to style via CSS.
 
