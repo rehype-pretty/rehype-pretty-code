@@ -44,6 +44,11 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
   const html = await getHTML(code, {
     keepBackground: !resultHTMLName.includes('keepBackground'),
     defaultLang: (() => {
+      if (testName === 'no-highlighting') {
+        console.log('return');
+        return undefined;
+      }
+
       const lang = testName.split('.')[1];
       if (!lang) {
         return undefined;

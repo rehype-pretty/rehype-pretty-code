@@ -345,6 +345,8 @@ export default function rehypePrettyCode(
           defaultCodeBlockLang,
         );
 
+        if (!lang) return;
+
         const lineNumbers: number[] = [];
         if (meta) {
           const matches = meta.matchAll(/\{(.*?)\}/g);
