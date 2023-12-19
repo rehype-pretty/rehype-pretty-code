@@ -75,20 +75,21 @@ function App() {
     }
   }, [lang, highlighter]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const highlightWords = React.useCallback(
     (container) => {
       if (word && editorRef.current) {
-        container.innerHTML = highlighter.codeToHtml(
-          editorRef.current.getDoc().getValue('\n'),
-          { lang, theme: 'github-dark-dimmed' },
-        );
+        container.innerHTML = highlighter.codeToHtml(editorRef.current.getDoc().getValue('\n'), {
+          lang,
+          theme: 'github-dark-dimmed',
+        });
       }
-      let options = {
+      const options = {
         ranges: word.map(() => rangeParser(wordNumbers)),
         idsMap: new Map(),
         counterMap: new Map(),
       };
-      if (container && container.querySelector('.line')) {
+      if (container?.querySelector('.line')) {
         container.querySelectorAll('.line').forEach((node) => {
           const n = hastParser.parse(node.innerHTML);
           charsHighlighter(n, word, options, onHighlightWord);
@@ -107,6 +108,7 @@ function App() {
     [word, wordNumbers, value, lang, highlighter],
   );
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   React.useEffect(() => {
     if (htmlRef.current && HTML) {
       highlightWords(htmlRef.current);
@@ -128,9 +130,7 @@ function App() {
           />
         </div>
         <div>
-          <label htmlFor="word-input">
-            Restrict highlighting to nth occurrence (range)
-          </label>
+          <label htmlFor="word-input">Restrict highlighting to nth occurrence (range)</label>
           <input
             value={wordNumbers}
             placeholder="e.g 1,3"
@@ -168,11 +168,7 @@ function App() {
         </div>
         <div>
           <p>Result</p>
-          <div
-            ref={htmlRef}
-            className="shiki-output"
-            dangerouslySetInnerHTML={{ __html: HTML }}
-          />
+          <div ref={htmlRef} className="shiki-output" dangerouslySetInnerHTML={{ __html: HTML }} />
         </div>
       </section>
       <section>

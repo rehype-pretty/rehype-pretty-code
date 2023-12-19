@@ -3,13 +3,13 @@ import rehypePrettyCode from '../src';
 import { lstatSync, readFileSync, readdirSync } from 'fs';
 import { toHtml } from 'hast-util-to-html';
 import { toHast } from 'mdast-util-to-hast';
-import { dirname, join, parse } from 'path';
-import prettier from 'prettier';
+import { dirname, join, parse } from 'node:path';
 import { remark } from 'remark';
 import { getHighlighter as shikiHighlighter } from 'shikiji';
-import { fileURLToPath } from 'url';
-import qs from 'querystring';
+import { fileURLToPath } from 'node:url';
+import qs from 'node:querystring';
 import { transformerNotationDiff } from 'shikiji-transformers';
+import prettier from 'prettier';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -24,9 +24,7 @@ const getHTML = async (code, options) => {
 };
 
 const getTheme = (multiple) => {
-  return multiple
-    ? { dark: 'github-dark', light: 'github-light' }
-    : 'github-dark';
+  return multiple ? { dark: 'github-dark', light: 'github-light' } : 'github-dark';
 };
 
 const isMultipleThemeTest = (fixtureName) => {
@@ -47,11 +45,11 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
       const lang = testName.split('.')[1];
       if (!lang) {
         return undefined;
-      } else if (lang === 'js') {
-        return 'js';
-      } else {
-        return qs.parse(lang);
       }
+      if (lang === 'js') {
+        return 'js';
+      }
+      return qs.parse(lang);
     })(),
     filterMetaString: (string) => string?.replace(/filename=".*"/, ''),
     theme: getTheme(isMultipleThemeTest(testName)),
@@ -104,11 +102,7 @@ describe('Single theme', () => {
     }
 
     it(`Fixture: ${fixtureName}`, async () => {
-      const { htmlString, resultHTMLPath } = await runFixture(
-        fixture,
-        fixtureName,
-        getHighlighter,
-      );
+      const { htmlString, resultHTMLPath } = await runFixture(fixture, fixtureName, getHighlighter);
 
       expect(defaultStyle + htmlString).toMatchFileSnapshot(resultHTMLPath);
     });
@@ -127,11 +121,7 @@ describe('Multiple theme', () => {
     }
 
     it(`Fixture: ${fixtureName}`, async () => {
-      const { htmlString, resultHTMLPath } = await runFixture(
-        fixture,
-        fixtureName,
-        getHighlighter,
-      );
+      const { htmlString, resultHTMLPath } = await runFixture(fixture, fixtureName, getHighlighter);
 
       expect(defaultStyle + htmlString).toMatchFileSnapshot(resultHTMLPath);
     });

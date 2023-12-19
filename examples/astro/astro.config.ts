@@ -16,8 +16,5 @@ export default defineConfig({
       ],
     ],
   },
-  integrations: [
-    mdx(),
-    tailwind(),
-  ],
+  integrations: [mdx(), tailwind()],
 });

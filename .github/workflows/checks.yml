@@ -1,0 +1,50 @@
+name: Checks
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'master'
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  NODE_OPTIONS: '--no-warnings'
+  NEXT_TELEMETRY_DISABLED: '1'
+  ACTIONS_RUNNER_DEBUG: true
+
+jobs:
+  checks:
+    name: Lint/Typecheck/Build/Test
+    runs-on: ['ubuntu-latest']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          cache: 'npm'
+          node-version: 'lts/*'
+
+      - name: 'Setup Biome'
+        uses: biomejs/setup-biome@v1
+        with:
+          version: 'latest'
+
+      - name: 'Lint'
+        run: biome ci .
+
+      - name: 'Install Dependencies'
+        run: npm clean-install
+
+      - name: 'Type Check'
+        run: npm run typecheck
+
+      - name: 'Build'
+        run: npm run build
+
+      - name: 'Test'
+        run: npm run test

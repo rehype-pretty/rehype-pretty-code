@@ -8,18 +8,11 @@ function Heading({
   level,
   children,
   ...props
-}: React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLHeadingElement>,
-  HTMLHeadingElement
-> & {
+}: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement> & {
   level: 1 | 2 | 3 | 4 | 5 | 6;
 }) {
   const Tag = `h${level}`;
-  return React.createElement(
-    Tag,
-    props,
-    <a href={`#${props.id}`}>{children}</a>,
-  );
+  return React.createElement(Tag, props, <a href={`#${props.id}`}>{children}</a>);
 }
 
 export default function Home() {
@@ -102,10 +95,7 @@ export default function Home() {
           )`,
         }}
       >
-        MIT License •{' '}
-        <a href="https://github.com/atomiks/rehype-pretty-code">
-          View on GitHub
-        </a>
+        MIT License • <a href="https://github.com/atomiks/rehype-pretty-code">View on GitHub</a>
       </footer>
     </>
   );

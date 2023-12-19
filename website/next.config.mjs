@@ -21,10 +21,7 @@ const nextConfig = {
 const options = {
   keepBackground: false,
   theme: JSON.parse(
-    fs.readFileSync(
-      new URL('./assets/moonlight-ii.json', import.meta.url),
-      'utf-8',
-    ),
+    fs.readFileSync(new URL('./assets/moonlight-ii.json', import.meta.url), 'utf-8'),
   ),
 };
 

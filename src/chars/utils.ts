@@ -1,5 +1,5 @@
 import type { Element } from 'hast';
-import { toString } from 'hast-util-to-string';
+import { toString as hastToString } from 'hast-util-to-string';
 
 /**
  * Look ahead to determine if further, sibling nodes continue the string.
@@ -24,8 +24,7 @@ export function nextElementMaybeContinuesChars({
     return false;
   }
 
-  const includesNext =
-    content.startsWith(remainingPart) || remainingPart.startsWith(content);
+  const includesNext = content.startsWith(remainingPart) || remainingPart.startsWith(content);
 
   const overlap = findOverlap(content, remainingPart);
 
@@ -46,7 +45,7 @@ export function nextElementMaybeContinuesChars({
 
 export function getContent(node: Element) {
   if (!node) return;
-  return toString(node);
+  return hastToString(node);
 }
 
 export function findOverlap(a: string, b: string): string {
