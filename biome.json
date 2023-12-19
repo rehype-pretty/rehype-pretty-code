@@ -1,0 +1,82 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": {
+    "root": ".",
+    "enabled": true,
+    "clientKind": "git"
+  },
+  "files": {
+    "include": [
+      "./**/*.ts",
+      "./**/*.js",
+      "./**/*.cjs",
+      "./**/*.tsx",
+      "./**/*.d.ts",
+      "./**/*.json",
+      "./**/*.jsonc"
+    ],
+    "ignore": ["node_modules", "dist", "_"],
+    "ignoreUnknown": true
+  },
+  "organizeImports": {
+    "enabled": false
+  },
+  "formatter": {
+    "enabled": true,
+    "lineWidth": 100,
+    "indentWidth": 2,
+    "indentStyle": "space",
+    "formatWithErrors": true,
+    "include": [
+      "./**/*.ts",
+      "./**/*.js",
+      "./**/*.cjs",
+      "./**/*.tsx",
+      "./**/*.d.ts",
+      "./**/*.json",
+      "./**/*.jsonc"
+    ]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "all": true,
+      "style": {
+        "useBlockStatements": "off",
+        "useSelfClosingElements": "off",
+        "noUnusedTemplateLiteral": "off"
+      },
+      "a11y": { "noSvgWithoutTitle": "off" },
+      "nursery": { "noUnusedImports": "off" },
+      "performance": { "noAccumulatingSpread": "off" },
+      "correctness": { "noUndeclaredVariables": "off" },
+      "suspicious": { "noExplicitAny": "off", "noEmptyInterface": "off" },
+      "complexity": { "useLiteralKeys": "off", "noUselessFragments": "off", "noBannedTypes": "off" }
+    }
+  },
+  "json": {
+    "parser": {
+      "allowComments": true
+    },
+    "formatter": {
+      "enabled": true
+    }
+  },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    },
+    "formatter": {
+      "enabled": true,
+      "lineWidth": 100,
+      "indentWidth": 2,
+      "indentStyle": "space",
+      "quoteStyle": "single",
+      "trailingComma": "none",
+      "semicolons": "asNeeded",
+      "jsxQuoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "arrowParentheses": "asNeeded"
+    }
+  }
+}

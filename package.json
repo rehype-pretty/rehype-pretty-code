@@ -20,7 +20,8 @@
   "scripts": {
     "build": "npx rollup -c",
     "test": "vitest",
-    "lint": "eslint . --ext .js,.ts,.json --ignore-path=.gitignore",
+    "format": "biome format . --write",
+    "lint": "biome check --apply .",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "playground": "npm run dev --workspace=word-highlighter-playground",
     "playground-website": "npm run dev --workspace=website",
@@ -34,10 +35,6 @@
   "browserslist": [
     "node 18"
   ],
-  "prettier": {
-    "singleQuote": true,
-    "proseWrap": "always"
-  },
   "author": "",
   "license": "MIT",
   "repository": "github:atomiks/rehype-pretty-code",
@@ -46,6 +43,7 @@
     "shikiji": "^0.7.0 || ^0.8.0 || ^0.9.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.4.1",
     "@babel/core": "^7.23.6",
     "@babel/preset-env": "^7.23.6",
     "@babel/preset-typescript": "^7.23.3",
@@ -53,15 +51,9 @@
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/node": "^20.10.5",
-    "@typescript-eslint/eslint-plugin": "^6.15.0",
-    "@typescript-eslint/parser": "^6.15.0",
     "bumpp": "^9.2.1",
-    "eslint": "^8.56.0",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "hast-util-to-html": "^8.0.3",
     "mdast-util-to-hast": "^12.1.0",
-    "prettier": "^3.1.1",
     "remark": "^15.0.1",
     "rollup": "^4.9.1",
     "shikiji": "^0.9.9",
