@@ -45,7 +45,6 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
     keepBackground: !resultHTMLName.includes('keepBackground'),
     defaultLang: (() => {
       if (testName === 'no-highlighting') {
-        console.log('return');
         return undefined;
       }
 
