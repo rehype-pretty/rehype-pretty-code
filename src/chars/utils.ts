@@ -24,7 +24,8 @@ export function nextElementMaybeContinuesChars({
     return false;
   }
 
-  const includesNext = content.startsWith(remainingPart) || remainingPart.startsWith(content);
+  const includesNext =
+    content.startsWith(remainingPart) || remainingPart.startsWith(content);
 
   const overlap = findOverlap(content, remainingPart);
 

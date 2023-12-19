@@ -24,7 +24,9 @@ const getHTML = async (code, options) => {
 };
 
 const getTheme = (multiple) => {
-  return multiple ? { dark: 'github-dark', light: 'github-light' } : 'github-dark';
+  return multiple
+    ? { dark: 'github-dark', light: 'github-light' }
+    : 'github-dark';
 };
 
 const isMultipleThemeTest = (fixtureName) => {
@@ -102,7 +104,11 @@ describe('Single theme', () => {
     }
 
     it(`Fixture: ${fixtureName}`, async () => {
-      const { htmlString, resultHTMLPath } = await runFixture(fixture, fixtureName, getHighlighter);
+      const { htmlString, resultHTMLPath } = await runFixture(
+        fixture,
+        fixtureName,
+        getHighlighter,
+      );
 
       expect(defaultStyle + htmlString).toMatchFileSnapshot(resultHTMLPath);
     });
@@ -121,7 +127,11 @@ describe('Multiple theme', () => {
     }
 
     it(`Fixture: ${fixtureName}`, async () => {
-      const { htmlString, resultHTMLPath } = await runFixture(fixture, fixtureName, getHighlighter);
+      const { htmlString, resultHTMLPath } = await runFixture(
+        fixture,
+        fixtureName,
+        getHighlighter,
+      );
 
       expect(defaultStyle + htmlString).toMatchFileSnapshot(resultHTMLPath);
     });

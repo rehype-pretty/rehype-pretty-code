@@ -23,7 +23,9 @@ export function isInlineCode(
   parent: Element | Root | undefined,
 ): element is Element {
   return (
-    (element.tagName === 'code' && isElement(parent) && parent.tagName !== 'pre') ||
+    (element.tagName === 'code' &&
+      isElement(parent) &&
+      parent.tagName !== 'pre') ||
     element.tagName === 'inlineCode'
   );
 }
@@ -43,7 +45,9 @@ export function getInlineCodeLang(meta: string, defaultFallbackLang: string) {
   let temp = meta.replace(/\\\\/g, placeholder);
   temp = temp.replace(/\\({:[a-zA-Z.-]+})$/, '$1');
   const lang = temp.match(/{:([a-zA-Z.-]+)}$/)?.[1];
-  return lang?.replace(new RegExp(placeholder, 'g'), '\\') || defaultFallbackLang;
+  return (
+    lang?.replace(new RegExp(placeholder, 'g'), '\\') || defaultFallbackLang
+  );
 }
 
 export function parseBlockMetaString(
@@ -51,7 +55,9 @@ export function parseBlockMetaString(
   filter: (s: string) => string,
   defaultFallback: string,
 ) {
-  let meta = filter((element.data?.meta ?? element.properties?.metastring ?? '') as string);
+  let meta = filter(
+    (element.data?.meta ?? element.properties?.metastring ?? '') as string,
+  );
 
   const titleMatch = meta.match(/title="([^"]*)"/);
   const title = titleMatch?.[1] ?? null;
@@ -86,7 +92,9 @@ export function getThemeNames(theme: Theme | Record<string, Theme>) {
   if (typeof theme === 'string') {
     return [theme];
   }
-  return Object.values(theme).map((theme) => (typeof theme === 'string' ? theme : theme.name));
+  return Object.values(theme).map((theme) =>
+    typeof theme === 'string' ? theme : theme.name,
+  );
 }
 
 export function replaceLineClass(element: Element) {

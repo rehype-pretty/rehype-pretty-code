@@ -69,7 +69,10 @@ function apply(
       const code = pre.children[0];
 
       // Remove extraneous classes
-      if (Array.isArray(pre.properties.className) && pre.properties.className.includes('shiki')) {
+      if (
+        Array.isArray(pre.properties.className) &&
+        pre.properties.className.includes('shiki')
+      ) {
         const className = pre.properties.className.filter(
           (c) =>
             c !== 'shiki' &&
@@ -109,7 +112,8 @@ function apply(
       }
 
       if (Object.hasOwn(code.properties, 'data-line-numbers')) {
-        code.properties['data-line-numbers-max-digits'] = lineNumbersMaxDigits.toString().length;
+        code.properties['data-line-numbers-max-digits'] =
+          lineNumbersMaxDigits.toString().length;
       }
 
       const fragments: ElementContent[] = [];
@@ -154,7 +158,9 @@ function apply(
 const globalHighlighterCache = new WeakMap<Options, Promise<Highlighter>>();
 const hastParser = unified().use(rehypeParse, { fragment: true });
 
-export default function rehypePrettyCode(options: Options = {}): void | Transformer<Root, Root> {
+export default function rehypePrettyCode(
+  options: Options = {},
+): void | Transformer<Root, Root> {
   const {
     grid = true,
     theme = 'github-dark-dimmed',
@@ -174,7 +180,10 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
   let cachedHighlighter = globalHighlighterCache.get(options);
   if (!cachedHighlighter) {
     cachedHighlighter = getHighlighter({
-      themes: isJSONTheme(theme) || typeof theme === 'string' ? [theme] : Object.values(theme),
+      themes:
+        isJSONTheme(theme) || typeof theme === 'string'
+          ? [theme]
+          : Object.values(theme),
       langs: ['plaintext'],
     });
     globalHighlighterCache.set(options, cachedHighlighter);
@@ -185,16 +194,23 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
   const defaultInlineCodeLang =
     typeof defaultLang === 'string' ? defaultLang : defaultLang.inline || '';
 
-  function getOptions(lang: string, meta?: string): CodeToHastOptions<string, string> {
-    const multipleThemes = !isJSONTheme(theme) && typeof theme === 'object' ? theme : null;
-    const singleTheme = isJSONTheme(theme) || typeof theme === 'string' ? theme : null;
+  function getOptions(
+    lang: string,
+    meta?: string,
+  ): CodeToHastOptions<string, string> {
+    const multipleThemes =
+      !isJSONTheme(theme) && typeof theme === 'object' ? theme : null;
+    const singleTheme =
+      isJSONTheme(theme) || typeof theme === 'string' ? theme : null;
 
     return {
       lang,
       meta: { __raw: meta },
       transformers,
       defaultColor: typeof theme === 'string' ? theme : false,
-      ...(multipleThemes ? { themes: multipleThemes } : { theme: singleTheme as Theme }),
+      ...(multipleThemes
+        ? { themes: multipleThemes }
+        : { theme: singleTheme as Theme }),
     };
   }
 
@@ -219,7 +235,11 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
         const codeElement = element.children[0];
         if (!isElement(codeElement)) return;
 
-        const { lang } = parseBlockMetaString(codeElement, filterMetaString, defaultCodeBlockLang);
+        const { lang } = parseBlockMetaString(
+          codeElement,
+          filterMetaString,
+          defaultCodeBlockLang,
+        );
 
         if (lang) {
           langsToLoad.add(lang);
@@ -231,7 +251,9 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
       await Promise.allSettled(
         Array.from(langsToLoad).map((lang) => {
           try {
-            return highlighter.loadLanguage(lang as Parameters<typeof highlighter.loadLanguage>[0]);
+            return highlighter.loadLanguage(
+              lang as Parameters<typeof highlighter.loadLanguage>[0],
+            );
           } catch (e) {
             return Promise.reject(e);
           }
@@ -253,7 +275,9 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
           ? value.replace(/\\({:[a-zA-Z.-]+})$/, '$1')
           : value.replace(/{:[a-zA-Z.-]+}$/, '');
         textElement.value = strippedValue;
-        const lang = keepLangPart ? '' : getInlineCodeLang(value, defaultInlineCodeLang);
+        const lang = keepLangPart
+          ? ''
+          : getInlineCodeLang(value, defaultInlineCodeLang);
         const isLang = lang[0] !== '.';
         if (!lang) return;
 
@@ -286,7 +310,9 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
           }
         } else {
           try {
-            codeTree = hastParser.parse(highlighter.codeToHtml(strippedValue, getOptions(lang)));
+            codeTree = hastParser.parse(
+              highlighter.codeToHtml(strippedValue, getOptions(lang)),
+            );
           } catch (e) {
             codeTree = hastParser.parse(
               highlighter.codeToHtml(strippedValue, getOptions('plaintext')),
@@ -368,7 +394,10 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
           );
         } catch (e) {
           codeTree = hastParser.parse(
-            highlighter.codeToHtml(strippedValue, getOptions('plaintext', meta)),
+            highlighter.codeToHtml(
+              strippedValue,
+              getOptions('plaintext', meta),
+            ),
           );
         }
 
@@ -394,7 +423,9 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
             );
             const startNumberString = lineNumbersStartAtMatch?.[1];
             if (startNumberString) {
-              const startAt = startNumberString ? Number(reverseString(startNumberString)) - 1 : 0;
+              const startAt = startNumberString
+                ? Number(reverseString(startNumberString)) - 1
+                : 0;
               lineNumbersMaxDigits = startAt;
               if (element.properties) {
                 element.properties.style = `counter-set: line ${startAt};`;
@@ -426,7 +457,12 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
               onVisitHighlightedLine?.(element, lineId);
             }
 
-            charsHighlighter(element, charsList, charsHighlighterOptions, onVisitHighlightedChars);
+            charsHighlighter(
+              element,
+              charsList,
+              charsHighlighterOptions,
+              onVisitHighlightedChars,
+            );
 
             lineNumbersMaxDigits++;
           }

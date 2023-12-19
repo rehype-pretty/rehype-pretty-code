@@ -1,6 +1,10 @@
 import type { Element } from 'hast';
 import { splitElement } from './splitElement';
-import { findOverlap, getContent, nextElementMaybeContinuesChars } from './utils';
+import {
+  findOverlap,
+  getContent,
+  nextElementMaybeContinuesChars,
+} from './utils';
 
 export function getElementsToHighlight(
   element: Element,
@@ -27,7 +31,10 @@ export function getElementsToHighlight(
         !maybeElement ||
         maybeElement.type !== 'element' ||
         // ignore any previously matched chars within
-        Object.hasOwn(maybeElement.properties ?? {}, 'rehype-pretty-code-visited')
+        Object.hasOwn(
+          maybeElement.properties ?? {},
+          'rehype-pretty-code-visited',
+        )
       ) {
         continue;
       }
@@ -87,7 +94,8 @@ export function getElementsToHighlight(
           // 3. the chars start or start & end from the end of the string carr[ot]...
 
           const withNextNode =
-            content + (getContent(elements[i + 1]) ? getContent(elements[i + 1]) : '');
+            content +
+            (getContent(elements[i + 1]) ? getContent(elements[i + 1]) : '');
           const nextNodeOverlap = findOverlap(withNextNode, remaining);
           const splitIndex = withNextNode.indexOf(nextNodeOverlap);
 

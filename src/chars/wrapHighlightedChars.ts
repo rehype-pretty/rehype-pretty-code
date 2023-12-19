@@ -8,7 +8,10 @@ export function wrapHighlightedChars(
   elementsToWrap: Array<{ element: Element; index: number }>,
   options: CharsHighlighterOptions,
   ignoreWord: boolean,
-  onVisitHighlightedChars?: (element: CharsElement, id: string | undefined) => void,
+  onVisitHighlightedChars?: (
+    element: CharsElement,
+    id: string | undefined,
+  ) => void,
 ) {
   if (!elementsToWrap || elementsToWrap.length === 0) {
     return;
@@ -24,12 +27,16 @@ export function wrapHighlightedChars(
   }
 
   if (elementsToWrap.length > 1) {
-    parentElement.children.splice(elementsToWrap[0].index, elementsToWrap.length, {
-      type: 'element',
-      tagName: 'mark',
-      properties: { 'data-highlighted-chars-mark': '' },
-      children: elementsToWrap.map(({ element }) => element),
-    });
+    parentElement.children.splice(
+      elementsToWrap[0].index,
+      elementsToWrap.length,
+      {
+        type: 'element',
+        tagName: 'mark',
+        properties: { 'data-highlighted-chars-mark': '' },
+        children: elementsToWrap.map(({ element }) => element),
+      },
+    );
 
     const element = parentElement.children[elementsToWrap[0].index];
 

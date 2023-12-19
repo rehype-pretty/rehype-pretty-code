@@ -79,10 +79,13 @@ function App() {
   const highlightWords = React.useCallback(
     (container) => {
       if (word && editorRef.current) {
-        container.innerHTML = highlighter.codeToHtml(editorRef.current.getDoc().getValue('\n'), {
-          lang,
-          theme: 'github-dark-dimmed',
-        });
+        container.innerHTML = highlighter.codeToHtml(
+          editorRef.current.getDoc().getValue('\n'),
+          {
+            lang,
+            theme: 'github-dark-dimmed',
+          },
+        );
       }
       const options = {
         ranges: word.map(() => rangeParser(wordNumbers)),
@@ -130,7 +133,9 @@ function App() {
           />
         </div>
         <div>
-          <label htmlFor="word-input">Restrict highlighting to nth occurrence (range)</label>
+          <label htmlFor="word-input">
+            Restrict highlighting to nth occurrence (range)
+          </label>
           <input
             value={wordNumbers}
             placeholder="e.g 1,3"
@@ -168,7 +173,11 @@ function App() {
         </div>
         <div>
           <p>Result</p>
-          <div ref={htmlRef} className="shiki-output" dangerouslySetInnerHTML={{ __html: HTML }} />
+          <div
+            ref={htmlRef}
+            className="shiki-output"
+            dangerouslySetInnerHTML={{ __html: HTML }}
+          />
         </div>
       </section>
       <section>

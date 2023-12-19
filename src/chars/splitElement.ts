@@ -24,7 +24,11 @@ export function splitElement({
   index,
   ignoreChars,
 }: SplitElementProps) {
-  if ((isElement(elementToWrap) && elementToWrap.children?.[0]?.type !== 'text') || ignoreChars) {
+  if (
+    (isElement(elementToWrap) &&
+      elementToWrap.children?.[0]?.type !== 'text') ||
+    ignoreChars
+  ) {
     return [elementToWrap, index] as const;
   }
 
@@ -41,7 +45,9 @@ export function splitElement({
 
   // append any repetitions to the right if necessary
   if (rest.length > 0) {
-    rightStr += rest.map((s) => (s === '' ? innerString : innerString + s)).join('');
+    rightStr += rest
+      .map((s) => (s === '' ? innerString : innerString + s))
+      .join('');
   }
 
   if (leftStr.length > 0) {

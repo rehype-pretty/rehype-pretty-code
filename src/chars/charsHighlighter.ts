@@ -19,7 +19,10 @@ export function charsHighlighter(
   element: Element,
   charsList: string[],
   options: CharsHighlighterOptions,
-  onVisitHighlightedChars?: (element: CharsElement, id: string | undefined) => void,
+  onVisitHighlightedChars?: (
+    element: CharsElement,
+    id: string | undefined,
+  ) => void,
 ) {
   const { ranges = [] } = options;
   const textContent = hastToString(element);
@@ -39,7 +42,12 @@ export function charsHighlighter(
           currentCharsRange.length > 0 &&
           !currentCharsRange.includes(options.counterMap.get(id) ?? -1);
 
-        const elementsToWrap = getElementsToHighlight(element, chars, startIndex, ignoreChars);
+        const elementsToWrap = getElementsToHighlight(
+          element,
+          chars,
+          startIndex,
+          ignoreChars,
+        );
 
         // maybe throw / notify due to failure here
         if (elementsToWrap.length === 0) break;
@@ -55,7 +63,10 @@ export function charsHighlighter(
         // re-start from the 'last' node (the chars or part of them may exist
         // multiple times in the same node)
         // account for possible extra nodes added from split with - 2
-        startIndex = Math.max(elementsToWrap[elementsToWrap.length - 1].index - 2, 0);
+        startIndex = Math.max(
+          elementsToWrap[elementsToWrap.length - 1].index - 2,
+          0,
+        );
 
         textContent = element.children
           .map((childNode) => {
