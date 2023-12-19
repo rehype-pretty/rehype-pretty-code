@@ -2,7 +2,6 @@ import { expect, describe, it, vi } from 'vitest';
 import rehypePrettyCode from '../src';
 import { lstatSync, readFileSync, readdirSync } from 'fs';
 import { toHtml } from 'hast-util-to-html';
-import { toMatchFile } from 'jest-file-snapshot';
 import { toHast } from 'mdast-util-to-hast';
 import { dirname, join, parse } from 'path';
 import prettier from 'prettier';
@@ -14,7 +13,6 @@ import { transformerNotationDiff } from 'shikiji-transformers';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-expect.extend({ toMatchFile });
 
 const fixturesFolder = join(__dirname, 'fixtures');
 const resultsFolder = join(__dirname, 'results');
@@ -112,7 +110,7 @@ describe('Single theme', () => {
         getHighlighter,
       );
 
-      expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);
+      expect(defaultStyle + htmlString).toMatchFileSnapshot(resultHTMLPath);
     });
   });
 });
@@ -135,7 +133,7 @@ describe('Multiple theme', () => {
         getHighlighter,
       );
 
-      expect(defaultStyle + htmlString).toMatchFile(resultHTMLPath);
+      expect(defaultStyle + htmlString).toMatchFileSnapshot(resultHTMLPath);
     });
   });
 });
