@@ -54,12 +54,9 @@ function apply(
   }: ApplyProps,
 ) {
   element.tagName = inline ? 'span' : 'figure';
-  element.properties = {
-    ...element.properties,
-    'data-rehype-pretty-code-figure': '',
-  };
+  element.properties['data-rehype-pretty-code-figure'] = '';
 
-  const codeData = element.children[0]?.data as ElementData;
+  const codeData = element.children[0]?.data as ElementData | undefined;
 
   element.children = [tree]
     .map((tree) => {
