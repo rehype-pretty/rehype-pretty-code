@@ -19,7 +19,7 @@ export function charsHighlighter(
   element: Element,
   charsList: string[],
   options: CharsHighlighterOptions,
-  onVisitHighlightedChars?: (element: CharsElement, id: string | undefined) => void
+  onVisitHighlightedChars?: (element: CharsElement, id: string | undefined) => void,
 ) {
   const { ranges = [] } = options;
   const textContent = hastToString(element);
@@ -49,7 +49,7 @@ export function charsHighlighter(
           elementsToWrap,
           options,
           ignoreChars,
-          onVisitHighlightedChars
+          onVisitHighlightedChars,
         );
 
         // re-start from the 'last' node (the chars or part of them may exist

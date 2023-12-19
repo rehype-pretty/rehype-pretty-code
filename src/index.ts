@@ -51,7 +51,7 @@ function apply(
     theme,
     onVisitTitle,
     onVisitCaption,
-  }: ApplyProps
+  }: ApplyProps,
 ) {
   element.tagName = inline ? 'span' : 'figure';
   // User can replace this with a real Fragment at runtime
@@ -74,7 +74,7 @@ function apply(
           (c) =>
             c !== 'shiki' &&
             c !== 'shiki-themes' &&
-            (typeof c === 'string' ? !themeNames.includes(c) : true)
+            (typeof c === 'string' ? !themeNames.includes(c) : true),
         );
         pre.properties.className = className.length > 0 ? className : undefined;
       }
@@ -235,7 +235,7 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
           } catch (e) {
             return Promise.reject(e);
           }
-        })
+        }),
       );
     } catch (e) {
       console.error(e);
@@ -268,20 +268,20 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
               ? highlighter
                   .getTheme(name)
                   .settings.find(({ scope }) =>
-                    scope?.includes(tokensMap[lang.slice(1)] ?? lang.slice(1))
+                    scope?.includes(tokensMap[lang.slice(1)] ?? lang.slice(1)),
                   )?.settings.foreground ?? 'inherit'
-              : 'inherit'
+              : 'inherit',
           );
 
           if (isMultiTheme && themeKeys) {
             codeTree = hastParser.parse(
               `<pre><code><span style="${themeKeys
                 .map((key, i) => `--shiki-${key}:${colorsByTheme[i]}`)
-                .join(';')}">${strippedValue}</span></code></pre>`
+                .join(';')}">${strippedValue}</span></code></pre>`,
             );
           } else {
             codeTree = hastParser.parse(
-              `<pre><code><span style="color:${colorsByTheme[0]}">${strippedValue}</span></code></pre>`
+              `<pre><code><span style="color:${colorsByTheme[0]}">${strippedValue}</span></code></pre>`,
             );
           }
         } else {
@@ -289,7 +289,7 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
             codeTree = hastParser.parse(highlighter.codeToHtml(strippedValue, getOptions(lang)));
           } catch (e) {
             codeTree = hastParser.parse(
-              highlighter.codeToHtml(strippedValue, getOptions('plaintext'))
+              highlighter.codeToHtml(strippedValue, getOptions('plaintext')),
             );
           }
         }
@@ -313,7 +313,7 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
         const { title, caption, meta, lang } = parseBlockMetaString(
           codeElement,
           filterMetaString,
-          defaultCodeBlockLang
+          defaultCodeBlockLang,
         );
 
         const lineNumbers: number[] = [];
@@ -334,7 +334,7 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
         const charsMatches = meta
           ? [
               ...meta.matchAll(
-                /(?<delimiter>["/])(?<chars>.*?)\k<delimiter>(?<charsIdAndOrRange>\S*)/g
+                /(?<delimiter>["/])(?<chars>.*?)\k<delimiter>(?<charsIdAndOrRange>\S*)/g,
               ),
             ]
           : undefined;
@@ -364,11 +364,11 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
 
         try {
           codeTree = hastParser.parse(
-            highlighter.codeToHtml(strippedValue, getOptions(lang, meta))
+            highlighter.codeToHtml(strippedValue, getOptions(lang, meta)),
           );
         } catch (e) {
           codeTree = hastParser.parse(
-            highlighter.codeToHtml(strippedValue, getOptions('plaintext', meta))
+            highlighter.codeToHtml(strippedValue, getOptions('plaintext', meta)),
           );
         }
 
@@ -390,7 +390,7 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
             }
 
             const lineNumbersStartAtMatch = reverseString(meta).match(
-              /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/
+              /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/,
             );
             const startNumberString = lineNumbersStartAtMatch?.[1];
             if (startNumberString) {

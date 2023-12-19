@@ -42,7 +42,7 @@ function App() {
         await getHighlighter({
           themes: ['github-dark-dimmed'],
           langs: ['js', 'html', 'css'],
-        })
+        }),
       );
       setValue(initialValue);
     };
@@ -59,7 +59,7 @@ function App() {
         highlighter.codeToHtml(editorRef.current.getDoc().getValue('\n'), {
           lang,
           theme: 'github-dark-dimmed',
-        })
+        }),
       );
     }
     if (highlighter) {
@@ -68,7 +68,7 @@ function App() {
           parser: 'html',
           plugins: [htmlParser],
         }),
-        { lang: 'html', theme: 'github-dark-dimmed' }
+        { lang: 'html', theme: 'github-dark-dimmed' },
       );
 
       setFormattedHTML(html);
@@ -101,11 +101,11 @@ function App() {
           `Something went wrong with highlighting!
           
           expect: ${container.textContent}
-          got: ${value}`
+          got: ${value}`,
         );
       }
     },
-    [word, wordNumbers, value, lang, highlighter]
+    [word, wordNumbers, value, lang, highlighter],
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -116,37 +116,37 @@ function App() {
   }, [htmlRef, HTML, highlightWords]);
 
   return (
-    <main className='App'>
-      <header className='App-header'>
+    <main className="App">
+      <header className="App-header">
         <h1>Word Highlighter Playground</h1>
       </header>
-      <section className='options-container'>
+      <section className="options-container">
         <div>
-          <label htmlFor='word-input'>Highlighted word/string:</label>
+          <label htmlFor="word-input">Highlighted word/string:</label>
           <input
-            id='word-input'
+            id="word-input"
             value={word}
             onChange={(e) => setWord(e.target.value.split(','))}
           />
         </div>
         <div>
-          <label htmlFor='word-input'>Restrict highlighting to nth occurrence (range)</label>
+          <label htmlFor="word-input">Restrict highlighting to nth occurrence (range)</label>
           <input
             value={wordNumbers}
-            placeholder='e.g 1,3'
+            placeholder="e.g 1,3"
             onChange={(e) => setWordNumbers(e.target.value)}
           />
         </div>
         <div>
-          <label htmlFor='mode-select'>Highlighter lang</label>
-          <select id='mode-select' onChange={(e) => setLang(e.target.value)}>
+          <label htmlFor="mode-select">Highlighter lang</label>
+          <select id="mode-select" onChange={(e) => setLang(e.target.value)}>
             <option>javascript</option>
             <option>html</option>
             <option>css</option>
           </select>
         </div>
       </section>
-      <section className='grid'>
+      <section className="grid">
         <div>
           <p>Input</p>
 
@@ -168,13 +168,13 @@ function App() {
         </div>
         <div>
           <p>Result</p>
-          <div ref={htmlRef} className='shiki-output' dangerouslySetInnerHTML={{ __html: HTML }} />
+          <div ref={htmlRef} className="shiki-output" dangerouslySetInnerHTML={{ __html: HTML }} />
         </div>
       </section>
       <section>
         <p>Output</p>
         <div
-          className='shiki-output--html shiki-output'
+          className="shiki-output--html shiki-output"
           dangerouslySetInnerHTML={{ __html: formattedHTML }}
         />
       </section>

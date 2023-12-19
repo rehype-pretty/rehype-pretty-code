@@ -6,7 +6,7 @@ export function getElementsToHighlight(
   element: Element,
   chars: string,
   startIndex = 0,
-  ignoreChars = false
+  ignoreChars = false,
 ): Array<{ element: Element; index: number }> {
   const toWrap = [];
   let charsSoFar = '';

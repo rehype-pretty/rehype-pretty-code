@@ -88,9 +88,9 @@
       "indentWidth": 2,
       "indentStyle": "space",
       "quoteStyle": "single",
-      "trailingComma": "es5",
+      "trailingComma": "all",
       "semicolons": "always",
-      "jsxQuoteStyle": "single",
+      "jsxQuoteStyle": "double",
       "quoteProperties": "asNeeded",
       "arrowParentheses": "always"
     }

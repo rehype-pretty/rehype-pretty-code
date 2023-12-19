@@ -36,5 +36,5 @@ export interface Options {
 }
 
 export default function rehypePrettyCode(
-  options?: void | Options | undefined
+  options?: void | Options | undefined,
 ): void | Transformer<Root, Root>;

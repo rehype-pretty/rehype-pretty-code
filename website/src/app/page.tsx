@@ -20,7 +20,7 @@ export default function Home() {
     <>
       {' '}
       <header
-        className='flex items-center pt-[4rem] pb-[35rem] -mb-[35rem]'
+        className="flex items-center pt-[4rem] pb-[35rem] -mb-[35rem]"
         style={{
           background: `linear-gradient(
             0deg,
@@ -46,11 +46,11 @@ export default function Home() {
           )`,
         }}
       >
-        <h1 className='mx-auto font-mono text-3xl sm:text-4xl md:text-5xl font-semibold text-center text-amber-100/70 mb-8'>
+        <h1 className="mx-auto font-mono text-3xl sm:text-4xl md:text-5xl font-semibold text-center text-amber-100/70 mb-8">
           rehype-pretty-code
         </h1>
       </header>
-      <div className='prose prose-invert text-gray-300/70 px-4 sm:px-6 md:px-8 mx-auto mt-12 mb-6 relative z-1'>
+      <div className="prose prose-invert text-gray-300/70 px-4 sm:px-6 md:px-8 mx-auto mt-12 mb-6 relative z-1">
         <main>
           <article>
             <MDXProvider
@@ -69,7 +69,7 @@ export default function Home() {
         </main>
       </div>
       <footer
-        className='w-full text-amber-100/70 !max-w-none prose dark:prose-invert text-center pb-[10rem] pt-[35rem] -mt-[25rem]'
+        className="w-full text-amber-100/70 !max-w-none prose dark:prose-invert text-center pb-[10rem] pt-[35rem] -mt-[25rem]"
         style={{
           background: `linear-gradient(
             180deg,
@@ -95,7 +95,7 @@ export default function Home() {
           )`,
         }}
       >
-        MIT License • <a href='https://github.com/atomiks/rehype-pretty-code'>View on GitHub</a>
+        MIT License • <a href="https://github.com/atomiks/rehype-pretty-code">View on GitHub</a>
       </footer>
     </>
   );

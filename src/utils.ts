@@ -9,7 +9,7 @@ export function isJSONTheme(value: any): value is ThemeRegistrationRaw {
 }
 
 export function isElement(
-  value: ElementContent | Element | Root | RootContent | null | undefined
+  value: ElementContent | Element | Root | RootContent | null | undefined,
 ): value is Element {
   return value ? value.type === 'element' : false;
 }
@@ -20,7 +20,7 @@ export function isText(value: ElementContent | null): value is Text {
 
 export function isInlineCode(
   element: Element,
-  parent: Element | Root | undefined
+  parent: Element | Root | undefined,
 ): element is Element {
   return (
     (element.tagName === 'code' && isElement(parent) && parent.tagName !== 'pre') ||
@@ -49,7 +49,7 @@ export function getInlineCodeLang(meta: string, defaultFallbackLang: string) {
 export function parseBlockMetaString(
   element: Element,
   filter: (s: string) => string,
-  defaultFallback: string
+  defaultFallback: string,
 ) {
   let meta = filter((element.data?.meta ?? element.properties?.metastring ?? '') as string);
 

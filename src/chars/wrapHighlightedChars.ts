@@ -8,7 +8,7 @@ export function wrapHighlightedChars(
   elementsToWrap: Array<{ element: Element; index: number }>,
   options: CharsHighlighterOptions,
   ignoreWord: boolean,
-  onVisitHighlightedChars?: (element: CharsElement, id: string | undefined) => void
+  onVisitHighlightedChars?: (element: CharsElement, id: string | undefined) => void,
 ) {
   if (!elementsToWrap || elementsToWrap.length === 0) {
     return;
