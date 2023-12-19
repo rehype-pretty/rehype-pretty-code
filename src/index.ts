@@ -1,4 +1,4 @@
-import type { Element, ElementContent, Root } from 'hast';
+import type { Element, ElementContent, ElementData, Root } from 'hast';
 import type { Options, Theme } from '../';
 import type { CharsHighlighterOptions } from './types';
 import type { Highlighter, CodeToHastOptions } from 'shikiji';
@@ -54,11 +54,13 @@ function apply(
   }: ApplyProps,
 ) {
   element.tagName = inline ? 'span' : 'figure';
-  // User can replace this with a real Fragment at runtime
   element.properties = {
     ...element.properties,
     'data-rehype-pretty-code-figure': '',
   };
+
+  const codeData = element.children[0]?.data as ElementData;
+
   element.children = [tree]
     .map((tree) => {
       const pre = tree.children[0];
@@ -98,6 +100,7 @@ function apply(
 
       code.properties['data-language'] = lang;
       code.properties['data-theme'] = themeNamesString;
+      code.data = codeData;
 
       if (inline) {
         if (keepBackground) {
