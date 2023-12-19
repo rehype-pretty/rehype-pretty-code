@@ -1,7 +1,7 @@
 import type { Element, ElementContent, Root } from 'hast';
 import type { Options, Theme } from '../';
 import type { CharsHighlighterOptions } from './types';
-import { Highlighter, CodeToHastOptions } from 'shikiji';
+import type { Highlighter, CodeToHastOptions } from 'shikiji';
 import type { Transformer } from 'unified';
 import { visit } from 'unist-util-visit';
 import rangeParser from 'parse-numeric-range';
@@ -194,7 +194,10 @@ export default function rehypePrettyCode(
   const defaultInlineCodeLang =
     typeof defaultLang === 'string' ? defaultLang : defaultLang.inline || '';
 
-  function getOptions(lang: string, meta?: string): CodeToHastOptions<string, string> {
+  function getOptions(
+    lang: string,
+    meta?: string,
+  ): CodeToHastOptions<string, string> {
     const multipleThemes =
       !isJSONTheme(theme) && typeof theme === 'object' ? theme : null;
     const singleTheme =
@@ -394,7 +397,10 @@ export default function rehypePrettyCode(
           );
         } catch (e) {
           codeTree = hastParser.parse(
-            highlighter.codeToHtml(strippedValue, getOptions('plaintext', meta)),
+            highlighter.codeToHtml(
+              strippedValue,
+              getOptions('plaintext', meta),
+            ),
           );
         }
 
