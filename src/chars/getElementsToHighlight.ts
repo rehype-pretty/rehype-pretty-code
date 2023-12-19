@@ -1,6 +1,6 @@
-import type { Element } from 'hast'
-import { splitElement } from './splitElement'
-import { findOverlap, getContent, nextElementMaybeContinuesChars } from './utils'
+import type { Element } from "hast";
+import { splitElement } from "./splitElement";
+import { findOverlap, getContent, nextElementMaybeContinuesChars } from "./utils";
 
 export function getElementsToHighlight(
   element: Element,
@@ -8,36 +8,36 @@ export function getElementsToHighlight(
   startIndex = 0,
   ignoreChars = false
 ): Array<{ element: Element; index: number }> {
-  const toWrap = []
-  let charsSoFar = ''
+  const toWrap = [];
+  let charsSoFar = "";
 
   if (element.children) {
-    const elements = element.children as Element[]
+    const elements = element.children as Element[];
 
     for (let i = startIndex; i < elements.length; i++) {
-      const remaining = charsSoFar ? chars.replace(charsSoFar, '') : chars
+      const remaining = charsSoFar ? chars.replace(charsSoFar, "") : chars;
 
-      if (remaining === '') {
-        return toWrap
+      if (remaining === "") {
+        return toWrap;
       }
 
-      const maybeElement = elements[i]
+      const maybeElement = elements[i];
 
       if (
         !maybeElement ||
-        maybeElement.type !== 'element' ||
+        maybeElement.type !== "element" ||
         // ignore any previously matched chars within
-        Object.hasOwn(maybeElement.properties ?? {}, 'rehype-pretty-code-visited')
+        Object.hasOwn(maybeElement.properties ?? {}, "rehype-pretty-code-visited")
       ) {
-        continue
+        continue;
       }
 
-      const content = getContent(maybeElement) || ''
+      const content = getContent(maybeElement) || "";
 
       // node is the chars, or it finishes the chars
       if (content === chars || charsSoFar + content === chars) {
-        toWrap.push({ element: maybeElement, index: i })
-        return toWrap
+        toWrap.push({ element: maybeElement, index: i });
+        return toWrap;
       }
 
       // check if the whole node is a continuation of the chars
@@ -49,36 +49,36 @@ export function getElementsToHighlight(
           nextElementMaybeContinuesChars({
             elements,
             nextIndex: i + 1,
-            remainingPart: remaining.replace(content, '')
+            remainingPart: remaining.replace(content, ""),
           })
         ) {
-          toWrap.push({ element: elements[i], index: i })
-          charsSoFar += content
-          continue
+          toWrap.push({ element: elements[i], index: i });
+          charsSoFar += content;
+          continue;
         }
       }
 
-      const overlap = findOverlap(content, remaining)
-      const partialMatch = overlap && remaining.startsWith(overlap)
+      const overlap = findOverlap(content, remaining);
+      const partialMatch = overlap && remaining.startsWith(overlap);
 
       if (partialMatch) {
-        const nextPart = remaining.replace(overlap, '')
+        const nextPart = remaining.replace(overlap, "");
 
         // this is the wrong node, continue
         if (
-          nextPart !== '' &&
+          nextPart !== "" &&
           getContent(elements[i + 1]) &&
           !nextElementMaybeContinuesChars({
             elements,
             nextIndex: i + 1,
-            remainingPart: nextPart
+            remainingPart: nextPart,
           })
         ) {
-          continue
+          continue;
         }
 
-        const splitParts = content.split(overlap)
-        const [leftPart, rightPart, ...rest] = splitParts
+        const splitParts = content.split(overlap);
+        const [leftPart, rightPart, ...rest] = splitParts;
 
         if (rightPart || leftPart || rest.length > 0) {
           // One of the below scenarios should be true
@@ -87,14 +87,14 @@ export function getElementsToHighlight(
           // 3. the chars start or start & end from the end of the string carr[ot]...
 
           const withNextNode =
-            content + (getContent(elements[i + 1]) ? getContent(elements[i + 1]) : '')
-          const nextNodeOverlap = findOverlap(withNextNode, remaining)
-          const splitIndex = withNextNode.indexOf(nextNodeOverlap)
+            content + (getContent(elements[i + 1]) ? getContent(elements[i + 1]) : "");
+          const nextNodeOverlap = findOverlap(withNextNode, remaining);
+          const splitIndex = withNextNode.indexOf(nextNodeOverlap);
 
           if (chars.endsWith(overlap) || chars.startsWith(overlap)) {
-            const rightString = rightPart.replace(overlap, '')
-            const innerString = overlap
-            const leftString = content.substring(0, splitIndex)
+            const rightString = rightPart.replace(overlap, "");
+            const innerString = overlap;
+            const leftString = content.substring(0, splitIndex);
 
             // need to check this to avoid edge case where the right
             // side will be duplicated when the matched part repeats within the
@@ -102,8 +102,8 @@ export function getElementsToHighlight(
             const nextElementContinues = nextElementMaybeContinuesChars({
               elements,
               nextIndex: i + 1,
-              remainingPart: nextPart
-            })
+              remainingPart: nextPart,
+            });
 
             const [newElement, updatedIndex] = splitElement({
               elements,
@@ -114,20 +114,20 @@ export function getElementsToHighlight(
               rest,
               nextElementContinues,
               index: i,
-              ignoreChars
-            })
+              ignoreChars,
+            });
 
-            charsSoFar += overlap
+            charsSoFar += overlap;
 
             toWrap.push({
               element: newElement,
-              index: updatedIndex
-            })
+              index: updatedIndex,
+            });
           }
         }
       }
     }
   }
 
-  return toWrap
+  return toWrap;
 }

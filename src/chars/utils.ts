@@ -1,5 +1,5 @@
-import type { Element } from 'hast'
-import { toString as hastToString } from 'hast-util-to-string'
+import type { Element } from "hast";
+import { toString as hastToString } from "hast-util-to-string";
 
 /**
  * Look ahead to determine if further, sibling nodes continue the string.
@@ -7,63 +7,63 @@ import { toString as hastToString } from 'hast-util-to-string'
 export function nextElementMaybeContinuesChars({
   elements,
   nextIndex,
-  remainingPart
+  remainingPart,
 }: {
-  elements: Element[]
-  nextIndex: number
-  remainingPart: string
+  elements: Element[];
+  nextIndex: number;
+  remainingPart: string;
 }): boolean {
-  if (remainingPart === '') {
-    return false
+  if (remainingPart === "") {
+    return false;
   }
 
-  const nextNode = elements[nextIndex]
-  const content = getContent(nextNode)
+  const nextNode = elements[nextIndex];
+  const content = getContent(nextNode);
 
   if (!content) {
-    return false
+    return false;
   }
 
-  const includesNext = content.startsWith(remainingPart) || remainingPart.startsWith(content)
+  const includesNext = content.startsWith(remainingPart) || remainingPart.startsWith(content);
 
-  const overlap = findOverlap(content, remainingPart)
+  const overlap = findOverlap(content, remainingPart);
 
   if (overlap === remainingPart && content.startsWith(remainingPart)) {
-    return true
+    return true;
   }
 
   if (includesNext) {
     return nextElementMaybeContinuesChars({
       elements,
       nextIndex: nextIndex + 1,
-      remainingPart: remainingPart.replace(content, '')
-    })
+      remainingPart: remainingPart.replace(content, ""),
+    });
   }
 
-  return false
+  return false;
 }
 
 export function getContent(node: Element) {
-  if (!node) return
-  return hastToString(node)
+  if (!node) return;
+  return hastToString(node);
 }
 
 export function findOverlap(a: string, b: string): string {
   if (b.length === 0) {
-    return ''
+    return "";
   }
 
   if (a.endsWith(b)) {
-    return b
+    return b;
   }
 
   if (a.indexOf(b) >= 0) {
-    return b
+    return b;
   }
 
-  return findOverlap(a, b.substring(0, b.length - 1))
+  return findOverlap(a, b.substring(0, b.length - 1));
 }
 
 export function reverseString(s: string) {
-  return s.split('').reverse().join('')
+  return s.split("").reverse().join("");
 }

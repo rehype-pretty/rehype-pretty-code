@@ -87,12 +87,12 @@
       "lineWidth": 100,
       "indentWidth": 2,
       "indentStyle": "space",
-      "quoteStyle": "single",
-      "trailingComma": "none",
-      "semicolons": "asNeeded",
+      "quoteStyle": "double",
+      "trailingComma": "es5",
+      "semicolons": "always",
       "jsxQuoteStyle": "single",
       "quoteProperties": "asNeeded",
-      "arrowParentheses": "asNeeded"
+      "arrowParentheses": "always"
     }
   }
 }
