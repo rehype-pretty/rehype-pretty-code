@@ -1,0 +1,30 @@
+---
+layout: ../layouts/BaseLayout.astro
+---
+
+# Astro `rehype-pretty-code` integration
+
+```tsx
+import { useFloating, offset } from '@floating-ui/react';
+
+interface Props {
+  open: boolean;
+  onOpenChange(open: boolean): void;
+}
+
+export function App({ open, onOpenChange }: Props) {
+  const { refs, floatingStyles } = useFloating({
+    open,
+    onOpenChange,
+    placement: 'left',
+    middleware: [offset(10)],
+  });
+
+  return (
+    <Container>
+      <div ref={refs.setReference} />
+      {open && <div ref={refs.setFloating} style={floatingStyles} />}
+    </Container>
+  );
+}
+```

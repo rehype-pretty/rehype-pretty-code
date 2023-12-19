@@ -20,7 +20,7 @@
   "scripts": {
     "build": "npx rollup -c",
     "test": "vitest",
-    "lint": "eslint . --ext .js,.ts,.json",
+    "lint": "eslint . --ext .js,.ts,.json --ignore-path=.gitignore",
     "typecheck": "tsc --noEmit",
     "playground": "npm run dev --workspace=word-highlighter-playground",
     "playground-website": "npm run dev --workspace=website",
