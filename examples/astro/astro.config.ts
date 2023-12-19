@@ -1,8 +1,8 @@
-import mdx from '@astrojs/mdx';
-import tailwind from '@astrojs/tailwind';
-import { defineConfig } from 'astro/config';
-import rehypePrettyCode from 'rehype-pretty-code';
-import moonlightTheme from './public/theme/moonlight-ii.json';
+import mdx from '@astrojs/mdx'
+import tailwind from '@astrojs/tailwind'
+import { defineConfig } from 'astro/config'
+import rehypePrettyCode from 'rehype-pretty-code'
+import moonlightTheme from './public/theme/moonlight-ii.json'
 
 export default defineConfig({
   markdown: {
@@ -11,13 +11,10 @@ export default defineConfig({
       [
         rehypePrettyCode,
         {
-          theme: moonlightTheme,
-        },
-      ],
-    ],
+          theme: moonlightTheme
+        }
+      ]
+    ]
   },
-  integrations: [
-    mdx(),
-    tailwind(),
-  ],
-});
+  integrations: [mdx(), tailwind()]
+})

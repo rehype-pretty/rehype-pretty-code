@@ -1,4 +1,4 @@
-const colors = require('tailwindcss/colors');
+const colors = require('tailwindcss/colors')
 
 const linkHeadingStyles = {
   color: colors.gray[100],
@@ -9,9 +9,9 @@ const linkHeadingStyles = {
     color: 'none',
     borderBottomColor: 'transparent',
     background: colors.gray[100],
-    boxShadow: `0 0 0 0.4rem ${colors.gray[100]}`,
-  },
-};
+    boxShadow: `0 0 0 0.4rem ${colors.gray[100]}`
+  }
+}
 
 module.exports = {
   plugins: [require('@tailwindcss/typography')],
@@ -24,8 +24,8 @@ module.exports = {
             pre: {
               background: 'rgba(205, 200, 255, 0.05)',
               code: {
-                fontSize: '1rem',
-              },
+                fontSize: '1rem'
+              }
             },
             'h2 a': linkHeadingStyles,
             'h3 a': linkHeadingStyles,
@@ -36,18 +36,18 @@ module.exports = {
               boxShadow: `0 0 0 0.3rem transparent`,
               '&:hover': {
                 background: colors.teal[900],
-                boxShadow: `0 0 0 0.3rem ${colors.teal[900]}`,
-              },
+                boxShadow: `0 0 0 0.3rem ${colors.teal[900]}`
+              }
             },
             figure: {
-              margin: 0,
+              margin: 0
             },
             blockquote: {
               fontSize: '90%',
               color: colors.zinc[500],
               borderLeftColor: colors.zinc[700],
               'p::before': { display: 'none' },
-              'p::after': { display: 'none' },
+              'p::after': { display: 'none' }
             },
             a: {
               textDecoration: 'none',
@@ -61,17 +61,17 @@ module.exports = {
                 color: `${colors.zinc[900]}`,
                 borderBottomColor: `${colors.pink[200]}`,
                 background: colors.pink[200],
-                boxShadow: `0 0 0 0.2rem ${colors.pink[200]}`,
-              },
+                boxShadow: `0 0 0 0.2rem ${colors.pink[200]}`
+              }
             },
             code: {
               color: '#86e1fc',
               '&::before': { content: `unset !important` },
               '&::after': { content: `unset !important` },
-              fontWeight: 'normal',
+              fontWeight: 'normal'
             },
             'a code': {
-              fontSize: '1em',
+              fontSize: '1em'
             },
             '[data-rehype-pretty-code-fragment]:nth-of-type(2) pre': {
               '[data-line]::before': {
@@ -81,15 +81,15 @@ module.exports = {
                 width: '1rem',
                 marginRight: '1rem',
                 textAlign: 'right',
-                color: colors.slate[600],
+                color: colors.slate[600]
               },
               '[data-highlighted-line]::before': {
-                color: colors.slate[400],
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-};
+                color: colors.slate[400]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

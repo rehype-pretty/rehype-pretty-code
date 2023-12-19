@@ -1,25 +1,18 @@
-'use client';
+'use client'
 
-import Index from './index.mdx';
-import { MDXProvider } from '@mdx-js/react';
-import * as React from 'react';
+import Index from './index.mdx'
+import { MDXProvider } from '@mdx-js/react'
+import * as React from 'react'
 
 function Heading({
   level,
   children,
   ...props
-}: React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLHeadingElement>,
-  HTMLHeadingElement
-> & {
-  level: 1 | 2 | 3 | 4 | 5 | 6;
+}: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement> & {
+  level: 1 | 2 | 3 | 4 | 5 | 6
 }) {
-  const Tag = `h${level}`;
-  return React.createElement(
-    Tag,
-    props,
-    <a href={`#${props.id}`}>{children}</a>,
-  );
+  const Tag = `h${level}`
+  return React.createElement(Tag, props, <a href={`#${props.id}`}>{children}</a>)
 }
 
 export default function Home() {
@@ -27,7 +20,7 @@ export default function Home() {
     <>
       {' '}
       <header
-        className="flex items-center pt-[4rem] pb-[35rem] -mb-[35rem]"
+        className='flex items-center pt-[4rem] pb-[35rem] -mb-[35rem]'
         style={{
           background: `linear-gradient(
             0deg,
@@ -50,24 +43,24 @@ export default function Home() {
             hsl(11deg 17% 63%) 96%,
             hsl(10deg 15% 64%) 98%,
             hsl(10deg 13% 65%) 100%
-          )`,
+          )`
         }}
       >
-        <h1 className="mx-auto font-mono text-3xl sm:text-4xl md:text-5xl font-semibold text-center text-amber-100/70 mb-8">
+        <h1 className='mx-auto font-mono text-3xl sm:text-4xl md:text-5xl font-semibold text-center text-amber-100/70 mb-8'>
           rehype-pretty-code
         </h1>
       </header>
-      <div className="prose prose-invert text-gray-300/70 px-4 sm:px-6 md:px-8 mx-auto mt-12 mb-6 relative z-1">
+      <div className='prose prose-invert text-gray-300/70 px-4 sm:px-6 md:px-8 mx-auto mt-12 mb-6 relative z-1'>
         <main>
           <article>
             <MDXProvider
               components={{
-                h1: (props) => <Heading level={1} {...props} />,
-                h2: (props) => <Heading level={2} {...props} />,
-                h3: (props) => <Heading level={3} {...props} />,
-                h4: (props) => <Heading level={4} {...props} />,
-                h5: (props) => <Heading level={5} {...props} />,
-                h6: (props) => <Heading level={6} {...props} />,
+                h1: props => <Heading level={1} {...props} />,
+                h2: props => <Heading level={2} {...props} />,
+                h3: props => <Heading level={3} {...props} />,
+                h4: props => <Heading level={4} {...props} />,
+                h5: props => <Heading level={5} {...props} />,
+                h6: props => <Heading level={6} {...props} />
               }}
             >
               <Index />
@@ -76,7 +69,7 @@ export default function Home() {
         </main>
       </div>
       <footer
-        className="w-full text-amber-100/70 !max-w-none prose dark:prose-invert text-center pb-[10rem] pt-[35rem] -mt-[25rem]"
+        className='w-full text-amber-100/70 !max-w-none prose dark:prose-invert text-center pb-[10rem] pt-[35rem] -mt-[25rem]'
         style={{
           background: `linear-gradient(
             180deg,
@@ -99,14 +92,11 @@ export default function Home() {
             hsl(11deg 17% 63%) 96%,
             hsl(10deg 15% 64%) 98%,
             hsl(10deg 13% 65%) 100%
-          )`,
+          )`
         }}
       >
-        MIT License •{' '}
-        <a href="https://github.com/atomiks/rehype-pretty-code">
-          View on GitHub
-        </a>
+        MIT License • <a href='https://github.com/atomiks/rehype-pretty-code'>View on GitHub</a>
       </footer>
     </>
-  );
+  )
 }

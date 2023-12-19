@@ -43,10 +43,11 @@
     "shikiji": "^0.7.0 || ^0.8.0 || ^0.9.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.4.1",
     "@babel/core": "^7.23.6",
     "@babel/preset-env": "^7.23.6",
     "@babel/preset-typescript": "^7.23.3",
+    "@biomejs/biome": "^1.4.1",
+    "@biomejs/js-api": "^0.3.0-nightly.cfef948",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -54,6 +55,7 @@
     "bumpp": "^9.2.1",
     "hast-util-to-html": "^8.0.3",
     "mdast-util-to-hast": "^12.1.0",
+    "prettier": "^3.1.1",
     "remark": "^15.0.1",
     "rollup": "^4.9.1",
     "shikiji": "^0.9.9",

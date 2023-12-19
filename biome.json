@@ -10,6 +10,8 @@
       "./**/*.ts",
       "./**/*.js",
       "./**/*.cjs",
+      "./**/*.mjs",
+      "./**/*.jsx",
       "./**/*.tsx",
       "./**/*.d.ts",
       "./**/*.json",
@@ -31,6 +33,8 @@
       "./**/*.ts",
       "./**/*.js",
       "./**/*.cjs",
+      "./**/*.mjs",
+      "./**/*.jsx",
       "./**/*.tsx",
       "./**/*.d.ts",
       "./**/*.json",
@@ -50,8 +54,20 @@
       "nursery": { "noUnusedImports": "off" },
       "performance": { "noAccumulatingSpread": "off" },
       "correctness": { "noUndeclaredVariables": "off" },
-      "suspicious": { "noExplicitAny": "off", "noEmptyInterface": "off" },
-      "complexity": { "useLiteralKeys": "off", "noUselessFragments": "off", "noBannedTypes": "off" }
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noEmptyInterface": "off",
+        "noConfusingVoidType": "off"
+      },
+      "complexity": {
+        "useLiteralKeys": "off",
+        "noUselessFragments": "off",
+        "noBannedTypes": "off",
+        "noForEach": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      }
     }
   },
   "json": {
