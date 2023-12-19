@@ -16,3 +16,5 @@ stats
 test-results
 out
 *.tgz
+.astro
+_
