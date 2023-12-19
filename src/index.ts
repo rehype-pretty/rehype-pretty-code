@@ -55,7 +55,10 @@ function apply(
 ) {
   element.tagName = inline ? 'span' : 'figure';
   // User can replace this with a real Fragment at runtime
-  element.properties = { 'data-rehype-pretty-code-figure': '' };
+  element.properties = {
+    ...element.properties,
+    'data-rehype-pretty-code-figure': '',
+  };
   element.children = [tree]
     .map((tree) => {
       const pre = tree.children[0];
