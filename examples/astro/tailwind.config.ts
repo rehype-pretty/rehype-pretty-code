@@ -1,5 +1,5 @@
 import colors from 'tailwindcss/colors.js';
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
 
 const linkHeadingStyles = {
 	color: colors.gray[100],

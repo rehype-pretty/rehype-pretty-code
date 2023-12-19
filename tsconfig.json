@@ -9,6 +9,7 @@
     "noUnusedLocals": true,
     "types": ["node"],
     "allowJs": true,
+    "checkJs": true,
     "esModuleInterop": true,
     "downlevelIteration": true
   },
