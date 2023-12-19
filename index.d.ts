@@ -4,15 +4,15 @@ import type {
   BuiltinTheme,
   ThemeRegistrationRaw,
   ShikijiTransformer,
-} from "shikiji";
-import type { Transformer } from "unified";
-import type { Root, Element, Properties } from "hast";
+} from 'shikiji';
+import type { Transformer } from 'unified';
+import type { Root, Element, Properties } from 'hast';
 
-export type LineElement = Omit<Element, "properties"> & {
+export type LineElement = Omit<Element, 'properties'> & {
   properties: Properties & { className?: string[] };
 };
 
-export type CharsElement = Omit<Element, "properties" | "children"> & {
+export type CharsElement = Omit<Element, 'properties' | 'children'> & {
   properties: Properties & { className?: string[] };
   children: Array<Element | Text>;
 };

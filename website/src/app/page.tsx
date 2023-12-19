@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Index from "./index.mdx";
-import { MDXProvider } from "@mdx-js/react";
-import * as React from "react";
+import Index from './index.mdx';
+import { MDXProvider } from '@mdx-js/react';
+import * as React from 'react';
 
 function Heading({
   level,
@@ -18,7 +18,7 @@ function Heading({
 export default function Home() {
   return (
     <>
-      {" "}
+      {' '}
       <header
         className='flex items-center pt-[4rem] pb-[35rem] -mb-[35rem]'
         style={{

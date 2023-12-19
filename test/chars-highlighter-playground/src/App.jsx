@@ -1,23 +1,23 @@
-import React, { useRef, useState } from "react";
-import { Controlled as CodeMirror } from "react-codemirror2";
+import React, { useRef, useState } from 'react';
+import { Controlled as CodeMirror } from 'react-codemirror2';
 
-import { getHighlighter } from "shikiji";
-import htmlParser from "prettier/plugins/html";
+import { getHighlighter } from 'shikiji';
+import htmlParser from 'prettier/plugins/html';
 
-import { unified } from "unified";
-import rehypeParse from "rehype-parse";
-import prettier from "prettier/standalone";
-import { toHtml } from "hast-util-to-html";
-import rangeParser from "parse-numeric-range";
-import { charsHighlighter } from "../../../src/chars/charsHighlighter";
+import { unified } from 'unified';
+import rehypeParse from 'rehype-parse';
+import prettier from 'prettier/standalone';
+import { toHtml } from 'hast-util-to-html';
+import rangeParser from 'parse-numeric-range';
+import { charsHighlighter } from '../../../src/chars/charsHighlighter';
 
-import "codemirror/mode/xml/xml.js";
-import "codemirror/mode/javascript/javascript.js";
-import "codemirror/mode/css/css.js";
+import 'codemirror/mode/xml/xml.js';
+import 'codemirror/mode/javascript/javascript.js';
+import 'codemirror/mode/css/css.js';
 
-import "./App.css";
-import "codemirror/lib/codemirror.css";
-import "codemirror/theme/material.css";
+import './App.css';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material.css';
 
 const initialValue = `const test = () => {
   return 'hello world';
@@ -28,9 +28,9 @@ const hastParser = unified().use(rehypeParse, { fragment: true });
 function App() {
   const [value, setValue] = useState();
   const [HTML, setHTML] = useState();
-  const [word, setWord] = useState(["test", "hello", "world"]);
-  const [lang, setLang] = useState("js");
-  const [wordNumbers, setWordNumbers] = useState("");
+  const [word, setWord] = useState(['test', 'hello', 'world']);
+  const [lang, setLang] = useState('js');
+  const [wordNumbers, setWordNumbers] = useState('');
   const [formattedHTML, setFormattedHTML] = useState();
   const [highlighter, setHighlighter] = useState();
   const editorRef = useRef();
@@ -40,8 +40,8 @@ function App() {
     const getShiki = async () => {
       setHighlighter(
         await getHighlighter({
-          themes: ["github-dark-dimmed"],
-          langs: ["js", "html", "css"],
+          themes: ['github-dark-dimmed'],
+          langs: ['js', 'html', 'css'],
         })
       );
       setValue(initialValue);
@@ -50,25 +50,25 @@ function App() {
   }, []);
 
   const onHighlightWord = (node) => {
-    node.properties.className = ["word"];
+    node.properties.className = ['word'];
   };
 
   const codeMirrorOnChange = React.useCallback(async () => {
     if (highlighter && editorRef.current) {
       setHTML(
-        highlighter.codeToHtml(editorRef.current.getDoc().getValue("\n"), {
+        highlighter.codeToHtml(editorRef.current.getDoc().getValue('\n'), {
           lang,
-          theme: "github-dark-dimmed",
+          theme: 'github-dark-dimmed',
         })
       );
     }
     if (highlighter) {
       const html = highlighter.codeToHtml(
         await prettier.format(htmlRef.current.innerHTML, {
-          parser: "html",
+          parser: 'html',
           plugins: [htmlParser],
         }),
-        { lang: "html", theme: "github-dark-dimmed" }
+        { lang: 'html', theme: 'github-dark-dimmed' }
       );
 
       setFormattedHTML(html);
@@ -79,9 +79,9 @@ function App() {
   const highlightWords = React.useCallback(
     (container) => {
       if (word && editorRef.current) {
-        container.innerHTML = highlighter.codeToHtml(editorRef.current.getDoc().getValue("\n"), {
+        container.innerHTML = highlighter.codeToHtml(editorRef.current.getDoc().getValue('\n'), {
           lang,
-          theme: "github-dark-dimmed",
+          theme: 'github-dark-dimmed',
         });
       }
       const options = {
@@ -89,8 +89,8 @@ function App() {
         idsMap: new Map(),
         counterMap: new Map(),
       };
-      if (container?.querySelector(".line")) {
-        container.querySelectorAll(".line").forEach((node) => {
+      if (container?.querySelector('.line')) {
+        container.querySelectorAll('.line').forEach((node) => {
           const n = hastParser.parse(node.innerHTML);
           charsHighlighter(n, word, options, onHighlightWord);
           node.innerHTML = toHtml(n);
@@ -126,7 +126,7 @@ function App() {
           <input
             id='word-input'
             value={word}
-            onChange={(e) => setWord(e.target.value.split(","))}
+            onChange={(e) => setWord(e.target.value.split(','))}
           />
         </div>
         <div>
@@ -153,8 +153,8 @@ function App() {
           <CodeMirror
             value={value}
             options={{
-              mode: lang === "html" ? "xml" : lang,
-              theme: "material",
+              mode: lang === 'html' ? 'xml' : lang,
+              theme: 'material',
               lineNumbers: true,
             }}
             onBeforeChange={(editor, data, value) => {

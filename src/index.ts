@@ -1,15 +1,15 @@
-import type { Element, ElementContent, Root } from "hast";
-import type { Options, Theme } from "../";
-import type { CharsHighlighterOptions } from "./types";
-import type { Highlighter, CodeToHastOptions } from "shikiji";
-import type { Transformer } from "unified";
-import { visit } from "unist-util-visit";
-import rangeParser from "parse-numeric-range";
-import { getHighlighter as defaultGetHighlighter } from "shikiji";
-import { unified } from "unified";
-import rehypeParse from "rehype-parse";
-import { charsHighlighter } from "./chars/charsHighlighter";
-import { reverseString } from "./chars/utils";
+import type { Element, ElementContent, Root } from 'hast';
+import type { Options, Theme } from '../';
+import type { CharsHighlighterOptions } from './types';
+import type { Highlighter, CodeToHastOptions } from 'shikiji';
+import type { Transformer } from 'unified';
+import { visit } from 'unist-util-visit';
+import rangeParser from 'parse-numeric-range';
+import { getHighlighter as defaultGetHighlighter } from 'shikiji';
+import { unified } from 'unified';
+import rehypeParse from 'rehype-parse';
+import { charsHighlighter } from './chars/charsHighlighter';
+import { reverseString } from './chars/utils';
 import {
   isElement,
   isText,
@@ -21,7 +21,7 @@ import {
   getThemeNames,
   replaceLineClass,
   getLineId,
-} from "./utils";
+} from './utils';
 
 interface ApplyProps {
   tree: Root;
@@ -53,14 +53,14 @@ function apply(
     onVisitCaption,
   }: ApplyProps
 ) {
-  element.tagName = inline ? "span" : "figure";
+  element.tagName = inline ? 'span' : 'figure';
   // User can replace this with a real Fragment at runtime
-  element.properties = { "data-rehype-pretty-code-figure": "" };
+  element.properties = { 'data-rehype-pretty-code-figure': '' };
   element.children = [tree]
     .map((tree) => {
       const pre = tree.children[0];
       const themeNames = getThemeNames(theme);
-      const themeNamesString = themeNames.join(" ");
+      const themeNamesString = themeNames.join(' ');
 
       if (!isElement(pre) || !pre.properties) {
         return [];
@@ -69,12 +69,12 @@ function apply(
       const code = pre.children[0];
 
       // Remove extraneous classes
-      if (Array.isArray(pre.properties.className) && pre.properties.className.includes("shiki")) {
+      if (Array.isArray(pre.properties.className) && pre.properties.className.includes('shiki')) {
         const className = pre.properties.className.filter(
           (c) =>
-            c !== "shiki" &&
-            c !== "shiki-themes" &&
-            (typeof c === "string" ? !themeNames.includes(c) : true)
+            c !== 'shiki' &&
+            c !== 'shiki-themes' &&
+            (typeof c === 'string' ? !themeNames.includes(c) : true)
         );
         pre.properties.className = className.length > 0 ? className : undefined;
       }
@@ -83,15 +83,15 @@ function apply(
         pre.properties.style = undefined;
       }
 
-      pre.properties["data-language"] = lang;
-      pre.properties["data-theme"] = themeNamesString;
+      pre.properties['data-language'] = lang;
+      pre.properties['data-theme'] = themeNamesString;
 
       if (!isElement(code) || !code.properties) {
         return [];
       }
 
-      code.properties["data-language"] = lang;
-      code.properties["data-theme"] = themeNamesString;
+      code.properties['data-language'] = lang;
+      code.properties['data-theme'] = themeNamesString;
 
       if (inline) {
         if (keepBackground) {
@@ -102,28 +102,28 @@ function apply(
 
       if (grid) {
         if (code.properties.style) {
-          code.properties.style += "display: grid;";
+          code.properties.style += 'display: grid;';
         } else {
-          code.properties.style = "display: grid;";
+          code.properties.style = 'display: grid;';
         }
       }
 
-      if (Object.hasOwn(code.properties, "data-line-numbers")) {
-        code.properties["data-line-numbers-max-digits"] = lineNumbersMaxDigits.toString().length;
+      if (Object.hasOwn(code.properties, 'data-line-numbers')) {
+        code.properties['data-line-numbers-max-digits'] = lineNumbersMaxDigits.toString().length;
       }
 
       const fragments: ElementContent[] = [];
 
       if (title) {
         const elementContent: Element = {
-          type: "element",
-          tagName: caption ? "div" : "figcaption",
+          type: 'element',
+          tagName: caption ? 'div' : 'figcaption',
           properties: {
-            "data-rehype-pretty-code-title": "",
-            "data-language": lang,
-            "data-theme": themeNamesString,
+            'data-rehype-pretty-code-title': '',
+            'data-language': lang,
+            'data-theme': themeNamesString,
           },
-          children: [{ type: "text", value: title }],
+          children: [{ type: 'text', value: title }],
         };
         onVisitTitle?.(elementContent);
         fragments.push(elementContent);
@@ -133,14 +133,14 @@ function apply(
 
       if (caption) {
         const elementContent: Element = {
-          type: "element",
-          tagName: "figcaption",
+          type: 'element',
+          tagName: 'figcaption',
           properties: {
-            "data-rehype-pretty-code-caption": "",
-            "data-language": lang,
-            "data-theme": themeNamesString,
+            'data-rehype-pretty-code-caption': '',
+            'data-language': lang,
+            'data-theme': themeNamesString,
           },
-          children: [{ type: "text", value: caption }],
+          children: [{ type: 'text', value: caption }],
         };
         onVisitCaption?.(elementContent);
         fragments.push(elementContent);
@@ -157,9 +157,9 @@ const hastParser = unified().use(rehypeParse, { fragment: true });
 export default function rehypePrettyCode(options: Options = {}): void | Transformer<Root, Root> {
   const {
     grid = true,
-    theme = "github-dark-dimmed",
+    theme = 'github-dark-dimmed',
     keepBackground = true,
-    defaultLang = "",
+    defaultLang = '',
     tokensMap = {},
     filterMetaString = (v) => v,
     getHighlighter = defaultGetHighlighter,
@@ -174,26 +174,26 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
   let cachedHighlighter = globalHighlighterCache.get(options);
   if (!cachedHighlighter) {
     cachedHighlighter = getHighlighter({
-      themes: isJSONTheme(theme) || typeof theme === "string" ? [theme] : Object.values(theme),
-      langs: ["plaintext"],
+      themes: isJSONTheme(theme) || typeof theme === 'string' ? [theme] : Object.values(theme),
+      langs: ['plaintext'],
     });
     globalHighlighterCache.set(options, cachedHighlighter);
   }
 
   const defaultCodeBlockLang =
-    typeof defaultLang === "string" ? defaultLang : defaultLang.block || "";
+    typeof defaultLang === 'string' ? defaultLang : defaultLang.block || '';
   const defaultInlineCodeLang =
-    typeof defaultLang === "string" ? defaultLang : defaultLang.inline || "";
+    typeof defaultLang === 'string' ? defaultLang : defaultLang.inline || '';
 
   function getOptions(lang: string, meta?: string): CodeToHastOptions<string, string> {
-    const multipleThemes = !isJSONTheme(theme) && typeof theme === "object" ? theme : null;
-    const singleTheme = isJSONTheme(theme) || typeof theme === "string" ? theme : null;
+    const multipleThemes = !isJSONTheme(theme) && typeof theme === 'object' ? theme : null;
+    const singleTheme = isJSONTheme(theme) || typeof theme === 'string' ? theme : null;
 
     return {
       lang,
       meta: { __raw: meta },
       transformers,
-      defaultColor: typeof theme === "string" ? theme : false,
+      defaultColor: typeof theme === 'string' ? theme : false,
       ...(multipleThemes ? { themes: multipleThemes } : { theme: singleTheme as Theme }),
     };
   }
@@ -203,14 +203,14 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
     const highlighter = await cachedHighlighter;
     if (!highlighter) return;
 
-    visit(tree, "element", (element, _, parent) => {
+    visit(tree, 'element', (element, _, parent) => {
       if (isInlineCode(element, parent)) {
         const textElement = element.children[0];
         if (!isText(textElement)) return;
         const value = textElement.value;
         if (!value) return;
         const lang = getInlineCodeLang(value, defaultInlineCodeLang);
-        if (lang && lang[0] !== ".") {
+        if (lang && lang[0] !== '.') {
           langsToLoad.add(lang);
         }
       }
@@ -241,7 +241,7 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
       console.error(e);
     }
 
-    visit(tree, "element", (element, _, parent) => {
+    visit(tree, 'element', (element, _, parent) => {
       if (isInlineCode(element, parent)) {
         const textElement = element.children[0];
         if (!isText(textElement)) return;
@@ -250,18 +250,18 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
 
         const keepLangPart = /\\{:[a-zA-Z.-]+}$/.test(value);
         const strippedValue = keepLangPart
-          ? value.replace(/\\({:[a-zA-Z.-]+})$/, "$1")
-          : value.replace(/{:[a-zA-Z.-]+}$/, "");
+          ? value.replace(/\\({:[a-zA-Z.-]+})$/, '$1')
+          : value.replace(/{:[a-zA-Z.-]+}$/, '');
         textElement.value = strippedValue;
-        const lang = keepLangPart ? "" : getInlineCodeLang(value, defaultInlineCodeLang);
-        const isLang = lang[0] !== ".";
+        const lang = keepLangPart ? '' : getInlineCodeLang(value, defaultInlineCodeLang);
+        const isLang = lang[0] !== '.';
         if (!lang) return;
 
         let codeTree: Root;
 
         if (!isLang) {
           const themeNames = getThemeNames(theme);
-          const isMultiTheme = typeof theme === "object" && !isJSONTheme(theme);
+          const isMultiTheme = typeof theme === 'object' && !isJSONTheme(theme);
           const themeKeys = isMultiTheme ? Object.keys(theme) : null;
           const colorsByTheme = themeNames.map((name) =>
             name
@@ -269,15 +269,15 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
                   .getTheme(name)
                   .settings.find(({ scope }) =>
                     scope?.includes(tokensMap[lang.slice(1)] ?? lang.slice(1))
-                  )?.settings.foreground ?? "inherit"
-              : "inherit"
+                  )?.settings.foreground ?? 'inherit'
+              : 'inherit'
           );
 
           if (isMultiTheme && themeKeys) {
             codeTree = hastParser.parse(
               `<pre><code><span style="${themeKeys
                 .map((key, i) => `--shiki-${key}:${colorsByTheme[i]}`)
-                .join(";")}">${strippedValue}</span></code></pre>`
+                .join(';')}">${strippedValue}</span></code></pre>`
             );
           } else {
             codeTree = hastParser.parse(
@@ -289,16 +289,16 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
             codeTree = hastParser.parse(highlighter.codeToHtml(strippedValue, getOptions(lang)));
           } catch (e) {
             codeTree = hastParser.parse(
-              highlighter.codeToHtml(strippedValue, getOptions("plaintext"))
+              highlighter.codeToHtml(strippedValue, getOptions('plaintext'))
             );
           }
         }
 
-        visit(codeTree, "element", replaceLineClass);
+        visit(codeTree, 'element', replaceLineClass);
 
         apply(element, {
           tree: codeTree,
-          lang: isLang ? lang : ".token",
+          lang: isLang ? lang : '.token',
           inline: true,
           keepBackground,
           theme,
@@ -350,7 +350,7 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
               chars: string;
               charsIdAndOrRange: string;
             };
-            const [range, id] = charsIdAndOrRange.split("#");
+            const [range, id] = charsIdAndOrRange.split('#');
             charsList.push(chars);
             range && charsListNumbers.push(rangeParser(range));
             id && charsListIdMap.set(chars, id);
@@ -359,7 +359,7 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
 
         if (!isText(textElement)) return;
 
-        const strippedValue = textElement.value.replace(/\n$/, "");
+        const strippedValue = textElement.value.replace(/\n$/, '');
         let codeTree: Root;
 
         try {
@@ -368,7 +368,7 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
           );
         } catch (e) {
           codeTree = hastParser.parse(
-            highlighter.codeToHtml(strippedValue, getOptions("plaintext", meta))
+            highlighter.codeToHtml(strippedValue, getOptions('plaintext', meta))
           );
         }
 
@@ -380,13 +380,13 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
           counterMap: new Map<string, number>(),
         };
 
-        visit(codeTree, "element", (element) => {
+        visit(codeTree, 'element', (element) => {
           if (
-            element.tagName === "code" &&
+            element.tagName === 'code' &&
             /srebmuNeniLwohs(?!(.*)(\/))/.test(reverseString(meta))
           ) {
             if (element.properties) {
-              element.properties["data-line-numbers"] = "";
+              element.properties['data-line-numbers'] = '';
             }
 
             const lineNumbersStartAtMatch = reverseString(meta).match(
@@ -404,10 +404,10 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
 
           if (
             Array.isArray(element.properties?.className) &&
-            element.properties?.className?.[0] === "line"
+            element.properties?.className?.[0] === 'line'
           ) {
             if (grid && element.children.length === 0) {
-              element.children = [{ type: "text", value: " " }];
+              element.children = [{ type: 'text', value: ' ' }];
             }
 
             replaceLineClass(element);
@@ -416,11 +416,11 @@ export default function rehypePrettyCode(options: Options = {}): void | Transfor
             lineCounter++;
 
             if (lineNumbers.includes(lineCounter)) {
-              element.properties["data-highlighted-line"] = "";
+              element.properties['data-highlighted-line'] = '';
 
               const lineId = lineIdMap.get(lineCounter);
               if (lineId) {
-                element.properties["data-highlighted-line-id"] = lineId;
+                element.properties['data-highlighted-line-id'] = lineId;
               }
 
               onVisitHighlightedLine?.(element, lineId);

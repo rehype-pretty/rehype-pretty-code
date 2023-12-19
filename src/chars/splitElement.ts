@@ -1,5 +1,5 @@
-import type { Element } from "hast";
-import { isElement, isText } from "../utils";
+import type { Element } from 'hast';
+import { isElement, isText } from '../utils';
 
 interface SplitElementProps {
   elements: Element[];
@@ -24,7 +24,7 @@ export function splitElement({
   index,
   ignoreChars,
 }: SplitElementProps) {
-  if ((isElement(elementToWrap) && elementToWrap.children?.[0]?.type !== "text") || ignoreChars) {
+  if ((isElement(elementToWrap) && elementToWrap.children?.[0]?.type !== 'text') || ignoreChars) {
     return [elementToWrap, index] as const;
   }
 
@@ -41,14 +41,14 @@ export function splitElement({
 
   // append any repetitions to the right if necessary
   if (rest.length > 0) {
-    rightStr += rest.map((s) => (s === "" ? innerString : innerString + s)).join("");
+    rightStr += rest.map((s) => (s === '' ? innerString : innerString + s)).join('');
   }
 
   if (leftStr.length > 0) {
     elements.splice(newIndex, 0, {
       ...elementToWrap,
       properties: { ...elementToWrap.properties },
-      children: [{ type: "text", value: leftStr }],
+      children: [{ type: 'text', value: leftStr }],
     });
   }
 
@@ -57,7 +57,7 @@ export function splitElement({
     elements.splice(newIndex, 0, {
       ...elementToWrap,
       properties: { ...elementToWrap.properties },
-      children: [{ type: "text", value: rightStr }],
+      children: [{ type: 'text', value: rightStr }],
     });
   }
 

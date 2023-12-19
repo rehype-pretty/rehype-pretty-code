@@ -1,7 +1,7 @@
-import type { Element } from "hast";
-import type { CharsElement } from "../..";
-import type { CharsHighlighterOptions } from "../types";
-import { isElement, isText } from "../utils";
+import type { Element } from 'hast';
+import type { CharsElement } from '../..';
+import type { CharsHighlighterOptions } from '../types';
+import { isElement, isText } from '../utils';
 
 export function wrapHighlightedChars(
   parentElement: Element,
@@ -18,16 +18,16 @@ export function wrapHighlightedChars(
 
   if (ignoreWord) {
     if (element.properties) {
-      element.properties["rehype-pretty-code-visited"] = "";
+      element.properties['rehype-pretty-code-visited'] = '';
     }
     return;
   }
 
   if (elementsToWrap.length > 1) {
     parentElement.children.splice(elementsToWrap[0].index, elementsToWrap.length, {
-      type: "element",
-      tagName: "mark",
-      properties: { "data-highlighted-chars-mark": "" },
+      type: 'element',
+      tagName: 'mark',
+      properties: { 'data-highlighted-chars-mark': '' },
       children: elementsToWrap.map(({ element }) => element),
     });
 
@@ -43,13 +43,13 @@ export function wrapHighlightedChars(
         return acc + textElement.value;
       }
       return acc;
-    }, "");
+    }, '');
 
     const id = options.idsMap.get(wordStr);
     element.properties = element.properties || {};
-    element.properties["data-highlighted-chars"] = "";
-    element.properties["data-chars-id"] = id;
-    element.tagName = "mark";
+    element.properties['data-highlighted-chars'] = '';
+    element.properties['data-chars-id'] = id;
+    element.tagName = 'mark';
     onVisitHighlightedChars?.(element as CharsElement, id);
   } else {
     const [{ element }] = elementsToWrap;
@@ -63,14 +63,14 @@ export function wrapHighlightedChars(
 
     element.properties = element.properties || {};
     // used to skip already parsed chars
-    element.properties["rehype-pretty-code-visited"] = "";
-    element.properties["data-highlighted-chars"] = "";
-    element.properties["data-chars-id"] = id;
-    element.tagName = "mark";
+    element.properties['rehype-pretty-code-visited'] = '';
+    element.properties['data-highlighted-chars'] = '';
+    element.properties['data-chars-id'] = id;
+    element.tagName = 'mark';
     element.children = [
       {
-        type: "element",
-        tagName: "span",
+        type: 'element',
+        tagName: 'span',
         properties: {
           style: element.properties.style,
         },

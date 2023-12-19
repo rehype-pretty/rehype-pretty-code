@@ -1,5 +1,5 @@
-import type { Element } from "hast";
-import { toString as hastToString } from "hast-util-to-string";
+import type { Element } from 'hast';
+import { toString as hastToString } from 'hast-util-to-string';
 
 /**
  * Look ahead to determine if further, sibling nodes continue the string.
@@ -13,7 +13,7 @@ export function nextElementMaybeContinuesChars({
   nextIndex: number;
   remainingPart: string;
 }): boolean {
-  if (remainingPart === "") {
+  if (remainingPart === '') {
     return false;
   }
 
@@ -36,7 +36,7 @@ export function nextElementMaybeContinuesChars({
     return nextElementMaybeContinuesChars({
       elements,
       nextIndex: nextIndex + 1,
-      remainingPart: remainingPart.replace(content, ""),
+      remainingPart: remainingPart.replace(content, ''),
     });
   }
 
@@ -50,7 +50,7 @@ export function getContent(node: Element) {
 
 export function findOverlap(a: string, b: string): string {
   if (b.length === 0) {
-    return "";
+    return '';
   }
 
   if (a.endsWith(b)) {
@@ -65,5 +65,5 @@ export function findOverlap(a: string, b: string): string {
 }
 
 export function reverseString(s: string) {
-  return s.split("").reverse().join("");
+  return s.split('').reverse().join('');
 }

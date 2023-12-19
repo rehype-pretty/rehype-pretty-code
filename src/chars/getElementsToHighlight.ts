@@ -1,6 +1,6 @@
-import type { Element } from "hast";
-import { splitElement } from "./splitElement";
-import { findOverlap, getContent, nextElementMaybeContinuesChars } from "./utils";
+import type { Element } from 'hast';
+import { splitElement } from './splitElement';
+import { findOverlap, getContent, nextElementMaybeContinuesChars } from './utils';
 
 export function getElementsToHighlight(
   element: Element,
@@ -9,15 +9,15 @@ export function getElementsToHighlight(
   ignoreChars = false
 ): Array<{ element: Element; index: number }> {
   const toWrap = [];
-  let charsSoFar = "";
+  let charsSoFar = '';
 
   if (element.children) {
     const elements = element.children as Element[];
 
     for (let i = startIndex; i < elements.length; i++) {
-      const remaining = charsSoFar ? chars.replace(charsSoFar, "") : chars;
+      const remaining = charsSoFar ? chars.replace(charsSoFar, '') : chars;
 
-      if (remaining === "") {
+      if (remaining === '') {
         return toWrap;
       }
 
@@ -25,14 +25,14 @@ export function getElementsToHighlight(
 
       if (
         !maybeElement ||
-        maybeElement.type !== "element" ||
+        maybeElement.type !== 'element' ||
         // ignore any previously matched chars within
-        Object.hasOwn(maybeElement.properties ?? {}, "rehype-pretty-code-visited")
+        Object.hasOwn(maybeElement.properties ?? {}, 'rehype-pretty-code-visited')
       ) {
         continue;
       }
 
-      const content = getContent(maybeElement) || "";
+      const content = getContent(maybeElement) || '';
 
       // node is the chars, or it finishes the chars
       if (content === chars || charsSoFar + content === chars) {
@@ -49,7 +49,7 @@ export function getElementsToHighlight(
           nextElementMaybeContinuesChars({
             elements,
             nextIndex: i + 1,
-            remainingPart: remaining.replace(content, ""),
+            remainingPart: remaining.replace(content, ''),
           })
         ) {
           toWrap.push({ element: elements[i], index: i });
@@ -62,11 +62,11 @@ export function getElementsToHighlight(
       const partialMatch = overlap && remaining.startsWith(overlap);
 
       if (partialMatch) {
-        const nextPart = remaining.replace(overlap, "");
+        const nextPart = remaining.replace(overlap, '');
 
         // this is the wrong node, continue
         if (
-          nextPart !== "" &&
+          nextPart !== '' &&
           getContent(elements[i + 1]) &&
           !nextElementMaybeContinuesChars({
             elements,
@@ -87,12 +87,12 @@ export function getElementsToHighlight(
           // 3. the chars start or start & end from the end of the string carr[ot]...
 
           const withNextNode =
-            content + (getContent(elements[i + 1]) ? getContent(elements[i + 1]) : "");
+            content + (getContent(elements[i + 1]) ? getContent(elements[i + 1]) : '');
           const nextNodeOverlap = findOverlap(withNextNode, remaining);
           const splitIndex = withNextNode.indexOf(nextNodeOverlap);
 
           if (chars.endsWith(overlap) || chars.startsWith(overlap)) {
-            const rightString = rightPart.replace(overlap, "");
+            const rightString = rightPart.replace(overlap, '');
             const innerString = overlap;
             const leftString = content.substring(0, splitIndex);
 
