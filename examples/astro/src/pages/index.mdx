@@ -2,29 +2,18 @@
 layout: ../layouts/BaseLayout.astro
 ---
 
-# Astro `rehype-pretty-code` integration
+```ts {4-5} showLineNumbers /syntaxHighlight: false,/ /[rehypePrettyCode, { theme: moonlightTheme }]/
+import mdx from '@astrojs/mdx';
+import tailwind from '@astrojs/tailwind';
+import { defineConfig } from 'astro/config';
+import rehypePrettyCode from 'rehype-pretty-code';
+import moonlightTheme from './public/theme/moonlight-ii.json';
 
-```tsx
-import { useFloating, offset } from '@floating-ui/react';
-
-interface Props {
-  open: boolean;
-  onOpenChange(open: boolean): void;
-}
-
-export function App({ open, onOpenChange }: Props) {
-  const { refs, floatingStyles } = useFloating({
-    open,
-    onOpenChange,
-    placement: 'left',
-    middleware: [offset(10)],
-  });
-
-  return (
-    <Container>
-      <div ref={refs.setReference} />
-      {open && <div ref={refs.setFloating} style={floatingStyles} />}
-    </Container>
-  );
-}
+export default defineConfig({
+  markdown: {
+    syntaxHighlight: false, // must be set to false
+    rehypePlugins: [[rehypePrettyCode, { theme: moonlightTheme }]],
+  },
+  integrations: [mdx(), tailwind()],
+});
 ```
