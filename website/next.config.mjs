@@ -15,6 +15,10 @@ const nextConfig = {
   output: 'export',
   cleanDistDir: true,
   reactStrictMode: true,
+  poweredByHeader: false,
+  env: {
+    NEXT_TELEMETRY_DISABLED: '1',
+  },
 };
 
 /** @type {import('rehype-pretty-code').Options} */

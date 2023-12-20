@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "build": "next build"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.0.0",
@@ -29,5 +28,6 @@
     "@types/react-dom": "^18.2.18",
     "typescript": "^5.3.3"
   },
-  "browserslist": ["> 0.5%", "not dead", "not op_mini all"]
+  "browserslist": ["> 0.5%", "not dead", "not op_mini all"],
+  "sideEffects": false
 }

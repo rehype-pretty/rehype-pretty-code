@@ -25,7 +25,6 @@ function Heading({
 export default function Home() {
   return (
     <>
-      {' '}
       <header
         className="flex items-center pt-[4rem] pb-[35rem] -mb-[35rem]"
         style={{
