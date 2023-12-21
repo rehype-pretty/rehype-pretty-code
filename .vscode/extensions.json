@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    //
+    "biomejs.biome",
+    "orta.vscode-twoslash-queries",
+    "bradlc.vscode-tailwindcss"
+  ],
+  "unwantedRecommendations": [
+    // we use biome for linting and formatting
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
+  ]
+}
