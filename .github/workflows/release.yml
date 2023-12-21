@@ -63,6 +63,6 @@ jobs:
         run: |
           npm publish --access='public' --no-git-checks
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} ****i have to go back and learn how to create these tokens fluently..ALTHOUGH, it wont do me much good because NPM___ALWAYS makes me create another account after i dongt do my 2 factor soon enough.//
           # https://docs.npmjs.com/generating-provenance-statements
           NPM_CONFIG_PROVENANCE: true
