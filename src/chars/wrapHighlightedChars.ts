@@ -1,6 +1,5 @@
 import type { Element } from 'hast';
-import type { CharsElement } from '../..';
-import type { CharsHighlighterOptions } from '../types';
+import type { CharsHighlighterOptions, CharsElement } from '../types';
 import { isElement, isText } from '../utils';
 
 export function wrapHighlightedChars(

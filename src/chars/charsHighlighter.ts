@@ -1,6 +1,5 @@
 import type { Element } from 'hast';
-import type { CharsHighlighterOptions } from '../types';
-import type { CharsElement } from '../..';
+import type { CharsHighlighterOptions, CharsElement } from '../types';
 import { getElementsToHighlight } from './getElementsToHighlight';
 import { wrapHighlightedChars } from './wrapHighlightedChars';
 import { toString as hastToString } from 'hast-util-to-string';

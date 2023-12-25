@@ -1,5 +1,5 @@
 import type { Element, ElementContent, ElementData, Root } from 'hast';
-import type { Options, Theme } from '../';
+import type { Options, Theme } from './types';
 import type { CharsHighlighterOptions } from './types';
 import type { Highlighter, CodeToHastOptions } from 'shikiji';
 import type { Transformer } from 'unified';
