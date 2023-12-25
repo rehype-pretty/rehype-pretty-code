@@ -27,7 +27,7 @@
     "release": "bumpp package.json --commit --push --tag",
     "prebuild": "rm -rf dist",
     "prepublishOnly": "NODE_ENV='production' bun run build",
-    "check-package": "bunx publint@latest --strict && bunx @arethetypeswrong/cli --pack --pack --ignore-rules cjs-resolves-to-esm"
+    "check-package": "bunx publint@latest --strict && bunx @arethetypeswrong/cli --pack --ignore-rules cjs-resolves-to-esm"
   },
   "engines": {
     "node": ">=18"
