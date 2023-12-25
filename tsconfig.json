@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "strict": true,
     "noUnusedLocals": true,
-    "types": ["node", "bun-types"],
+    "types": ["node", "bun"],
     "allowJs": true,
     "checkJs": true,
     "esModuleInterop": true,
