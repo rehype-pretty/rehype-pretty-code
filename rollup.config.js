@@ -10,7 +10,7 @@ export default defineConfig([
     plugins: [
       commonjs(),
       nodeResolve({ extensions: ['.ts', '.js'] }),
-      babel({ extensions: ['.ts', '.js'] }),
+      babel({ extensions: ['.ts', '.js'], babelHelpers: 'bundled' }),
     ],
     external: [
       ...Object.keys(packageJson.dependencies),

@@ -27,14 +27,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: 'Setup Node.js'
-        uses: actions/setup-node@v4
+      - name: '🐰 Setup Bun'
+        uses: oven-sh/setup-bun@v1
         with:
-          cache: 'npm'
-          node-version: 'lts/*'
+          bun-version: 'latest'
 
       - name: 'Generate Changelog'
-        run: npx changelogithub
+        run: bunx changelogithub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -49,15 +48,13 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v4
 
-      - name: 'Setup Node.js'
-        uses: actions/setup-node@v4
+      - name: '🐰 Setup Bun'
+        uses: oven-sh/setup-bun@v1
         with:
-          cache: 'npm'
-          node-version: 'lts/*'
-          registry-url: 'https://registry.npmjs.org'
+          bun-version: 'latest'
 
       - name: 'Install Dependencies'
-        run: npm clean-install
+        run: bun install --frozen-lockfile
 
       - name: 'Publish to NPM'
         run: |

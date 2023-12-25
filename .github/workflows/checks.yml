@@ -23,11 +23,10 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v4
 
-      - name: 'Setup Node.js'
-        uses: actions/setup-node@v4
+      - name: '🐰 Setup Bun'
+        uses: oven-sh/setup-bun@v1
         with:
-          cache: 'npm'
-          node-version: 'lts/*'
+          bun-version: 'latest'
 
       - name: 'Setup Biome'
         uses: biomejs/setup-biome@v1
@@ -38,13 +37,13 @@ jobs:
         run: biome ci .
 
       - name: 'Install Dependencies'
-        run: npm clean-install
+        run: bun install --frozen-lockfile
 
       - name: 'Type Check'
-        run: npm run typecheck
+        run: bun typecheck
 
       - name: 'Build'
-        run: npm run build
+        run: bun run build
 
       - name: 'Test'
-        run: npm run test
+        run: bun run test -- --run

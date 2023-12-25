@@ -13,30 +13,26 @@
     },
     "./package.json": "./package.json"
   },
-  "files": [
-    "dist/",
-    "index.d.ts"
-  ],
+  "files": ["dist/", "index.d.ts"],
   "scripts": {
-    "build": "npx rollup -c",
+    "build": "bunx rollup -c",
     "test": "vitest",
     "format": "biome format . --write",
     "lint": "biome check --apply .",
     "typecheck": "tsc --project tsconfig.json --noEmit",
-    "playground": "npm run dev --workspace=word-highlighter-playground",
-    "playground-website": "npm run dev --workspace=website",
+    "playground": "bun run workspace word-highlighter-playground dev",
+    "playground-website": "bun run workspace website dev",
     "prepare": "husky install",
+    "workspace": "bun ./scripts/workspace.ts",
     "release": "bumpp package.json --commit --push --tag",
     "prebuild": "rm -rf dist",
-    "prepublishOnly": "NODE_ENV='production' npm run build"
+    "prepublishOnly": "NODE_ENV='production' bun run build"
   },
   "engines": {
     "node": ">=18"
   },
-  "browserslist": [
-    "node 18"
-  ],
-  "author": "",
+  "browserslist": ["node 18"],
+  "author": "https://github.com/atomiks",
   "license": "MIT",
   "repository": "github:atomiks/rehype-pretty-code",
   "homepage": "https://rehype-pretty-code.netlify.app",
@@ -48,19 +44,19 @@
     "@babel/preset-env": "^7.23.6",
     "@babel/preset-typescript": "^7.23.3",
     "@biomejs/biome": "^1.4.1",
-    "@biomejs/js-api": "^0.3.0-nightly.cfef948",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/node": "^20.10.5",
     "bumpp": "^9.2.1",
+    "@types/bun": "^1.0.0",
     "hast-util-to-html": "^8.0.3",
     "husky": "^8.0.3",
     "mdast-util-to-hast": "^12.1.0",
     "prettier": "^3.1.1",
     "remark": "^15.0.1",
     "rollup": "^4.9.1",
-    "shikiji": "^0.9.9",
+    "shikiji": "^0.9.11",
     "shikiji-transformers": "^0.9.9",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",

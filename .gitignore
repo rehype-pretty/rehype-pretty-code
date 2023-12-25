@@ -6,7 +6,6 @@ node_modules
 .jekyll-metadata
 dist/
 .idea/
-.vscode/
 coverage.info
 coverage
 __diff_output__
