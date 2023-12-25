@@ -2,7 +2,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import { babel } from '@rollup/plugin-babel';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { defineConfig } from 'rollup';
-import packageJson from './package.json' with { type: 'json' };
+import packageJson from './package.json' assert { type: 'json' };
 
 export default defineConfig([
   {
