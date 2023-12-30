@@ -241,7 +241,7 @@ You can use your own theme as well by passing the theme JSON:
 const options = {
   theme: JSON.parse(
     fs.readFileSync(
-      new URL('./themes/moonlight-ii.json', import.meta.url),
+      './themes/moonlight-ii.json',
       'utf-8',
     ),
   ),
