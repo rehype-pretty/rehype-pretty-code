@@ -1,6 +1,6 @@
 import { expect, describe, it, vi } from 'vitest';
 import rehypePrettyCode from '../src';
-import { lstatSync, readFileSync, readdirSync } from 'fs';
+import { lstatSync, readFileSync, readdirSync } from 'node:fs';
 import { toHtml } from 'hast-util-to-html';
 import { toHast } from 'mdast-util-to-hast';
 import { dirname, join, parse } from 'node:path';

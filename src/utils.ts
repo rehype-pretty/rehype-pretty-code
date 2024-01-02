@@ -1,6 +1,6 @@
+import type { Theme } from './types';
 import type { Element, ElementContent, Root, RootContent, Text } from 'hast';
 import type { ThemeRegistrationRaw } from 'shikiji';
-import type { Theme } from '..';
 import rangeParser from 'parse-numeric-range';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

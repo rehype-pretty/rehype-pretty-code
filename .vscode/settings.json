@@ -33,6 +33,7 @@
     "_": true,
     "**/dist": true,
     "public/*.js": true,
-    "**/node_modules": true
+    "**/node_modules": true,
+    "**/package-lock.json": true
   }
 }

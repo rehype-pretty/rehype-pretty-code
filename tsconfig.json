@@ -14,8 +14,10 @@
     "allowJs": true,
     "checkJs": true,
     "esModuleInterop": true,
+    "baseUrl": ".",
     "downlevelIteration": true
   },
   "include": ["src/**/*", "scripts", "index.d.ts"],
+  "files": ["tsup.config.ts"],
   "exclude": ["node_modules"]
 }

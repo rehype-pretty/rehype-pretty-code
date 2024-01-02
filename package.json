@@ -2,20 +2,20 @@
   "name": "rehype-pretty-code",
   "version": "0.12.3",
   "description": "Beautiful code for your MD/MDX docs.",
-  "main": "./dist/rehype-pretty-code.js",
-  "module": "./dist/rehype-pretty-code.js",
   "type": "module",
-  "types": "index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "import": "./dist/rehype-pretty-code.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist/", "index.d.ts"],
+  "files": ["dist", "package.json"],
   "scripts": {
-    "build": "bunx rollup -c",
+    "build": "tsup --config=tsup.config.ts",
     "test": "vitest",
     "format": "biome format . --write",
     "lint": "biome check --apply .",
@@ -26,7 +26,8 @@
     "workspace": "bun ./scripts/workspace.ts",
     "release": "bumpp package.json --commit --push --tag",
     "prebuild": "rm -rf dist",
-    "prepublishOnly": "NODE_ENV='production' bun run build"
+    "prepublishOnly": "NODE_ENV='production' bun run build",
+    "check-package": "bunx publint@latest --strict && bunx @arethetypeswrong/cli --pack --ignore-rules cjs-resolves-to-esm"
   },
   "engines": {
     "node": ">=18"
@@ -40,27 +41,21 @@
     "shikiji": "^0.7.0 || ^0.8.0 || ^0.9.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.6",
-    "@babel/preset-env": "^7.23.6",
-    "@babel/preset-typescript": "^7.23.3",
     "@biomejs/biome": "^1.4.1",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@types/node": "^20.10.5",
-    "bumpp": "^9.2.1",
     "@types/bun": "^1.0.0",
+    "@types/node": "^20.10.6",
+    "bumpp": "^9.2.1",
     "hast-util-to-html": "^8.0.3",
     "husky": "^8.0.3",
     "mdast-util-to-hast": "^12.1.0",
     "prettier": "^3.1.1",
     "remark": "^15.0.1",
-    "rollup": "^4.9.1",
-    "shikiji": "^0.9.11",
+    "shikiji": "^0.9.17",
     "shikiji-transformers": "^0.9.9",
+    "tsup": "^8.0.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
-    "vitest": "^1.0.4"
+    "vitest": "^1.1.1"
   },
   "dependencies": {
     "@types/hast": "^3.0.3",
