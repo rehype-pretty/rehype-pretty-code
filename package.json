@@ -43,20 +43,19 @@
   "devDependencies": {
     "@biomejs/biome": "^1.4.1",
     "@types/bun": "^1.0.0",
-    "@types/node": "^20.10.5",
+    "@types/node": "^20.10.6",
     "bumpp": "^9.2.1",
     "hast-util-to-html": "^8.0.3",
     "husky": "^8.0.3",
     "mdast-util-to-hast": "^12.1.0",
     "prettier": "^3.1.1",
     "remark": "^15.0.1",
-    "rollup": "^4.9.1",
-    "shikiji": "^0.9.11",
+    "shikiji": "^0.9.17",
     "shikiji-transformers": "^0.9.9",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
-    "vitest": "^1.1.0"
+    "vitest": "^1.1.1"
   },
   "dependencies": {
     "@types/hast": "^3.0.3",

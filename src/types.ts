@@ -26,8 +26,9 @@ export interface Options {
   tokensMap?: Record<string, string>;
   transformers?: ShikijiTransformer[];
   filterMetaString?(str: string): string;
-  // @ts-ignore
-  getHighlighter?(options: BundledHighlighterOptions): Promise<Highlighter>;
+  getHighlighter?(
+    options: BundledHighlighterOptions<any, any>,
+  ): Promise<Highlighter>;
   onVisitLine?(element: LineElement): void;
   onVisitHighlightedLine?(element: LineElement, id: string | undefined): void;
   onVisitHighlightedChars?(element: CharsElement, id: string | undefined): void;
