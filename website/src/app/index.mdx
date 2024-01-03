@@ -612,11 +612,13 @@ import rehypeStringify from 'rehype-stringify';
 import rehypePrettyCode from 'rehype-pretty-code';
 
 export async function Code({ code }: { code: string }) {
-  code = await highlightCode(code);
+  const highlightedCode = await highlightCode(code);
   return (
-    <React.Fragment>
-      <section dangerouslySetInnerHTML={{ __html: code }} />
-    </React.Fragment>
+    <section
+      dangerouslySetInnerHTML={{
+        __html: highlightedCode,
+      }}
+    />
   );
 }
 
@@ -642,9 +644,9 @@ import { Code } from './code.tsx';
 
 export default async function Page() {
   return (
-    <React.Fragment>
+    <main>
       <Code code="`const numbers = [1, 2, 3]{:js}`" />
-    </React.Fragment>
+    </main>
   )
 }
 ```

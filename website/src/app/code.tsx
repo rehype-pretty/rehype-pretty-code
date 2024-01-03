@@ -10,11 +10,13 @@ import rehypePrettyCode from 'rehype-pretty-code';
  */
 
 export async function Code({ code }: { code: string }) {
-  code = await highlightCode(code);
+  const highlightedCode = await highlightCode(code);
   return (
-    <React.Fragment>
-      <section dangerouslySetInnerHTML={{ __html: code }} />
-    </React.Fragment>
+    <section
+      dangerouslySetInnerHTML={{
+        __html: highlightedCode,
+      }}
+    />
   );
 }
 
