@@ -598,3 +598,55 @@ const options = {
     }),
 };
 ```
+
+## React Server Component
+
+The [usage](#usage) works directly in React Server Components. Here's an example:
+
+```tsx title="code.tsx"
+import * as React from 'react';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+import rehypePrettyCode from 'rehype-pretty-code';
+
+export async function Code({ code }: { code: string }) {
+  code = await highlightCode(code);
+  return (
+    <React.Fragment>
+      <section dangerouslySetInnerHTML={{ __html: code }} />
+    </React.Fragment>
+  );
+}
+
+async function highlightCode(code: string) {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypePrettyCode, {
+      keepBackground: false,
+    })
+    .use(rehypeStringify)
+    .process(code);
+
+  return String(file);
+}
+```
+
+Then, simply import the RSC into a page / another component:
+
+```tsx src/app/rsc/page.tsx
+import * as React from 'react';
+import { Code } from './code.tsx';
+
+export default async function Page() {
+  return (
+    <React.Fragment>
+      <Code code="`const numbers = [1, 2, 3]{:js}`" />
+    </React.Fragment>
+  )
+}
+```
+
+See this example in action at [/rsc](/rsc).
