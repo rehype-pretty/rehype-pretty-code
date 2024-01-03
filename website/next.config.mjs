@@ -4,8 +4,8 @@
  */
 import fs from 'node:fs';
 import nextMDX from '@next/mdx';
-import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
+import rehypePrettyCode from 'rehype-pretty-code';
 
 /** @type {NextConfigPlugins} */
 const plugins = [];
