@@ -57,7 +57,7 @@ code[data-line-numbers] > [data-line]::before {
 }
 
 pre [data-line] {
-  @apply border-l-2 border-l-transparent px-6 border-l-2 border-l-transparent;
+  @apply px-6 border-l-2 border-l-transparent;
 }
 
 [data-highlighted-line] {
