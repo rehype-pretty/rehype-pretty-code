@@ -4,6 +4,7 @@ import type { CharsHighlighterOptions } from './types';
 import type { Highlighter, CodeToHastOptions } from 'shikiji';
 import type { Transformer } from 'unified';
 import { visit } from 'unist-util-visit';
+import { toString } from 'hast-util-to-string';
 import rangeParser from 'parse-numeric-range';
 import { getHighlighter as defaultGetHighlighter } from 'shikiji';
 import { unified } from 'unified';
@@ -442,7 +443,7 @@ export default function rehypePrettyCode(
             Array.isArray(element.properties?.className) &&
             element.properties?.className?.[0] === 'line'
           ) {
-            if (grid && element.children.length === 0) {
+            if (grid && toString(element) === '') {
               element.children = [{ type: 'text', value: ' ' }];
             }
 
