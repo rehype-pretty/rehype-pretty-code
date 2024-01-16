@@ -346,7 +346,7 @@ export default function rehypePrettyCode(
           defaultCodeBlockLang,
         );
 
-        if (!lang) return;
+        if (!lang || lang === 'math') return;
 
         const lineNumbers: number[] = [];
         if (meta) {
