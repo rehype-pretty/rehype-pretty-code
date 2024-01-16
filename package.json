@@ -40,7 +40,10 @@
   ],
   "author": "https://github.com/atomiks",
   "license": "MIT",
-  "repository": "github:atomiks/rehype-pretty-code",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atomiks/rehype-pretty-code.git"
+  },
   "homepage": "https://rehype-pretty-code.netlify.app",
   "peerDependencies": {
     "shikiji": "^0.7.0 || ^0.8.0 || ^0.9.0"
