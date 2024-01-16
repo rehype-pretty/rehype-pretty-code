@@ -223,6 +223,8 @@ export default function rehypePrettyCode(
     const highlighter = await cachedHighlighter;
     if (!highlighter) return;
 
+    let isMathLang = false;
+
     visit(tree, 'element', (element, _, parent) => {
       if (isInlineCode(element, parent)) {
         const textElement = element.children[0];
@@ -244,12 +246,16 @@ export default function rehypePrettyCode(
           filterMetaString,
           defaultCodeBlockLang,
         );
+        
+        isMathLang = lang === 'math'
 
         if (lang) {
           langsToLoad.add(lang);
         }
       }
     });
+
+    if (isMathLang) return
 
     try {
       await Promise.allSettled(
