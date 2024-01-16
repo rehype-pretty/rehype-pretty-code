@@ -246,8 +246,8 @@ export default function rehypePrettyCode(
           filterMetaString,
           defaultCodeBlockLang,
         );
-        
-        isMathLang = lang === 'math'
+
+        isMathLang = lang === 'math';
 
         if (lang) {
           langsToLoad.add(lang);
@@ -255,7 +255,7 @@ export default function rehypePrettyCode(
       }
     });
 
-    if (isMathLang) return
+    if (isMathLang) return;
 
     try {
       await Promise.allSettled(
