@@ -1,5 +1,7 @@
 # Unknown language
 
-```console
-test
+```abcdefg
+line 1
+
+line 2
 ```
