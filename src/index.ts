@@ -23,6 +23,7 @@ import {
   replaceLineClass,
   getLineId,
 } from './utils';
+export type { Options, LineElement, CharsElement, Theme } from './types';
 
 interface ApplyProps {
   tree: Root;
