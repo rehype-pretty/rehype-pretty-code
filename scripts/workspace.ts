@@ -31,9 +31,11 @@ if (workspace.includes(',')) {
   runScriptForWorkspace(workspace);
 else {
   const excluded = workspace.startsWith('-') && workspace.slice(1);
-  const packageJson = await file(
-    join(import.meta.dir, '../package.json'),
-  ).json();
+
+  const packageJson = JSON.parse(
+    await file(join(import.meta.dir, '../package.json')).text(),
+  );
+
   const workspaces = packageJson.workspaces as string[];
   for (const w of workspaces) {
     if (w === excluded) continue;
