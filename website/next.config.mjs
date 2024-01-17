@@ -1,3 +1,6 @@
+import process from 'node:process';
+Object.assign(process.env, { NEXT_TELEMETRY_DISABLED: '1' });
+
 /**
  * @typedef {import('next').NextConfig} NextConfig
  * @typedef {Array<((config: NextConfig) => NextConfig)>} NextConfigPlugins
