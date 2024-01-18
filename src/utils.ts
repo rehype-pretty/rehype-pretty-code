@@ -3,7 +3,6 @@ import type { Element, ElementContent, Root, RootContent, Text } from 'hast';
 import type { ThemeRegistrationRaw } from 'shikiji';
 import rangeParser from 'parse-numeric-range';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isJSONTheme(value: any): value is ThemeRegistrationRaw {
   return value ? Object.hasOwn(value, 'tokenColors') : false;
 }
