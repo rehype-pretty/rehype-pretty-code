@@ -2,11 +2,19 @@
   "name": "rehype-pretty-code",
   "version": "0.12.5",
   "description": "Beautiful code for your MD/MDX docs.",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/atomiks/rehype-pretty-code.git"
-  },
+  "homepage": "https://rehype-pretty-code.netlify.app",
   "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "package.json"],
   "scripts": {
     "build": "tsup --config=tsup.config.ts",
     "test": "vitest",
@@ -34,7 +42,7 @@
     "@biomejs/biome": "^1.5.2",
     "@types/bun": "^1.0.2",
     "@types/node": "^20.11.4",
-    "bumpp": "^9.2.1",
+    "bumpp": "^9.3.0",
     "bun": "^1.0.23",
     "hast-util-to-html": "^9.0.0",
     "husky": "^8.0.3",
@@ -44,34 +52,21 @@
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.11",
-    "vitest": "^1.2.0",
-    "shikiji": "^0.10.0-beta.4",
-    "shikiji-transformers": "^0.10.0-beta.4"
+    "vitest": "^1.2.1",
+    "shikiji": "^0.10.0-beta.7",
+    "shikiji-transformers": "^0.10.0-beta.7"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./package.json": "./package.json"
+  "peerDependencies": {
+    "shikiji": "^0.7.0 || ^0.8.0 || ^0.9.0"
   },
-  "files": [
-    "dist",
-    "package.json"
-  ],
   "engines": {
     "node": ">=18"
   },
-  "browserslist": [
-    "node 18"
-  ],
+  "browserslist": ["node 18"],
   "author": "https://github.com/atomiks",
   "license": "MIT",
-  "homepage": "https://rehype-pretty-code.netlify.app",
-  "peerDependencies": {
-    "shikiji": "^0.7.0 || ^0.8.0 || ^0.9.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atomiks/rehype-pretty-code.git"
   }
 }
