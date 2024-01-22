@@ -383,10 +383,14 @@ export default function rehypePrettyCode(
               chars: string;
               charsIdAndOrRange: string;
             };
-            const [range, id] = charsIdAndOrRange.split('#');
             charsList.push(chars);
-            range && charsListNumbers.push(rangeParser(range));
-            id && charsListIdMap.set(chars, id);
+            if (charsIdAndOrRange === '') {
+              charsListNumbers.push([]);
+            } else {
+              const [range, id] = charsIdAndOrRange.split('#');
+              range && charsListNumbers.push(rangeParser(range));
+              id && charsListIdMap.set(chars, id);
+            }
           });
         }
 
