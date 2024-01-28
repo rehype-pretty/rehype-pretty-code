@@ -5,10 +5,10 @@ import { toHtml } from 'hast-util-to-html';
 import { toHast } from 'mdast-util-to-hast';
 import { dirname, join, parse } from 'node:path';
 import { remark } from 'remark';
-import { getHighlighter as shikiHighlighter } from 'shikiji';
+import { getHighlighter as shikiHighlighter } from 'shiki';
 import { fileURLToPath } from 'node:url';
 import qs from 'node:querystring';
-import { transformerNotationDiff } from 'shikiji-transformers';
+import { transformerNotationDiff } from '@shikijs/transformers';
 import prettier from 'prettier';
 
 const __filename = fileURLToPath(import.meta.url);

@@ -1,6 +1,6 @@
 import type { Theme } from './types';
 import type { Element, ElementContent, Root, RootContent, Text } from 'hast';
-import type { ThemeRegistrationRaw } from 'shikiji';
+import type { ThemeRegistrationRaw } from 'shiki';
 import rangeParser from 'parse-numeric-range';
 
 export function isJSONTheme(value: any): value is ThemeRegistrationRaw {

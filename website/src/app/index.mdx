@@ -1,7 +1,7 @@
 {/* prettier-ignore */}
 <div>
   [`rehype-pretty-code`](https://github.com/atomiks/rehype-pretty-code) <span className="mix-blend-plus-lighter text-zinc-400/80">is a Rehype plugin powered by the</span>
-  [`shikiji`](https://github.com/antfu/shikiji) <span className="mix-blend-plus-lighter text-zinc-400/80">syntax highlighter that provides beautiful code blocks for Markdown or MDX. It works on both the server at build-time (avoiding runtime syntax highlighting) and on the client for dynamic highlighting.</span>
+  [`shiki`](https://github.com/shikijs/shiki) <span className="mix-blend-plus-lighter text-zinc-400/80">syntax highlighter that provides beautiful code blocks for Markdown or MDX. It works on both the server at build-time (avoiding runtime syntax highlighting) and on the client for dynamic highlighting.</span>
 </div>
 
 ## Editor-Grade Highlighting
@@ -119,11 +119,11 @@ Inline ANSI: `> Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m{:ansi}`
 Install via your terminal:
 
 ```shell
-npm install rehype-pretty-code shikiji@^0.9.0
+npm install rehype-pretty-code shiki
 ```
 
-This package is ESM-only and currently supports `shikiji{:.string}`
-`^0.7.0 - ^0.9.0{:.string}`.
+This package is ESM-only and currently supports `shiki{:.string}`
+`^1.0.0-beta.0{:.string}`.
 
 > To use the latest version in Next.js, ensure your config file is `ESM`:
 > `next.config.mjs`. Here's a full example:
@@ -220,7 +220,7 @@ interface Options {
   keepBackground?: boolean;
   defaultLang?: string | { block?: string; inline?: string };
   tokensMap?: Record<string, string>;
-  transformers?: ShikijiTransformer[];
+  transformers?: ShikiTransformer[];
   filterMetaString?(str: string): string;
   getHighlighter?(options: BundledHighlighterOptions): Promise<Highlighter>;
   onVisitLine?(element: LineElement): void;
@@ -246,8 +246,8 @@ const options = {
 
 ### `theme{:.meta.object-literal.key}`
 
-The default theme is `github-dark-dimmed{:.string}`. Shikiji has a bunch of
-[pre-packaged themes](https://github.com/antfu/shikiji/blob/main/docs/themes.md),
+The default theme is `github-dark-dimmed{:.string}`. Shiki has a bunch of
+[pre-packaged themes](https://shiki.style/themes#themes),
 which can be specified as a plain string:
 
 ```js
@@ -302,14 +302,14 @@ const options = {
 
 ### `transformers{:.meta.object-literal.key}`
 
-[Transformers](https://github.com/antfu/shikiji#hast-transformers) are a
-Shikiji-native way to manipulate the `hAST` tree of the code blocks and further
+[Transformers](https://shiki.style/guide/transformers#transformers) are a
+Shiki-native way to manipulate the `hAST` tree of the code blocks and further
 extend the behavior of this plugin. The
-[`shikiji-transformers`](https://www.npmjs.com/package/shikiji-transformers)
+[`@shikijs/transformers`](https://npm.im/@shikijs/transformers)
 package provides some useful transformers.
 
 ```js
-import { transformerNotationDiff } from "shikiji-transformers";
+import { transformerNotationDiff } from '@shikijs/transformers';
 
 const options = {
   transformers: [transformerNotationDiff()],
@@ -544,7 +544,7 @@ const options = {
 
 Now, use the following CSS to display the variable colors — if a space is found
 in the theme name, then CSS variable keys based on the object are available
-([more info](https://github.com/antfu/shikiji#lightdark-dual-themes)):
+([more info](https://shiki.style/guide/dual-themes#light-dark-dual-themes)):
 
 ```scss
 code[data-theme*=" "],
@@ -598,10 +598,10 @@ const options = {
 
 To completely configure the highlighter, use the
 `getHighlighter{:.entity.name.function}` option. This is helpful if you'd like
-to configure other Shikiji options, such as `langs{:.meta.object-literal.key}`.
+to configure other Shiki options, such as `langs{:.meta.object-literal.key}`.
 
 ```js
-import { getHighlighter } from "shikiji";
+import { getHighlighter } from "shiki";
 
 const options = {
   getHighlighter: (options) =>
