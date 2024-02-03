@@ -40,24 +40,24 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
+    "@shikijs/transformers": "^1.0.0-beta.5",
     "@types/bun": "^1.0.4",
-    "@types/node": "^20.11.8",
+    "@types/node": "^20.11.16",
     "bumpp": "^9.3.0",
-    "bun": "^1.0.25",
+    "bun":"^1.0.26",
     "hast-util-to-html": "^9.0.0",
     "husky": "^9.0.6",
     "mdast-util-to-hast": "^13.1.0",
     "prettier": "^3.2.4",
     "remark": "^15.0.1",
+    "shiki": "^1.0.0-beta.5",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.12",
-    "vitest": "^1.2.2",
-    "shiki": "^1.0.0-beta.0",
-    "@shikijs/transformers": "^1.0.0-beta.0"
+    "vitest": "^1.2.2"
   },
   "peerDependencies": {
-    "shiki": "^1.0.0-beta.0 || ^1.0.0"
+    "shiki": "^1.0.0-beta.5 || ^1.0.0"
   },
   "engines": {
     "node": ">=18"
