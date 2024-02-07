@@ -55,6 +55,7 @@ export function parseBlockMetaString(
   defaultFallback: string,
 ) {
   let meta = filter(
+    // @ts-expect-error: TODO handle this
     (element.data?.meta ?? element.properties?.metastring ?? '') as string,
   );
 

@@ -15,9 +15,10 @@
     "./package.json": "./package.json"
   },
   "files": ["dist", "package.json"],
+  "repository": "github:atomiks/rehype-pretty-code",
   "scripts": {
     "build": "tsup --config=tsup.config.ts",
-    "test": "vitest",
+    "test": "vitest --run",
     "format": "biome format . --write",
     "lint": "biome check --apply .",
     "typecheck": "tsc --project tsconfig.json --noEmit",
@@ -40,33 +41,29 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
-    "@shikijs/transformers": "^1.0.0-beta.5",
-    "@types/bun": "^1.0.4",
+    "@types/bun": "^1.0.5",
     "@types/node": "^20.11.16",
     "bumpp": "^9.3.0",
-    "bun":"^1.0.26",
+    "bun": "^1.0.26",
     "hast-util-to-html": "^9.0.0",
-    "husky": "^9.0.6",
+    "husky": "^9.0.10",
     "mdast-util-to-hast": "^13.1.0",
-    "prettier": "^3.2.4",
+    "prettier": "^3.2.5",
     "remark": "^15.0.1",
-    "shiki": "^1.0.0-beta.5",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.12",
-    "vitest": "^1.2.2"
+    "vitest": "^1.2.2",
+    "@shikijs/transformers": "^1.0.0",
+    "shiki": "^1.0.0"
   },
   "peerDependencies": {
-    "shiki": "^1.0.0-beta.5 || ^1.0.0"
+    "shiki": "^1.0.0"
   },
   "engines": {
     "node": ">=18"
   },
   "browserslist": ["node 18"],
   "author": "https://github.com/atomiks",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/atomiks/rehype-pretty-code.git"
-  }
+  "license": "MIT"
 }
