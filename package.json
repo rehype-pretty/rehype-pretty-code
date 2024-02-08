@@ -1,6 +1,6 @@
 {
   "name": "rehype-pretty-code",
-  "version": "0.12.6",
+  "version": "0.13.0",
   "description": "Beautiful code for your MD/MDX docs.",
   "homepage": "https://rehype-pretty-code.netlify.app",
   "type": "module",
@@ -14,7 +14,10 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist", "package.json"],
+  "files": [
+    "dist",
+    "package.json"
+  ],
   "scripts": {
     "build": "tsup --config=tsup.config.ts",
     "test": "vitest --run",
@@ -63,7 +66,9 @@
     "node": ">=18"
   },
   "repository": "github:rehype-pretty/rehype-pretty-code",
-  "browserslist": ["node 18"],
+  "browserslist": [
+    "node 18"
+  ],
   "author": "https://github.com/atomiks",
   "license": "MIT"
 }
