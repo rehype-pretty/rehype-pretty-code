@@ -1,12 +1,14 @@
 import type { Element, ElementContent, ElementData, Root } from 'hast';
-import type { Options, Theme } from './types';
-import type { CharsHighlighterOptions } from './types';
-import type { Highlighter, CodeToHastOptions } from 'shikiji';
+import type { Options, Theme, CharsHighlighterOptions } from './types';
+import {
+  type Highlighter,
+  type CodeToHastOptions,
+  getHighlighter as defaultGetHighlighter,
+} from 'shiki';
 import type { Transformer } from 'unified';
 import { visit } from 'unist-util-visit';
 import { toString as hastToString } from 'hast-util-to-string';
 import rangeParser from 'parse-numeric-range';
-import { getHighlighter as defaultGetHighlighter } from 'shikiji';
 import { unified } from 'unified';
 import rehypeParse from 'rehype-parse';
 import { charsHighlighter } from './chars/charsHighlighter';

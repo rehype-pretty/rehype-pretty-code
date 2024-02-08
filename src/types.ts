@@ -3,8 +3,8 @@ import type {
   Highlighter,
   BuiltinTheme,
   ThemeRegistrationRaw,
-  ShikijiTransformer,
-} from 'shikiji';
+  ShikiTransformer,
+} from 'shiki';
 import type { Element, Properties, Text } from 'hast';
 
 export type LineElement = Omit<Element, 'properties'> & {
@@ -24,7 +24,7 @@ export interface Options {
   keepBackground?: boolean;
   defaultLang?: string | { block?: string; inline?: string };
   tokensMap?: Record<string, string>;
-  transformers?: ShikijiTransformer[];
+  transformers?: ShikiTransformer[];
   filterMetaString?(str: string): string;
   getHighlighter?(
     options: BundledHighlighterOptions<any, any>,
