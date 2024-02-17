@@ -353,7 +353,7 @@ export default function rehypePrettyCode(
 
         const lineNumbers: number[] = [];
         if (meta) {
-          const matches = meta.matchAll(/\{(.*?)\}/g);
+          const matches = meta.matchAll(/(?<!\S)\{(.*?)\}/g);
           for (const match of matches) {
             if (match[1]) {
               lineNumbers.push(...rangeParser(match[1]));
