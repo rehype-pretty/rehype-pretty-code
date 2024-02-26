@@ -1,9 +1,10 @@
 import './globals.css';
+import type { Metadata } from 'next';
 
 export const metadata = {
   title: 'Rehype Pretty Code',
   description: 'Beautiful code blocks for your MD/MDX docs.',
-};
+} satisfies Metadata;
 
 export default function RootLayout({
   children,
