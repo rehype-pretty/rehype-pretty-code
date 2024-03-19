@@ -26,6 +26,18 @@
   "organizeImports": {
     "enabled": false
   },
+  "css": {
+    "formatter": {
+      "enabled": true,
+      "indentWidth": 2,
+      "lineWidth": 100,
+      "quoteStyle": "double",
+      "indentStyle": "space"
+    },
+    "parser": {
+      "allowWrongLineComments": true
+    }
+  },
   "formatter": {
     "enabled": true,
     "lineWidth": 100,
