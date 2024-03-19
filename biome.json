@@ -3,19 +3,22 @@
   "vcs": {
     "root": ".",
     "enabled": true,
-    "clientKind": "git"
+    "clientKind": "git",
+    "useIgnoreFile": true
   },
   "files": {
     "include": [
-      "./**/*.ts",
-      "./**/*.js",
-      "./**/*.cjs",
-      "./**/*.mjs",
-      "./**/*.jsx",
-      "./**/*.tsx",
-      "./**/*.d.ts",
-      "./**/*.json",
-      "./**/*.jsonc"
+      "*.ts",
+      "*.js",
+      "*.cjs",
+      "*.mjs",
+      "*.jsx",
+      "*.tsx",
+      "*.d.ts",
+      "*.json",
+      "*.jsonc",
+      "*.astro",
+      "*.svelte"
     ],
     "ignore": ["node_modules", "dist", "_"],
     "ignoreUnknown": true
@@ -30,18 +33,33 @@
     "indentStyle": "space",
     "formatWithErrors": true,
     "include": [
-      "./**/*.ts",
-      "./**/*.js",
-      "./**/*.cjs",
-      "./**/*.mjs",
-      "./**/*.jsx",
-      "./**/*.tsx",
-      "./**/*.d.ts",
-      "./**/*.json",
-      "./**/*.jsonc"
+      "*.ts",
+      "*.js",
+      "*.cjs",
+      "*.mjs",
+      "*.jsx",
+      "*.tsx",
+      "*.d.ts",
+      "*.json",
+      "*.jsonc",
+      "*.astro",
+      "*.svelte"
     ]
   },
   "linter": {
+    "include": [
+      "*.ts",
+      "*.js",
+      "*.cjs",
+      "*.mjs",
+      "*.jsx",
+      "*.tsx",
+      "*.d.ts",
+      "*.json",
+      "*.jsonc",
+      "*.astro",
+      "*.svelte"
+    ],
     "enabled": true,
     "rules": {
       "all": true,
@@ -51,9 +69,11 @@
         "noUnusedTemplateLiteral": "off"
       },
       "a11y": { "noSvgWithoutTitle": "off" },
-      "nursery": { "noUnusedImports": "off" },
       "performance": { "noAccumulatingSpread": "off" },
       "correctness": { "noUndeclaredVariables": "off" },
+      "nursery": {
+        "noNodejsModules": "off"
+      },
       "suspicious": {
         "noExplicitAny": "off",
         "noEmptyInterface": "off",
@@ -79,6 +99,7 @@
     }
   },
   "javascript": {
+    "globals": ["NodeJS", "Astro"],
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
     },
@@ -94,5 +115,41 @@
       "quoteProperties": "asNeeded",
       "arrowParentheses": "always"
     }
-  }
+  },
+  "overrides": [
+    {
+      "include": ["*.astro"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "off"
+          },
+          "style": {
+            "useImportType": "off",
+            "useFilenamingConvention": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["*.svelte"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedLabels": "off",
+            "noUnusedImports": "off",
+            "useHookAtTopLevel": "off"
+          },
+          "style": {
+            "useConst": "off",
+            "useImportType": "off",
+            "useFilenamingConvention": "off"
+          },
+          "suspicious": {
+            "noConfusingLabels": "off"
+          }
+        }
+      }
+    }
+  ]
 }

@@ -1,3 +1,7 @@
 * text=auto
 
 /test/fixtures/**/* text eol=lf
+
+*.lockb binary diff=lockb
+biome.json linguist-language=JSON-with-Comments
+.vscode/*.json linguist-language=JSON-with-Comments

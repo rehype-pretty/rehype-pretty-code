@@ -4,17 +4,15 @@
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "typescript.inlayHints.parameterNames.enabled": "all",
   "typescript.preferences.preferTypeOnlyAutoImports": true,
-  "files.associations": {
-    // tells vscode that the file can take comments
-    "*.css": "tailwindcss",
-    "biome.json": "jsonc"
-  },
   "editor.quickSuggestions": {
     "strings": "on"
   },
   "tailwindCSS.includeLanguages": {
     "plaintext": "html"
   },
+  "biome.enabled": true,
+  "biome.rename": true,
+  "biome.searchInPath": true,
   // format & lint settings
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
@@ -29,6 +27,12 @@
   "[javascriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
   "[json]": { "editor.defaultFormatter": "biomejs.biome" },
   "[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[astro]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[svelte]": { "editor.defaultFormatter": "biomejs.biome" },
+  "files.associations": {
+    "biome.json": "jsonc",
+    "*.css": "tailwindcss"
+  },
   "search.exclude": {
     "_": true,
     "**/dist": true,
