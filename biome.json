@@ -3,25 +3,40 @@
   "vcs": {
     "root": ".",
     "enabled": true,
-    "clientKind": "git"
+    "clientKind": "git",
+    "useIgnoreFile": true
   },
   "files": {
     "include": [
-      "./**/*.ts",
-      "./**/*.js",
-      "./**/*.cjs",
-      "./**/*.mjs",
-      "./**/*.jsx",
-      "./**/*.tsx",
-      "./**/*.d.ts",
-      "./**/*.json",
-      "./**/*.jsonc"
+      "*.ts",
+      "*.js",
+      "*.cjs",
+      "*.mjs",
+      "*.jsx",
+      "*.tsx",
+      "*.d.ts",
+      "*.json",
+      "*.jsonc",
+      "*.astro",
+      "*.svelte"
     ],
     "ignore": ["node_modules", "dist", "_"],
     "ignoreUnknown": true
   },
   "organizeImports": {
     "enabled": false
+  },
+  "css": {
+    "formatter": {
+      "enabled": true,
+      "indentWidth": 2,
+      "lineWidth": 100,
+      "quoteStyle": "double",
+      "indentStyle": "space"
+    },
+    "parser": {
+      "allowWrongLineComments": true
+    }
   },
   "formatter": {
     "enabled": true,
@@ -30,31 +45,54 @@
     "indentStyle": "space",
     "formatWithErrors": true,
     "include": [
-      "./**/*.ts",
-      "./**/*.js",
-      "./**/*.cjs",
-      "./**/*.mjs",
-      "./**/*.jsx",
-      "./**/*.tsx",
-      "./**/*.d.ts",
-      "./**/*.json",
-      "./**/*.jsonc"
+      "*.ts",
+      "*.js",
+      "*.cjs",
+      "*.mjs",
+      "*.jsx",
+      "*.tsx",
+      "*.d.ts",
+      "*.json",
+      "*.jsonc",
+      "*.astro",
+      "*.svelte"
     ]
   },
   "linter": {
+    "include": [
+      "*.ts",
+      "*.js",
+      "*.cjs",
+      "*.mjs",
+      "*.jsx",
+      "*.tsx",
+      "*.d.ts",
+      "*.json",
+      "*.jsonc",
+      "*.astro",
+      "*.svelte"
+    ],
     "enabled": true,
     "rules": {
       "all": true,
       "style": {
+        "noDefaultExport": "off",
+        "useFragmentSyntax": "off",
         "useBlockStatements": "off",
+        "useNamingConvention": "off",
+        "useShorthandArrayType": "off",
         "useSelfClosingElements": "off",
-        "noUnusedTemplateLiteral": "off"
+        "noUnusedTemplateLiteral": "off",
+        "useConsistentArrayType": { "level": "warn", "options": { "syntax": "generic" } }
       },
       "a11y": { "noSvgWithoutTitle": "off" },
-      "nursery": { "noUnusedImports": "off" },
       "performance": { "noAccumulatingSpread": "off" },
       "correctness": { "noUndeclaredVariables": "off" },
+      "nursery": {
+        "noNodejsModules": "off"
+      },
       "suspicious": {
+        "useAwait": "off",
         "noExplicitAny": "off",
         "noEmptyInterface": "off",
         "noConfusingVoidType": "off"
@@ -79,6 +117,7 @@
     }
   },
   "javascript": {
+    "globals": ["NodeJS", "Astro", "NEXT_TELEMETRY_DISABLED"],
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
     },
@@ -91,8 +130,54 @@
       "trailingComma": "all",
       "semicolons": "always",
       "jsxQuoteStyle": "double",
-      "quoteProperties": "asNeeded",
-      "arrowParentheses": "always"
+      "arrowParentheses": "always",
+      "quoteProperties": "asNeeded"
     }
-  }
+  },
+  "overrides": [
+    {
+      "include": ["test", "scripts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsoleLog": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["*.astro"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "off"
+          },
+          "style": {
+            "useImportType": "off",
+            "useFilenamingConvention": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["*.svelte"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedLabels": "off",
+            "noUnusedImports": "off",
+            "useHookAtTopLevel": "off"
+          },
+          "style": {
+            "useConst": "off",
+            "useImportType": "off",
+            "useFilenamingConvention": "off"
+          },
+          "suspicious": {
+            "noConfusingLabels": "off"
+          }
+        }
+      }
+    }
+  ]
 }

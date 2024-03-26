@@ -15,9 +15,9 @@ function Heading({
 > & {
   level: 1 | 2 | 3 | 4 | 5 | 6;
 }) {
-  const Tag = `h${level}`;
+  const tag = `h${level}`;
   return React.createElement(
-    Tag,
+    tag,
     props,
     <a href={`#${props.id}`}>{children}</a>,
   );

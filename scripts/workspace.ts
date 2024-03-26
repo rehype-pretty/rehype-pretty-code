@@ -36,7 +36,7 @@ else {
     await file(join(import.meta.dir, '../package.json')).text(),
   );
 
-  const workspaces = packageJson.workspaces as string[];
+  const workspaces = packageJson.workspaces as Array<string>;
   for (const w of workspaces) {
     if (w === excluded) continue;
     await runScriptForWorkspace(w);

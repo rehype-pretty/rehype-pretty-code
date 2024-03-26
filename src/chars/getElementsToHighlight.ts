@@ -16,7 +16,7 @@ export function getElementsToHighlight(
   let charsSoFar = '';
 
   if (element.children) {
-    const elements = element.children as Element[];
+    const elements = element.children as Array<Element>;
 
     for (let i = startIndex; i < elements.length; i++) {
       const remaining = charsSoFar ? chars.replace(charsSoFar, '') : chars;

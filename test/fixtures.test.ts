@@ -1,61 +1,86 @@
-import { expect, describe, it, vi } from 'vitest';
-import rehypePrettyCode from '../src';
-import { lstatSync, readFileSync, readdirSync } from 'node:fs';
+import {
+  lstatSync,
+  readdirSync,
+  readFileSync,
+  type PathOrFileDescriptor,
+} from 'node:fs';
+import {
+  type BundledTheme,
+  type BundledLanguage,
+  type HighlighterGeneric,
+  type BundledHighlighterOptions,
+  getHighlighter as shikiHighlighter,
+} from 'shiki';
+import prettier from 'prettier';
+import { remark } from 'remark';
+import { join, parse } from 'node:path';
+import type { Compatible } from 'vfile';
 import { toHtml } from 'hast-util-to-html';
 import { toHast } from 'mdast-util-to-hast';
-import { dirname, join, parse } from 'node:path';
-import { remark } from 'remark';
-import { getHighlighter as shikiHighlighter } from 'shiki';
-import { fileURLToPath } from 'node:url';
-import qs from 'node:querystring';
+import rehypePrettyCode, { type Options } from '../src';
+import { expect, describe, it, vi, type Mock } from 'vitest';
 import { transformerNotationDiff } from '@shikijs/transformers';
-import prettier from 'prettier';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const resultsFolder = join(import.meta.dirname, 'results');
+const fixturesFolder = join(import.meta.dirname, 'fixtures');
 
-const fixturesFolder = join(__dirname, 'fixtures');
-const resultsFolder = join(__dirname, 'results');
-
-const getHTML = async (code, options) => {
-  const hAST = toHast(remark().parse(code), { allowDangerousHtml: true });
-  await rehypePrettyCode(options)(hAST);
-  return toHtml(hAST, { allowDangerousHtml: true });
+const getHtml = async (
+  code: Compatible | undefined,
+  options: Options | undefined,
+) => {
+  const hAst = toHast(remark().parse(code), { allowDangerousHtml: true });
+  // @ts-expect-error
+  await rehypePrettyCode(options)(hAst);
+  return toHtml(hAst, { allowDangerousHtml: true });
 };
 
-const getTheme = (multiple) => {
+export const parseQueryParameters = (query: string) =>
+  Object.fromEntries(new URLSearchParams(query).entries());
+
+const getTheme = (multiple: boolean): Options['theme'] => {
   return multiple
     ? { dark: 'github-dark', light: 'github-light' }
     : 'github-dark';
 };
 
-const isMultipleThemeTest = (fixtureName) => {
+const isMultipleThemeTest = (fixtureName: string) => {
   return fixtureName.toLowerCase().includes('multipletheme');
 };
 
 // To add a test, create a markdown file in the fixtures folder
-const runFixture = async (fixture, fixtureName, getHighlighter) => {
+const runFixture = async (
+  fixture: PathOrFileDescriptor,
+  fixtureName: string,
+  getHighlighter: Mock<
+    [
+      options?:
+        | BundledHighlighterOptions<BundledLanguage, BundledTheme>
+        | undefined,
+    ],
+    Promise<HighlighterGeneric<BundledLanguage, BundledTheme>>
+  >,
+) => {
   const testName = parse(fixtureName).name;
-  const resultHTMLName = `${testName}.html`;
-  const resultHTMLPath = join(resultsFolder, resultHTMLName);
+  const resultHtmlName = `${testName}.html`;
+  const resultHtmlPath = join(resultsFolder, resultHtmlName);
 
   const code = readFileSync(fixture, 'utf8');
 
-  const html = await getHTML(code, {
-    keepBackground: !resultHTMLName.includes('keepBackground'),
+  const html = await getHtml(code, {
+    keepBackground: !resultHtmlName.includes('keepBackground'),
     defaultLang: (() => {
       if (testName === 'no-highlighting') {
         return undefined;
       }
 
-      const lang = testName.split('.')[1];
+      const [, lang] = testName.split('.');
       if (!lang) {
         return undefined;
       }
       if (lang === 'js') {
         return 'js';
       }
-      return qs.parse(lang);
+      return parseQueryParameters(lang);
     })(),
     filterMetaString: (string) => string?.replace(/filename=".*"/, ''),
     theme: getTheme(isMultipleThemeTest(testName)),
@@ -66,8 +91,13 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
       node.properties.className = ['word'];
 
       if (id) {
-        const textColor = { a: 'pink', b: 'cyan', c: 'lightblue', id: 'white' };
-        const backgroundColor = {
+        const textColor: Record<string, string> = {
+          a: 'pink',
+          b: 'cyan',
+          c: 'lightblue',
+          id: 'white',
+        };
+        const backgroundColor: Record<string, string> = {
           a: 'rgba(255, 100, 200, 0.35)',
           b: 'rgba(0, 255, 100, 0.25)',
           c: 'rgba(100, 200, 255, 0.25)',
@@ -79,8 +109,8 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
         `;
       }
     },
-    onVisitLine(node) {
-      node;
+    onVisitLine(_node) {
+      _node;
     },
     onVisitTitle(node) {
       node.properties.style = 'font-weight: bold;';
@@ -93,7 +123,7 @@ const runFixture = async (fixture, fixtureName, getHighlighter) => {
   });
 
   const htmlString = await prettier.format(html, { parser: 'html' });
-  return { htmlString, resultHTMLPath };
+  return { htmlString, resultHtmlPath };
 };
 
 describe('Single theme', () => {
@@ -108,13 +138,13 @@ describe('Single theme', () => {
     }
 
     it(`Fixture: ${fixtureName}`, async () => {
-      const { htmlString, resultHTMLPath } = await runFixture(
+      const { htmlString, resultHtmlPath } = await runFixture(
         fixture,
         fixtureName,
         getHighlighter,
       );
 
-      expect(defaultStyle + htmlString).toMatchFileSnapshot(resultHTMLPath);
+      expect(defaultStyle + htmlString).toMatchFileSnapshot(resultHtmlPath);
     });
   });
 });
@@ -131,28 +161,28 @@ describe('Multiple theme', () => {
     }
 
     it(`Fixture: ${fixtureName}`, async () => {
-      const { htmlString, resultHTMLPath } = await runFixture(
+      const { htmlString, resultHtmlPath } = await runFixture(
         fixture,
         fixtureName,
         getHighlighter,
       );
 
-      expect(defaultStyle + htmlString).toMatchFileSnapshot(resultHTMLPath);
+      expect(defaultStyle + htmlString).toMatchFileSnapshot(resultHtmlPath);
     });
   });
 });
 
 it("highlighter caches don't overwrite each other", async () => {
   const [html1, html2] = await Promise.all([
-    getHTML('`[1, 2, 3]{:js}`', { theme: 'github-light' }),
-    getHTML('`[1, 2, 3]{:js}`', { theme: 'github-dark' }),
+    getHtml('`[1, 2, 3]{:js}`', { theme: 'github-light' }),
+    getHtml('`[1, 2, 3]{:js}`', { theme: 'github-dark' }),
   ]);
   // both highlighters are being cached under the same key, but in separate caches,
   // that's what we're testing here by asserting that they yield different results
   expect(html1).not.toBe(html2);
 });
 
-const defaultStyle = `
+const defaultStyle = /* html */ `
 <style>
   html {
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
