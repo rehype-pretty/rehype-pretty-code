@@ -2,12 +2,12 @@ import type { Element } from 'hast';
 import { isElement, isText } from '../utils';
 
 interface SplitElementProps {
-  elements: Element[];
+  elements: Array<Element>;
   elementToWrap: Element;
   innerString: string;
   rightString: string;
   leftString: string;
-  rest: string[];
+  rest: Array<string>;
   nextElementContinues: boolean;
   index: number;
   ignoreChars: boolean;

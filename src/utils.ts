@@ -114,7 +114,7 @@ export function getLineId(lineNumber: number, meta: string) {
 
   for (const segment of segments) {
     const [range, id] = segment.split('#');
-    if (!range || !id) continue;
+    if (!(range && id)) continue;
 
     const match = range.match(/\{(.*?)\}/);
     const capture = match?.[1];

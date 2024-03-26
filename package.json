@@ -28,7 +28,7 @@
     "release": "bumpp package.json --commit --push --tag",
     "prebuild": "rm -rf dist",
     "prepublishOnly": "NODE_ENV='production' bun run build",
-    "check-package": "bunx publint@latest --strict && bunx @arethetypeswrong/cli --pack --ignore-rules cjs-resolves-to-esm"
+    "check-package": "bunx publint@latest --strict && bunx attw --pack --ignore-rules cjs-resolves-to-esm"
   },
   "dependencies": {
     "@types/hast": "^3.0.4",
@@ -39,12 +39,13 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.6.1",
+    "@arethetypeswrong/cli": "^0.15.2",
+    "@biomejs/biome": "^1.6.3",
     "@shikijs/transformers": "^1.2.0",
-    "@types/bun": "^1.0.8",
-    "@types/node": "^20.11.28",
+    "@types/bun": "^1.0.10",
+    "@types/node": "^20.11.30",
     "bumpp": "^9.4.0",
-    "bun": "^1.0.33",
+    "bun": "^1.0.35",
     "hast-util-to-html": "^9.0.0",
     "husky": "^9.0.11",
     "mdast-util-to-hast": "^13.1.0",
@@ -52,8 +53,9 @@
     "remark": "^15.0.1",
     "shiki": "^1.2.0",
     "tsup": "^8.0.2",
-    "typescript": "^5.4.2",
-    "vite": "^5.1.6",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.3",
+    "vite": "^5.2.6",
     "vitest": "^1.4.0"
   },
   "peerDependencies": {

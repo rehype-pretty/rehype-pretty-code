@@ -9,7 +9,7 @@ export function nextElementMaybeContinuesChars({
   nextIndex,
   remainingPart,
 }: {
-  elements: Element[];
+  elements: Array<Element>;
   nextIndex: number;
   remainingPart: string;
 }): boolean {

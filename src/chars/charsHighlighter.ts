@@ -16,7 +16,7 @@ import { isElement } from '../utils';
  */
 export function charsHighlighter(
   element: Element,
-  charsList: string[],
+  charsList: Array<string>,
   options: CharsHighlighterOptions,
   onVisitHighlightedChars?: (
     element: CharsElement,

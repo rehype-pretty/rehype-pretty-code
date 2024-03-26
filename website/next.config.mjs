@@ -6,7 +6,7 @@ Object.assign(process.env, { NEXT_TELEMETRY_DISABLED: '1' });
  * @typedef {Array<((config: NextConfig) => NextConfig)>} NextConfigPlugins
  */
 import fs from 'node:fs';
-import nextMDX from '@next/mdx';
+import nextMdx from '@next/mdx';
 import rehypeSlug from 'rehype-slug';
 import rehypePrettyCode from 'rehype-pretty-code';
 
@@ -36,7 +36,7 @@ const options = {
 };
 
 plugins.push(
-  nextMDX({
+  nextMdx({
     extension: /\.mdx?$/,
     options: {
       providerImportSource: '@mdx-js/react',

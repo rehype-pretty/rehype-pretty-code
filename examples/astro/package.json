@@ -10,16 +10,16 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^2.2.0",
+    "@astrojs/mdx": "^2.2.1",
     "@astrojs/tailwind": "^5.1.0",
-    "astro": "^4.5.6",
+    "astro": "^4.5.9",
     "rehype-pretty-code": "^0.13.0",
     "shiki": "^1.2.0",
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
-    "@types/node": "^20.11.29",
-    "@astrojs/check": "^0.5.9",
-    "typescript": "^5.4.2"
+    "@astrojs/check": "^0.5.10",
+    "@types/node": "^20.11.30",
+    "typescript": "^5.4.3"
   }
 }

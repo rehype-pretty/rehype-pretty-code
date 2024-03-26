@@ -68,7 +68,7 @@ function apply(
       const themeNames = getThemeNames(theme);
       const themeNamesString = themeNames.join(' ');
 
-      if (!isElement(pre) || !pre.properties) {
+      if (!(isElement(pre) && pre.properties)) {
         return [];
       }
 
@@ -95,7 +95,7 @@ function apply(
       pre.properties['data-language'] = lang;
       pre.properties['data-theme'] = themeNamesString;
 
-      if (!isElement(code) || !code.properties) {
+      if (!(isElement(code) && code.properties)) {
         return [];
       }
 
@@ -123,7 +123,7 @@ function apply(
           lineNumbersMaxDigits.toString().length;
       }
 
-      const fragments: ElementContent[] = [];
+      const fragments: Array<ElementContent> = [];
 
       if (title) {
         const elementContent: Element = {
@@ -290,7 +290,17 @@ export default function rehypePrettyCode(
 
         let codeTree: Root;
 
-        if (!isLang) {
+        if (isLang) {
+          try {
+            codeTree = hastParser.parse(
+              highlighter.codeToHtml(strippedValue, getOptions(lang)),
+            );
+          } catch {
+            codeTree = hastParser.parse(
+              highlighter.codeToHtml(strippedValue, getOptions('plaintext')),
+            );
+          }
+        } else {
           const themeNames = getThemeNames(theme);
           const isMultiTheme = typeof theme === 'object' && !isJSONTheme(theme);
           const themeKeys = isMultiTheme ? Object.keys(theme) : null;
@@ -313,16 +323,6 @@ export default function rehypePrettyCode(
           } else {
             codeTree = hastParser.parse(
               `<pre><code><span style="color:${colorsByTheme[0]}">${strippedValue}</span></code></pre>`,
-            );
-          }
-        } else {
-          try {
-            codeTree = hastParser.parse(
-              highlighter.codeToHtml(strippedValue, getOptions(lang)),
-            );
-          } catch (e) {
-            codeTree = hastParser.parse(
-              highlighter.codeToHtml(strippedValue, getOptions('plaintext')),
             );
           }
         }
@@ -351,7 +351,7 @@ export default function rehypePrettyCode(
 
         if (!lang || lang === 'math') return;
 
-        const lineNumbers: number[] = [];
+        const lineNumbers: Array<number> = [];
         if (meta) {
           const matches = meta.matchAll(/\{(.*?)\}/g);
           for (const match of matches) {
@@ -363,8 +363,8 @@ export default function rehypePrettyCode(
 
         let lineNumbersMaxDigits = 0;
         const lineIdMap = new Map<number, string>();
-        const charsList: string[] = [];
-        const charsListNumbers: Array<number[]> = [];
+        const charsList: Array<string> = [];
+        const charsListNumbers: Array<Array<number>> = [];
         const charsListIdMap = new Map();
         const charsMatches = meta
           ? [
@@ -405,7 +405,7 @@ export default function rehypePrettyCode(
           codeTree = hastParser.parse(
             highlighter.codeToHtml(strippedValue, getOptions(lang, meta)),
           );
-        } catch (e) {
+        } catch {
           codeTree = hastParser.parse(
             highlighter.codeToHtml(
               strippedValue,

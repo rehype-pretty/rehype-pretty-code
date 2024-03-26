@@ -8,11 +8,11 @@ import type {
 import type { Element, Properties, Text } from 'hast';
 
 export type LineElement = Omit<Element, 'properties'> & {
-  properties: Properties & { className?: string[] };
+  properties: Properties & { className?: Array<string> };
 };
 
 export type CharsElement = Omit<Element, 'properties' | 'children'> & {
-  properties: Properties & { className?: string[] };
+  properties: Properties & { className?: Array<string> };
   children: Array<Element | Text>;
 };
 
@@ -24,7 +24,7 @@ export interface Options {
   keepBackground?: boolean;
   defaultLang?: string | { block?: string; inline?: string };
   tokensMap?: Record<string, string>;
-  transformers?: ShikiTransformer[];
+  transformers?: Array<ShikiTransformer>;
   filterMetaString?(str: string): string;
   getHighlighter?(
     options: BundledHighlighterOptions<any, any>,
@@ -37,7 +37,7 @@ export interface Options {
 }
 
 export interface CharsHighlighterOptions {
-  ranges: Array<number[]>;
+  ranges: Array<Array<number>>;
   idsMap: Map<string, string>;
   counterMap: Map<string, number>;
 }

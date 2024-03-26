@@ -76,9 +76,14 @@
     "rules": {
       "all": true,
       "style": {
+        "noDefaultExport": "off",
+        "useFragmentSyntax": "off",
         "useBlockStatements": "off",
+        "useNamingConvention": "off",
+        "useShorthandArrayType": "off",
         "useSelfClosingElements": "off",
-        "noUnusedTemplateLiteral": "off"
+        "noUnusedTemplateLiteral": "off",
+        "useConsistentArrayType": { "level": "warn", "options": { "syntax": "generic" } }
       },
       "a11y": { "noSvgWithoutTitle": "off" },
       "performance": { "noAccumulatingSpread": "off" },
@@ -87,6 +92,7 @@
         "noNodejsModules": "off"
       },
       "suspicious": {
+        "useAwait": "off",
         "noExplicitAny": "off",
         "noEmptyInterface": "off",
         "noConfusingVoidType": "off"
@@ -111,7 +117,7 @@
     }
   },
   "javascript": {
-    "globals": ["NodeJS", "Astro"],
+    "globals": ["NodeJS", "Astro", "NEXT_TELEMETRY_DISABLED"],
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
     },
@@ -124,11 +130,21 @@
       "trailingComma": "all",
       "semicolons": "always",
       "jsxQuoteStyle": "double",
-      "quoteProperties": "asNeeded",
-      "arrowParentheses": "always"
+      "arrowParentheses": "always",
+      "quoteProperties": "asNeeded"
     }
   },
   "overrides": [
+    {
+      "include": ["test", "scripts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsoleLog": "off"
+          }
+        }
+      }
+    },
     {
       "include": ["*.astro"],
       "linter": {

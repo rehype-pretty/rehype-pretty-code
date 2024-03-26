@@ -7,14 +7,7 @@ import moonlightTheme from './public/theme/moonlight-ii.json';
 export default defineConfig({
   markdown: {
     syntaxHighlight: false,
-    rehypePlugins: [
-      [
-        rehypePrettyCode,
-        {
-          theme: moonlightTheme,
-        },
-      ],
-    ],
+    rehypePlugins: [[rehypePrettyCode, { theme: moonlightTheme }]],
   },
   integrations: [mdx(), tailwind()],
 });
