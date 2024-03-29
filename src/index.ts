@@ -162,7 +162,7 @@ function apply(
     .flatMap((c) => c);
 }
 
-const globalHighlighterCache = new WeakMap<Options, Promise<Highlighter>>();
+const globalHighlighterCache = new Map<string, Promise<Highlighter>>();
 const hastParser = unified().use(rehypeParse, { fragment: true });
 
 export default function rehypePrettyCode(
@@ -184,7 +184,9 @@ export default function rehypePrettyCode(
     onVisitCaption,
   } = options;
 
-  let cachedHighlighter = globalHighlighterCache.get(options);
+  const key = JSON.stringify(theme);
+
+  let cachedHighlighter = globalHighlighterCache.get(key);
   if (!cachedHighlighter) {
     cachedHighlighter = getHighlighter({
       themes:
@@ -193,7 +195,7 @@ export default function rehypePrettyCode(
           : Object.values(theme),
       langs: ['plaintext'],
     });
-    globalHighlighterCache.set(options, cachedHighlighter);
+    globalHighlighterCache.set(key, cachedHighlighter);
   }
 
   const defaultCodeBlockLang =
