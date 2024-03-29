@@ -27,3 +27,45 @@ const subtract = (x, y) => x - y;
 
 const multiply = (x, y) => x * y;
 ```
+
+showLineNumbers{3} {2,4-5}
+
+```js showLineNumbers{3} {2,4-5}
+// should not be highlighted
+// should be highlighted
+// should not be highlighted
+// should be highlighted
+// should be highlighted
+// should not be highlighted
+```
+
+{2,4-5} showLineNumbers{3}
+
+```js {2,4-5} showLineNumbers{3}
+// should not be highlighted
+// should be highlighted
+// should not be highlighted
+// should be highlighted
+// should be highlighted
+// should not be highlighted
+```
+
+showLineNumbers{3} {2-4}
+
+```js showLineNumbers{3} {2-4}
+// should not be highlighted
+// should be highlighted
+// should be highlighted
+// should be highlighted
+// should not be highlighted
+```
+
+{2-4} showLineNumbers{3}
+
+```js {2-4} showLineNumbers{3}
+// should not be highlighted
+// should be highlighted
+// should be highlighted
+// should be highlighted
+// should not be highlighted
+```
