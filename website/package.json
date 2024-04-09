@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "bunx serve@latest out"
+    "start": "pnpm dlx serve@latest out",
+    "clean": "rm -rf .next out"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",

@@ -11,12 +11,11 @@
     "format": "biome format . --error-on-warnings --log-level='info' --diagnostic-level='info' --write",
     "lint": "biome lint . --log-level='info' --log-kind='pretty' --diagnostic-level='info' --apply-unsafe",
     "typecheck": "turbo run typecheck",
-    "prepare": "husky install",
-    "release": "bumpp package.json --commit --push --tag",
-    "prepublishOnly": "NODE_ENV='production' bun run build"
+    "clean": "turbo clean",
+    "clean-full": "/bin/bash ./scripts/clean.sh",
+    "prepare": "husky install"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.15.2",
     "@biomejs/biome": "^1.6.4",
     "@types/bun": "^1.0.12",
     "@types/node": "^20.12.4",

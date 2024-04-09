@@ -3,13 +3,13 @@ import type { ShikiTransformer } from 'shiki';
 const copyButtonStyle = /* css */ `
 pre:has(code) { position: relative; }
 pre button.rehype-pretty-copy {
-  position: absolute;
-  right: 16px;
   top: 16px;
-  height: 28px;
-  width: 28px;
   padding: 0;
+  right: 16px;
+  width: 28px;
+  height: 28px;
   display: flex;
+  position: absolute;
   & span {
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -30,26 +30,21 @@ pre button.rehype-pretty-copy {
   }
 }
 `;
+
 export function copyButtonTransformer(
   options: { toggle?: number } = { toggle: 3_000 },
 ): ShikiTransformer {
   return {
     name: '@rehype-pretty/copy-button',
-    pre(node) {
-      node.children.push({
-        type: 'element',
-        tagName: 'style',
-        properties: {},
-        children: [{ type: 'text', value: copyButtonStyle }],
-      });
+    code(node) {
       node.children.push({
         type: 'element',
         tagName: 'button',
         properties: {
+          data: this.source,
           class: 'rehype-pretty-copy',
-          'data-rehype-pretty-code': this.source,
           onclick: /* javascript */ `
-            navigator.clipboard.writeText(this.dataset.rehypePrettyCode);
+            navigator.clipboard.writeText(this.attributes.data.value);
             this.classList.add('rehype-pretty-copied');
             setTimeout(() => this.classList.remove('rehype-pretty-copied'), ${options.toggle});
           `,
@@ -68,6 +63,12 @@ export function copyButtonTransformer(
             children: [],
           },
         ],
+      });
+      node.children.push({
+        type: 'element',
+        tagName: 'style',
+        properties: {},
+        children: [{ type: 'text', value: copyButtonStyle }],
       });
     },
   };

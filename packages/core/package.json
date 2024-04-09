@@ -23,6 +23,7 @@
     "format": "biome format . --write",
     "lint": "biome check --apply .",
     "typecheck": "tsc --project tsconfig.json --noEmit",
+    "clean": "rm -rf dist",
     "release": "bumpp package.json --commit --push --tag",
     "prebuild": "rm -rf dist",
     "prepublishOnly": "NODE_ENV='production' bun run build",

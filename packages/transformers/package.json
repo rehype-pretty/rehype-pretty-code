@@ -25,6 +25,7 @@
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "release": "bumpp package.json --commit --push --tag",
     "prebuild": "rm -rf dist",
+    "clean": "rm -rf dist",
     "prepublishOnly": "NODE_ENV='production' bun run build",
     "check-package": "bunx publint@latest --strict && bunx attw --pack --ignore-rules cjs-resolves-to-esm"
   },

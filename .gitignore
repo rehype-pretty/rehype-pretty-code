@@ -19,3 +19,5 @@ out
 _
 .turbo
 .tsup
+.env
+!.env.example

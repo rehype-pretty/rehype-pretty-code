@@ -13,7 +13,7 @@ export default defineConfig({
         rehypePrettyCode,
         {
           theme: moonlightTheme,
-          transformers: [copyButtonTransformer({ toggle: 7_000 })],
+          transformers: [copyButtonTransformer({ toggle: 3_500 })],
         },
       ],
     ],

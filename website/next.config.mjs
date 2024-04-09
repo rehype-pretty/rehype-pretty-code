@@ -5,10 +5,10 @@ Object.assign(process.env, { NEXT_TELEMETRY_DISABLED: '1' });
  * @typedef {import('next').NextConfig} NextConfig
  * @typedef {Array<((config: NextConfig) => NextConfig)>} NextConfigPlugins
  */
-import fs from 'node:fs';
-import nextMdx from '@next/mdx';
+import nextMDX from '@next/mdx';
 import rehypeSlug from 'rehype-slug';
 import rehypePrettyCode from 'rehype-pretty-code';
+import moonlightTheme from './assets/moonlight-ii.json' with { type: 'json' };
 
 /** @type {NextConfigPlugins} */
 const plugins = [];
@@ -16,9 +16,13 @@ const plugins = [];
 /** @type {NextConfig} */
 const nextConfig = {
   output: 'export',
+  experimental: {
+    useLightningcss: true,
+  },
   cleanDistDir: true,
   reactStrictMode: true,
   poweredByHeader: false,
+  pageExtensions: ['md', 'mdx', 'tsx', 'ts', 'jsx', 'js'],
   env: {
     NEXT_TELEMETRY_DISABLED: '1',
   },
@@ -27,19 +31,13 @@ const nextConfig = {
 /** @type {import('rehype-pretty-code').Options} */
 const options = {
   keepBackground: false,
-  theme: JSON.parse(
-    fs.readFileSync(
-      new URL('./assets/moonlight-ii.json', import.meta.url),
-      'utf-8',
-    ),
-  ),
+  theme: moonlightTheme,
 };
 
 plugins.push(
-  nextMdx({
-    extension: /\.mdx?$/,
+  nextMDX({
+    extension: /\.(md|mdx)$/,
     options: {
-      providerImportSource: '@mdx-js/react',
       remarkPlugins: [],
       rehypePlugins: [[rehypePrettyCode, options], rehypeSlug],
     },
