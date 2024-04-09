@@ -8,9 +8,6 @@ importers:
 
   .:
     devDependencies:
-      '@arethetypeswrong/cli':
-        specifier: ^0.15.2
-        version: 0.15.3
       '@biomejs/biome':
         specifier: ^1.6.4
         version: 1.6.4
