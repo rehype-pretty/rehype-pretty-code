@@ -17,7 +17,7 @@
     "baseUrl": ".",
     "downlevelIteration": true
   },
-  "include": ["scripts"],
-  "files": ["biome.json"],
+  "include": ["src", "scripts", "test"],
+  "files": ["tsup.config.ts"],
   "exclude": ["node_modules"]
 }

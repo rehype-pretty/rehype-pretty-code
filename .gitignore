@@ -17,3 +17,5 @@ out
 *.tgz
 .astro
 _
+.turbo
+.tsup

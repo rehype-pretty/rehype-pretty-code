@@ -20,7 +20,7 @@
       "*.astro",
       "*.svelte"
     ],
-    "ignore": ["node_modules", "dist", "_"],
+    "ignore": ["node_modules", "dist", "_", ".turbo"],
     "ignoreUnknown": true
   },
   "organizeImports": {

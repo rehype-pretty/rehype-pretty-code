@@ -141,6 +141,7 @@ describe('Single theme', () => {
       const { htmlString, resultHtmlPath } = await runFixture(
         fixture,
         fixtureName,
+        // @ts-expect-error
         getHighlighter,
       );
 
@@ -164,6 +165,7 @@ describe('Multiple theme', () => {
       const { htmlString, resultHtmlPath } = await runFixture(
         fixture,
         fixtureName,
+        // @ts-expect-error
         getHighlighter,
       );
 
