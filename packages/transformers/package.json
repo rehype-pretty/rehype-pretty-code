@@ -30,7 +30,6 @@
     "check-package": "bunx publint@latest --strict && bunx attw --pack --ignore-rules cjs-resolves-to-esm"
   },
   "devDependencies": {
-    "@shikijs/transformers": "^1.2.4",
     "@arethetypeswrong/cli": "^0.15.2",
     "@types/node": "^20.12.4",
     "tsup": "^8.0.2",

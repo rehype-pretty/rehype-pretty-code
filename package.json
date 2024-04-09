@@ -12,20 +12,16 @@
     "lint": "biome lint . --log-level='info' --log-kind='pretty' --diagnostic-level='info' --apply-unsafe",
     "typecheck": "turbo run typecheck",
     "clean": "turbo clean",
-    "clean-full": "/bin/bash ./scripts/clean.sh",
-    "prepare": "husky install"
+    "clean-full": "/bin/bash ./scripts/clean.sh"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.6.4",
     "@types/bun": "^1.0.12",
     "@types/node": "^20.12.4",
-    "bumpp": "^9.4.0",
     "bun": "^1.1.1",
-    "husky": "^9.0.11",
     "tsx": "^4.7.2",
     "turbo": "^1.13.2",
-    "typescript": "^5.4.4",
-    "vite": "^5.2.8"
+    "typescript": "^5.4.4"
   },
   "engines": {
     "node": ">=18"
