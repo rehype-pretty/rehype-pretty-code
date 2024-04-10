@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -eou pipefail
-
 # remove dist folders recursively
 find . -type d -name "dist" -exec rm -rf {} \;
 

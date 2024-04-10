@@ -30,15 +30,12 @@
     "check-package": "bunx publint@latest --strict && bunx attw --pack --ignore-rules cjs-resolves-to-esm"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.15.2",
-    "@types/node": "^20.12.4",
+    "@arethetypeswrong/cli": "^0.15.3",
+    "@types/node": "^20.12.7",
     "tsup": "^8.0.2",
     "tsx": "^4.7.2",
-    "typescript": "^5.4.4",
+    "typescript": "^5.4.5",
     "vitest": "^1.4.0"
-  },
-  "peerDependencies": {
-    "shiki": "^1.0.0"
   },
   "engines": {
     "node": ">=18"
