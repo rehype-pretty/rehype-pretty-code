@@ -23,11 +23,10 @@
   "scripts": {
     "build": "tsup --config=tsup.config.ts",
     "typecheck": "tsc --project tsconfig.json --noEmit",
-    "release": "bumpp package.json --commit --push --tag",
     "prebuild": "rm -rf dist",
     "clean": "rm -rf dist",
-    "prepublishOnly": "NODE_ENV='production' bun run build",
-    "check-package": "bunx publint@latest --strict && bunx attw --pack --ignore-rules cjs-resolves-to-esm"
+    "prepublishOnly": "NODE_ENV='production' pnpm build",
+    "check-package": "pnpm dlx publint@latest --strict && pnpm dlx attw --pack --ignore-rules cjs-resolves-to-esm"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",
@@ -35,7 +34,7 @@
     "tsup": "^8.0.2",
     "tsx": "^4.7.2",
     "typescript": "^5.4.5",
-    "vitest": "^1.4.0"
+    "vitest": "^1.5.0"
   },
   "engines": {
     "node": ">=18"

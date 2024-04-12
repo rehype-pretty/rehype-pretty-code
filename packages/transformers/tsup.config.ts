@@ -10,7 +10,11 @@ export default defineConfig({
   splitting: true,
   sourcemap: true,
   target: ['esnext'],
-  entry: ['./src/**/*.ts'],
+  // entry: ['./src/**/*.ts'],
+  entry: {
+    index: './src/index.ts',
+    'copy-button': './src/copy-button.ts',
+  },
   treeshake: 'recommended',
   skipNodeModulesBundle: true,
 });

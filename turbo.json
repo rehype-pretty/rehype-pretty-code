@@ -6,9 +6,16 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".astro/**", ".next/**", "!.next/cache/**"]
     },
+    "test": {},
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "lint": {
+      "cache": false
+    },
+    "format": {
+      "cache": false
     },
     "typecheck": {},
     "clean": {
