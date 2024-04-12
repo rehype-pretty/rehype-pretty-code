@@ -26,7 +26,7 @@ async function highlightCode(code: string) {
     .use(remarkRehype)
     .use(rehypePrettyCode, {
       keepBackground: false,
-      transformers: [copyButtonTransformer({ toggle: 3_000 })],
+      transformers: [copyButtonTransformer({ feedbackDuration: 3_000 })],
     })
     .use(rehypeStringify)
     .process(code);

@@ -13,7 +13,12 @@ export default defineConfig({
         rehypePrettyCode,
         {
           theme: moonlightTheme,
-          transformers: [copyButtonTransformer({ toggle: 3_500 })],
+          transformers: [
+            copyButtonTransformer({
+              visibility: 'hover',
+              feedbackDuration: 3_500,
+            }),
+          ],
         },
       ],
     ],
