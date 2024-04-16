@@ -13,6 +13,39 @@ function add(a: number, b: number): number {
 \`\`\`
 `,
   },
+  {
+    title: 'With title',
+    snippet: `
+\`\`\`rust title="fib.rs"
+fn fib(n: u64) -> u64 {
+  if n <= 1 {
+    return n;
+  }
+  fib(n - 1) + fib(n - 2)
+}
+\`\`\`
+`,
+  },
+  {
+    title: 'With character highlighting',
+    snippet: `
+\`\`\`bash /index/#v
+#!/bin/bash
+set -euo pipefail
+
+function fib() {
+  local number=$1; local a=0; local b=1
+  for ((index = 0; index < number; index++)); do
+    local temp=$a
+    a=$b
+    b=$((temp + b))
+  done
+  echo $a
+}
+
+fib $1
+\`\`\``,
+  },
 ];
 
 export default async function ServerComponentPage() {

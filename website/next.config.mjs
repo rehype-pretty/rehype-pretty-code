@@ -16,9 +16,6 @@ const plugins = [];
 /** @type {NextConfig} */
 const nextConfig = {
   output: 'export',
-  experimental: {
-    useLightningcss: true,
-  },
   cleanDistDir: true,
   reactStrictMode: true,
   poweredByHeader: false,
