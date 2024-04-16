@@ -34,7 +34,7 @@ const getHtml = async (
   return toHtml(hAst, { allowDangerousHtml: true });
 };
 
-export const parseQueryParameters = (query: string) =>
+const parseQueryParameters = (query: string) =>
   Object.fromEntries(new URLSearchParams(query).entries());
 
 const getTheme = (multiple: boolean): Options['theme'] => {

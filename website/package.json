@@ -11,11 +11,11 @@
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
-    "@next/mdx": "^14.2.0",
+    "@next/mdx": "^14.2.1",
     "@rehype-pretty/transformers": "workspace:*",
     "@tailwindcss/typography": "^0.5.12",
     "autoprefixer": "^10.4.19",
-    "next": "^14.2.0",
+    "next": "^14.2.1",
     "postcss": "^8.4.38",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/mdx": "^2.0.13",
     "@types/node": "^20.12.7",
-    "@types/react": "^18.2.77",
+    "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
     "typescript": "^5.4.5"
   },
