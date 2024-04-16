@@ -6,8 +6,33 @@ interface CopyButtonOptions {
   successIcon?: string;
   visibility?: 'hover' | 'always';
 }
+
 /**
  * A transformer that adds a copy button to code blocks.
+ * @param options Options for the copy button.
+ * @param options.feedbackDuration The duration in milliseconds to show the success icon after copying.
+ * @param options.copyIcon Either data URL svg or inline svg for the copy icon.
+ * @param options.successIcon Either data URL svg or inline svg for the success icon.
+ * @returns A Shiki transformer.
+ *
+ * find icons at https://icones.js.org
+ *
+ * @example
+ * ```ts
+ * import { codeToHtml } from 'shiki'
+ * import { copyButtonTransformer } from '@rehype-pretty/copy-button'
+ *
+ * const html = await codeToHtml(`console.log('hello, world')`, {
+ *   lang: 'ts',
+ *   theme: 'houston',
+ *   transformers: [
+ *     copyButtonTransformer({
+ *       visibility: 'always',
+ *       feedbackDuration: 2_000,
+ *     }),
+ *   ],
+ * })
+ * ```
  */
 export function copyButtonTransformer(
   options: CopyButtonOptions = {
@@ -56,6 +81,7 @@ export function copyButtonTransformer(
             value: copyButtonStyle({
               copyIcon: options.copyIcon,
               successIcon: options.successIcon,
+              visibility: options.visibility,
             }),
           },
         ],
@@ -64,28 +90,28 @@ export function copyButtonTransformer(
   };
 }
 
-function copyButtonStyle(
-  { copyIcon, successIcon }: { copyIcon?: string; successIcon?: string } = {
-    copyIcon:
-      'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiNhNmE2YTYiIGQ9Ik0xNiAxSDRjLTEuMSAwLTIgLjktMiAydjE0aDJWM2gxMnptMyA0SDhjLTEuMSAwLTIgLjktMiAydjE0YzAgMS4xLjkgMiAyIDJoMTFjMS4xIDAgMi0uOSAyLTJWN2MwLTEuMS0uOS0yLTItMm0wIDE2SDhWN2gxMXoiLz48L3N2Zz4=',
-    successIcon:
-      'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiM3NWZmYWEiIGQ9Im0xMCAxMy42bDUuOS01LjlxLjI3NS0uMjc1LjctLjI3NXQuNy4yNzVxLjI3NS4yNzUuMjc1Ljd0LS4yNzUuN2wtNi42IDYuNnEtLjMuMy0uNy4zdC0uNy0uM2wtMi42LTIuNnEtLjI3NS0uMjc1LS4yNzUtLjd0LjI3NS0uN3EuMjc1LS4yNzUuNy0uMjc1dC43LjI3NXoiLz48L3N2Zz4=',
-  },
-) {
-  return /* css */ `
+function copyButtonStyle({
+  copyIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E",
+  successIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E",
+  visibility = 'hover',
+}: {
+  copyIcon?: string;
+  successIcon?: string;
+  visibility?: 'hover' | 'always';
+}) {
+  let copyButtonStyle = /* css */ `
     :root {
-      --copy-icon: url(${copyIcon});
-      --success-icon: url(${successIcon});
+      --copy-icon: url("${copyIcon}");
+      --success-icon: url("${successIcon}");
     }
 
     pre:has(code) { position: relative; }
     pre button.rehype-pretty-copy {
-      top: 16px;
+      top: 12px;
+      right: 12px;
       padding: 0;
-      opacity: 0;
-      right: 16px;
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
       display: flex;
       position: absolute;
       & span {
@@ -96,11 +122,11 @@ function copyButtonStyle(
         background-repeat: no-repeat;
       }
       & .ready {
-        background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiNhNmE2YTYiIGQ9Ik0xNiAxSDRjLTEuMSAwLTIgLjktMiAydjE0aDJWM2gxMnptMyA0SDhjLTEuMSAwLTIgLjktMiAydjE0YzAgMS4xLjkgMiAyIDJoMTFjMS4xIDAgMi0uOSAyLTJWN2MwLTEuMS0uOS0yLTItMm0wIDE2SDhWN2gxMXoiLz48L3N2Zz4=);
+        background-image: var(--copy-icon);
       }
       & .success {
         display: none;
-        background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiM3NWZmYWEiIGQ9Im0xMCAxMy42bDUuOS01LjlxLjI3NS0uMjc1LjctLjI3NXQuNy4yNzVxLjI3NS4yNzUuMjc1Ljd0LS4yNzUuN2wtNi42IDYuNnEtLjMuMy0uNy4zdC0uNy0uM2wtMi42LTIuNnEtLjI3NS0uMjc1LS4yNzUtLjd0LjI3NS0uN3EuMjc1LS4yNzUuNy0uMjc1dC43LjI3NXoiLz48L3N2Zz4=); 
+        background-image: var(--success-icon); 
       }
     }
 
@@ -109,14 +135,20 @@ function copyButtonStyle(
       & .ready { display: none; }
     }
 
-    figure[data-rehype-pretty-code-figure]:hover > pre > code button.rehype-pretty-copy {
-      opacity: 1;
-    }
-
     pre button.rehype-pretty-copy.rehype-pretty-copied {
       opacity: 1;
       & .success { display: block; }
       & .ready { display: none; }
     }
 `;
+  if (visibility === 'hover') {
+    copyButtonStyle += /* css */ `
+        pre button.rehype-pretty-copy { opacity: 0; }
+        figure[data-rehype-pretty-code-figure]:hover > pre > code button.rehype-pretty-copy {
+          opacity: 1;
+        }
+      `;
+  }
+
+  return copyButtonStyle;
 }

@@ -1,1 +1,1 @@
-export * from './copy-button.js';
+export { copyButtonTransformer } from './copy-button.js';

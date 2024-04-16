@@ -25,7 +25,7 @@
   "[javascriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
   "[json]": { "editor.defaultFormatter": "biomejs.biome" },
   "[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
-  "[astro]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[astro]": { "editor.defaultFormatter": "astro-build.astro-vscode" },
   "[svelte]": { "editor.defaultFormatter": "biomejs.biome" },
   "files.associations": {
     "biome.json": "jsonc",
