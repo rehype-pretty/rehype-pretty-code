@@ -78,6 +78,8 @@
       "style": {
         "noDefaultExport": "off",
         "useFragmentSyntax": "off",
+        "noImplicitBoolean": "off",
+        "noNamespaceImport": "off",
         "useBlockStatements": "off",
         "useNamingConvention": "off",
         "useShorthandArrayType": "off",

@@ -57,7 +57,7 @@ code[data-line-numbers] > [data-line]::before {
 }
 
 pre [data-line] {
-  @apply px-6 border-l-2 border-l-transparent;
+  @apply px-4 border-l-2 border-l-transparent;
 }
 
 [data-highlighted-line] {
@@ -96,4 +96,16 @@ pre [data-line] {
 
 figcaption + pre {
   @apply !rounded-t-none;
+}
+
+figure {
+    @apply mb-6 mt-1;
+}
+pre,
+code,
+figure {
+  @apply overflow-x-scroll;
+}
+p {
+  @apply text-xl;
 }

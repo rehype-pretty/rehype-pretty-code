@@ -25,8 +25,12 @@ async function highlightCode(code: string) {
     .use(remarkParse)
     .use(remarkRehype)
     .use(rehypePrettyCode, {
-      keepBackground: false,
-      transformers: [copyButtonTransformer({ feedbackDuration: 3_000 })],
+      transformers: [
+        copyButtonTransformer({
+          visibility: 'always',
+          feedbackDuration: 3_000,
+        }),
+      ],
     })
     .use(rehypeStringify)
     .process(code);

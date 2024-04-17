@@ -10,10 +10,6 @@ body {
   @apply bg-zinc-900 text-zinc-100;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 30px;
-  max-width: 1000px;
-  margin: 0 auto;
-  margin-top: 50px;
 }
 
 h3 code {
@@ -21,7 +17,7 @@ h3 code {
 }
 
 pre {
-  @apply !px-0 rounded-lg p-2;
+  @apply !px-0 rounded-lg py-2;
 }
 
 code {
@@ -61,7 +57,7 @@ code[data-line-numbers] > [data-line]::before {
 }
 
 pre [data-line] {
-  @apply border-l-2 border-l-transparent px-3;
+  @apply px-3 border-l-2 border-l-transparent;
 }
 
 [data-highlighted-line] {

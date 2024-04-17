@@ -9,7 +9,6 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "strict": true,
-    "noUnusedLocals": true,
     "allowImportingTsExtensions": true,
     "types": ["node", "bun"],
     "allowJs": true,
