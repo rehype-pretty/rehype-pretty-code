@@ -43,10 +43,6 @@ export function copyButtonTransformer(
   return {
     name: '@rehype-pretty/transformers/copy-button',
     code(node) {
-      const _totalLinesCount = node.children.filter(
-        (child) => 'tagName' in child && child.tagName === 'span',
-      ).length;
-
       node.children.push({
         type: 'element',
         tagName: 'button',
@@ -117,15 +113,14 @@ function copyButtonStyle({
       width: 24px;
       height: 24px;
       display: flex;
-      margin-top: 4px;
+      margin-top: 2px;
       margin-right: 8px;
       position: absolute;
+      border-radius: 25%;
+      backdrop-filter: blur(3px);
       & span {
         width: 100%;
         aspect-ratio: 1 / 1;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
       }
       & .ready {
         background-image: var(--copy-icon);

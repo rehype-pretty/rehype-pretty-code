@@ -87,8 +87,11 @@
         "noUnusedTemplateLiteral": "off",
         "useConsistentArrayType": { "level": "warn", "options": { "syntax": "generic" } }
       },
+      "performance": {
+        "noBarrelFile": "off",
+        "noAccumulatingSpread": "off"
+      },
       "a11y": { "noSvgWithoutTitle": "off" },
-      "performance": { "noAccumulatingSpread": "off" },
       "correctness": { "noUndeclaredVariables": "off" },
       "nursery": {
         "noNodejsModules": "off"

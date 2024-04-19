@@ -29,7 +29,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@9.0.1",
+  "packageManager": "pnpm@9.0.4",
   "author": "https://github.com/atomiks",
   "maintainers": [
     {
