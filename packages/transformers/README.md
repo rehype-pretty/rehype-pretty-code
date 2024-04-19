@@ -1,3 +1,6 @@
+> [!NOTE]  
+> Currently in **beta**.
+
 # `@rehype-pretty/transformers`
 
 [![JSR](https://jsr.io/badges/@rehype-pretty/transformers)](https://jsr.io/@rehype-pretty/transformers)
