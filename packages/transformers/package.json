@@ -1,6 +1,7 @@
 {
   "name": "@rehype-pretty/transformers",
-  "version": "0.1.0",
+  "description": "Shiki transformer that adds a copy button to code blocks",
+  "version": "0.1.1",
   "homepage": "https://rehype-pretty.pages.dev",
   "type": "module",
   "main": "./dist/index.js",
@@ -21,7 +22,7 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist", "package.json"],
+  "files": ["dist", "package.json", "README.md", "LICENSE"],
   "sideEffects": false,
   "scripts": {
     "build": "tsup --config=tsup.config.ts",
@@ -45,6 +46,9 @@
     "type": "git",
     "url": "git+https://github.com/rehype-pretty/rehype-pretty-code.git",
     "directory": "packages/transformers"
+  },
+  "publishConfig": {
+    "provenance": true
   },
   "browserslist": ["node 18"],
   "license": "MIT"

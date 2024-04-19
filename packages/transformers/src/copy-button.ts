@@ -9,10 +9,10 @@ interface CopyButtonOptions {
 
 /**
  * A transformer that adds a copy button to code blocks.
- * @param options Options for the copy button.
- * @param options.feedbackDuration The duration in milliseconds to show the success icon after copying.
- * @param options.copyIcon Either data URL svg or inline svg for the copy icon.
- * @param options.successIcon Either data URL svg or inline svg for the success icon.
+ * @param {object} options for the copy button.
+ * @param {number} options.feedbackDuration The duration in milliseconds to show the success icon after copying.
+ * @param {string} options.copyIcon Either data URL svg or inline svg for the copy icon.
+ * @param {string} options.successIcon Either data URL svg or inline svg for the success icon.
  * @returns A Shiki transformer.
  *
  * find icons at https://icones.js.org
@@ -48,6 +48,8 @@ export function copyButtonTransformer(
         tagName: 'button',
         properties: {
           type: 'button',
+          title: 'Copy code',
+          'aria-label': 'Copy code',
           data: this.source,
           class: 'rehype-pretty-copy',
           onclick: /* javascript */ `

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://jsr.io/schema/config-file.v1.json",
+  "name": "@rehype-pretty/transformers",
+  "version": "0.1.1",
+  "exports": "./src/index.ts",
+  "publish": {
+    "include": ["src/**/*.ts", "README.md", "LICENSE", "jsr.json"],
+    "exclude": []
+  }
+}

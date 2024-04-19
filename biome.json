@@ -98,6 +98,7 @@
       },
       "suspicious": {
         "useAwait": "off",
+        "noConsoleLog": "off",
         "noExplicitAny": "off",
         "noEmptyInterface": "off",
         "noConfusingVoidType": "off"
