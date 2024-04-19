@@ -23,9 +23,6 @@ importers:
       sherif:
         specifier: ^0.8.4
         version: 0.8.4
-      tsx:
-        specifier: ^4.7.2
-        version: 4.7.2
       turbo:
         specifier: ^1.13.2
         version: 1.13.2
