@@ -13,6 +13,7 @@
     "lint": "biome lint . --log-level='info' --log-kind='pretty' --diagnostic-level='info' --apply-unsafe",
     "lint:repo": "sherif",
     "typecheck": "turbo run typecheck",
+    "check-package": "turbo check-package",
     "clean": "turbo clean",
     "clean-full": "/bin/bash ./scripts/clean.sh"
   },
@@ -22,7 +23,6 @@
     "@types/node": "^20.12.7",
     "bun": "^1.1.4",
     "sherif": "^0.8.4",
-    "tsx": "^4.7.2",
     "turbo": "^1.13.2",
     "typescript": "^5.4.5"
   },

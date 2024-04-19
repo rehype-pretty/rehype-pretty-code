@@ -10,8 +10,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
       "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./package.json": "./package.json"
@@ -25,7 +25,7 @@
     "release": "bumpp package.json --commit --push --tag",
     "prebuild": "rm -rf dist",
     "prepublishOnly": "NODE_ENV='production' bun run build",
-    "check-package": "bunx publint@latest --strict && bunx attw --pack --ignore-rules cjs-resolves-to-esm"
+    "check-package": "pnpm dlx publint@latest --strict && attw --pack --ignore-rules cjs-resolves-to-esm"
   },
   "dependencies": {
     "@types/hast": "^3.0.4",

@@ -5,16 +5,19 @@
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
+  "source": "./src/index.ts",
   "types": "./dist/index.d.ts",
   "typings": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./copy-button": {
       "types": "./dist/copy-button.d.ts",
-      "import": "./dist/copy-button.js"
+      "import": "./dist/copy-button.js",
+      "default": "./dist/copy-button.js"
     },
     "./package.json": "./package.json"
   },
@@ -26,7 +29,7 @@
     "prebuild": "rm -rf dist",
     "clean": "rm -rf dist",
     "prepublishOnly": "NODE_ENV='production' pnpm build",
-    "check-package": "pnpm dlx publint@latest --strict && pnpm dlx attw --pack --ignore-rules cjs-resolves-to-esm"
+    "check-package": "pnpm dlx publint@latest --strict && attw --pack --ignore-rules cjs-resolves-to-esm no-resolution"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",

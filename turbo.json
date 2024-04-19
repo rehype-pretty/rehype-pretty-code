@@ -6,7 +6,6 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".astro/**", ".next/**", "!.next/cache/**"]
     },
-    "test": {},
     "dev": {
       "cache": false,
       "persistent": true
@@ -17,9 +16,11 @@
     "format": {
       "cache": false
     },
-    "typecheck": {},
     "clean": {
       "cache": false
-    }
+    },
+    "test": {},
+    "typecheck": {},
+    "check-package": {}
   }
 }
