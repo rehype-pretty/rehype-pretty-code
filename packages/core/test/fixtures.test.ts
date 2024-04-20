@@ -34,7 +34,7 @@ const getHtml = async (
   return toHtml(hAst, { allowDangerousHtml: true });
 };
 
-export const parseQueryParameters = (query: string) =>
+const parseQueryParameters = (query: string) =>
   Object.fromEntries(new URLSearchParams(query).entries());
 
 const getTheme = (multiple: boolean): Options['theme'] => {
@@ -141,6 +141,7 @@ describe('Single theme', () => {
       const { htmlString, resultHtmlPath } = await runFixture(
         fixture,
         fixtureName,
+        // @ts-expect-error
         getHighlighter,
       );
 
@@ -164,6 +165,7 @@ describe('Multiple theme', () => {
       const { htmlString, resultHtmlPath } = await runFixture(
         fixture,
         fixtureName,
+        // @ts-expect-error
         getHighlighter,
       );
 

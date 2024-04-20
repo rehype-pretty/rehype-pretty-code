@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext"],
+    "lib": ["DOM", "ESNext"],
     "skipLibCheck": true,
     "module": "ESNext",
     "target": "ESNext",
     "moduleResolution": "Bundler",
-    "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
     "resolveJsonModule": true,
     "strict": true,
-    "noUnusedLocals": true,
+    "allowImportingTsExtensions": true,
     "types": ["node", "bun"],
     "allowJs": true,
     "checkJs": true,
@@ -18,7 +17,7 @@
     "baseUrl": ".",
     "downlevelIteration": true
   },
-  "include": ["scripts"],
-  "files": ["biome.json"],
+  "include": ["src", "scripts", "test"],
+  "files": ["tsup.config.ts"],
   "exclude": ["node_modules"]
 }

@@ -7,43 +7,43 @@ const exampleSnippets = [
     title: 'With line numbers',
     snippet: `
 \`\`\`ts {4} showLineNumbers
-function add(a: number, b: number): number {
-  return a + b;
-}
+const add = (a: number, b: number): number => a + b;
 \`\`\`
 `,
   },
   {
-    title: 'With title',
+    title: 'With title and line numbers',
     snippet: `
-\`\`\`rust title="fib.rs"
-fn fib(n: u64) -> u64 {
-  if n <= 1 {
-    return n;
-  }
-  fib(n - 1) + fib(n - 2)
-}
+\`\`\`rust title="fib.erl" showLineNumbers
+-spec is_palindrome(X :: integer()) -> boolean().
+-import(lists, [reverse/1]).
+
+is_palindrome(X) ->
+    S = integer_to_list(X),
+    R = reverse(S),
+    S =:= R.
 \`\`\`
 `,
   },
   {
-    title: 'With character highlighting',
+    title: 'With title, line numbers, and character highlighting',
     snippet: `
-\`\`\`bash /index/#v
-#!/bin/bash
-set -euo pipefail
+\`\`\`elixir title="fib.ex" showLineNumbers /palindrome/#v
+defmodule Solution do
+  @spec is_palindrome(x :: integer) :: boolean
+  def is_palindrome(x) when x < 0, do: false
+  def is_palindrome(x), do: do_is_palindrome(x, get_base_10(x, 1))
 
-function fib() {
-  local number=$1; local a=0; local b=1
-  for ((index = 0; index < number; index++)); do
-    local temp=$a
-    a=$b
-    b=$((temp + b))
-  done
-  echo $a
-}
+  defp do_is_palindrome(x, b10) when b10 > 1,
+    do: get_first_digit(x, b10) == rem(x, 10) and do_is_palindrome(div(x, 10), div(b10, 100))
 
-fib $1
+  defp do_is_palindrome(_, _), do: true
+
+  defp get_first_digit(n, b10), do: div(n, b10) |> rem(10)
+
+  defp get_base_10(n, b10) when n >= b10, do: get_base_10(n, b10 * 10)
+  defp get_base_10(n, b10), do: div(b10, 10)
+end
 \`\`\``,
   },
 ];
@@ -51,9 +51,9 @@ fib $1
 export default async function ServerComponentPage() {
   return (
     <React.Fragment>
-      <main className="min-h-screen flex flex-col space-y-3 prose prose-invert text-gray-300/70 px-4 sm:px-6 md:px-8 mx-auto mt-12 relative z-1">
+      <main className="max-w-2xl mx-auto text-gray-300/70 px-4 sm:px-6 md:px-8 mt-12 mb-6 relative z-1">
         {exampleSnippets.map((snippet) => (
-          <div key={snippet.title}>
+          <div key={snippet.title} className="overflow-scroll">
             <h5>{snippet.title}:</h5>
             <Code code={snippet.snippet} />
           </div>

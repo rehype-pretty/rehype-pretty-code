@@ -5,12 +5,13 @@ permissions:
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: ['main', 'next']
 
 defaults:
   run:
     shell: bash
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
   NODE_OPTIONS: '--no-warnings'
@@ -18,52 +19,36 @@ env:
   ACTIONS_RUNNER_DEBUG: true
 
 jobs:
-  changelog:
-    name: 'Generate Changelog'
+  release:
+    name: 'Release'
     runs-on: ['ubuntu-latest']
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: '🐰 Setup Bun'
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: 'latest'
-
-      - name: 'Generate Changelog'
-        run: bunx changelogithub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-npm:
-    name: 'NPM Registry'
-    needs: [changelog]
-    permissions:
-      id-token: write
-      contents: write
-    runs-on: ['ubuntu-latest']
-    steps:
-      - name: 'Checkout'
+      - name: 'Checkout Repository'
         uses: actions/checkout@v4
 
-      - name: '🐰 Setup Bun'
-        uses: oven-sh/setup-bun@v1
+      - name: 'Setup pnpm'
+        uses: pnpm/action-setup@v3
         with:
-          bun-version: 'latest'
+          version: 'latest'
 
-      - name: 'Install Dependencies'
-        run: bun install --frozen-lockfile
-
-        # this action will take the npm auth token and write it to .npmrc
-      - uses: actions/setup-node@v4
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
         with:
+          cache: 'pnpm'
           node-version: 'lts/*'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: 'Publish to NPM'
-        run: |
-          npm publish --access='public' --no-git-checks
+      - name: 'Install Dependencies'
+        run: pnpm install --frozen-lockfile
+
+      - name: 'Changesets'
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm release
+          version: pnpm dlx bun ${{github.workspace }}/scripts/changeset-update-version.ts
         env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

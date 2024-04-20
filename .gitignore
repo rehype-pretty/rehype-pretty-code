@@ -17,3 +17,7 @@ out
 *.tgz
 .astro
 _
+.turbo
+.tsup
+.env
+!.env.example
