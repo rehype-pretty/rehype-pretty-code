@@ -50,3 +50,9 @@ jobs:
 
       - name: 'Test'
         run: pnpm test
+
+      - name: 'Check Dependencies'
+        run: pnpm dlx sherif@latest
+
+      - name: 'Check Packages'
+        run: pnpm check-package

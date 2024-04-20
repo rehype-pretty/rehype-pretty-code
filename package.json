@@ -12,6 +12,9 @@
     "format": "biome format . --error-on-warnings --log-level='info' --diagnostic-level='info' --write",
     "lint": "biome lint . --log-level='info' --log-kind='pretty' --diagnostic-level='info' --apply-unsafe",
     "lint:repo": "sherif",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
     "typecheck": "turbo run typecheck",
     "check-package": "turbo check-package",
     "clean": "turbo clean",
@@ -19,6 +22,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.0",
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.1",
     "@types/bun": "^1.1.0",
     "@types/node": "^20.12.7",
     "bun": "^1.1.4",
@@ -31,6 +36,7 @@
   },
   "packageManager": "pnpm@9.0.4",
   "author": "https://github.com/atomiks",
+  "contributors": ["atomiks (https://github.com/atomiks)", "o-az (https://github.com/o-az)"],
   "maintainers": [
     {
       "name": "atomiks",
