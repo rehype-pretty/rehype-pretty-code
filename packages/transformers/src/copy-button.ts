@@ -1,4 +1,5 @@
 import type { ShikiTransformer } from 'shiki';
+import { trimWhitespace } from './utilities/index.js';
 
 interface CopyButtonOptions {
   feedbackDuration?: number;
@@ -52,11 +53,11 @@ export function transformerCopyButton(
           'aria-label': 'Copy code',
           data: this.source,
           class: 'rehype-pretty-copy',
-          onclick: /* javascript */ `
+          onclick: trimWhitespace(/* javascript */ `
             navigator.clipboard.writeText(this.attributes.data.value);
             this.classList.add('rehype-pretty-copied');
             setTimeout(() => this.classList.remove('rehype-pretty-copied'), ${options.feedbackDuration});
-          `,
+          `),
         },
         children: [
           {
@@ -152,5 +153,5 @@ function copyButtonStyle({
         }
       `;
   }
-  return copyButtonStyle;
+  return trimWhitespace(copyButtonStyle);
 }
