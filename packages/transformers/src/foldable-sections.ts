@@ -10,20 +10,20 @@ interface FoldableSectionsOptions {
 
 /**
  * A transformer that adds a foldable sections to code blocks.
- * 
+ *
  * @param {Object} options - Options for the foldable sections behavior and appearance.
  * @param {Array<[number, number]>} options.lines - The lines to be collapsed.
  * @param {Object} options.style - The style of the collapsed lines.
  * @param {string} options.style.collapsedLineTextColor - The text color of the collapsed lines.
  * @param {string} options.style.collapsedLineBackgroundColor - The background color of the collapsed lines.
  * @returns A Shiki transformer.
- * 
+ *
  * @example
- * 
+ *
  * ```ts
  * import { codeToHtml } from 'shiki'
  * import { foldableSectionsTransformer } from '@rehype-pretty/foldable-sections'
- * 
+ *
  * const html = await codeToHtml(`console.log('hello, world')`, {
  *   lang: 'ts',
  *   theme: 'houston',
@@ -41,7 +41,7 @@ interface FoldableSectionsOptions {
  */
 
 export function foldableSectionsTransformer(
-  options: FoldableSectionsOptions = {},
+  _options: FoldableSectionsOptions = {},
 ): ShikiTransformer {
   return {
     name: '@rehype-pretty/transformers/foldable-sections',
