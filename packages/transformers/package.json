@@ -21,6 +21,11 @@
       "import": "./dist/copy-button.js",
       "default": "./dist/copy-button.js"
     },
+    "./foldable-sections": {
+      "types": "./dist/foldable-sections.d.ts",
+      "import": "./dist/foldable-sections.js",
+      "default": "./dist/foldable-sections.js"
+    },
     "./package.json": "./package.json"
   },
   "files": ["dist", "package.json", "README.md", "LICENSE"],
