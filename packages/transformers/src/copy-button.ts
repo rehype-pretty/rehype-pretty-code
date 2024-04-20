@@ -9,13 +9,13 @@ interface CopyButtonOptions {
 
 /**
  * A transformer that adds a copy button to code blocks.
- * @param {object} options for the copy button.
- * @param {number} options.feedbackDuration The duration in milliseconds to show the success icon after copying.
- * @param {string} options.copyIcon Either data URL svg or inline svg for the copy icon.
- * @param {string} options.successIcon Either data URL svg or inline svg for the success icon.
+ * @param {Object} options - Options for the copy button behavior and appearance.
+ * @param {number} options.feedbackDuration - The duration in milliseconds to show the success icon after copying.
+ * @param {string} options.copyIcon - Either data URL svg or inline svg for the copy icon.
+ * @param {string} options.successIcon - Either data URL svg or inline svg for the success icon.
  * @returns A Shiki transformer.
  *
- * find icons at https://icones.js.org
+ * find icons at https://icones.js.org - copy the "Data URL" and paste it as the value of `copyIcon` and/or `successIcon`.
  *
  * @example
  * ```ts
