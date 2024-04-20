@@ -12,7 +12,7 @@ npm install @rehype-pretty/transformers
 
 ## Available Transformers
 
-- [`copyButtonTransformer`](./src/copy-button.ts)
+- [`transformerCopyButton`](./src/copy-button.ts)
 
 ## Usage
 
@@ -35,14 +35,14 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
   import remarkRehype from 'remark-rehype'
   import rehypeStringify from 'rehype-stringify'
   import rehypePrettyCode from 'rehype-pretty-code'
-  import { copyButtonTransformer } from '@rehype-pretty/transformers'
+  import { transformerCopyButton } from '@rehype-pretty/transformers'
 
   const file = await unified()
     .use(remarkParse)
     .use(remarkRehype)
     .use(rehypePrettyCode, {
       transformers: [
-        copyButtonTransformer({
+        transformerCopyButton({
           visibility: 'always',
           feedbackDuration: 3_000,
         }),
@@ -63,7 +63,7 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
     lang: 'ts',
     theme: 'vitesse-light',
     transformers: [
-      copyButtonTransformer({
+      transformerCopyButton({
         visibility: 'always',
         feedbackDuration: 3_000,
       }),

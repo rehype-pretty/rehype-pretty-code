@@ -4,7 +4,13 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".astro/**", ".next/**", "!.next/cache/**"]
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        ".astro/**",
+        ".svelte-kit/**",
+        "!.next/cache/**"
+      ]
     },
     "dev": {
       "cache": false,

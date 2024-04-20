@@ -3,7 +3,7 @@ import tailwind from '@astrojs/tailwind';
 import { defineConfig } from 'astro/config';
 import rehypePrettyCode from 'rehype-pretty-code';
 import moonlightTheme from './public/theme/moonlight-ii.json';
-import { copyButtonTransformer } from '@rehype-pretty/transformers';
+import { transformerCopyButton } from '@rehype-pretty/transformers';
 
 export default defineConfig({
   markdown: {
@@ -14,9 +14,9 @@ export default defineConfig({
         {
           theme: moonlightTheme,
           transformers: [
-            copyButtonTransformer({
+            transformerCopyButton({
               visibility: 'hover',
-              feedbackDuration: 3_500,
+              feedbackDuration: 2_500,
             }),
           ],
         },

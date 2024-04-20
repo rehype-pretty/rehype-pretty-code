@@ -4,7 +4,7 @@ import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import rehypePrettyCode from 'rehype-pretty-code';
-import { copyButtonTransformer } from '../src/copy-button.ts';
+import { transformerCopyButton } from '../src/copy-button.ts';
 
 /* Usage with `rehype-pretty-code` */
 
@@ -13,7 +13,7 @@ const withRehypePrettyCode = await unified()
   .use(remarkRehype)
   .use(rehypePrettyCode, {
     transformers: [
-      copyButtonTransformer({
+      transformerCopyButton({
         visibility: 'always',
         feedbackDuration: 3_000,
       }),
@@ -28,7 +28,7 @@ const withShikiDirectly = await codeToHtml('console.log("Hello World")', {
   lang: 'ts',
   theme: 'vitesse-light',
   transformers: [
-    copyButtonTransformer({
+    transformerCopyButton({
       visibility: 'always',
       feedbackDuration: 3_000,
     }),

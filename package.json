@@ -13,7 +13,7 @@
     "lint": "biome lint . --log-level='info' --log-kind='pretty' --diagnostic-level='info' --apply-unsafe",
     "lint:repo": "sherif",
     "changeset": "changeset",
-    "changeset:version": "changeset version",
+    "changeset:version": "changeset version && pnpm install --lockfile-only",
     "changeset:publish": "changeset publish",
     "typecheck": "turbo run typecheck",
     "check-package": "turbo check-package",

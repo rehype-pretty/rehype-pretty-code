@@ -2,11 +2,17 @@
 import '../globals.css';
 ---
 
-<html lang="en">
+<html lang="en" class="">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="/favicon.ico" />
     <title>Rehype Pretty Code</title>
   </head>
-  <slot />
+  <body class="min-w-full flex flex-col items-center py-6">
+    <main
+      class="w-full prose prose-invert text-gray-300/70 px-4 sm:px-6 md:px-8 mx-auto mt-12 mb-6 relative z-1"
+    >
+      <slot />
+    </main>
+  </body>
 </html>
