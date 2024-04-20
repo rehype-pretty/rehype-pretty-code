@@ -5,7 +5,11 @@
   "repository": "github:rehype-pretty/rehype-pretty-code",
   "private": true,
   "type": "module",
-  "workspaces": ["packages/*", "examples/*", "website"],
+  "workspaces": [
+    "packages/*",
+    "examples/*",
+    "website"
+  ],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
