@@ -49,6 +49,7 @@
     "directory": "packages/transformers"
   },
   "publishConfig": {
+    "access": "public",
     "provenance": true
   },
   "author": "https://github.com/o-az",

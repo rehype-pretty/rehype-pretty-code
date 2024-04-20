@@ -14,6 +14,7 @@
       "*.mjs",
       "*.jsx",
       "*.tsx",
+      "*.css",
       "*.d.ts",
       "*.json",
       "*.jsonc",
@@ -30,7 +31,7 @@
     "formatter": {
       "enabled": true,
       "indentWidth": 2,
-      "lineWidth": 100,
+      "lineWidth": 80,
       "quoteStyle": "double",
       "indentStyle": "space"
     },
@@ -40,38 +41,12 @@
   },
   "formatter": {
     "enabled": true,
-    "lineWidth": 100,
+    "lineWidth": 80,
     "indentWidth": 2,
     "indentStyle": "space",
-    "formatWithErrors": true,
-    "include": [
-      "*.ts",
-      "*.js",
-      "*.cjs",
-      "*.mjs",
-      "*.jsx",
-      "*.tsx",
-      "*.d.ts",
-      "*.json",
-      "*.jsonc",
-      "*.astro",
-      "*.svelte"
-    ]
+    "formatWithErrors": true
   },
   "linter": {
-    "include": [
-      "*.ts",
-      "*.js",
-      "*.cjs",
-      "*.mjs",
-      "*.jsx",
-      "*.tsx",
-      "*.d.ts",
-      "*.json",
-      "*.jsonc",
-      "*.astro",
-      "*.svelte"
-    ],
     "enabled": true,
     "rules": {
       "all": true,
@@ -85,7 +60,10 @@
         "useShorthandArrayType": "off",
         "useSelfClosingElements": "off",
         "noUnusedTemplateLiteral": "off",
-        "useConsistentArrayType": { "level": "warn", "options": { "syntax": "generic" } }
+        "useConsistentArrayType": {
+          "level": "warn",
+          "options": { "syntax": "generic" }
+        }
       },
       "performance": {
         "noBarrelFile": "off",
@@ -142,6 +120,8 @@
       "quoteStyle": "single",
       "trailingComma": "all",
       "semicolons": "always",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
       "jsxQuoteStyle": "double",
       "arrowParentheses": "always",
       "quoteProperties": "asNeeded"

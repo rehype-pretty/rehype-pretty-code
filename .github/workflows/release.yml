@@ -12,58 +12,91 @@ defaults:
   run:
     shell: bash
 
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 env:
   NODE_OPTIONS: '--no-warnings'
   NEXT_TELEMETRY_DISABLED: '1'
   ACTIONS_RUNNER_DEBUG: true
 
 jobs:
-  changelog:
-    name: 'Generate Changelog'
+  release:
+    name: 'Release'
     runs-on: ['ubuntu-latest']
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: '🐰 Setup Bun'
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: 'latest'
-
-      - name: 'Generate Changelog'
-        run: bunx changelogithub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-npm:
-    name: 'NPM Registry'
-    needs: [changelog]
-    permissions:
-      id-token: write
-      contents: write
-    runs-on: ['ubuntu-latest']
-    steps:
-      - name: 'Checkout'
+      - name: 'Checkout Repository'
         uses: actions/checkout@v4
 
-      - name: '🐰 Setup Bun'
-        uses: oven-sh/setup-bun@v1
+      - name: 'Setup pnpm'
+        uses: pnpm/action-setup@v3
         with:
-          bun-version: 'latest'
+          version: 9.0.4
 
-      - name: 'Install Dependencies'
-        run: bun install --frozen-lockfile
-
-        # this action will take the npm auth token and write it to .npmrc
-      - uses: actions/setup-node@v4
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
 
-      - name: 'Publish to NPM'
-        run: |
-          npm publish --access='public' --no-git-checks
+      - name: 'Install Dependencies'
+        run: pnpm install
+
+      - name: 'Create Release Pull Request or Publish to npm'
+        id: changesets
+        uses: changesets/action@v1.4.7
+        with:
+          # This expects you to have a script called release which does a build for your packages and calls changeset publish
+          publish: yarn release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # changelog:
+  #   name: 'Generate Changelog'
+  #   runs-on: ['ubuntu-latest']
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: '🐰 Setup Bun'
+  #       uses: oven-sh/setup-bun@v1
+  #       with:
+  #         bun-version: 'latest'
+
+  #     - name: 'Generate Changelog'
+  #       run: bunx changelogithub
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # publish-npm:
+  #   name: 'NPM Registry'
+  #   needs: [changelog]
+  #   permissions:
+  #     id-token: write
+  #     contents: write
+  #   runs-on: ['ubuntu-latest']
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v4
+
+  #     - name: '🐰 Setup Bun'
+  #       uses: oven-sh/setup-bun@v1
+  #       with:
+  #         bun-version: 'latest'
+
+  #     - name: 'Install Dependencies'
+  #       run: bun install --frozen-lockfile
+
+  #       # this action will take the npm auth token and write it to .npmrc
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 'lts/*'
+  #         registry-url: 'https://registry.npmjs.org'
+
+  #     - name: 'Publish to NPM'
+  #       run: |
+  #         npm publish --access='public' --no-git-checks
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

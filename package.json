@@ -1,10 +1,11 @@
 {
-  "name": "root",
+  "name": "@rehype-pretty/monorepo",
   "description": "Beautiful code for your MD/MDX docs.",
   "homepage": "https://rehype-pretty.pages.dev",
   "repository": "github:rehype-pretty/rehype-pretty-code",
   "private": true,
   "type": "module",
+  "workspaces": ["packages/*", "examples/*", "website"],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -32,11 +33,15 @@
     "typescript": "^5.4.5"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20",
+    "pnpm": ">=9"
   },
   "packageManager": "pnpm@9.0.4",
   "author": "https://github.com/atomiks",
-  "contributors": ["atomiks (https://github.com/atomiks)", "o-az (https://github.com/o-az)"],
+  "contributors": [
+    "atomiks (https://github.com/atomiks)",
+    "o-az (https://github.com/o-az)"
+  ],
   "maintainers": [
     {
       "name": "atomiks",
