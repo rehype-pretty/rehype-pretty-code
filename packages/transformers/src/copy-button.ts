@@ -20,13 +20,13 @@ interface CopyButtonOptions {
  * @example
  * ```ts
  * import { codeToHtml } from 'shiki'
- * import { copyButtonTransformer } from '@rehype-pretty/copy-button'
+ * import { transformerCopyButton } from '@rehype-pretty/copy-button'
  *
  * const html = await codeToHtml(`console.log('hello, world')`, {
  *   lang: 'ts',
  *   theme: 'houston',
  *   transformers: [
- *     copyButtonTransformer({
+ *     transformerCopyButton({
  *       visibility: 'always',
  *       feedbackDuration: 2_000,
  *     }),
@@ -34,7 +34,7 @@ interface CopyButtonOptions {
  * })
  * ```
  */
-export function copyButtonTransformer(
+export function transformerCopyButton(
   options: CopyButtonOptions = {
     visibility: 'hover',
     feedbackDuration: 3_000,

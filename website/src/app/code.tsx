@@ -3,7 +3,7 @@ import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import rehypePrettyCode from 'rehype-pretty-code';
-import { copyButtonTransformer } from '@rehype-pretty/transformers';
+import { transformerCopyButton } from '@rehype-pretty/transformers';
 
 /**
  * Server Component example
@@ -26,7 +26,7 @@ async function highlightCode(code: string) {
     .use(remarkRehype)
     .use(rehypePrettyCode, {
       transformers: [
-        copyButtonTransformer({
+        transformerCopyButton({
           visibility: 'always',
           feedbackDuration: 3_000,
         }),

@@ -1,0 +1,79 @@
+---
+import '../globals.css';
+---
+
+<section
+  class="max-w-4xl mx-auto text-gray-300/70 px-4 sm:px-6 md:px-8 mt-12 mb-6 relative z-1 p-2"
+>
+</section>
+
+<script>
+  import { unified } from 'unified'
+  import remarkParse from 'remark-parse'
+  import remarkRehype from 'remark-rehype'
+  import rehypeStringify from 'rehype-stringify'
+  import rehypePrettyCode from 'rehype-pretty-code'
+  import { transformerCopyButton } from '@rehype-pretty/transformers'
+
+  async function highlightCode(code: string) {
+    const file = await unified()
+      .use(remarkParse)
+      .use(remarkRehype)
+      .use(rehypePrettyCode, {
+        transformers: [transformerCopyButton({ feedbackDuration: 2_000, visibility: 'hover' })],
+      })
+      .use(rehypeStringify)
+      .process(code)
+
+    return String(file)
+  }
+
+  const snippet = `\`\`\`ts {4-5} showLineNumbers /syntaxHighlight: false,/ /[rehypePrettyCode, { theme: moonlightTheme }]/
+import mdx from '@astrojs/mdx';
+import tailwind from '@astrojs/tailwind';
+import { defineConfig } from 'astro/config';
+import rehypePrettyCode from 'rehype-pretty-code';
+import moonlightTheme from './public/theme/moonlight-ii.json';
+import { transformerCopyButton } from '@rehype-pretty/transformers' with { type: 'json' };
+
+export default defineConfig({
+  markdown: {
+    syntaxHighlight: false,
+    rehypePlugins: [
+      [
+        rehypePrettyCode,
+        {
+          theme: moonlightTheme,
+          transformers: [
+            transformerCopyButton({
+              visibility: 'hover',
+              feedbackDuration: 3_500,
+            }),
+          ],
+        },
+      ],
+    ],
+  },
+  integrations: [mdx(), tailwind()],
+});
+\`\`\``
+
+  const highlightedSnippet = await highlightCode(snippet)
+
+  const sectionElement = document.querySelector('section')
+  if (sectionElement) sectionElement.innerHTML = highlightedSnippet
+</script>
+
+<style is:global>
+  figure {
+    @apply mb-6 mt-1;
+  }
+  pre,
+  code,
+  figure {
+    @apply overflow-x-scroll px-2 py-1;
+  }
+  p {
+    @apply text-xl;
+  }
+</style>
