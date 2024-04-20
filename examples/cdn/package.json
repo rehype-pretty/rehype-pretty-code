@@ -1,0 +1,7 @@
+{
+  "name": "example-cdn",
+  "scripts": {
+    "dev": "pnpm dlx serve@latest .",
+    "start": "pnpm dlx serve@latest ."
+  }
+}
