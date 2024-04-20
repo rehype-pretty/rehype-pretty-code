@@ -22,13 +22,13 @@ interface FoldableSectionsOptions {
  *
  * ```ts
  * import { codeToHtml } from 'shiki'
- * import { foldableSectionsTransformer } from '@rehype-pretty/foldable-sections'
+ * import { transformerFoldableSections } from '@rehype-pretty/foldable-sections'
  *
  * const html = await codeToHtml(`console.log('hello, world')`, {
  *   lang: 'ts',
  *   theme: 'houston',
  *   transformers: [
- *     foldableSectionsTransformer({
+ *     transformerFoldableSections({
  *       lines: [[1, 2]],
  *       style: {
  *         collapsedLineTextColor: 'white',
@@ -40,7 +40,7 @@ interface FoldableSectionsOptions {
  * ```
  */
 
-export function foldableSectionsTransformer(
+export function transformerFoldableSections(
   _options: FoldableSectionsOptions = {},
 ): ShikiTransformer {
   return {

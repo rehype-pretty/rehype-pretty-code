@@ -58,6 +58,6 @@
     "provenance": true
   },
   "author": "https://github.com/o-az",
-  "browserslist": ["node 18"],
+  "browserslist": ["node 20"],
   "license": "MIT"
 }
