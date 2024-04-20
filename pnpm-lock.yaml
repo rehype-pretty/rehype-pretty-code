@@ -29,6 +29,9 @@ importers:
       sherif:
         specifier: ^0.8.4
         version: 0.8.4
+      simple-git-hooks:
+        specifier: ^2.11.1
+        version: 2.11.1
       turbo:
         specifier: ^1.13.2
         version: 1.13.2
@@ -3483,6 +3486,10 @@ packages:
 
   simple-get@4.0.1:
     resolution: {integrity: sha512-brv7p5WgH0jmQJr1ZDDfKDOSeWWg+OVypG99A/5vYGPqJ6pxiaHLy8nxtFjBA7oMa01ebA9gfh1uMCFqOuXxvA==}
+
+  simple-git-hooks@2.11.1:
+    resolution: {integrity: sha512-tgqwPUMDcNDhuf1Xf6KTUsyeqGdgKMhzaH4PAZZuzguOgTl5uuyeYe/8mWgAr6IBxB5V06uqEf6Dy37gIWDtDg==}
+    hasBin: true
 
   simple-swizzle@0.2.2:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
@@ -8246,6 +8253,8 @@ snapshots:
       once: 1.4.0
       simple-concat: 1.0.1
     optional: true
+
+  simple-git-hooks@2.11.1: {}
 
   simple-swizzle@0.2.2:
     dependencies:
