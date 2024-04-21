@@ -51,6 +51,7 @@
     "rules": {
       "all": true,
       "style": {
+        "noNamespace": "off",
         "noDefaultExport": "off",
         "useFragmentSyntax": "off",
         "noImplicitBoolean": "off",

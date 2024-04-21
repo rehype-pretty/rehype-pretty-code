@@ -26,7 +26,7 @@
   "[json]": { "editor.defaultFormatter": "biomejs.biome" },
   "[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
   "[astro]": { "editor.defaultFormatter": "astro-build.astro-vscode" },
-  "[svelte]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[svelte]": { "editor.defaultFormatter": "svelte.svelte-vscode" },
   "files.associations": {
     "biome.json": "jsonc",
     "*.css": "tailwindcss"
@@ -38,5 +38,8 @@
     "**/node_modules": true,
     "**/pnpm-lock.yaml": true,
     "**/package-lock.json": true
+  },
+  "[elixir]": {
+    "editor.defaultFormatter": "JakeBecker.elixir-ls"
   }
 }

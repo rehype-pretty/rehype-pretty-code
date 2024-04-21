@@ -21,3 +21,4 @@ _
 .tsup
 .env
 !.env.example
+.svelte-kit
