@@ -1,12 +1,12 @@
 <div style="align:center;text-align:center;">
 
+<h1 align="center" style="font-size: 2.8rem; font-weight: 900; color: white;">Rehype Pretty Code</h1>
+
 <p align="center">
   <a href="https://rehype-pretty.pages.dev" target="_blank" rel="noopener noreferrer">
     <img width="750" src="./.github/images/screenshot.png" alt="screenshot" />
   </a>
 </p>
-
-<h1 align="center" style="font-size: 2.8rem; font-weight: 900; color: white;">Rehype Pretty Code</h1>
 
 <div align="center" style="font-size: 1.2rem; margin-left: auto;
             margin-right: auto;
