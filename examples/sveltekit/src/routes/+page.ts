@@ -39,7 +39,7 @@ export const load = (async (_event) => {
     parsedSnippets.push({ filename, code: String(processedResult) });
   }
   return {
-    title: 'Fibbonaci Sequence',
+    title: 'Fibonacci Sequence',
     snippets: parsedSnippets,
   };
 }) satisfies PageLoad;

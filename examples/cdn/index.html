@@ -34,7 +34,7 @@
     const codeElement = document.querySelector('section#code')
 
     const codeSnippet = /* ts */ `ts
-export function* fibbonaciSequence() {
+export function* FibonacciSequence() {
   let [a, b] = [0, 1];
   while (true) {
     yield a;
@@ -42,7 +42,7 @@ export function* fibbonaciSequence() {
   }
 }
 
-const fib = fibbonaciSequence();
+const fib = FibonacciSequence();
 fib.next().value // 0
 fib.next().value // 1
 // 0, 1, 1, 2, 3, 5, 8, 13, 21, 34

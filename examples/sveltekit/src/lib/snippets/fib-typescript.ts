@@ -1,4 +1,4 @@
-export function* fibbonaciSequence() {
+export function* FibonacciSequence() {
   let [a, b] = [0, 1];
   while (true) {
     yield a;
@@ -6,5 +6,5 @@ export function* fibbonaciSequence() {
   }
 }
 
-const fib = fibbonaciSequence();
+const fib = FibonacciSequence();
 Array.from({ length: 10 }, () => console.log(fib.next().value));
