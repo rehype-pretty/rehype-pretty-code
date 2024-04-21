@@ -22,3 +22,5 @@ _
 .env
 !.env.example
 .svelte-kit
+.wrangler
+build/

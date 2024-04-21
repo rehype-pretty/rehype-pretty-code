@@ -1,3 +1,6 @@
+export const prerender = true;
+export const trailingSlash = 'always';
+
 import { toHTML } from '$/lib/markdown.ts';
 import type { PageLoad } from './$types.ts';
 
