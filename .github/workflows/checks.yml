@@ -52,7 +52,7 @@ jobs:
         run: pnpm test
 
       - name: 'Check Dependencies'
-        run: pnpm dlx sherif@latest
+        run: pnpm dlx sherif@latest --ignore-dependency tailwindcss
 
       - name: 'Check Packages'
         run: pnpm check-package

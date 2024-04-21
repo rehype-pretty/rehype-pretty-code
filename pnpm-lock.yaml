@@ -26,9 +26,6 @@ importers:
       bun:
         specifier: ^1.1.4
         version: 1.1.4
-      sherif:
-        specifier: ^0.8.4
-        version: 0.8.4
       simple-git-hooks:
         specifier: ^2.11.1
         version: 2.11.1
@@ -3699,40 +3696,6 @@ packages:
   shebang-regex@3.0.0:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
-
-  sherif-darwin-arm64@0.8.4:
-    resolution: {integrity: sha512-mFJO9BjwjXnzn7UQ0moLyJzDWu68g71E1jNKujkuS8a4UQ8jV2O6gosOqfqPMHLLiZjZwuVZNnp59ecqP4rVpg==}
-    cpu: [arm64]
-    os: [darwin]
-
-  sherif-darwin-x64@0.8.4:
-    resolution: {integrity: sha512-71keXqkH27FvN5q3OmddS7FXaAVk0iBXGlfZhsuuNSR00CnSndM+AS8ibUH2okvF55HdPK6x6VovoEG3PvqCmw==}
-    cpu: [x64]
-    os: [darwin]
-
-  sherif-linux-arm64@0.8.4:
-    resolution: {integrity: sha512-hQwFHQ6cGDOkKSa1zuEAc8WIsSgY0a4MFXEiHIPfRbJdE+leDcAVDovvpPIQZRUgbSe96mQ5QJg5fw52+eySrw==}
-    cpu: [arm64]
-    os: [linux]
-
-  sherif-linux-x64@0.8.4:
-    resolution: {integrity: sha512-S2BK9YLc12JMxg8ODIcceRW7Y4rmgrIEzUBOqp6NSeOz4Wq/34YdtimNRHzwrDOgjTpgUA/pt+TwPsGPXr+gNA==}
-    cpu: [x64]
-    os: [linux]
-
-  sherif-windows-arm64@0.8.4:
-    resolution: {integrity: sha512-9IBeX13AeCQ9ETRqfGR7GQqcyRxu4jlXyO7TNQVKU/kBrMjWjYYic/VKwHB37q0xealXUNmB9nD08hfMmdnidg==}
-    cpu: [arm64]
-    os: [win32]
-
-  sherif-windows-x64@0.8.4:
-    resolution: {integrity: sha512-PR1tjnCLxcdYaC8FRM3K6ldIwaJDEJn0tOt6e2V6R7OFMDwF8CJOSq24RzGgSmJRBFtlLqU94sXTDPfUCR0YPw==}
-    cpu: [x64]
-    os: [win32]
-
-  sherif@0.8.4:
-    resolution: {integrity: sha512-L2tNE60i5gRNe5eFNSjUAqt2rCIbKj9jp/50zCfsw8bSBX6noHamR7FDhaecyrNBk6ZgGEEAjxGe4C6iqelwZw==}
-    hasBin: true
 
   shiki@1.3.0:
     resolution: {integrity: sha512-9aNdQy/etMXctnPzsje1h1XIGm9YfRcSksKOGqZWXA/qP9G18/8fpz5Bjpma8bOgz3tqIpjERAd6/lLjFyzoww==}
@@ -8742,33 +8705,6 @@ snapshots:
   shebang-regex@1.0.0: {}
 
   shebang-regex@3.0.0: {}
-
-  sherif-darwin-arm64@0.8.4:
-    optional: true
-
-  sherif-darwin-x64@0.8.4:
-    optional: true
-
-  sherif-linux-arm64@0.8.4:
-    optional: true
-
-  sherif-linux-x64@0.8.4:
-    optional: true
-
-  sherif-windows-arm64@0.8.4:
-    optional: true
-
-  sherif-windows-x64@0.8.4:
-    optional: true
-
-  sherif@0.8.4:
-    optionalDependencies:
-      sherif-darwin-arm64: 0.8.4
-      sherif-darwin-x64: 0.8.4
-      sherif-linux-arm64: 0.8.4
-      sherif-linux-x64: 0.8.4
-      sherif-windows-arm64: 0.8.4
-      sherif-windows-x64: 0.8.4
 
   shiki@1.3.0:
     dependencies:
