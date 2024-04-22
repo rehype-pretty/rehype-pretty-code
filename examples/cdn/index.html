@@ -29,7 +29,6 @@
     import remarkRehype from 'https://esm.run/remark-rehype'
     import rehypeStringify from 'https://esm.run/rehype-stringify'
     import rehypePrettyCode from 'https://esm.run/rehype-pretty-code'
-    import { copyButtonTransformer } from 'https://esm.sh/jsr/@rehype-pretty/transformers'
 
     const codeElement = document.querySelector('section#code')
 
@@ -51,10 +50,7 @@ fib.next().value // 1
     const processor = await unified()
       .use(remarkParse)
       .use(remarkRehype)
-      .use(rehypePrettyCode, {
-        theme: 'rose-pine',
-        transformers: [copyButtonTransformer({ visibility: 'always' })]
-      })
+      .use(rehypePrettyCode, { theme: 'rose-pine' })
       .use(rehypeStringify)
       .process("```" + codeSnippet)
 

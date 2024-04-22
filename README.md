@@ -19,7 +19,7 @@ Beautiful code blocks for your MD/MDX docs.
 ## Integration Examples
 
 
-| <img src="https://api.iconify.design/vscode-icons:file-type-svelte.svg" alt="svelte logo" width="100" style="padding:1px;" /> <br/> [SvelteKit](./examples/sveltekit) | <img src="https://api.iconify.design/vscode-icons:file-type-astro.svg" alt="Astro logo" width="100" style="padding:1px;" /> <br/> [Astro](./examples/astro) | <img src="https://api.iconify.design/vscode-icons:file-type-html.svg" alt="html logo" width="100" style="padding:1px;" /> <br/> [CDN](./examples/cdn) |
+| <img src="https://api.iconify.design/vscode-icons:file-type-svelte.svg" alt="svelte logo" width="100" style="padding:1px;" /> <br/> [SvelteKit](./examples/sveltekit) | <img src="https://api.iconify.design/vscode-icons:file-type-astro.svg" alt="Astro logo" width="100" style="padding:1px;" /> <br/> [Astro](./examples/astro) | <img src="https://api.iconify.design/vscode-icons:file-type-html.svg" alt="html logo" width="100" style="padding:1px;" /> <br/> [CDN](./examples/cdn/index.html) |
 |---|---|---|
 
 </div>
