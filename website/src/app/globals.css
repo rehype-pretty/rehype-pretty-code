@@ -94,7 +94,8 @@ pre [data-line] {
   @apply bg-zinc-700 text-zinc-200 rounded-t-lg py-2 px-3 font-semibold text-sm;
 }
 
-figcaption + pre {
+figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title])
+  pre {
   @apply !rounded-t-none;
 }
 
