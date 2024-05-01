@@ -1,6 +1,6 @@
 import type { ShikiTransformer } from 'shiki';
 
-interface FoldableSectionsOptions {
+interface FoldableLinesOptions {
   lines?: Array<[start: number, end: number]>;
   style?: {
     collapsedLineTextColor?: string;
@@ -9,9 +9,9 @@ interface FoldableSectionsOptions {
 }
 
 /**
- * A transformer that adds a foldable sections to code blocks.
+ * A transformer that adds a foldable lines to code blocks.
  *
- * @param {Object} options - Options for the foldable sections behavior and appearance.
+ * @param {Object} options - Options for the foldable lines behavior and appearance.
  * @param {Array<[number, number]>} options.lines - The lines to be collapsed.
  * @param {Object} options.style - The style of the collapsed lines.
  * @param {string} options.style.collapsedLineTextColor - The text color of the collapsed lines.
@@ -22,13 +22,13 @@ interface FoldableSectionsOptions {
  *
  * ```ts
  * import { codeToHtml } from 'shiki'
- * import { transformerFoldableSections } from '@rehype-pretty/foldable-sections'
+ * import { transformerFoldableLines } from '@rehype-pretty/foldable-lines'
  *
  * const html = await codeToHtml(`console.log('hello, world')`, {
  *   lang: 'ts',
  *   theme: 'houston',
  *   transformers: [
- *     transformerFoldableSections({
+ *     transformerFoldableLines({
  *       lines: [[1, 2]],
  *       style: {
  *         collapsedLineTextColor: 'white',
@@ -40,13 +40,19 @@ interface FoldableSectionsOptions {
  * ```
  */
 
-export function transformerFoldableSections(
-  _options: FoldableSectionsOptions = {},
+export function transformerFoldableLines(
+  _options: FoldableLinesOptions = {},
 ): ShikiTransformer {
   return {
-    name: '@rehype-pretty/transformers/foldable-sections',
+    name: '@rehype-pretty/transformers/foldable-lines',
+    preprocess(code, _options) {
+      return code;
+    },
     code(node) {
       return node;
+    },
+    postprocess(html, _options) {
+      return html;
     },
   };
 }

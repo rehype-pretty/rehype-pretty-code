@@ -4,7 +4,10 @@ import type { Compatible } from 'vfile';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import rehypePrettyCode from 'rehype-pretty-code';
-import { transformerCopyButton } from '@rehype-pretty/transformers';
+import {
+  transformerCopyButton,
+  transformerFoldableLines,
+} from '@rehype-pretty/transformers';
 
 export const toHTML = (content: Compatible | undefined) =>
   unified()
@@ -16,6 +19,9 @@ export const toHTML = (content: Compatible | undefined) =>
         transformerCopyButton({
           visibility: 'always',
           feedbackDuration: 2_500,
+        }),
+        transformerFoldableLines({
+          lines: [[1, 2]],
         }),
       ],
     })
