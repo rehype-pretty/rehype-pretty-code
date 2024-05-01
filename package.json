@@ -17,7 +17,6 @@
     "changeset:publish": "changeset publish",
     "typecheck": "turbo run typecheck",
     "check-package": "turbo check-package",
-    "prepare": "pnpm dlx simple-git-hooks",
     "clean": "turbo clean",
     "clean-full": "/bin/bash ./scripts/clean.sh"
   },

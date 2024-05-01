@@ -26,10 +26,8 @@ jobs:
 
       - name: 'Get pnpm Version'
         id: pnpm-version
-        env:
-          PACKAGE_JSON: ${{ github.workspace }}/package.json
         run: |
-          PNPM_VERSION=$(node --eval "console.log(require(`${{ env.PACKAGE_JSON }}`).packageManager.split('@').at(-1))")
+          PNPM_VERSION=$(cat package.json | jq --raw-output '.packageManager' | awk -F'@' '{print $2}')
           echo "PNPM_VERSION=$PNPM_VERSION" >> $GITHUB_OUTPUT
 
       - name: 'Setup pnpm'
