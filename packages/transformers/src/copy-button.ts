@@ -1,5 +1,5 @@
+import { trimWhitespace } from './utilities';
 import type { ShikiTransformer } from 'shiki';
-import { trimWhitespace } from './utilities/index.js';
 
 interface CopyButtonOptions {
   feedbackDuration?: number;
@@ -56,7 +56,7 @@ export function transformerCopyButton(
           onclick: trimWhitespace(/* javascript */ `
             navigator.clipboard.writeText(this.attributes.data.value);
             this.classList.add('rehype-pretty-copied');
-            setTimeout(() => this.classList.remove('rehype-pretty-copied'), ${options.feedbackDuration});
+            window.setTimeout(() => this.classList.remove('rehype-pretty-copied'), ${options.feedbackDuration});
           `),
         },
         children: [

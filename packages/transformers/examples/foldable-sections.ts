@@ -4,7 +4,7 @@ import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import rehypePrettyCode from 'rehype-pretty-code';
-import { transformerFoldableSections } from '../src/foldable-sections.ts';
+import { transformerFoldableLines } from '../src/foldable-lines.ts';
 
 /* Usage with `rehype-pretty-code` */
 
@@ -13,7 +13,7 @@ const withRehypePrettyCode = await unified()
   .use(remarkRehype)
   .use(rehypePrettyCode, {
     transformers: [
-      transformerFoldableSections({
+      transformerFoldableLines({
         lines: [
           [1, 3],
           [5, 7],
@@ -34,7 +34,7 @@ const withShikiDirectly = await codeToHtml('console.log("Hello World")', {
   lang: 'ts',
   theme: 'vitesse-light',
   transformers: [
-    transformerFoldableSections({
+    transformerFoldableLines({
       lines: [
         [1, 3],
         [5, 7],

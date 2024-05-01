@@ -1,2 +1,2 @@
-export { transformerCopyButton } from './copy-button.js';
-export { transformerFoldableSections } from './foldable-sections.js';
+export { transformerCopyButton } from './copy-button';
+export { transformerFoldableLines } from './foldable-lines';
