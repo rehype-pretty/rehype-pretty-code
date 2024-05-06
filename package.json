@@ -38,7 +38,7 @@
   "simple-git-hooks": {
     "pre-commit": "pnpm format && pnpm lint && pnpm lint:repo && pnpm typecheck"
   },
-  "packageManager": "pnpm@9.0.6",
+  "packageManager": "pnpm@9.1.0",
   "author": "https://github.com/atomiks",
   "contributors": [
     "atomiks (https://github.com/atomiks)",
