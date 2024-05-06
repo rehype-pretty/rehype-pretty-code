@@ -19,7 +19,7 @@ Beautiful code blocks for your MD/MDX docs.
 ## Integration Examples
 
 
-| <a href="https://github.com/rehype-pretty/rehype-pretty-code/tree/master/examples/sveltekit"><img src="https://api.iconify.design/vscode-icons:file-type-svelte.svg" alt="svelte logo" width="100" style="padding:1px;" /> <br/> [SvelteKit](./examples/sveltekit)</a> | <a href="https://github.com/rehype-pretty/rehype-pretty-code/tree/master/examples/astro"><img src="https://api.iconify.design/vscode-icons:file-type-astro.svg" alt="Astro logo" width="100" style="padding:1px;" /><br/> [Astro](./examples/astro)</a> | <a href="https://github.com/rehype-pretty/rehype-pretty-code/tree/master/examples/cdn/index.html"><img src="https://api.iconify.design/vscode-icons:file-type-html.svg" alt="html logo" width="100" style="padding:1px;" /><br/> [CDN](./examples/cdn/index.html)</a> |
-|---|---|---|
+| <a href="https://github.com/rehype-pretty/rehype-pretty-code/tree/master/examples/sveltekit"><img src="https://api.iconify.design/vscode-icons:file-type-svelte.svg" alt="svelte logo" width="100" style="padding:1px;" /> <br/> [SvelteKit](./examples/sveltekit)</a> | <a href="https://github.com/rehype-pretty/rehype-pretty-code/tree/master/examples/astro"><img src="https://api.iconify.design/vscode-icons:file-type-astro.svg" alt="Astro logo" width="100" style="padding:1px;" /><br/> [Astro](./examples/astro)</a> | <a href="https://github.com/rehype-pretty/rehype-pretty-code/tree/master/examples/cdn/index.html"><img src="https://api.iconify.design/vscode-icons:file-type-html.svg" alt="html logo" width="100" style="padding:1px;" /><br/> [CDN](./examples/cdn/index.html)</a> | <a href="https://github.com/rehype-pretty/rehype-pretty-code/tree/master/website"><img src="https://api.iconify.design/devicon:nextjs.svg" alt="html logo" width="100" style="padding:1px;" /><br/> [Next.js](./website)</a> |
+|---|---|---|---|
 
 </div>
