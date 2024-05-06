@@ -16,7 +16,7 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist", "package.json"],
+  "files": ["dist", "package.json", "README.md", "LICENSE"],
   "scripts": {
     "build": "tsup --config=tsup.config.ts",
     "test": "vitest --run",
