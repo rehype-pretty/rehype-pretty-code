@@ -5,11 +5,10 @@ import {
   type CodeToHastOptions,
   getHighlighter as defaultGetHighlighter,
 } from 'shiki';
-import type { Transformer } from 'unified';
 import { visit } from 'unist-util-visit';
 import { toString as hastToString } from 'hast-util-to-string';
 import rangeParser from 'parse-numeric-range';
-import { unified } from 'unified';
+import { unified, type Transformer } from 'unified';
 import rehypeParse from 'rehype-parse';
 import { charsHighlighter } from './chars/charsHighlighter';
 import { reverseString } from './chars/utils';

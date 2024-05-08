@@ -1,6 +1,6 @@
 {
   "name": "rehype-pretty-code",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "description": "Beautiful code for your MD/MDX docs.",
   "homepage": "https://rehype-pretty.pages.dev",
   "type": "module",
@@ -37,7 +37,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",
     "@shikijs/transformers": "^1.4.0",
-    "@types/node": "^20.12.9",
+    "@types/node": "^20.12.10",
     "hast-util-to-html": "^9.0.1",
     "mdast-util-to-hast": "^13.1.0",
     "prettier": "^3.2.5",
