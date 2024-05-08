@@ -5,7 +5,7 @@
     { "repo": "rehype-pretty/rehype-pretty-code" }
   ],
   "commit": false,
-  "fixed": [],
+  "fixed": [["rehype-pretty-code", "@rehype-pretty/transformers"]],
   "linked": [],
   "access": "public",
   "baseBranch": "master",

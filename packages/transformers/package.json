@@ -1,7 +1,7 @@
 {
   "name": "@rehype-pretty/transformers",
   "description": "Shiki transformer that adds a copy button to code blocks",
-  "version": "0.13.2",
+  "version": "0.13.1",
   "homepage": "https://rehype-pretty.pages.dev",
   "private": true,
   "type": "module",
