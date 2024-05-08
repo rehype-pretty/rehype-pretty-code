@@ -1,6 +1,6 @@
 {
   "$schema": "https://jsr.io/schema/config-file.v1.json",
-  "name": "@rehype-pretty/transformers",
+  "name": "@rehype-pretty/core",
   "version": "0.13.1",
   "exports": "./src/index.ts",
   "publish": {

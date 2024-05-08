@@ -1,8 +1,5 @@
 name: Release
 
-permissions:
-  contents: write
-
 on:
   push:
     branches: ['main', 'next']
@@ -14,22 +11,33 @@ defaults:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
-  NODE_OPTIONS: '--no-warnings'
-  NEXT_TELEMETRY_DISABLED: '1'
   ACTIONS_RUNNER_DEBUG: true
+  NEXT_TELEMETRY_DISABLED: '1'
+  ASTRO_TELEMETRY_DISABLED: '1'
+  NODE_OPTIONS: '--no-warnings'
+  FORCE_COLOR: 1
 
 jobs:
   release:
     name: 'Release'
     runs-on: ['ubuntu-latest']
+    permissions:
+      contents: write
+      id-token: write
     steps:
       - name: 'Checkout Repository'
         uses: actions/checkout@v4
 
+      - name: 'Get pnpm Version'
+        id: pnpm-version
+        run: |
+          PNPM_VERSION=$(cat package.json | jq --raw-output '.packageManager' | awk -F'@' '{print $2}')
+          echo "PNPM_VERSION=$PNPM_VERSION" >> $GITHUB_OUTPUT
+
       - name: 'Setup pnpm'
         uses: pnpm/action-setup@v3
         with:
-          version: 'latest'
+          version: ${{ steps.pnpm-version.outputs.PNPM_VERSION }}
 
       - name: 'Setup Node.js'
         uses: actions/setup-node@v4
@@ -39,14 +47,20 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: 'Install Dependencies'
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
-      - name: 'Changesets'
+      - name: 'Build Packages'
+        run: pnpm build
+
+      - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm release
-          version: pnpm dlx bun ${{github.workspace }}/scripts/changeset-update-version.ts
+          # Note: pnpm install after versioning is necessary to refresh lockfile
+          version: pnpm dlx bun@latest ./scripts/changeset-update-version.ts
+          publish: pnpm exec changeset publish
+          commit: "[ci] release"
+          title: "[ci] release"
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

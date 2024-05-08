@@ -11,9 +11,11 @@ defaults:
     shell: bash
 
 env:
-  NODE_OPTIONS: '--no-warnings'
-  NEXT_TELEMETRY_DISABLED: '1'
   ACTIONS_RUNNER_DEBUG: true
+  NEXT_TELEMETRY_DISABLED: '1'
+  ASTRO_TELEMETRY_DISABLED: '1'
+  NODE_OPTIONS: '--no-warnings'
+  FORCE_COLOR: 1
 
 jobs:
   checks:
@@ -23,10 +25,17 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v4
 
+      - name: 'Get pnpm Version'
+        id: pnpm-version
+        run: |
+          PNPM_VERSION=$(cat package.json | jq --raw-output '.packageManager' | awk -F'@' '{print $2}')
+          echo "PNPM_VERSION=$PNPM_VERSION" >> $GITHUB_OUTPUT
+
       - name: 'Setup pnpm'
         uses: pnpm/action-setup@v3
         with:
-          version: 9.0.4
+          version: ${{ steps.pnpm-version.outputs.PNPM_VERSION }}
+          
 
       - name: 'Setup Node.js'
         uses: actions/setup-node@v4

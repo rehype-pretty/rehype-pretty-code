@@ -1,27 +1,39 @@
 {
   "name": "@rehype-pretty/transformers",
   "description": "Shiki transformer that adds a copy button to code blocks",
-  "version": "0.1.1",
+  "version": "0.13.2",
   "homepage": "https://rehype-pretty.pages.dev",
   "private": true,
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "source": "./src/index.ts",
-  "types": "./dist/index.d.ts",
-  "typings": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    },
-    "./copy-button": {
-      "types": "./dist/copy-button.d.ts",
-      "import": "./dist/copy-button.js",
-      "default": "./dist/copy-button.js"
-    },
-    "./package.json": "./package.json"
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": "./src/index.ts",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "typings": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      },
+      "./copy-button": {
+        "types": "./dist/copy-button.d.ts",
+        "import": "./dist/copy-button.js",
+        "default": "./dist/copy-button.js"
+      },
+      "./foldable-lines": {
+        "types": "./dist/foldable-lines.d.ts",
+        "import": "./dist/foldable-lines.js",
+        "default": "./dist/foldable-lines.js"
+      },
+      "./package.json": "./package.json"
+    }
   },
   "files": ["dist", "package.json", "README.md", "LICENSE"],
   "sideEffects": false,
@@ -35,9 +47,9 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",
-    "@types/node": "^20.12.7",
+    "@types/node": "^20.12.10",
     "tsup": "^8.0.2",
-    "tsx": "^4.7.2",
+    "tsx": "^4.9.3",
     "typescript": "^5.4.5"
   },
   "engines": {
@@ -48,11 +60,7 @@
     "url": "git+https://github.com/rehype-pretty/rehype-pretty-code.git",
     "directory": "packages/transformers"
   },
-  "publishConfig": {
-    "access": "public",
-    "provenance": true
-  },
   "author": "https://github.com/o-az",
-  "browserslist": ["node 18"],
+  "browserslist": ["node 20"],
   "license": "MIT"
 }

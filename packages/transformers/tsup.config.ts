@@ -13,6 +13,7 @@ export default defineConfig({
   entry: {
     index: './src/index.ts',
     'copy-button': './src/copy-button.ts',
+    'foldable-lines': './src/foldable-lines.ts',
   },
   treeshake: 'recommended',
   skipNodeModulesBundle: true,
