@@ -2,13 +2,18 @@ name: Release
 
 on:
   push:
-    branches: ['main', 'next']
+    branches:
+      - master
+      - next
 
 defaults:
   run:
     shell: bash
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 
 env:
   ACTIONS_RUNNER_DEBUG: true
@@ -20,6 +25,7 @@ env:
 jobs:
   release:
     name: 'Release'
+    if: github.repository == 'rehype-pretty/rehype-pretty-code' && !contains(github.event.head_commit.message, '[skip ci]')
     runs-on: ['ubuntu-latest']
     permissions:
       contents: write
@@ -27,6 +33,7 @@ jobs:
     steps:
       - name: 'Checkout Repository'
         uses: actions/checkout@v4
+
 
       - name: 'Get pnpm Version'
         id: pnpm-version
@@ -47,10 +54,21 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: 'Install Dependencies'
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
+
+      - name: Check for unreleased changesets
+        id: has-changesets
+        uses: andstor/file-existence-action@v3
+        with:
+          files: ".changeset/!(README).md"
 
       - name: 'Build Packages'
-        run: pnpm build
+        if: steps.has-changesets.outputs.files_exists == 'true'
+        run: |
+          pnpm lint && pnpm format
+          pnpm typecheck
+          pnpm test
+          pnpm build
 
       - name: Create Release Pull Request or Publish
         id: changesets
