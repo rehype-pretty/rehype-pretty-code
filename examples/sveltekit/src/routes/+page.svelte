@@ -26,7 +26,7 @@ export let data: PageData;
   :global(code),
   :global(figure) {
     border-radius: 5px;
-    overflow-x: scroll;
+    overflow-x: auto;
     padding: 5px 6px 6px 6px;
   }
 
