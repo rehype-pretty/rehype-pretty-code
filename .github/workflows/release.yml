@@ -12,7 +12,6 @@ defaults:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 env:
   ACTIONS_RUNNER_DEBUG: true
@@ -26,15 +25,6 @@ jobs:
     name: 'Release'
     if: github.repository == 'rehype-pretty/rehype-pretty-code' && !contains(github.event.head_commit.message, '[skip ci]')
     runs-on: ['ubuntu-latest']
-    permissions:
-      issues: write
-      checks: write
-      actions: write
-      contents: write
-      id-token: write
-      packages: write
-      pull-requests: write
-      repository-projects: write
     steps:
       - name: 'Checkout Repository'
         uses: actions/checkout@v4
