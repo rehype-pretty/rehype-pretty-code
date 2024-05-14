@@ -16,12 +16,7 @@
     },
     "./package.json": "./package.json"
   },
-  "files": [
-    "dist",
-    "package.json",
-    "README.md",
-    "LICENSE"
-  ],
+  "files": ["dist", "package.json", "README.md", "LICENSE"],
   "scripts": {
     "build": "tsup --config=tsup.config.ts",
     "test": "vitest --run",
@@ -42,7 +37,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",
     "@shikijs/transformers": "^1.5.1",
-    "@types/node": "^20.12.11",
+    "@types/node": "^20.12.12",
     "hast-util-to-html": "^9.0.1",
     "mdast-util-to-hast": "^13.1.0",
     "prettier": "^3.2.5",
@@ -70,9 +65,7 @@
     "url": "git+https://github.com/rehype-pretty/rehype-pretty-code.git",
     "directory": "packages/core"
   },
-  "browserslist": [
-    "node 18"
-  ],
+  "browserslist": ["node 18"],
   "author": "https://github.com/atomiks",
   "license": "MIT"
 }

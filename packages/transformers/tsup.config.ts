@@ -8,7 +8,7 @@ export default defineConfig({
   outDir: 'dist',
   format: ['esm'],
   splitting: true,
-  sourcemap: true,
+  sourcemap: process.env.NODE_ENV === 'development' ? 'inline' : false,
   target: ['esnext'],
   entry: {
     index: './src/index.ts',
