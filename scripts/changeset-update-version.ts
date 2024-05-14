@@ -17,12 +17,12 @@ run().catch((error) => {
 async function run() {
   const versionCommand = bun.$`pnpm exec changeset version`.text();
   const installCommand = bun.$`pnpm install --lockfile-only`.text();
-  const formatCommand = bun.$`biome format . --write`.text();
+  // const formatCommand = bun.$`biome format . --write`.text();
 
   const results = await Promise.all([
     versionCommand,
     installCommand,
-    formatCommand,
+    // formatCommand,
   ]);
 
   console.info(JSON.stringify(results, undefined, 2));
