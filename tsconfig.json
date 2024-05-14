@@ -19,6 +19,6 @@
     "downlevelIteration": true
   },
   "include": ["scripts"],
-  "files": ["biome.json"],
+  "files": ["biome.json", ".changeset/changelog.ts"],
   "exclude": ["node_modules"]
 }

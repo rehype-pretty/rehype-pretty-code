@@ -1,9 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
-  "changelog": [
-    "@changesets/changelog-github",
-    { "repo": "rehype-pretty/rehype-pretty-code" }
-  ],
+  "changelog": "./changelog.ts",
   "commit": false,
   "fixed": [],
   "linked": [["rehype-pretty-code", "@rehype-pretty/transformers"]],
