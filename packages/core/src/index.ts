@@ -164,7 +164,9 @@ function apply(
 const globalHighlighterCache = new Map<string, Promise<Highlighter>>();
 const hastParser = unified().use(rehypeParse, { fragment: true });
 
-export default function rehypePrettyCode(
+export default rehypePrettyCode;
+
+export function rehypePrettyCode(
   options: Options = {},
 ): void | Transformer<Root, Root> {
   const {

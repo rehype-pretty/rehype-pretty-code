@@ -1,5 +1,5 @@
 > [!NOTE]  
-> Currently in **beta**.
+> Currently in **development**.
 
 # `@rehype-pretty/transformers`
 
@@ -7,7 +7,7 @@
 [![JSR](https://jsr.io/badges/@rehype-pretty/transformers/score)](https://jsr.io/@rehype-pretty/transformers)
 
 ```sh
-npm install @rehype-pretty/transformers
+npx jsr add @rehype-pretty/transformers
 ```
 
 ## Available Transformers
