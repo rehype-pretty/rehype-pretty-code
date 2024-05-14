@@ -110,3 +110,6 @@ figure {
 p {
   @apply text-xl;
 }
+article p {
+  @apply leading-9;
+}
