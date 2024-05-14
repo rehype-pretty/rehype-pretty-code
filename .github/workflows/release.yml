@@ -28,6 +28,8 @@ jobs:
     runs-on: ['ubuntu-latest']
     permissions:
       issues: write
+      checks: write
+      actions: write
       contents: write
       id-token: write
       packages: write
@@ -78,7 +80,7 @@ jobs:
         with:
           # Note: pnpm install after versioning is necessary to refresh lockfile
           version: pnpm dlx bun@latest ./scripts/changeset-update-version.ts
-          publish: pnpm exec changeset publish
+          publish: pnpm changeset:publish
           commit: "[ci] release"
           title: "[ci] release"
         env:

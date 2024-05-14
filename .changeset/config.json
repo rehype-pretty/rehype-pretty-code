@@ -6,9 +6,8 @@
   "linked": [["rehype-pretty-code", "@rehype-pretty/transformers"]],
   "access": "public",
   "baseBranch": "master",
-  "updateInternalDependencies": "patch",
   "ignore": ["website", "example-*"],
-  "bumpVersionsWithWorkspaceProtocolOnly": true,
+  "updateInternalDependencies": "patch",
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }
