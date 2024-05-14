@@ -1,0 +1,29 @@
+{
+  "name": "@rehype-pretty/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "clean": "rm -rf .vitepress/cache"
+  },
+  "devDependencies": {
+    "@rehype-pretty/transformers": "workspace:*",
+    "@shikijs/vitepress-twoslash": "^1.5.2",
+    "@tailwindcss/vite": "4.0.0-alpha.15",
+    "@total-typescript/ts-reset": "^0.5.1",
+    "@types/node": "^20.12.12",
+    "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "rehype-pretty-code": "workspace:*",
+    "tailwindcss": "4.0.0-alpha.15",
+    "tsx": "^4.10.2",
+    "typed-query-selector": "^2.11.2",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11",
+    "vitepress": "^1.1.4",
+    "vue": "^3.4.27"
+  }
+}

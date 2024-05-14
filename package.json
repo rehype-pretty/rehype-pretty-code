@@ -56,7 +56,9 @@
   "license": "MIT",
   "pnpm": {
     "peerDependencyRules": {
-      "allowAny": ["svelte"]
+      "allowAny": [
+        "svelte"
+      ]
     }
   }
 }

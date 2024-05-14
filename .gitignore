@@ -24,3 +24,4 @@ _
 .svelte-kit
 .wrangler
 build/
+cache

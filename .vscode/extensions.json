@@ -1,9 +1,11 @@
 {
   "recommendations": [
     "biomejs.biome",
+    "vue.volar",
+    "johnsoncodehk.volarjs-labs",
     "bradlc.vscode-tailwindcss",
     "tobermory.es6-string-html",
-    "orta.vscode-twoslash-queries"
+    "orta.vscode-twoslash-queries",
   ],
   "unwantedRecommendations": [
     // we use biome for linting and formatting
