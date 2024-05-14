@@ -13,14 +13,17 @@ import '../globals.css';
   import remarkRehype from 'remark-rehype'
   import rehypeStringify from 'rehype-stringify'
   import rehypePrettyCode from 'rehype-pretty-code'
-  import { transformerCopyButton } from '@rehype-pretty/transformers'
+  import { transformerCopyButton, transformerFoldableLines } from '@rehype-pretty/transformers'
 
   async function highlightCode(code: string) {
     const file = await unified()
       .use(remarkParse)
       .use(remarkRehype)
       .use(rehypePrettyCode, {
-        transformers: [transformerCopyButton({ feedbackDuration: 2_000, visibility: 'hover' })],
+        transformers: [
+          transformerCopyButton({ feedbackDuration: 2_000, visibility: 'always' }),
+          transformerFoldableLines({ lines: [] }),
+        ],
       })
       .use(rehypeStringify)
       .process(code)
@@ -28,7 +31,7 @@ import '../globals.css';
     return String(file)
   }
 
-  const snippet = `\`\`\`ts {4-5} showLineNumbers /syntaxHighlight: false,/ /[rehypePrettyCode, { theme: moonlightTheme }]/
+  const snippet = `\`\`\`ts showLineNumbers /syntaxHighlight: false,/ /[rehypePrettyCode, { theme: moonlightTheme }]/
 import mdx from '@astrojs/mdx';
 import tailwind from '@astrojs/tailwind';
 import { defineConfig } from 'astro/config';
