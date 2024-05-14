@@ -6,12 +6,17 @@ import {
   nextElementMaybeContinuesChars,
 } from './utils';
 
-export function getElementsToHighlight(
-  element: Element,
-  chars: string,
+export function getElementsToHighlight({
+  element,
+  chars,
   startIndex = 0,
   ignoreChars = false,
-): Array<{ element: Element; index: number }> {
+}: {
+  element: Element;
+  chars: string;
+  startIndex?: number;
+  ignoreChars?: boolean;
+}): Array<{ element: Element; index: number }> {
   const toWrap = [];
   let charsSoFar = '';
 

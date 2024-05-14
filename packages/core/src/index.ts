@@ -63,15 +63,12 @@ function apply(
 
   element.children = [tree]
     .map((tree) => {
-      const pre = tree.children[0];
+      const [pre] = tree.children;
       const themeNames = getThemeNames(theme);
       const themeNamesString = themeNames.join(' ');
+      if (!(isElement(pre) && pre.properties)) return [];
 
-      if (!(isElement(pre) && pre.properties)) {
-        return [];
-      }
-
-      const code = pre.children[0];
+      const [code] = pre.children;
 
       // Remove extraneous classes
       if (
@@ -94,9 +91,7 @@ function apply(
       pre.properties['data-language'] = lang;
       pre.properties['data-theme'] = themeNamesString;
 
-      if (!(isElement(code) && code.properties)) {
-        return [];
-      }
+      if (!(isElement(code) && code.properties)) return [];
 
       code.properties['data-language'] = lang;
       code.properties['data-theme'] = themeNamesString;
@@ -245,11 +240,11 @@ export function rehypePrettyCode(
         const codeElement = element.children[0];
         if (!isElement(codeElement)) return;
 
-        const { lang } = parseBlockMetaString(
-          codeElement,
-          filterMetaString,
-          defaultCodeBlockLang,
-        );
+        const { lang } = parseBlockMetaString({
+          element: codeElement,
+          filter: filterMetaString,
+          defaultFallback: defaultCodeBlockLang,
+        });
 
         if (lang) {
           langsToLoad.add(lang);
@@ -275,7 +270,7 @@ export function rehypePrettyCode(
 
     visit(tree, 'element', (element, _, parent) => {
       if (isInlineCode(element, parent)) {
-        const textElement = element.children[0];
+        const [textElement] = element.children;
         if (!isText(textElement)) return;
         const value = textElement.value;
         if (!value) return;
@@ -342,15 +337,15 @@ export function rehypePrettyCode(
       }
 
       if (isBlockCode(element)) {
-        const codeElement = element.children[0];
+        const [codeElement] = element.children;
         if (!isElement(codeElement)) return;
-        const textElement = codeElement.children[0];
+        const [textElement] = codeElement.children;
 
-        const { title, caption, meta, lang } = parseBlockMetaString(
-          codeElement,
-          filterMetaString,
-          defaultCodeBlockLang,
-        );
+        const { title, caption, meta, lang } = parseBlockMetaString({
+          element: codeElement,
+          filter: filterMetaString,
+          defaultFallback: defaultCodeBlockLang,
+        });
 
         if (!lang || lang === 'math') return;
 
@@ -473,12 +468,12 @@ export function rehypePrettyCode(
               onVisitHighlightedLine?.(element, lineId);
             }
 
-            charsHighlighter(
+            charsHighlighter({
               element,
               charsList,
-              charsHighlighterOptions,
+              options: charsHighlighterOptions,
               onVisitHighlightedChars,
-            );
+            });
 
             lineNumbersMaxDigits++;
           }

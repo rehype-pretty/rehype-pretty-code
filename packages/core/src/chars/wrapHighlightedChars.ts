@@ -2,16 +2,22 @@ import type { Element } from 'hast';
 import type { CharsHighlighterOptions, CharsElement } from '../types';
 import { isElement, isText } from '../utils';
 
-export function wrapHighlightedChars(
-  parentElement: Element,
-  elementsToWrap: Array<{ element: Element; index: number }>,
-  options: CharsHighlighterOptions,
-  ignoreWord: boolean,
+export function wrapHighlightedChars({
+  parentElement,
+  elementsToWrap,
+  options,
+  ignoreWord,
+  onVisitHighlightedChars,
+}: {
+  parentElement: Element;
+  elementsToWrap: Array<{ element: Element; index: number }>;
+  options: CharsHighlighterOptions;
+  ignoreWord: boolean;
   onVisitHighlightedChars?: (
     element: CharsElement,
     id: string | undefined,
-  ) => void,
-) {
+  ) => void;
+}) {
   if (!elementsToWrap || elementsToWrap.length === 0) {
     return;
   }

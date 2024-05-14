@@ -14,15 +14,20 @@ import { isElement } from '../utils';
  * If a node partially matches the chars, its content is replaced with the
  * matched part, and the left and/or right parts are cloned to sibling nodes.
  */
-export function charsHighlighter(
-  element: Element,
-  charsList: Array<string>,
-  options: CharsHighlighterOptions,
+export function charsHighlighter({
+  element,
+  charsList,
+  options,
+  onVisitHighlightedChars,
+}: {
+  element: Element;
+  charsList: Array<string>;
+  options: CharsHighlighterOptions;
   onVisitHighlightedChars?: (
     element: CharsElement,
     id: string | undefined,
-  ) => void,
-) {
+  ) => void;
+}) {
   const { ranges = [] } = options;
   const textContent = hastToString(element);
 
@@ -41,23 +46,23 @@ export function charsHighlighter(
           currentCharsRange.length > 0 &&
           !currentCharsRange.includes(options.counterMap.get(id) ?? -1);
 
-        const elementsToWrap = getElementsToHighlight(
+        const elementsToWrap = getElementsToHighlight({
           element,
           chars,
           startIndex,
           ignoreChars,
-        );
+        });
 
         // maybe throw / notify due to failure here
         if (elementsToWrap.length === 0) break;
 
-        wrapHighlightedChars(
-          element,
+        wrapHighlightedChars({
+          parentElement: element,
           elementsToWrap,
           options,
-          ignoreChars,
+          ignoreWord: ignoreChars,
           onVisitHighlightedChars,
-        );
+        });
 
         // re-start from the 'last' node (the chars or part of them may exist
         // multiple times in the same node)

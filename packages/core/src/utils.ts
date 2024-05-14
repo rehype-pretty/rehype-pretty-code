@@ -49,11 +49,15 @@ export function getInlineCodeLang(meta: string, defaultFallbackLang: string) {
   );
 }
 
-export function parseBlockMetaString(
-  element: Element,
-  filter: (s: string) => string,
-  defaultFallback: string,
-) {
+export function parseBlockMetaString({
+  element,
+  filter,
+  defaultFallback,
+}: {
+  element: Element;
+  filter: (s: string) => string;
+  defaultFallback: string;
+}) {
   let meta = filter(
     // @ts-expect-error: TODO handle this
     (element.data?.meta ?? element.properties?.metastring ?? '') as string,
