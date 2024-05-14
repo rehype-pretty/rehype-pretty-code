@@ -3,7 +3,6 @@
   "description": "Shiki transformer that adds a copy button to code blocks",
   "version": "0.13.1",
   "homepage": "https://rehype-pretty.pages.dev",
-  "private": true,
   "type": "module",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
@@ -47,9 +46,9 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",
-    "@types/node": "^20.12.10",
+    "@types/node": "^20.12.11",
     "tsup": "^8.0.2",
-    "tsx": "^4.9.3",
+    "tsx": "^4.10.2",
     "typescript": "^5.4.5"
   },
   "engines": {

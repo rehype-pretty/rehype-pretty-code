@@ -5,12 +5,12 @@
     { "repo": "rehype-pretty/rehype-pretty-code" }
   ],
   "commit": false,
-  "fixed": [["rehype-pretty-code", "@rehype-pretty/transformers"]],
-  "linked": [],
+  "fixed": [],
+  "linked": [["rehype-pretty-code", "@rehype-pretty/transformers"]],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
-  "ignore": ["website"],
+  "ignore": ["website", "example-*"],
   "bumpVersionsWithWorkspaceProtocolOnly": true,
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true

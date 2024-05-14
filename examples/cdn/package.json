@@ -1,5 +1,8 @@
 {
   "name": "example-cdn",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
   "scripts": {
     "dev": "pnpm dlx serve@latest .",
     "start": "pnpm dlx serve@latest ."
