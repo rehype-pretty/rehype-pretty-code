@@ -23,6 +23,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.7.3",
     "@changesets/cli": "^2.27.1",
+    "@total-typescript/ts-reset": "^0.5.1",
     "@types/bun": "^1.1.2",
     "@types/node": "^20.12.12",
     "bun": "^1.1.8",
@@ -56,9 +57,7 @@
   "license": "MIT",
   "pnpm": {
     "peerDependencyRules": {
-      "allowAny": [
-        "svelte"
-      ]
+      "allowAny": ["svelte"]
     }
   }
 }

@@ -27,7 +27,7 @@
   "[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
   "[astro]": { "editor.defaultFormatter": "astro-build.astro-vscode" },
   "[svelte]": { "editor.defaultFormatter": "svelte.svelte-vscode" },
-    "[vue]": {
+  "[vue]": {
     "editor.defaultFormatter": "vue.volar"
   },
   "files.associations": {

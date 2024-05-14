@@ -44,5 +44,5 @@
   },
   "include": ["src", "scripts", ".vitepress/**/*"],
   "files": ["reset.d.ts", "vite.config.ts", "package.json"],
-  "exclude": ["node_modules", "dist", ".vitepress/cache/"]
+  "exclude": ["node_modules", "dist", ".vitepress/cache", ".vitepress/dist"]
 }

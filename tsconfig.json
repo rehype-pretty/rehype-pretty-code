@@ -4,6 +4,9 @@
     "skipLibCheck": true,
     "module": "ESNext",
     "target": "ESNext",
+    "importsNotUsedAsValues": "remove",
+    "isolatedModules": true,
+    "strictNullChecks": true,
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
@@ -15,10 +18,9 @@
     "allowJs": true,
     "checkJs": true,
     "esModuleInterop": true,
-    "baseUrl": ".",
-    "downlevelIteration": true
+    "baseUrl": "."
   },
   "include": ["scripts"],
-  "files": ["biome.json", ".changeset/changelog.cjs"],
+  "files": ["biome.json", "reset.d.ts", ".changeset/changelog.cjs"],
   "exclude": ["node_modules"]
 }

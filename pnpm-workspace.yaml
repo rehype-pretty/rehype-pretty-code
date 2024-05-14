@@ -1,5 +1,4 @@
 packages:
   - 'packages/*'
   - 'examples/*'
-  - '!examples/next'
-  - 'website'
+  - 'docs'
