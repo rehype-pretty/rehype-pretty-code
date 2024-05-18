@@ -36,15 +36,15 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",
-    "@shikijs/transformers": "^1.5.1",
+    "@shikijs/transformers": "^1.5.2",
     "@types/node": "^20.12.12",
     "hast-util-to-html": "^9.0.1",
     "mdast-util-to-hast": "^13.1.0",
     "prettier": "^3.2.5",
     "remark": "^15.0.1",
-    "shiki": "^1.5.1",
+    "shiki": "^1.5.2",
     "tsup": "^8.0.2",
-    "tsx": "^4.10.2",
+    "tsx": "^4.10.4",
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
     "vitest": "^1.6.0"
