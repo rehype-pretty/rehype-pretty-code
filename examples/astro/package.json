@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.7.0",
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.12.13",
     "typescript": "^5.4.5"
   }
 }

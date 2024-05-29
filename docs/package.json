@@ -15,7 +15,7 @@
     "@shikijs/vitepress-twoslash": "^1.6.1",
     "@tailwindcss/vite": "4.0.0-alpha.15",
     "@total-typescript/ts-reset": "^0.5.1",
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.12.13",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "rehype-pretty-code": "workspace:*",
     "tailwindcss": "4.0.0-alpha.15",

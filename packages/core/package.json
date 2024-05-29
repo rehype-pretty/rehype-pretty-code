@@ -37,7 +37,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",
     "@shikijs/transformers": "^1.6.1",
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.12.13",
     "hast-util-to-html": "^9.0.1",
     "mdast-util-to-hast": "^13.1.0",
     "prettier": "^3.2.5",
