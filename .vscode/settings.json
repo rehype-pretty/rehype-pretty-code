@@ -30,7 +30,8 @@
   "[vue]": { "editor.defaultFormatter": "vue.volar" },
   "files.associations": {
     "biome.json": "jsonc",
-    "*.css": "tailwindcss"
+    "*.css": "tailwindcss",
+    ".markdownlint.json": "jsonc"
   },
   "search.exclude": {
     "_": true,
@@ -39,5 +40,8 @@
     "**/node_modules": true,
     "**/pnpm-lock.yaml": true,
     "**/package-lock.json": true
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
   }
 }

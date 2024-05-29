@@ -25,3 +25,5 @@ _
 .wrangler
 build/
 cache
+**/.vitepress/cache/
+.vitepress/dist

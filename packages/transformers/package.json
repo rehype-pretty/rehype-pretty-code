@@ -48,7 +48,7 @@
     "@arethetypeswrong/cli": "^0.15.3",
     "@types/node": "^20.12.12",
     "tsup": "^8.0.2",
-    "tsx": "^4.10.4",
+    "tsx": "^4.11.0",
     "typescript": "^5.4.5"
   },
   "engines": {
