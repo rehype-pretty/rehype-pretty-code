@@ -4,15 +4,17 @@ layout: home
 
 hero:
   name: "Rehype Pretty"
-  text: "Beautiful code for your MD/MDX docs."
-  tagline: My great project tagline
+  tagline: "Beautiful code for your MD/MDX docs."
   actions:
     - theme: brand
       text: Get Started
       link: /getting-started
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: Playground
+      link: /playground
+    - theme: alt
+      text: GitHub
+      link: https://github.com/rehype-pretty/rehype-pretty-code
 
 # features:
 #   - title: Feature A

@@ -1,4 +1,4 @@
-[`rehype-pretty-code`](https://github.com/atomiks/rehype-pretty-code) <span className="mix-blend-plus-lighter text-zinc-400/80">is a Rehype plugin powered by the</span>
+[`rehype-pretty-code`](https://github.com/atomiks/rehype-pretty-code) <span className="mix-blend-plus-lighter text-zinc-400/80">is a Rehype plugin powered by the </span>
 [`shiki`](https://github.com/shikijs/shiki) <span className="mix-blend-plus-lighter text-zinc-400/80">syntax highlighter that provides beautiful code blocks for Markdown or MDX. It works on both the server at build-time (avoiding runtime syntax highlighting) and on the client for dynamic highlighting.</span>
 
 ## Editor-Grade Highlighting
@@ -116,8 +116,6 @@ Inline ANSI: `> Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m{:ansi}`
 - [Visitor Hooks](#visitor-hooks)
 - [Custom Highlighter](#custom-highlighter)
 - [React Server Component](#react-server-component)
-
----
 
 ## Installation
 

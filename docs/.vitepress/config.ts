@@ -19,9 +19,9 @@ export default defineConfig({
   description: 'Beautiful code for your MD/MDX docs',
   srcDir: './src',
   cleanUrls: true,
+  vite: viteConfig,
   lastUpdated: true,
-  appearance: 'dark',
-  assetsDir: './public',
+  appearance: 'force-dark',
   markdown: {
     theme: moonlight as unknown as any,
     codeTransformers: [
@@ -38,6 +38,7 @@ export default defineConfig({
     ],
   },
   sitemap: { hostname: SITE_URL },
+
   head: [
     [
       'meta',
@@ -55,23 +56,26 @@ export default defineConfig({
     ['meta', { property: 'og:url', content: SITE_URL }],
     // Twitter
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { name: 'twitter:image', content: '__TODO__' }],
+    [
+      'meta',
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1.0, viewport-fit=cover',
+      },
+    ],
   ],
-  vite: viteConfig,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' },
-    ],
+    nav: [{ text: 'Home', link: '/' }],
 
     sidebar: [
       {
-        text: 'Examples',
-        items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' },
-        ],
+        text: 'rehype-pretty-code',
+        link: '/getting-started',
+      },
+      {
+        text: '@rehype-pretty/transformers',
+        link: '/transformers',
       },
     ],
 
