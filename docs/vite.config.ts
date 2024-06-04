@@ -1,8 +1,12 @@
+import url from 'node:url';
+import UnoCSS from 'unocss/vite';
 import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import tailwindcss from '@tailwindcss/vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 
 export default defineConfig({
-  plugins: [tailwindcss(), vue(), vueJsx()],
+  plugins: [
+    // vue(),
+    vueJsx(),
+    UnoCSS(url.fileURLToPath(new URL('./unocss.config.ts', import.meta.url))),
+  ],
 });

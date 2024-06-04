@@ -27,3 +27,5 @@ build/
 cache
 **/.vitepress/cache/
 .vitepress/dist
+*.timestamp-*
+site

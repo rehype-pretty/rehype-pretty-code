@@ -1,13 +1,11 @@
-<div>
-  [`rehype-pretty-code`](https://github.com/atomiks/rehype-pretty-code) <span className="mix-blend-plus-lighter text-zinc-400/80">is a Rehype plugin powered by the</span>
-  [`shiki`](https://github.com/shikijs/shiki) <span className="mix-blend-plus-lighter text-zinc-400/80">syntax highlighter that provides beautiful code blocks for Markdown or MDX. It works on both the server at build-time (avoiding runtime syntax highlighting) and on the client for dynamic highlighting.</span>
-</div>
+[`rehype-pretty-code`](https://github.com/atomiks/rehype-pretty-code) <span className="mix-blend-plus-lighter text-zinc-400/80">is a Rehype plugin powered by the</span>
+[`shiki`](https://github.com/shikijs/shiki) <span className="mix-blend-plus-lighter text-zinc-400/80">syntax highlighter that provides beautiful code blocks for Markdown or MDX. It works on both the server at build-time (avoiding runtime syntax highlighting) and on the client for dynamic highlighting.</span>
 
 ## Editor-Grade Highlighting
 
 <span className="mix-blend-plus-lighter text-zinc-400/80">
   Enjoy the accuracy and granularity of VS Code's syntax highlighting engine and
-  the popularity of its themes ecosystem — use any VS Code theme you want!
+  the popularity of its themes ecosystem – use any VS Code theme you want!
 </span>
 
 ## Line Numbers and Line Highlighting
@@ -87,24 +85,32 @@ Inline ANSI: `> Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m{:ansi}`
 
 ## Table of Contents
 
+- [Editor-Grade Highlighting](#editor-grade-highlighting)
+- [Line Numbers and Line Highlighting](#line-numbers-and-line-highlighting)
+- [Word Highlighting](#word-highlighting)
+- [Inline Code Highlighting](#inline-code-highlighting)
+  - [Context Aware Inline Code](#context-aware-inline-code)
+- [ANSI Highlighting](#ansi-highlighting)
+- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Usage](#usage)
+  - [MDX](#mdx)
 - [Styles](#styles)
 - [Options](#options)
-  - [grid](#grid)
-  - [theme](#theme)
-  - [keepBackground](#keepbackground)
-  - [defaultLang](#defaultlang)
-  - [transformers](#transformers)
+  - [`grid{:.meta.object-literal.key}`](#gridmetaobject-literalkey)
+  - [`theme{:.meta.object-literal.key}`](#thememetaobject-literalkey)
+  - [`keepBackground{:.meta.object-literal.key}`](#keepbackgroundmetaobject-literalkey)
+  - [`defaultLang{:.meta.object-literal.key}`](#defaultlangmetaobject-literalkey)
+  - [`transformers{:.meta.object-literal.key}`](#transformersmetaobject-literalkey)
 - [Meta Strings](#meta-strings)
-  - [Highlight Lines](#highlight-lines)
-  - [Group Highlighted Lines By Id](#group-highlighted-lines-by-id)
-  - [Highlight Chars](#highlight-chars)
-  - [Group Highlighted Chars By Id](#group-highlighted-chars-by-id)
-  - [Highlight Inline Code](#highlight-inline-code)
-  - [Highlight Plain Text](#highlight-plain-text)
-  - [Titles](#titles)
-  - [Captions](#captions)
+    - [Highlight Lines](#highlight-lines)
+    - [Group Highlighted Lines By Id](#group-highlighted-lines-by-id)
+    - [Highlight Chars](#highlight-chars)
+    - [Group Highlighted Chars By Id](#group-highlighted-chars-by-id)
+    - [Highlight Inline Code](#highlight-inline-code)
+    - [Highlight Plain Text](#highlight-plain-text)
+    - [Titles](#titles)
+    - [Captions](#captions)
 - [Line Numbers](#line-numbers)
 - [Multiple Themes (Dark and Light Mode)](#multiple-themes-dark-and-light-mode)
 - [Visitor Hooks](#visitor-hooks)
@@ -541,7 +547,7 @@ const options = {
 };
 ```
 
-Now, use the following CSS to display the variable colors — if a space is found
+Now, use the following CSS to display the variable colors â€” if a space is found
 in the theme name, then CSS variable keys based on the object are available
 ([more info](https://shiki.style/guide/dual-themes#light-dark-dual-themes)):
 

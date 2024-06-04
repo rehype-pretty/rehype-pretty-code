@@ -2,7 +2,14 @@ import {
   transformerTwoslash,
   defaultHoverInfoProcessor,
 } from '@shikijs/vitepress-twoslash';
+import {
+  transformerNotationDiff,
+  transformerNotationFocus,
+  transformerCompactLineOptions,
+} from '@shikijs/transformers';
 import { defineConfig } from 'vitepress';
+import viteConfig from '../vite.config.ts';
+import moonlight from './theme/moonlight-ii.json' with { type: 'json' };
 
 const SITE_URL = 'https://rehype-pretty.pages.dev';
 
@@ -15,12 +22,8 @@ export default defineConfig({
   lastUpdated: true,
   appearance: 'dark',
   assetsDir: './public',
-
   markdown: {
-    theme: {
-      light: 'vitesse-light',
-      dark: 'vitesse-dark',
-    },
+    theme: moonlight as unknown as any,
     codeTransformers: [
       transformerTwoslash({
         processHoverInfo: (info) =>
@@ -29,6 +32,9 @@ export default defineConfig({
             '',
           ),
       }),
+      transformerNotationDiff(),
+      transformerNotationFocus(),
+      transformerCompactLineOptions(),
     ],
   },
   sitemap: { hostname: SITE_URL },
@@ -37,7 +43,8 @@ export default defineConfig({
       'meta',
       {
         name: 'keywords',
-        content: 'react, ethereum, typescript, react, react hooks, open source',
+        content:
+          'markdown, syntax highlighting, code, pretty, rehype, mdx, react, next.js, rehype, shiki',
       },
     ],
     ['link', { rel: 'icon', href: '/favicon.ico' }],
@@ -50,6 +57,7 @@ export default defineConfig({
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:image', content: '__TODO__' }],
   ],
+  vite: viteConfig,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [

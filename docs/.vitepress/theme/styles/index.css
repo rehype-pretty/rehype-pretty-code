@@ -1,3 +1,125 @@
 @import url('./style.css');
-@import url('./tailwind.css');
+@import url('@shikijs/vitepress-twoslash/style.css');
 
+/* mulish-latin-wght-normal */
+@font-face {
+  font-family: 'MulishVariable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 1000;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/mulish:vf@latest/latin-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+:root {
+  color-scheme: dark;
+  --font-family-display: "MulishVariable", "sans-serif";
+}
+
+body {
+  @apply !bg-red-900 text-zinc-100;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h3 code {
+  @apply !text-lg md:!text-xl;
+}
+
+pre {
+  @apply !px-0 rounded-lg;
+}
+
+code {
+  @apply text-sm md:text-base !leading-loose;
+}
+
+pre > code {
+  counter-reset: line;
+}
+
+code[data-theme*=' '],
+code[data-theme*=' '] span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  code[data-theme*=' '],
+  code[data-theme*=' '] span {
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
+  }
+}
+
+code[data-line-numbers] {
+  counter-reset: line;
+}
+
+code[data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  @apply inline-block w-4 mr-4 text-right text-gray-500;
+}
+
+.prose {
+  @apply max-w-[55rem] sm:text-lg md:text-xl !leading-7 sm:!leading-9;
+}
+
+pre [data-line] {
+  @apply px-4 border-l-2 border-l-transparent;
+}
+
+[data-highlighted-line] {
+  background: rgba(200, 200, 255, 0.1);
+  @apply border-l-blue-400;
+}
+
+[data-highlighted-chars] {
+  @apply bg-zinc-600/50 rounded;
+  box-shadow: 0 0 0 4px rgb(82 82 91 / 0.5);
+}
+
+[data-chars-id] {
+  @apply shadow-none p-1 border-b-2;
+}
+
+[data-chars-id] span {
+  @apply !text-inherit;
+}
+
+[data-chars-id='v'] {
+  @apply !text-pink-300 bg-rose-800/50 border-b-pink-600 font-bold;
+}
+
+[data-chars-id='s'] {
+  @apply !text-yellow-300 bg-yellow-800/50 border-b-yellow-600 font-bold;
+}
+
+[data-chars-id='i'] {
+  @apply !text-purple-200 bg-purple-800/50 border-b-purple-600 font-bold;
+}
+
+[data-rehype-pretty-code-title] {
+  @apply bg-zinc-700 text-zinc-200 rounded-t-lg py-2 px-3 font-semibold text-sm;
+}
+
+figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title])
+  pre {
+  @apply !rounded-t-none;
+}
+
+figure {
+    @apply mb-6 mt-1;
+}
+pre,
+code,
+figure {
+  @apply overflow-x-auto;
+}
+p {
+  @apply text-xl;
+}
+article p {
+  @apply leading-9;
+}

@@ -41,6 +41,9 @@
     "**/pnpm-lock.yaml": true,
     "**/package-lock.json": true
   },
+  "files.exclude": {
+    "**/*.timestamp-*": true
+  },
   "[markdown]": {
     "editor.defaultFormatter": "yzhang.markdown-all-in-one"
   }

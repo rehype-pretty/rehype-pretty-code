@@ -42,7 +42,13 @@
       "~config/*": ["./.vitepress/*"]
     }
   },
-  "include": ["src", "scripts", ".vitepress/**/*"],
+  "include": [
+    "src",
+    "scripts",
+    ".vitepress/**/*",
+    "vite.config.ts",
+    "uno.config.ts"
+  ],
   "files": ["reset.d.ts", "vite.config.ts", "package.json"],
   "exclude": ["node_modules", "dist", ".vitepress/cache", ".vitepress/dist"]
 }
