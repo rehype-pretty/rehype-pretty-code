@@ -7,7 +7,6 @@
     "dev": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview",
-    "typecheck": "tsc --project tsconfig.json --noEmit",
     "clean": "rm -rf .vitepress/cache"
   },
   "devDependencies": {
@@ -15,18 +14,18 @@
     "@shikijs/vitepress-twoslash": "^1.6.2",
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/node": "^20.14.1",
+    "@unocss/reset": "^0.60.4",
     "@vitejs/plugin-vue-jsx": "^4.0.0",
+    "@vueuse/core": "^10.10.0",
+    "floating-vue": "^5.2.2",
+    "pinia": "^2.1.7",
     "rehype-pretty-code": "workspace:*",
     "tsx": "^4.11.2",
     "typed-query-selector": "^2.11.2",
     "typescript": "^5.4.5",
     "unocss": "^0.60.4",
-    "@unocss/reset": "^0.60.4",
-    "@vueuse/core": "^10.10.0",
-    "floating-vue": "^5.2.2",
-    "pinia": "^2.1.7",
     "vite": "^5.2.12",
-    "vitepress": "^1.2.2",
+    "vitepress": "^1.2.3",
     "vue": "^3.4.27"
   }
 }

@@ -2,6 +2,7 @@ import {
   presetUno,
   presetIcons,
   defineConfig,
+  presetWebFonts,
   presetAttributify,
 } from 'unocss';
 import colors from 'tailwindcss/colors';
@@ -104,6 +105,16 @@ export default defineConfig({
     'text-brand-red': 'color-$vp-c-red-1',
   },
   blocklist: ['container'],
-  presets: [presetUno(), presetAttributify(), presetIcons()],
   safelist: ['font-mono', 'mb0!', 'no-underline!'],
+  presets: [
+    presetUno(),
+    presetAttributify(),
+    presetIcons(),
+    presetWebFonts({
+      provider: 'google',
+      fonts: {
+        mono: ['IBM Plex Mono', 'IBM Plex Mono:300,700'],
+      },
+    }),
+  ],
 });

@@ -670,4 +670,4 @@ export default async function Page() {
 }
 ```
 
-See this example in action at [/rsc](/rsc).
+<!-- See this example in action at [/rsc](/rsc). -->

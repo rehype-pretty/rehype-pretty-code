@@ -6,6 +6,6 @@
     "module": "ESNext",
     "moduleResolution": "Bundler"
   },
-  "include": ["src"],
+  "include": ["src", ".vitepress"],
   "files": ["astro.config.ts", "tailwind.config.ts"]
 }
