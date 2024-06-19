@@ -1,24 +1,13 @@
-@import url("./style.css");
-@import url("@shikijs/vitepress-twoslash/style.css");
-
-/* mulish-latin-wght-normal */
-@font-face {
-  font-family: "MulishVariable";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 200 1000;
-  src: url(https://cdn.jsdelivr.net/fontsource/fonts/mulish:vf@latest/latin-wght-normal.woff2)
-    format("woff2-variations");
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   color-scheme: dark;
-  --font-family-display: "MulishVariable", "sans-serif";
 }
 
 body {
-  @apply !bg-red-900 text-zinc-100;
+  @apply bg-zinc-900 text-zinc-100;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -39,15 +28,15 @@ pre > code {
   counter-reset: line;
 }
 
-code[data-theme*=' '],
-code[data-theme*=' '] span {
+code[data-theme*=" "],
+code[data-theme*=" "] span {
   color: var(--shiki-light);
   background-color: var(--shiki-light-bg);
 }
 
 @media (prefers-color-scheme: dark) {
-  code[data-theme*=' '],
-  code[data-theme*=' '] span {
+  code[data-theme*=" "],
+  code[data-theme*=" "] span {
     color: var(--shiki-dark);
     background-color: var(--shiki-dark-bg);
   }
@@ -89,15 +78,15 @@ pre [data-line] {
   @apply !text-inherit;
 }
 
-[data-chars-id='v'] {
+[data-chars-id="v"] {
   @apply !text-pink-300 bg-rose-800/50 border-b-pink-600 font-bold;
 }
 
-[data-chars-id='s'] {
+[data-chars-id="s"] {
   @apply !text-yellow-300 bg-yellow-800/50 border-b-yellow-600 font-bold;
 }
 
-[data-chars-id='i'] {
+[data-chars-id="i"] {
   @apply !text-purple-200 bg-purple-800/50 border-b-purple-600 font-bold;
 }
 
@@ -111,7 +100,7 @@ figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title])
 }
 
 figure {
-    @apply mb-6 mt-1;
+  @apply mb-6 mt-1;
 }
 pre,
 code,

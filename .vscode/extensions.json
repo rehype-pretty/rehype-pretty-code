@@ -1,10 +1,11 @@
 {
   "recommendations": [
     "biomejs.biome",
-    "vue.volar",
-    "johnsoncodehk.volarjs-labs",
+    "astro-build.astro-vscode",
     "bradlc.vscode-tailwindcss",
     "tobermory.es6-string-html",
+    "EditorConfig.EditorConfig",
+    "yzhang.markdown-all-in-one",
     "orta.vscode-twoslash-queries"
   ],
   "unwantedRecommendations": [

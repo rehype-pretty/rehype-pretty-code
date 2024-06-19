@@ -1,31 +1,33 @@
 {
   "name": "docs",
-  "version": "0.0.0",
-  "private": true,
   "type": "module",
+  "version": "0.0.0",
   "scripts": {
-    "dev": "vitepress dev",
-    "build": "vitepress build",
-    "preview": "vitepress preview",
-    "clean": "rm -rf .vitepress/cache"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.7.0",
+    "@astrojs/mdx": "^3.1.1",
+    "@astrojs/starlight": "^0.24.3",
+    "@astrojs/tailwind": "^5.1.0",
+    "@rehype-pretty/transformers": "workspace:*",
+    "astro": "^4.10.3",
+    "rehype-pretty-code": "workspace:*",
+    "rehype-slug": "^6.0.0",
+    "rehype-stringify": "^10.0.0",
+    "sharp": "^0.33.4",
+    "shiki": "^1.7.0",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "@rehype-pretty/transformers": "workspace:*",
-    "@shikijs/vitepress-twoslash": "^1.6.2",
+    "@astrojs/check": "^0.7.0",
     "@total-typescript/ts-reset": "^0.5.1",
-    "@types/node": "^20.14.1",
-    "@unocss/reset": "^0.60.4",
-    "@vitejs/plugin-vue-jsx": "^4.0.0",
-    "@vueuse/core": "^10.10.0",
-    "floating-vue": "^5.2.2",
-    "pinia": "^2.1.7",
-    "rehype-pretty-code": "workspace:*",
-    "tsx": "^4.11.2",
-    "typed-query-selector": "^2.11.2",
-    "typescript": "^5.4.5",
-    "unocss": "^0.60.4",
-    "vite": "^5.2.12",
-    "vitepress": "^1.2.3",
-    "vue": "^3.4.27"
+    "@types/node": "^20.14.6",
+    "typescript": "^5.4.5"
   }
 }

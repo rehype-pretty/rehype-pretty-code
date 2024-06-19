@@ -1,11 +1,5 @@
-import {
-  presetUno,
-  presetIcons,
-  defineConfig,
-  presetWebFonts,
-  presetAttributify,
-} from 'unocss';
-import colors from 'tailwindcss/colors';
+import type { Config } from 'tailwindcss';
+import colors from 'tailwindcss/colors.js';
 
 const linkHeadingStyles = {
   color: colors.gray[100],
@@ -19,7 +13,9 @@ const linkHeadingStyles = {
     boxShadow: `0 0 0 0.4rem ${colors.gray[100]}`,
   },
 };
-export default defineConfig({
+
+export default {
+  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {
       typography: {
@@ -96,25 +92,4 @@ export default defineConfig({
       },
     },
   },
-  shortcuts: {
-    'button-action':
-      'flex flex-inline gap-2 items-center justify-center px-3 py-0.5 rounded hover:color-$vp-c-brand-2 hover:bg-$vp-c-default-soft',
-    'border-base': 'border-color-$vp-c-divider',
-    'text-brand': 'color-$vp-c-brand-1',
-    'text-brand-yellow': 'color-$vp-c-yellow-1',
-    'text-brand-red': 'color-$vp-c-red-1',
-  },
-  blocklist: ['container'],
-  safelist: ['font-mono', 'mb0!', 'no-underline!'],
-  presets: [
-    presetUno(),
-    presetAttributify(),
-    presetIcons(),
-    presetWebFonts({
-      provider: 'google',
-      fonts: {
-        mono: ['IBM Plex Mono', 'IBM Plex Mono:300,700'],
-      },
-    }),
-  ],
-});
+} satisfies Config;

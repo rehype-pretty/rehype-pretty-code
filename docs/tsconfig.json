@@ -1,54 +1,11 @@
 {
-  "schema": "https://json.schemastore.org/tsconfig.json",
+  "extends": ["astro/tsconfigs/strictest"],
   "compilerOptions": {
-    "strict": true,
-    "baseUrl": ".",
-    "noEmit": true,
-    "allowJs": true,
-    "checkJs": true,
     "target": "ESNext",
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "alwaysStrict": true,
-    "noImplicitThis": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "strictNullChecks": true,
-    "resolveJsonModule": true,
-    "verbatimModuleSyntax": true,
-    "moduleResolution": "Bundler",
-    "useDefineForClassFields": true,
-    "allowArbitraryExtensions": true,
-    "noUncheckedIndexedAccess": true,
-    "resolvePackageJsonImports": true,
-    "resolvePackageJsonExports": true,
-    "useUnknownInCatchVariables": true,
-    "allowImportingTsExtensions": true,
-    "noFallthroughCasesInSwitch": true,
-    "allowSyntheticDefaultImports": true,
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "forceConsistentCasingInFileNames": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "types": [
-      "node",
-      "vite/client",
-      "vitepress",
-      "typed-query-selector/strict"
-    ],
-    "paths": {
-      "#/*": ["src/*"],
-      "~config/*": ["./.vitepress/*"]
-    }
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
   },
-  "include": [
-    "src",
-    "scripts",
-    ".vitepress/**/*",
-    "vite.config.ts",
-    "uno.config.ts"
-  ],
-  "files": ["reset.d.ts", "vite.config.ts", "package.json"],
-  "exclude": ["node_modules", "dist", ".vitepress/cache", ".vitepress/dist"]
+  "include": ["src"],
+  "files": ["astro.config.ts", "tailwind.config.ts", "reset.d.ts"]
 }
