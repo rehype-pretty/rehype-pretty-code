@@ -87,6 +87,12 @@ importers:
       '@astrojs/check':
         specifier: ^0.7.0
         version: 0.7.0(prettier@3.3.2)(typescript@5.5.2)
+      '@shikijs/transformers':
+        specifier: ^1.9.0
+        version: 1.9.0
+      '@shikijs/twoslash':
+        specifier: ^1.9.0
+        version: 1.9.0(typescript@5.5.2)
       '@total-typescript/ts-reset':
         specifier: ^0.5.1
         version: 0.5.1
@@ -238,7 +244,7 @@ importers:
         version: 5.0.0-next.165
       svelte-check:
         specifier: ^3.8.2
-        version: 3.8.2(@babel/core@7.24.7)(postcss-load-config@6.0.1(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.165)
+        version: 3.8.2(@babel/core@7.24.7)(postcss-load-config@4.0.2(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.165)
       tslib:
         specifier: ^2.6.3
         version: 2.6.3
@@ -1219,6 +1225,9 @@ packages:
   '@shikijs/transformers@1.9.0':
     resolution: {integrity: sha512-wo8dNbZtFtVhKtw8BnXIT/FDTGMwEdWcQSIRa78ou14JGkMYxSCBN942W5+IRUifP5BwVUWgkXBYX/M3FUFkeg==}
 
+  '@shikijs/twoslash@1.9.0':
+    resolution: {integrity: sha512-XKaiR85K3Bk/MNdZ7tmJDm740iLpt4YDvYrV90pwbvxkSEZ8SPV4gbaX8ONwndNqdf2awF9g7DKYHsyU/XwJdw==}
+
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
 
@@ -1437,6 +1446,9 @@ packages:
 
   '@types/ws@8.5.10':
     resolution: {integrity: sha512-vmQSUcfalpIq0R9q7uTo2lXs6eGIpt9wtnLdMv9LVpIjCA/+ufZRozlVoVelIYixx1ugCBKDhn89vnsEGOCx9A==}
+
+  '@typescript/vfs@1.5.0':
+    resolution: {integrity: sha512-AJS307bPgbsZZ9ggCT3wwpg3VbTKMFNHfaY/uF0ahSkYYrPF2dSSKDNIDIQAHm9qJqbLvCsSJH7yN4Vs/CsMMg==}
 
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
@@ -1719,7 +1731,6 @@ packages:
 
   bun@1.1.16:
     resolution: {integrity: sha512-t2AwDuJsLA3cBAxNQv/hJ66SLGtVkKFjrxdpcztkUwjVst6G9ynWiVwQOlg6VSN7niF2EZptTvDg6Jb+MKEGMQ==}
-    cpu: [arm64, x64]
     os: [darwin, linux, win32]
     hasBin: true
 
@@ -3194,24 +3205,6 @@ packages:
       ts-node:
         optional: true
 
-  postcss-load-config@6.0.1:
-    resolution: {integrity: sha512-oPtTM4oerL+UXmx+93ytZVN82RrlY/wPUV8IeDxFrzIjXOLF1pN+EmKPLbubvKHT2HC20xXsCAH2Z+CKV6Oz/g==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      jiti: '>=1.21.0'
-      postcss: '>=8.0.9'
-      tsx: ^4.8.1
-      yaml: ^2.4.2
-    peerDependenciesMeta:
-      jiti:
-        optional: true
-      postcss:
-        optional: true
-      tsx:
-        optional: true
-      yaml:
-        optional: true
-
   postcss-nested@6.0.1:
     resolution: {integrity: sha512-mEp4xPMi5bSWiMbsgoPfcP74lsWLHkQbZc3sY+jWYd65CUwXrUaTp0fmNpa01ZcETKlIgUdFN/MpS2xZtqL9dQ==}
     engines: {node: '>=12.0'}
@@ -3879,6 +3872,14 @@ packages:
   turbo@2.0.5:
     resolution: {integrity: sha512-+6+hcWr4nwuESlKqUc626HMOTd3QT8hUOc9QM45PP1d4nErGkNOgExm4Pcov3in7LTuadMnB0gcd/BuzkEDIPw==}
     hasBin: true
+
+  twoslash-protocol@0.2.9:
+    resolution: {integrity: sha512-uKQl8UboT6JU4VAtYaSI3DbNtgaNhFaTpCSMy/n3tRl5lMlMhrjiuNKdqx15xjcviconuGJ9oObkz1h9zJFrJg==}
+
+  twoslash@0.2.9:
+    resolution: {integrity: sha512-oj7XY6h8E9nTZBmfRE1gpsSSUqAQo5kcIpFkXyQPp8UCsyCQsUlP2bJ2s32o02c1n5+xl4h9rcCsQ1F97Z6LZg==}
+    peerDependencies:
+      typescript: '*'
 
   type-detect@4.0.8:
     resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
@@ -5222,6 +5223,14 @@ snapshots:
     dependencies:
       shiki: 1.9.0
 
+  '@shikijs/twoslash@1.9.0(typescript@5.5.2)':
+    dependencies:
+      '@shikijs/core': 1.9.0
+      twoslash: 0.2.9(typescript@5.5.2)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
   '@sinclair/typebox@0.27.8': {}
 
   '@sindresorhus/is@4.6.0': {}
@@ -5449,6 +5458,12 @@ snapshots:
   '@types/ws@8.5.10':
     dependencies:
       '@types/node': 20.14.8
+
+  '@typescript/vfs@1.5.0':
+    dependencies:
+      debug: 4.3.5
+    transitivePeerDependencies:
+      - supports-color
 
   '@ungap/structured-clone@1.2.0': {}
 
@@ -7666,13 +7681,6 @@ snapshots:
     optionalDependencies:
       postcss: 8.4.38
 
-  postcss-load-config@6.0.1(postcss@8.4.38):
-    dependencies:
-      lilconfig: 3.1.2
-    optionalDependencies:
-      postcss: 8.4.38
-    optional: true
-
   postcss-nested@6.0.1(postcss@8.4.38):
     dependencies:
       postcss: 8.4.38
@@ -8234,14 +8242,14 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte-check@3.8.2(@babel/core@7.24.7)(postcss-load-config@6.0.1(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.165):
+  svelte-check@3.8.2(@babel/core@7.24.7)(postcss-load-config@4.0.2(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.165):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       chokidar: 3.6.0
       picocolors: 1.0.1
       sade: 1.8.1
       svelte: 5.0.0-next.165
-      svelte-preprocess: 5.1.4(@babel/core@7.24.7)(postcss-load-config@6.0.1(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.165)(typescript@5.5.2)
+      svelte-preprocess: 5.1.4(@babel/core@7.24.7)(postcss-load-config@4.0.2(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.165)(typescript@5.5.2)
       typescript: 5.5.2
     transitivePeerDependencies:
       - '@babel/core'
@@ -8258,7 +8266,7 @@ snapshots:
     dependencies:
       svelte: 5.0.0-next.165
 
-  svelte-preprocess@5.1.4(@babel/core@7.24.7)(postcss-load-config@6.0.1(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.165)(typescript@5.5.2):
+  svelte-preprocess@5.1.4(@babel/core@7.24.7)(postcss-load-config@4.0.2(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.165)(typescript@5.5.2):
     dependencies:
       '@types/pug': 2.0.10
       detect-indent: 6.1.0
@@ -8269,7 +8277,7 @@ snapshots:
     optionalDependencies:
       '@babel/core': 7.24.7
       postcss: 8.4.38
-      postcss-load-config: 6.0.1(postcss@8.4.38)
+      postcss-load-config: 4.0.2(postcss@8.4.38)
       typescript: 5.5.2
 
   svelte@5.0.0-next.165:
@@ -8444,6 +8452,16 @@ snapshots:
       turbo-linux-arm64: 2.0.5
       turbo-windows-64: 2.0.5
       turbo-windows-arm64: 2.0.5
+
+  twoslash-protocol@0.2.9: {}
+
+  twoslash@0.2.9(typescript@5.5.2):
+    dependencies:
+      '@typescript/vfs': 1.5.0
+      twoslash-protocol: 0.2.9
+      typescript: 5.5.2
+    transitivePeerDependencies:
+      - supports-color
 
   type-detect@4.0.8: {}
 

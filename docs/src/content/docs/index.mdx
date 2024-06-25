@@ -3,6 +3,7 @@ title: Rehype Pretty Code
 description: Beautiful code blocks for Markdown or MDX powered by the Shiki syntax highlighter.
 template: doc
 ---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 [`rehype-pretty-code`](https://github.com/rehype-pretty/rehype-pretty-code) is a Rehype plugin
 powered by the [`shiki`](https://github.com/shikijs/shiki) syntax highlighter that provides beautiful code blocks for Markdown or MDX. It works on both the server at build-time (avoiding runtime syntax highlighting) and on the client for dynamic highlighting.
@@ -17,7 +18,7 @@ of its themes ecosystem - use any VSCode theme you want!
 
 Draw attention to a particular line of code.
 
-```js {4} showLineNumbers
+```ts {4} showLineNumbers
 import { useFloating } from "@floating-ui/react";
 
 function MyComponent() {
@@ -36,7 +37,7 @@ function MyComponent() {
 
 Draw attention to a particular word or series of characters.
 
-```js /floatingStyles/
+```ts /floatingStyles/
 import { useFloating } from "@floating-ui/react";
 
 function MyComponent() {
@@ -92,9 +93,36 @@ Inline ANSI: `> Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m{:ansi}`
 
 Install via your terminal:
 
-```shell
-npm install rehype-pretty-code shiki
-```
+<Tabs syncKey="pkg">
+  <TabItem label="npm">
+
+  ```sh
+  npm install rehype-pretty-code shiki
+  ```
+
+  </TabItem>
+  <TabItem label="pnpm">
+
+  ```sh
+  pnpm add rehype-pretty-code shiki
+  ```
+
+  </TabItem>
+  <TabItem label="bun">
+
+  ```sh
+  bun add rehype-pretty-code shiki
+  ```
+
+  </TabItem>
+  <TabItem label="yarn">
+
+  ```sh
+  yarn add rehype-pretty-code shiki
+  ```
+
+  </TabItem>
+</Tabs>
 
 This package is ESM-only and currently supports `shiki{:.string}`
 `^1.0.0{:.string}`.

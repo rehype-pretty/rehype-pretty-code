@@ -19,6 +19,7 @@ import { rehypePrettyCode } from 'rehype-pretty-code';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
+import { transformerTwoslash, rendererRich } from '@shikijs/twoslash';
 import moonlightTheme from './public/theme/moonlight-ii.json' with {
   type: 'json',
 };
@@ -29,6 +30,7 @@ export default defineConfig({
     syntaxHighlight: false,
     shikiConfig: {
       transformers: [
+        transformerTwoslash({ renderer: rendererRich() }),
         transformerNotationDiff(),
         transformerNotationFocus(),
         transformerMetaHighlight(),
@@ -52,9 +54,10 @@ export default defineConfig({
       [
         rehypePrettyCode,
         {
-          keepBackground: false,
+          keepBackground: true,
           theme: moonlightTheme,
           transformers: [
+            transformerTwoslash({ renderer: rendererRich() }),
             transformerCopyButton({
               visibility: 'always',
               feedbackDuration: 2_500,
@@ -67,13 +70,18 @@ export default defineConfig({
   },
   integrations: [
     starlight({
+      expressiveCode: false,
       title: 'Rehype Pretty',
       favicon: '/favicon.ico',
       social: {
         github: 'https://github.com/rehype-pretty/rehype-pretty-code',
       },
       lastUpdated: true,
-      customCss: ['./src/styles/tailwind.css', './src/styles/index.css'],
+      customCss: [
+        './src/styles/index.css',
+        './src/styles/tailwind.css',
+        '@shikijs/twoslash/style-rich.css',
+      ],
       plugins: [],
       head: [
         {
@@ -88,7 +96,6 @@ export default defineConfig({
         },
         {
           label: 'Plugins',
-          badge: 'experimental',
           autogenerate: {
             directory: 'plugins',
             collapsed: false,
