@@ -57,7 +57,6 @@ export default defineConfig({
           keepBackground: true,
           theme: moonlightTheme,
           transformers: [
-            transformerTwoslash({ renderer: rendererRich() }),
             transformerCopyButton({
               visibility: 'always',
               feedbackDuration: 2_500,
@@ -100,6 +99,10 @@ export default defineConfig({
             directory: 'plugins',
             collapsed: false,
           },
+        },
+        {
+          label: 'Examples',
+          link: '/examples',
         },
       ],
     }),
