@@ -61,6 +61,7 @@ function apply(
 
   const codeData = element.children[0]?.data as ElementData | undefined;
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   element.children = [tree].flatMap((tree) => {
     const pre = tree.children[0];
     const themeNames = getThemeNames(theme);
@@ -227,6 +228,7 @@ export function rehypePrettyCode(
     const highlighter = await cachedHighlighter;
     if (!highlighter) return;
 
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     visit(tree, 'element', (element, _, parent) => {
       if (isInlineCode(element, parent)) {
         const textElement = element.children[0];
@@ -271,6 +273,7 @@ export function rehypePrettyCode(
       console.error(e);
     }
 
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     visit(tree, 'element', (element, _, parent) => {
       if (isInlineCode(element, parent)) {
         const textElement = element.children[0];
@@ -423,6 +426,7 @@ export function rehypePrettyCode(
           counterMap: new Map<string, number>(),
         };
 
+        // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         visit(codeTree, 'element', (element) => {
           if (
             element.tagName === 'code' &&
