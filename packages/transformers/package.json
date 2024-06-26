@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",
-    "@types/node": "^20.14.8",
+    "@types/node": "^20.14.9",
     "tsup": "^8.1.0",
     "tsx": "^4.15.7",
     "typescript": "^5.5.2"
