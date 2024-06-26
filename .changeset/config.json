@@ -1,12 +1,12 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "$schema": "https://unpkg.com/@changesets/config@3.0.1/schema.json",
   "changelog": "./changelog.cjs",
   "commit": false,
   "fixed": [],
   "linked": [["rehype-pretty-code", "@rehype-pretty/transformers"]],
   "access": "public",
   "baseBranch": "master",
-  "ignore": ["website", "example-*"],
+  "ignore": ["docs", "example-*"],
   "updateInternalDependencies": "patch",
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
