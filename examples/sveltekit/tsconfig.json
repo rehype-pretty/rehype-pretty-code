@@ -12,5 +12,6 @@
     "sourceMap": true,
     "strict": true,
     "moduleResolution": "Bundler"
-  }
+  },
+  "files": ["svelte.config.js", "vite.config.ts"]
 }
