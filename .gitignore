@@ -24,3 +24,9 @@ _
 .svelte-kit
 .wrangler
 build/
+cache
+**/.vitepress/cache/
+.vitepress/dist
+*.timestamp-*
+site
+.zed

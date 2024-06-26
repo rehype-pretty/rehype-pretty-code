@@ -61,104 +61,103 @@ function apply(
 
   const codeData = element.children[0]?.data as ElementData | undefined;
 
-  element.children = [tree]
-    .map((tree) => {
-      const pre = tree.children[0];
-      const themeNames = getThemeNames(theme);
-      const themeNamesString = themeNames.join(' ');
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
+  element.children = [tree].flatMap((tree) => {
+    const pre = tree.children[0];
+    const themeNames = getThemeNames(theme);
+    const themeNamesString = themeNames.join(' ');
 
-      if (!(isElement(pre) && pre.properties)) {
-        return [];
+    if (!(isElement(pre) && pre.properties)) {
+      return [];
+    }
+
+    const code = pre.children[0];
+
+    // Remove extraneous classes
+    if (
+      Array.isArray(pre.properties.className) &&
+      pre.properties.className.includes('shiki')
+    ) {
+      const className = pre.properties.className.filter(
+        (c) =>
+          c !== 'shiki' &&
+          c !== 'shiki-themes' &&
+          (typeof c === 'string' ? !themeNames.includes(c) : true),
+      );
+      pre.properties.className = className.length > 0 ? className : undefined;
+    }
+
+    if (!keepBackground) {
+      pre.properties.style = undefined;
+    }
+
+    pre.properties['data-language'] = lang;
+    pre.properties['data-theme'] = themeNamesString;
+
+    if (!(isElement(code) && code.properties)) {
+      return [];
+    }
+
+    code.properties['data-language'] = lang;
+    code.properties['data-theme'] = themeNamesString;
+    code.data = codeData;
+
+    if (inline) {
+      if (keepBackground) {
+        code.properties.style = pre.properties.style;
       }
+      return code;
+    }
 
-      const code = pre.children[0];
-
-      // Remove extraneous classes
-      if (
-        Array.isArray(pre.properties.className) &&
-        pre.properties.className.includes('shiki')
-      ) {
-        const className = pre.properties.className.filter(
-          (c) =>
-            c !== 'shiki' &&
-            c !== 'shiki-themes' &&
-            (typeof c === 'string' ? !themeNames.includes(c) : true),
-        );
-        pre.properties.className = className.length > 0 ? className : undefined;
+    if (grid) {
+      if (code.properties.style) {
+        code.properties.style += 'display: grid;';
+      } else {
+        code.properties.style = 'display: grid;';
       }
+    }
 
-      if (!keepBackground) {
-        pre.properties.style = undefined;
-      }
+    if (Object.hasOwn(code.properties, 'data-line-numbers')) {
+      code.properties['data-line-numbers-max-digits'] =
+        lineNumbersMaxDigits.toString().length;
+    }
 
-      pre.properties['data-language'] = lang;
-      pre.properties['data-theme'] = themeNamesString;
+    const fragments: Array<ElementContent> = [];
 
-      if (!(isElement(code) && code.properties)) {
-        return [];
-      }
+    if (title) {
+      const elementContent: Element = {
+        type: 'element',
+        tagName: caption ? 'div' : 'figcaption',
+        properties: {
+          'data-rehype-pretty-code-title': '',
+          'data-language': lang,
+          'data-theme': themeNamesString,
+        },
+        children: [{ type: 'text', value: title }],
+      };
+      onVisitTitle?.(elementContent);
+      fragments.push(elementContent);
+    }
 
-      code.properties['data-language'] = lang;
-      code.properties['data-theme'] = themeNamesString;
-      code.data = codeData;
+    fragments.push(pre);
 
-      if (inline) {
-        if (keepBackground) {
-          code.properties.style = pre.properties.style;
-        }
-        return code;
-      }
+    if (caption) {
+      const elementContent: Element = {
+        type: 'element',
+        tagName: 'figcaption',
+        properties: {
+          'data-rehype-pretty-code-caption': '',
+          'data-language': lang,
+          'data-theme': themeNamesString,
+        },
+        children: [{ type: 'text', value: caption }],
+      };
+      onVisitCaption?.(elementContent);
+      fragments.push(elementContent);
+    }
 
-      if (grid) {
-        if (code.properties.style) {
-          code.properties.style += 'display: grid;';
-        } else {
-          code.properties.style = 'display: grid;';
-        }
-      }
-
-      if (Object.hasOwn(code.properties, 'data-line-numbers')) {
-        code.properties['data-line-numbers-max-digits'] =
-          lineNumbersMaxDigits.toString().length;
-      }
-
-      const fragments: Array<ElementContent> = [];
-
-      if (title) {
-        const elementContent: Element = {
-          type: 'element',
-          tagName: caption ? 'div' : 'figcaption',
-          properties: {
-            'data-rehype-pretty-code-title': '',
-            'data-language': lang,
-            'data-theme': themeNamesString,
-          },
-          children: [{ type: 'text', value: title }],
-        };
-        onVisitTitle?.(elementContent);
-        fragments.push(elementContent);
-      }
-
-      fragments.push(pre);
-
-      if (caption) {
-        const elementContent: Element = {
-          type: 'element',
-          tagName: 'figcaption',
-          properties: {
-            'data-rehype-pretty-code-caption': '',
-            'data-language': lang,
-            'data-theme': themeNamesString,
-          },
-          children: [{ type: 'text', value: caption }],
-        };
-        onVisitCaption?.(elementContent);
-        fragments.push(elementContent);
-      }
-
-      return fragments;
-    })
-    .flatMap((c) => c);
+    return fragments;
+  });
 }
 
 const globalHighlighterCache = new Map<string, Promise<Highlighter>>();
@@ -229,6 +228,7 @@ export function rehypePrettyCode(
     const highlighter = await cachedHighlighter;
     if (!highlighter) return;
 
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     visit(tree, 'element', (element, _, parent) => {
       if (isInlineCode(element, parent)) {
         const textElement = element.children[0];
@@ -273,6 +273,7 @@ export function rehypePrettyCode(
       console.error(e);
     }
 
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     visit(tree, 'element', (element, _, parent) => {
       if (isInlineCode(element, parent)) {
         const textElement = element.children[0];
@@ -425,6 +426,7 @@ export function rehypePrettyCode(
           counterMap: new Map<string, number>(),
         };
 
+        // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         visit(codeTree, 'element', (element) => {
           if (
             element.tagName === 'code' &&

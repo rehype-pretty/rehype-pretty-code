@@ -44,7 +44,7 @@ jobs:
           echo "PNPM_VERSION=$PNPM_VERSION" >> $GITHUB_OUTPUT
 
       - name: 'Setup pnpm'
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
           version: ${{ steps.pnpm-version.outputs.PNPM_VERSION }}
 

@@ -1,15 +1,61 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
   color-scheme: dark;
+  --sl-sidebar-width: 17rem;
 }
 
 body {
-  @apply bg-zinc-900 text-zinc-100;
-  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+button[title="Copy code"] {
+  background-color: unset;
+}
+
+span > code > button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+#_top {
+  font-weight: 900;
+  @apply dark:text-[rgb(255_245_224)] text-[rgb(38,38,43)];
+}
+
+a > code {
+  text-decoration: none !important;
+  text-decoration-style: unset !important;
+  text-decoration-color: unset !important;
+  text-decoration-thickness: unset !important;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+  text-decoration: none;
+}
+
+h2::after,
+h3::after,
+h4::after,
+h5::after {
+  content: "#";
+  color: #ffffff;
+  margin-left: 0.5rem;
+  font-size: 1.5rem;
+  position: relative;
+  visibility: hidden;
+}
+
+h2:hover::after,
+h3:hover::after,
+h4:hover::after,
+h5:hover::after {
+  visibility: visible;
 }
 
 h3 code {
@@ -25,18 +71,27 @@ code {
 }
 
 pre > code {
-  counter-reset: line;
+  /* 
+   * Starlight unsets some styles so important is needed here.
+   * https://github.com/withastro/starlight/blob/main/packages/starlight/style/markdown.css#L94
+   */
+  counter-reset: line !important;
 }
 
-code[data-theme*=' '],
-code[data-theme*=' '] span {
+figcaption {
+  /* https://github.com/withastro/starlight/blob/main/packages/starlight/style/markdown.css#L4  */
+  margin-bottom: -1rem;
+}
+
+code[data-theme*=" "],
+code[data-theme*=" "] span {
   color: var(--shiki-light);
   background-color: var(--shiki-light-bg);
 }
 
 @media (prefers-color-scheme: dark) {
-  code[data-theme*=' '],
-  code[data-theme*=' '] span {
+  code[data-theme*=" "],
+  code[data-theme*=" "] span {
     color: var(--shiki-dark);
     background-color: var(--shiki-dark-bg);
   }
@@ -78,15 +133,15 @@ pre [data-line] {
   @apply !text-inherit;
 }
 
-[data-chars-id='v'] {
+[data-chars-id="v"] {
   @apply !text-pink-300 bg-rose-800/50 border-b-pink-600 font-bold;
 }
 
-[data-chars-id='s'] {
+[data-chars-id="s"] {
   @apply !text-yellow-300 bg-yellow-800/50 border-b-yellow-600 font-bold;
 }
 
-[data-chars-id='i'] {
+[data-chars-id="i"] {
   @apply !text-purple-200 bg-purple-800/50 border-b-purple-600 font-bold;
 }
 
@@ -100,15 +155,16 @@ figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title])
 }
 
 figure {
-    @apply mb-6 mt-1;
+  @apply mb-6 mt-1;
 }
+
 pre,
 code,
 figure {
   @apply overflow-x-auto;
 }
 p {
-  @apply text-xl;
+  @apply text-lg;
 }
 article p {
   @apply leading-9;

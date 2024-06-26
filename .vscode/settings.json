@@ -1,9 +1,10 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.preferences.importModuleSpecifier": "non-relative",
   "typescript.inlayHints.parameterNames.enabled": "all",
+  "typescript.preferences.importModuleSpecifier": "shortest",
   "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "references.preferredLocation": "peek",
   "editor.quickSuggestions": {
     "strings": "on"
   },
@@ -11,7 +12,6 @@
     "plaintext": "html"
   },
   "biome.enabled": true,
-  // format & lint settings
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports.biome": "always",
@@ -27,9 +27,11 @@
   "[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
   "[astro]": { "editor.defaultFormatter": "astro-build.astro-vscode" },
   "[svelte]": { "editor.defaultFormatter": "svelte.svelte-vscode" },
+  "[vue]": { "editor.defaultFormatter": "vue.volar" },
   "files.associations": {
     "biome.json": "jsonc",
-    "*.css": "tailwindcss"
+    "*.css": "tailwindcss",
+    ".markdownlint.json": "jsonc"
   },
   "search.exclude": {
     "_": true,
@@ -39,7 +41,10 @@
     "**/pnpm-lock.yaml": true,
     "**/package-lock.json": true
   },
-  "[elixir]": {
-    "editor.defaultFormatter": "JakeBecker.elixir-ls"
+  "files.exclude": {
+    "**/*.timestamp-*": true
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
   }
 }

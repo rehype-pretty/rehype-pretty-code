@@ -6,6 +6,7 @@ import {
   nextElementMaybeContinuesChars,
 } from './utils';
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
 export function getElementsToHighlight(
   element: Element,
   chars: string,

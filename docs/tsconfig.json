@@ -7,5 +7,5 @@
     "moduleResolution": "Bundler"
   },
   "include": ["src"],
-  "files": ["astro.config.ts", "tailwind.config.ts"]
+  "files": ["astro.config.ts", "tailwind.config.ts", "reset.d.ts"]
 }

@@ -1,21 +1,24 @@
-{/* prettier-ignore */}
-<div>
-  [`rehype-pretty-code`](https://github.com/atomiks/rehype-pretty-code) <span className="mix-blend-plus-lighter text-zinc-400/80">is a Rehype plugin powered by the</span>
-  [`shiki`](https://github.com/shikijs/shiki) <span className="mix-blend-plus-lighter text-zinc-400/80">syntax highlighter that provides beautiful code blocks for Markdown or MDX. It works on both the server at build-time (avoiding runtime syntax highlighting) and on the client for dynamic highlighting.</span>
-</div>
+---
+title: Rehype Pretty Code
+description: Beautiful code blocks for Markdown or MDX powered by the Shiki syntax highlighter.
+template: doc
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+[`rehype-pretty-code`](https://github.com/rehype-pretty/rehype-pretty-code) is a Rehype plugin
+powered by the [`shiki`](https://github.com/shikijs/shiki) syntax highlighter that provides beautiful code blocks for Markdown or MDX. It works on both the server at build-time (avoiding runtime syntax highlighting) and on the client for dynamic highlighting.
 
 ## Editor-Grade Highlighting
 
-<span className="mix-blend-plus-lighter text-zinc-400/80">
-  Enjoy the accuracy and granularity of VS Code's syntax highlighting engine and
-  the popularity of its themes ecosystem — use any VS Code theme you want!
-</span>
+Enjoy the accuracy and granularity of VS Code's syntax highlighting engine and the popularity
+of its themes ecosystem - use any VSCode theme you want!
+
 
 ## Line Numbers and Line Highlighting
 
 Draw attention to a particular line of code.
 
-```js {4} showLineNumbers
+```ts {4} showLineNumbers
 import { useFloating } from "@floating-ui/react";
 
 function MyComponent() {
@@ -34,7 +37,7 @@ function MyComponent() {
 
 Draw attention to a particular word or series of characters.
 
-```js /floatingStyles/
+```ts /floatingStyles/
 import { useFloating } from "@floating-ui/react";
 
 function MyComponent() {
@@ -86,48 +89,47 @@ Inline ANSI: `> Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m{:ansi}`
 
 ---
 
-## Table of Contents
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [Styles](#styles)
-- [Options](#options)
-  - [grid](#grid)
-  - [theme](#theme)
-  - [keepBackground](#keepbackground)
-  - [defaultLang](#defaultlang)
-  - [transformers](#transformers)
-- [Meta Strings](#meta-strings)
-  - [Highlight Lines](#highlight-lines)
-  - [Group Highlighted Lines By Id](#group-highlighted-lines-by-id)
-  - [Highlight Chars](#highlight-chars)
-  - [Group Highlighted Chars By Id](#group-highlighted-chars-by-id)
-  - [Highlight Inline Code](#highlight-inline-code)
-  - [Highlight Plain Text](#highlight-plain-text)
-  - [Titles](#titles)
-  - [Captions](#captions)
-- [Line Numbers](#line-numbers)
-- [Multiple Themes (Dark and Light Mode)](#multiple-themes-dark-and-light-mode)
-- [Visitor Hooks](#visitor-hooks)
-- [Custom Highlighter](#custom-highlighter)
-- [React Server Component](#react-server-component)
-
----
-
 ## Installation
 
 Install via your terminal:
 
-```shell
-npm install rehype-pretty-code shiki
-```
+<Tabs syncKey="pkg">
+  <TabItem label="npm">
+
+  ```sh
+  npm install rehype-pretty-code shiki
+  ```
+
+  </TabItem>
+  <TabItem label="pnpm">
+
+  ```sh
+  pnpm add rehype-pretty-code shiki
+  ```
+
+  </TabItem>
+  <TabItem label="bun">
+
+  ```sh
+  bun add rehype-pretty-code shiki
+  ```
+
+  </TabItem>
+  <TabItem label="yarn">
+
+  ```sh
+  yarn add rehype-pretty-code shiki
+  ```
+
+  </TabItem>
+</Tabs>
 
 This package is ESM-only and currently supports `shiki{:.string}`
 `^1.0.0{:.string}`.
 
 > To use the latest version in Next.js, ensure your config file is `ESM`:
 > `next.config.mjs`. Here's a full example:
-> [rehype-pretty-code/website/next.config.mjs](https://github.com/atomiks/rehype-pretty-code/blob/master/website/next.config.mjs)
+> [rehype-pretty-code/examples/next/next.config.mjs](https://github.com/atomiks/rehype-pretty-code/blob/master/examples/next/next.config.mjs)
 
 ## Usage
 
@@ -231,7 +233,7 @@ interface Options {
 }
 ```
 
-### `grid{:.meta.object-literal.key}`
+### `grid`
 
 A grid style is present by default which allows line highlighting to span the
 entire width of a horizontally-scrollable code block.
@@ -244,7 +246,7 @@ const options = {
 };
 ```
 
-### `theme{:.meta.object-literal.key}`
+### `theme`
 
 The default theme is `github-dark-dimmed{:.string}`. Shiki has a bunch of
 [pre-packaged themes](https://shiki.style/themes#themes),
@@ -264,7 +266,7 @@ const options = {
 };
 ```
 
-### `keepBackground{:.meta.object-literal.key}`
+### `keepBackground`
 
 To apply a custom background instead of inheriting the background from the
 theme:
@@ -275,7 +277,7 @@ const options = {
 };
 ```
 
-### `defaultLang{:.meta.object-literal.key}`
+### `defaultLang`
 
 When no code language is specified, inline code or code blocks will not be
 themed (nor will the background), which may appear incongruous with others.
@@ -300,7 +302,7 @@ const options = {
 };
 ```
 
-### `transformers{:.meta.object-literal.key}`
+### `transformers`
 
 [Transformers](https://shiki.style/guide/transformers#transformers) are a
 Shiki-native way to manipulate the `hAST` tree of the code blocks and further
@@ -542,7 +544,7 @@ const options = {
 };
 ```
 
-Now, use the following CSS to display the variable colors — if a space is found
+Now, use the following CSS to display the variable colors Ă˘âŹâ if a space is found
 in the theme name, then CSS variable keys based on the object are available
 ([more info](https://shiki.style/guide/dual-themes#light-dark-dual-themes)):
 
@@ -666,5 +668,3 @@ export default async function Page() {
   );
 }
 ```
-
-See this example in action at [/rsc](/rsc).

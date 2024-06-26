@@ -49,10 +49,11 @@ export function transformerCopyButton(
         tagName: 'button',
         properties: {
           type: 'button',
+          data: this.source,
           title: 'Copy code',
           'aria-label': 'Copy code',
-          data: this.source,
           class: 'rehype-pretty-copy',
+          'data-name': 'rehype-pretty-copy-button',
           onclick: trimWhitespace(/* javascript */ `
             navigator.clipboard.writeText(this.attributes.data.value);
             this.classList.add('rehype-pretty-copied');
@@ -107,9 +108,18 @@ function copyButtonStyle({
       --copy-icon: url("${copyIcon}");
       --success-icon: url("${successIcon}");
     }
+
     pre:has(code) {
       position: relative;
     }
+
+    button[data='<span>'] {
+      width: 0;
+      height: 0;
+      display: none;
+      visibility: hidden;
+    }
+
     pre button.rehype-pretty-copy {
       right: 1px;
       padding: 0;
@@ -120,7 +130,6 @@ function copyButtonStyle({
       margin-right: 8px;
       position: absolute;
       border-radius: 25%;
-      backdrop-filter: blur(3px);
       & span {
         width: 100%;
         aspect-ratio: 1 / 1;
@@ -132,6 +141,7 @@ function copyButtonStyle({
         display: none; background-image: var(--success-icon);
       }
     }
+
     &.rehype-pretty-copied { 
       & .success { 
         display: block;
@@ -139,6 +149,7 @@ function copyButtonStyle({
         display: none;
       }
     }
+
     pre button.rehype-pretty-copy.rehype-pretty-copied {
       opacity: 1;
       & .ready { display: none; }

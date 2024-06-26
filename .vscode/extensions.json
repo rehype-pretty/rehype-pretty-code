@@ -1,8 +1,11 @@
 {
   "recommendations": [
     "biomejs.biome",
+    "astro-build.astro-vscode",
     "bradlc.vscode-tailwindcss",
     "tobermory.es6-string-html",
+    "EditorConfig.EditorConfig",
+    "yzhang.markdown-all-in-one",
     "orta.vscode-twoslash-queries"
   ],
   "unwantedRecommendations": [
