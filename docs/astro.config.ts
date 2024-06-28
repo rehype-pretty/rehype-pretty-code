@@ -58,7 +58,7 @@ export default defineConfig({
           theme: moonlightTheme,
           transformers: [
             transformerCopyButton({
-              visibility: 'always',
+              visibility: 'hover',
               feedbackDuration: 2_500,
             }),
           ],
