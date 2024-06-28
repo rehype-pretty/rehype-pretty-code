@@ -59,7 +59,7 @@ export default defineConfig({
           transformers: [
             transformerCopyButton({
               visibility: 'hover',
-              feedbackDuration: 2_500,
+              feedbackDuration: 2_000,
             }),
           ],
         },
