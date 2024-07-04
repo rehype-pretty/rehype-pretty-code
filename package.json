@@ -8,7 +8,7 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "test": "vitest --run",
+    "test": "turbo test",
     "format": "biome format . --error-on-warnings --log-level='info' --diagnostic-level='info' --write",
     "lint": "biome lint . --log-level='info' --log-kind='pretty' --diagnostic-level='info' --apply-unsafe",
     "format:markdown": "markdownlint-cli2 '**/*.md' '#**/node_modules' '#**/test'",
