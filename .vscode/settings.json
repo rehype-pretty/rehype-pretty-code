@@ -42,6 +42,8 @@
     "**/package-lock.json": true
   },
   "files.exclude": {
+    ".zed": true,
+    ".turbo": true,
     "**/*.timestamp-*": true
   },
   "[markdown]": {

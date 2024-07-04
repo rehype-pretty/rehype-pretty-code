@@ -18,20 +18,30 @@
     "changeset:publish": "changeset publish",
     "typecheck": "turbo run typecheck",
     "check-package": "turbo check-package",
+    "knip": "knip",
     "clean": "turbo clean",
     "clean-full": "/bin/bash ./scripts/clean.sh"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.2",
-    "@changesets/cli": "^2.27.6",
+    "@biomejs/biome": "^1.8.3",
+    "@changesets/cli": "^2.27.7",
     "@total-typescript/ts-reset": "^0.5.1",
-    "@types/bun": "^1.1.5",
+    "@types/bun": "^1.1.6",
     "@types/node": "^20.14.9",
-    "bun": "^1.1.17",
+    "bun": "^1.1.18",
+    "knip": "^5.24.0",
     "markdownlint-cli2": "^0.13.0",
     "simple-git-hooks": "^2.11.1",
-    "turbo": "^2.0.5",
-    "typescript": "^5.5.2"
+    "turbo": "^2.0.6",
+    "typescript": "^5.5.3"
+  },
+  "overrides": {
+    "is-core-module": "npm:@nolyfill/is-core-module@^1"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowAny": ["svelte"]
+    }
   },
   "engines": {
     "node": ">=20",
@@ -56,10 +66,5 @@
       "url": "https://github.com/o-az"
     }
   ],
-  "license": "MIT",
-  "pnpm": {
-    "peerDependencyRules": {
-      "allowAny": ["svelte"]
-    }
-  }
+  "license": "MIT"
 }

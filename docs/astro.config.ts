@@ -1,4 +1,8 @@
 import {
+  rehypePrettyCode,
+  type RehypePrettyCodeOptions,
+} from 'rehype-pretty-code';
+import {
   transformerNotationDiff,
   transformerNotationFocus,
   transformerMetaHighlight,
@@ -11,11 +15,11 @@ import {
 } from '@shikijs/transformers';
 import remarkToc from 'remark-toc';
 import rehypeSlug from 'rehype-slug';
+import type { RawTheme } from 'shiki';
 import tailwind from '@astrojs/tailwind';
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 import remarkSmartypants from 'remark-smartypants';
-import { rehypePrettyCode } from 'rehype-pretty-code';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
@@ -55,14 +59,14 @@ export default defineConfig({
         rehypePrettyCode,
         {
           keepBackground: true,
-          theme: moonlightTheme,
+          theme: moonlightTheme as unknown as RawTheme,
           transformers: [
             transformerCopyButton({
-              visibility: 'always',
+              visibility: 'hover',
               feedbackDuration: 2_500,
             }),
           ],
-        },
+        } satisfies RehypePrettyCodeOptions,
       ],
       rehypeSlug,
     ],
