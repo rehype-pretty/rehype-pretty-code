@@ -41,17 +41,17 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",
-    "@shikijs/transformers": "^1.9.1",
+    "@shikijs/transformers": "^1.10.1",
     "@types/node": "^20.14.9",
     "hast-util-to-html": "^9.0.1",
     "mdast-util-to-hast": "^13.2.0",
     "prettier": "^3.3.2",
     "remark": "^15.0.1",
-    "shiki": "^1.9.1",
+    "shiki": "^1.10.1",
     "tsup": "^8.1.0",
-    "tsx": "^4.15.7",
-    "typescript": "^5.5.2",
-    "vite": "^5.3.1",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.3",
     "vitest": "^1.6.0"
   },
   "peerDependencies": {

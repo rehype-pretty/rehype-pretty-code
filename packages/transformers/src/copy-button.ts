@@ -43,7 +43,7 @@ export function transformerCopyButton(
 ): ShikiTransformer {
   return {
     name: '@rehype-pretty/transformers/copy-button',
-    code(node) {
+    pre(node) {
       node.children.push({
         type: 'element',
         tagName: 'button',
@@ -121,24 +121,27 @@ function copyButtonStyle({
     }
 
     pre button.rehype-pretty-copy {
+      top: 1px;
       right: 1px;
       padding: 0;
       width: 24px;
       height: 24px;
       display: flex;
-      margin-top: 2px;
+      margin-top: 8px;
       margin-right: 8px;
       position: absolute;
       border-radius: 25%;
       & span {
         width: 100%;
         aspect-ratio: 1 / 1;
+        background-repeat: no-repeat;
       }
       & .ready {
         background-image: var(--copy-icon);
       }
       & .success {
-        display: none; background-image: var(--success-icon);
+        display: none;
+        background-image: var(--success-icon);
       }
     }
 

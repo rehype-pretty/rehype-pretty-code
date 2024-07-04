@@ -67,7 +67,7 @@ pre {
 }
 
 code {
-  @apply text-sm md:text-base !leading-loose;
+  @apply !leading-loose;
 }
 
 pre > code {
@@ -164,9 +164,7 @@ code,
 figure {
   @apply overflow-x-auto;
 }
-p {
-  @apply text-lg;
-}
+
 article p {
   @apply leading-9;
 }

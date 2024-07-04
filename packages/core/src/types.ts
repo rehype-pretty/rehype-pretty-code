@@ -18,6 +18,8 @@ export type CharsElement = Omit<Element, 'properties' | 'children'> & {
 
 export type Theme = BuiltinTheme | ThemeRegistrationRaw;
 
+export type { Options as RehypePrettyCodeOptions };
+
 export interface Options {
   grid?: boolean;
   theme?: Theme | Record<string, Theme>;
