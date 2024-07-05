@@ -1,0 +1,58 @@
+name: Preview
+
+on:
+  push:
+    paths:
+      - 'packages/**'
+  pull_request:
+    paths:
+      - 'packages/**'
+  workflow_dispatch:
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  ACTIONS_RUNNER_DEBUG: true
+  NEXT_TELEMETRY_DISABLED: '1'
+  ASTRO_TELEMETRY_DISABLED: '1'
+  NODE_OPTIONS: '--no-warnings'
+
+jobs:
+  preview:
+    name: 'Preview'
+    runs-on: ['ubuntu-latest']
+    # if pr is not from maintaner, require review approval
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 'Get pnpm Version'
+        id: pnpm-version
+        run: |
+          PNPM_VERSION=$(cat package.json | jq --raw-output '.packageManager' | awk -F'@' '{print $2}')
+          echo "PNPM_VERSION=$PNPM_VERSION" >> $GITHUB_OUTPUT
+
+      - name: 'Setup pnpm'
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ steps.pnpm-version.outputs.PNPM_VERSION }}
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'pnpm'
+          
+      - name: 'Install Dependencies'
+        run: pnpm install
+
+      - name: 'Publish Previews'
+        run: pnpm dlx pkg-pr-new publish --no-template --compact ./packages/*
