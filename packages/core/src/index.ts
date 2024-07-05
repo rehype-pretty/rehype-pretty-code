@@ -436,20 +436,18 @@ export function rehypePrettyCode(
         // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         visit(codeTree, 'element', (element) => {
           if (element.tagName === 'code') {
-            const showLineNumbers = /srebmuNeniLwohs/.test(reverseString(meta));
+            const showLineNumbers = /(?:^|\s)showLineNumbers(?:\s|$)/.test(meta);
             if (showLineNumbers) {
               if (element.properties) {
                 element.properties['data-line-numbers'] = '';
               }
 
-              const lineNumbersStartAtMatch = reverseString(meta).match(
-                /(?:\}(\d+){)?srebmuNeniLwohs/,
+              const lineNumbersStartAtMatch = meta.match(
+                /showLineNumbers=(\d+)/
               );
               const startNumberString = lineNumbersStartAtMatch?.[1];
               if (startNumberString) {
-                const startAt = startNumberString
-                  ? Number(reverseString(startNumberString)) - 1
-                  : 0;
+                const startAt = Number(startNumberString) - 1;
                 lineNumbersMaxDigits = startAt;
                 if (element.properties) {
                   element.properties.style = `counter-set: line ${startAt};`;
