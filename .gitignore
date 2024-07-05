@@ -30,3 +30,4 @@ cache
 *.timestamp-*
 site
 .zed
+html
