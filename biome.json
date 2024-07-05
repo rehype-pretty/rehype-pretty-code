@@ -91,6 +91,7 @@
         "useAwait": "off",
         "noConsoleLog": "off",
         "noExplicitAny": "off",
+        "noFocusedTests": "off",
         "noEmptyInterface": "off",
         "noConfusingVoidType": "off"
       },
