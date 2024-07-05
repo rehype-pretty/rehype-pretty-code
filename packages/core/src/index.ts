@@ -25,7 +25,6 @@ import {
 import rehypeParse from 'rehype-parse';
 import { visit } from 'unist-util-visit';
 import rangeParser from 'parse-numeric-range';
-import { reverseString } from './chars/utils';
 import { unified, type Transformer } from 'unified';
 import { charsHighlighter } from './chars/charsHighlighter';
 import { toString as hastToString } from 'hast-util-to-string';
@@ -436,14 +435,16 @@ export function rehypePrettyCode(
         // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         visit(codeTree, 'element', (element) => {
           if (element.tagName === 'code') {
-            const showLineNumbers = /(?:^|\s)showLineNumbers(?:\s|$)/.test(meta);
+            const showLineNumbers = /(?:^|\s)showLineNumbers(?:\s|$)/.test(
+              meta,
+            );
             if (showLineNumbers) {
               if (element.properties) {
                 element.properties['data-line-numbers'] = '';
               }
 
               const lineNumbersStartAtMatch = meta.match(
-                /showLineNumbers=(\d+)/
+                /showLineNumbers=(\d+)/,
               );
               const startNumberString = lineNumbersStartAtMatch?.[1];
               if (startNumberString) {
