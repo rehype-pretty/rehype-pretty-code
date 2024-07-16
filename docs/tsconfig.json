@@ -1,5 +1,7 @@
 {
-  "extends": ["astro/tsconfigs/strictest"],
+  "extends": [
+    "astro/tsconfigs/strictest"
+  ],
   "compilerOptions": {
     "strict": true,
     "allowJs": true,
@@ -13,9 +15,19 @@
     "allowArbitraryExtensions": true,
     "noUncheckedIndexedAccess": true,
     "allowImportingTsExtensions": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "noPropertyAccessFromIndexSignature": true
   },
-  "include": ["src"],
-  "files": ["astro.config.ts", "tailwind.config.ts", "reset.d.ts"]
+  "include": [
+    "src"
+  ],
+  "files": [
+    "reset.d.ts",
+    "astro.config.ts",
+    "tailwind.config.ts"
+  ]
 }

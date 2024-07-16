@@ -7,8 +7,7 @@ import {
 import {
   type BundledTheme,
   type BundledLanguage,
-  type HighlighterGeneric,
-  type BundledHighlighterOptions,
+  type CreateHighlighterFactory,
   createHighlighter as shikiHighlighter,
 } from 'shiki';
 import prettier from 'prettier';
@@ -51,14 +50,7 @@ const isMultipleThemeTest = (fixtureName: string) => {
 const runFixture = async (
   fixture: PathOrFileDescriptor,
   fixtureName: string,
-  getHighlighter: Mock<
-    [
-      options?:
-        | BundledHighlighterOptions<BundledLanguage, BundledTheme>
-        | undefined,
-    ],
-    Promise<HighlighterGeneric<BundledLanguage, BundledTheme>>
-  >,
+  getHighlighter: Mock<CreateHighlighterFactory<BundledLanguage, BundledTheme>>,
 ) => {
   const testName = parse(fixtureName).name;
   const resultHtmlName = `${testName}.html`;
@@ -141,7 +133,6 @@ describe('Single theme', () => {
       const { htmlString, resultHtmlPath } = await runFixture(
         fixture,
         fixtureName,
-        // @ts-expect-error
         getHighlighter,
       );
 
@@ -165,7 +156,6 @@ describe('Multiple theme', () => {
       const { htmlString, resultHtmlPath } = await runFixture(
         fixture,
         fixtureName,
-        // @ts-expect-error
         getHighlighter,
       );
 

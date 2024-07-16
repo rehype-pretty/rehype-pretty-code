@@ -27,9 +27,9 @@
     "@changesets/cli": "^2.27.7",
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/bun": "^1.1.6",
-    "@types/node": "^20.14.9",
-    "bun": "^1.1.18",
-    "knip": "^5.24.0",
+    "@types/node": "^20.14.10",
+    "bun": "^1.1.20",
+    "knip": "^5.26.0",
     "markdownlint-cli2": "^0.13.0",
     "simple-git-hooks": "^2.11.1",
     "turbo": "^2.0.6",
@@ -40,7 +40,12 @@
   },
   "pnpm": {
     "peerDependencyRules": {
-      "allowAny": ["svelte"]
+      "allowAny": [
+        "svelte"
+      ]
+    },
+    "overrides": {
+      "is-core-module": "npm:@nolyfill/is-core-module@^1"
     }
   },
   "engines": {

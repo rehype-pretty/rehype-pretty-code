@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.2",
-    "@astrojs/starlight": "^0.24.5",
+    "@astrojs/starlight": "^0.25.1",
     "@astrojs/starlight-tailwind": "^2.0.3",
     "@astrojs/tailwind": "^5.1.0",
     "@rehype-pretty/transformers": "workspace:*",
@@ -23,15 +23,15 @@
     "rehype-stringify": "^10.0.0",
     "remark-toc": "^9.0.0",
     "sharp": "^0.33.4",
-    "shiki": "^1.10.1",
-    "tailwindcss": "^3.4.4"
+    "shiki": "^1.10.3",
+    "tailwindcss": "^3.4.5"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.7.0",
-    "@shikijs/transformers": "^1.10.1",
-    "@shikijs/twoslash": "^1.10.1",
+    "@astrojs/check": "^0.8.1",
+    "@shikijs/transformers": "^1.10.3",
+    "@shikijs/twoslash": "^1.10.3",
     "@total-typescript/ts-reset": "^0.5.1",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.10",
     "typescript": "^5.5.3"
   }
 }
