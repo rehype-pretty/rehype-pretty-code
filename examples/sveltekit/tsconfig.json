@@ -1,9 +1,15 @@
 {
-  "extends": ["./.svelte-kit/tsconfig.json"],
+  "extends": [
+    "./.svelte-kit/tsconfig.json"
+  ],
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
@@ -13,5 +19,8 @@
     "strict": true,
     "moduleResolution": "Bundler"
   },
-  "files": ["svelte.config.js", "vite.config.ts"]
+  "files": [
+    "vite.config.ts",
+    "svelte.config.js"
+  ]
 }

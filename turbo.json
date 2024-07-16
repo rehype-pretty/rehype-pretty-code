@@ -1,10 +1,14 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["biome.json"],
+  "globalDependencies": [
+    "biome.jsonc"
+  ],
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "outputs": [
         "dist/**",
         ".next/**",

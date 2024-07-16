@@ -3,5 +3,4 @@
 **/test/results/** linguist-generated
 **/test/fixtures/** linguist-generated text eol=lf
 
-biome.json linguist-language=JSON-with-Comments
 .vscode/*.json linguist-language=JSON-with-Comments

@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "es2022"],
+    "lib": [
+      "DOM",
+      "es2022"
+    ],
     "skipLibCheck": true,
     "module": "ESNext",
     "target": "ESNext",
@@ -10,14 +13,25 @@
     "resolveJsonModule": true,
     "strict": true,
     "noUnusedLocals": true,
-    "types": ["node", "bun"],
+    "types": [
+      "bun",
+      "node"
+    ],
     "allowJs": true,
     "checkJs": true,
     "esModuleInterop": true,
     "baseUrl": ".",
     "downlevelIteration": true
   },
-  "include": ["src", "scripts", "test"],
-  "files": ["tsup.config.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src",
+    "test",
+    "scripts"
+  ],
+  "files": [
+    "tsup.config.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

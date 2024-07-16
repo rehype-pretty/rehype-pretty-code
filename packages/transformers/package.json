@@ -34,7 +34,12 @@
       "./package.json": "./package.json"
     }
   },
-  "files": ["dist", "package.json", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup --config=tsup.config.ts",
@@ -44,9 +49,12 @@
     "prepublishOnly": "NODE_ENV='production' pnpm build",
     "check-package": "pnpm dlx publint@latest --strict && attw --pack --ignore-rules cjs-resolves-to-esm no-resolution"
   },
+  "dependencies": {
+    "@std/html": "npm:@jsr/std__html@1.0.0-rc.2"
+  },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.10",
     "tsup": "^8.1.0",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3"
@@ -60,6 +68,8 @@
     "directory": "packages/transformers"
   },
   "author": "https://github.com/o-az",
-  "browserslist": ["node 20"],
+  "browserslist": [
+    "node 20"
+  ],
   "license": "MIT"
 }
