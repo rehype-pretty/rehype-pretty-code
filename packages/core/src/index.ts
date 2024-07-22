@@ -68,7 +68,7 @@ function apply(
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   element.children = [tree].flatMap((tree) => {
-    const pre = tree.children[0];
+    const [pre] = tree.children;
     const themeNames = getThemeNames(theme);
     const themeNamesString = themeNames.join(' ');
 
@@ -76,7 +76,7 @@ function apply(
       return [];
     }
 
-    const code = pre.children[0];
+    const [code] = pre.children;
 
     // Remove extraneous classes
     if (
@@ -353,11 +353,12 @@ export function rehypePrettyCode(
         if (!isElement(codeElement)) return;
         const [textElement] = codeElement.children;
 
-        const { title, caption, meta, lang } = parseBlockMetaString(
-          codeElement,
-          filterMetaString,
-          defaultCodeBlockLang,
-        );
+        const { title, caption, meta, lang, showLineNumbers } =
+          parseBlockMetaString(
+            codeElement,
+            filterMetaString,
+            defaultCodeBlockLang,
+          );
 
         if (!lang || lang === 'math') return;
 
@@ -434,25 +435,23 @@ export function rehypePrettyCode(
 
         // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         visit(codeTree, 'element', (element) => {
-          if (element.tagName === 'code') {
-            const showLineNumbers = /(?:^|\s)showLineNumbers(?:\s|$)/.test(
-              meta,
-            );
-            if (showLineNumbers) {
-              if (element.properties) {
-                element.properties['data-line-numbers'] = '';
-              }
+          if (
+            (element.tagName === 'code' || element.tagName === 'pre') &&
+            showLineNumbers
+          ) {
+            if (element.properties) {
+              element.properties['data-line-numbers'] = '';
+            }
 
-              const lineNumbersStartAtMatch = meta.match(
-                /showLineNumbers=(\d+)/,
-              );
-              const startNumberString = lineNumbersStartAtMatch?.[1];
-              if (startNumberString) {
-                const startAt = Number(startNumberString) - 1;
-                lineNumbersMaxDigits = startAt;
-                if (element.properties) {
-                  element.properties.style = `counter-set: line ${startAt};`;
-                }
+            const lineNumbersStartAtMatch = meta.match(
+              /showLineNumbers=(\d+)/i,
+            );
+            const startNumberString = lineNumbersStartAtMatch?.[1];
+            if (startNumberString) {
+              const startAt = Number(startNumberString) - 1;
+              lineNumbersMaxDigits = startAt;
+              if (element.properties) {
+                element.properties.style = `counter-set: line ${startAt};`;
               }
             }
           }
