@@ -7,7 +7,8 @@ Object.assign(process.env, { NEXT_TELEMETRY_DISABLED: '1' });
  */
 import nextMDX from '@next/mdx';
 import rehypeSlug from 'rehype-slug';
-import rehypePrettyCode from 'rehype-pretty-code';
+import { rehypePrettyCode } from 'rehype-pretty-code';
+import { transformerCopyButton } from '@rehype-pretty/transformers';
 import moonlightTheme from './assets/moonlight-ii.json' with { type: 'json' };
 
 /** @type {NextConfigPlugins} */
@@ -19,16 +20,28 @@ const nextConfig = {
   cleanDistDir: true,
   reactStrictMode: true,
   poweredByHeader: false,
+  experimental: {
+    reactCompiler: true,
+    useLightningcss: false, // lightningcss doesn't work with postcss-loader
+  },
   pageExtensions: ['md', 'mdx', 'tsx', 'ts', 'jsx', 'js'],
   env: {
     NEXT_TELEMETRY_DISABLED: '1',
   },
 };
 
-/** @type {import('rehype-pretty-code').Options} */
+/** @satisfies {import('rehype-pretty-code').RehypePrettyCodeOptions} */
 const options = {
   keepBackground: false,
+  // @ts-expect-error
   theme: moonlightTheme,
+  transformers: [
+    transformerCopyButton({
+      jsx: true,
+      visibility: 'always',
+      feedbackDuration: 2_500,
+    }),
+  ],
 };
 
 plugins.push(

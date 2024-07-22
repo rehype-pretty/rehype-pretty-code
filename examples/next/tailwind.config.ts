@@ -1,4 +1,5 @@
-const colors = require('tailwindcss/colors');
+import colors from 'tailwindcss/colors';
+import type { Config } from 'tailwindcss';
 
 const linkHeadingStyles = {
   color: colors.gray[100],
@@ -13,7 +14,7 @@ const linkHeadingStyles = {
   },
 };
 
-module.exports = {
+export default (<Config>{
   plugins: [require('@tailwindcss/typography')],
   content: ['./src/**/*.{js,ts,jsx,tsx,md,mdx}'],
   theme: {
@@ -92,4 +93,4 @@ module.exports = {
       },
     },
   },
-};
+});

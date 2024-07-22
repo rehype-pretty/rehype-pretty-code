@@ -16,10 +16,16 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist", "package.json", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ],
   "scripts": {
     "build": "tsup --config=tsup.config.ts",
     "test": "vitest --run",
+    "test:ui": "vitest --ui",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "clean": "rm -rf dist",
     "prebuild": "rm -rf dist",
@@ -36,18 +42,20 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",
-    "@shikijs/transformers": "^1.9.1",
-    "@types/node": "^20.14.9",
+    "@shikijs/transformers": "^1.11.0",
+    "@types/node": "^20.14.11",
+    "@vitest/ui": "^2.0.3",
     "hast-util-to-html": "^9.0.1",
     "mdast-util-to-hast": "^13.2.0",
-    "prettier": "^3.3.2",
+    "prettier": "^3.3.3",
     "remark": "^15.0.1",
-    "shiki": "^1.9.1",
-    "tsup": "^8.1.0",
-    "tsx": "^4.15.7",
-    "typescript": "^5.5.2",
-    "vite": "^5.3.1",
-    "vitest": "^1.6.0"
+    "shiki": "^1.11.0",
+    "ts-dedent": "^2.2.0",
+    "tsup": "^8.2.1",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.4",
+    "vitest": "^2.0.3"
   },
   "peerDependencies": {
     "shiki": "^1.3.0"
@@ -65,7 +73,9 @@
     "url": "git+https://github.com/rehype-pretty/rehype-pretty-code.git",
     "directory": "packages/core"
   },
-  "browserslist": ["node 18"],
+  "browserslist": [
+    "node 18"
+  ],
   "author": "https://github.com/atomiks",
   "license": "MIT"
 }

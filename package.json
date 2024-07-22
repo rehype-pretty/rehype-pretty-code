@@ -8,7 +8,7 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "test": "vitest --run",
+    "test": "turbo test",
     "format": "biome format . --error-on-warnings --log-level='info' --diagnostic-level='info' --write",
     "lint": "biome lint . --log-level='info' --log-kind='pretty' --diagnostic-level='info' --apply-unsafe",
     "format:markdown": "markdownlint-cli2 '**/*.md' '#**/node_modules' '#**/test'",
@@ -18,20 +18,35 @@
     "changeset:publish": "changeset publish",
     "typecheck": "turbo run typecheck",
     "check-package": "turbo check-package",
+    "knip": "knip",
     "clean": "turbo clean",
     "clean-full": "/bin/bash ./scripts/clean.sh"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.2",
-    "@changesets/cli": "^2.27.6",
+    "@biomejs/biome": "^1.8.3",
+    "@changesets/cli": "^2.27.7",
     "@total-typescript/ts-reset": "^0.5.1",
-    "@types/bun": "^1.1.5",
-    "@types/node": "^20.14.9",
-    "bun": "^1.1.17",
+    "@types/bun": "^1.1.6",
+    "@types/node": "^20.14.11",
+    "bun": "^1.1.20",
+    "knip": "^5.26.0",
     "markdownlint-cli2": "^0.13.0",
     "simple-git-hooks": "^2.11.1",
-    "turbo": "^2.0.5",
-    "typescript": "^5.5.2"
+    "turbo": "^2.0.9",
+    "typescript": "^5.5.3"
+  },
+  "overrides": {
+    "is-core-module": "npm:@nolyfill/is-core-module@^1"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowAny": [
+        "svelte"
+      ]
+    },
+    "overrides": {
+      "is-core-module": "npm:@nolyfill/is-core-module@^1"
+    }
   },
   "engines": {
     "node": ">=20",
@@ -40,7 +55,7 @@
   "simple-git-hooks": {
     "pre-commit": "pnpm format && pnpm lint && pnpm lint:repo && pnpm typecheck"
   },
-  "packageManager": "pnpm@9.4.0",
+  "packageManager": "pnpm@9.6.0",
   "author": "https://github.com/atomiks",
   "contributors": [
     "atomiks (https://github.com/atomiks)",
@@ -56,10 +71,5 @@
       "url": "https://github.com/o-az"
     }
   ],
-  "license": "MIT",
-  "pnpm": {
-    "peerDependencyRules": {
-      "allowAny": ["svelte"]
-    }
-  }
+  "license": "MIT"
 }

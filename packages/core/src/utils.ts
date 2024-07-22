@@ -57,6 +57,8 @@ export function parseBlockMetaString(
   let meta = filter(
     (element.data?.meta ?? element.properties?.metastring ?? '') as string,
   );
+  const showLineNumbers = /showLineNumbers/i.test(meta);
+  meta = meta.replace(/showLineNumbers/i, '').trim();
 
   const titleMatch = meta.match(/title="([^"]*)"/);
   const title = titleMatch?.[1] ?? null;
@@ -81,6 +83,7 @@ export function parseBlockMetaString(
     caption,
     lang,
     meta,
+    showLineNumbers,
   };
 }
 

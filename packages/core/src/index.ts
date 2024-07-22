@@ -1,30 +1,35 @@
-import type { Element, ElementContent, ElementData, Root } from 'hast';
-import type { Options, Theme, CharsHighlighterOptions } from './types';
+export type {
+  Theme,
+  Options,
+  LineElement,
+  CharsElement,
+  RehypePrettyCodeOptions,
+} from './types';
 import {
-  type Highlighter,
-  type CodeToHastOptions,
-  getHighlighter as defaultGetHighlighter,
-} from 'shiki';
-import { visit } from 'unist-util-visit';
-import { toString as hastToString } from 'hast-util-to-string';
-import rangeParser from 'parse-numeric-range';
-import { unified, type Transformer } from 'unified';
-import rehypeParse from 'rehype-parse';
-import { charsHighlighter } from './chars/charsHighlighter';
-import { reverseString } from './chars/utils';
-import {
-  isElement,
   isText,
+  getLineId,
+  isElement,
   isJSONTheme,
-  parseBlockMetaString,
   isBlockCode,
-  getInlineCodeLang,
   isInlineCode,
   getThemeNames,
   replaceLineClass,
-  getLineId,
+  getInlineCodeLang,
+  parseBlockMetaString,
 } from './utils';
-export type { Options, LineElement, CharsElement, Theme } from './types';
+import {
+  type Highlighter,
+  createHighlighter,
+  type CodeToHastOptions,
+} from 'shiki';
+import rehypeParse from 'rehype-parse';
+import { visit } from 'unist-util-visit';
+import rangeParser from 'parse-numeric-range';
+import { unified, type Transformer } from 'unified';
+import { charsHighlighter } from './chars/charsHighlighter';
+import { toString as hastToString } from 'hast-util-to-string';
+import type { Options, Theme, CharsHighlighterOptions } from './types';
+import type { Element, ElementContent, ElementData, Root } from 'hast';
 
 interface ApplyProps {
   tree: Root;
@@ -63,7 +68,7 @@ function apply(
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   element.children = [tree].flatMap((tree) => {
-    const pre = tree.children[0];
+    const [pre] = tree.children;
     const themeNames = getThemeNames(theme);
     const themeNamesString = themeNames.join(' ');
 
@@ -71,7 +76,7 @@ function apply(
       return [];
     }
 
-    const code = pre.children[0];
+    const [code] = pre.children;
 
     // Remove extraneous classes
     if (
@@ -175,7 +180,7 @@ export function rehypePrettyCode(
     defaultLang = '',
     tokensMap = {},
     filterMetaString = (v) => v,
-    getHighlighter = defaultGetHighlighter,
+    getHighlighter = createHighlighter,
     transformers,
     onVisitLine,
     onVisitHighlightedLine,
@@ -343,15 +348,16 @@ export function rehypePrettyCode(
       }
 
       if (isBlockCode(element)) {
-        const codeElement = element.children[0];
+        const [codeElement] = element.children;
         if (!isElement(codeElement)) return;
-        const textElement = codeElement.children[0];
+        const [textElement] = codeElement.children;
 
-        const { title, caption, meta, lang } = parseBlockMetaString(
-          codeElement,
-          filterMetaString,
-          defaultCodeBlockLang,
-        );
+        const { title, caption, meta, lang, showLineNumbers } =
+          parseBlockMetaString(
+            codeElement,
+            filterMetaString,
+            defaultCodeBlockLang,
+          );
 
         if (!lang || lang === 'math') return;
 
@@ -429,21 +435,19 @@ export function rehypePrettyCode(
         // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         visit(codeTree, 'element', (element) => {
           if (
-            element.tagName === 'code' &&
-            /srebmuNeniLwohs(?!(.*)(\/))/.test(reverseString(meta))
+            (element.tagName === 'code' || element.tagName === 'pre') &&
+            showLineNumbers
           ) {
             if (element.properties) {
               element.properties['data-line-numbers'] = '';
             }
 
-            const lineNumbersStartAtMatch = reverseString(meta).match(
-              /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/,
+            const lineNumbersStartAtMatch = meta.match(
+              /showLineNumbers=(\d+)/i,
             );
             const startNumberString = lineNumbersStartAtMatch?.[1];
             if (startNumberString) {
-              const startAt = startNumberString
-                ? Number(reverseString(startNumberString)) - 1
-                : 0;
+              const startAt = Number(startNumberString) - 1;
               lineNumbersMaxDigits = startAt;
               if (element.properties) {
                 element.properties.style = `counter-set: line ${startAt};`;

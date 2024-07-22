@@ -4,7 +4,12 @@
   "version": "0.13.2",
   "exports": "./src/index.ts",
   "publish": {
-    "include": ["src/**/*.ts", "README.md", "LICENSE", "jsr.json"],
+    "include": [
+      "LICENSE",
+      "jsr.json",
+      "README.md",
+      "src/**/*.ts"
+    ],
     "exclude": []
   }
 }
