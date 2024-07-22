@@ -8,8 +8,8 @@ export default defineConfig({
   outDir: 'dist',
   format: ['esm'],
   splitting: true,
-  sourcemap: process.env.NODE_ENV === 'development' ? 'inline' : false,
   target: ['esnext'],
+  sourcemap: process.env.NODE_ENV === 'development' ? 'inline' : false,
   entry: {
     index: './src/index.ts',
     'copy-button': './src/copy-button.ts',

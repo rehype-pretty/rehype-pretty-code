@@ -6,6 +6,7 @@ interface CopyButtonOptions {
   copyIcon?: string;
   successIcon?: string;
   visibility?: 'hover' | 'always';
+  jsx?: boolean;
 }
 
 /**
@@ -39,11 +40,27 @@ export function transformerCopyButton(
   options: CopyButtonOptions = {
     visibility: 'hover',
     feedbackDuration: 3_000,
+    jsx: false,
   },
 ): ShikiTransformer {
   return {
     name: '@rehype-pretty/transformers/copy-button',
     pre(node) {
+      node.children.push({
+        type: 'element',
+        tagName: 'style',
+        properties: {},
+        children: [
+          {
+            type: 'text',
+            value: copyButtonStyle({
+              copyIcon: options.copyIcon,
+              successIcon: options.successIcon,
+              visibility: options.visibility,
+            }),
+          },
+        ],
+      });
       node.children.push({
         type: 'element',
         tagName: 'button',
@@ -53,8 +70,12 @@ export function transformerCopyButton(
           title: 'Copy code',
           'aria-label': 'Copy code',
           class: 'rehype-pretty-copy',
+          'data-visibility': options.visibility,
+          'data-feedback-duration': options.feedbackDuration,
           'data-name': 'rehype-pretty-copy-button',
-          onclick: trimWhitespace(/* javascript */ `
+          onclick: options.jsx
+            ? undefined
+            : trimWhitespace(/* javascript */ `
             navigator.clipboard.writeText(this.attributes.data.value);
             this.classList.add('rehype-pretty-copied');
             window.setTimeout(() => this.classList.remove('rehype-pretty-copied'), ${options.feedbackDuration});
@@ -72,21 +93,6 @@ export function transformerCopyButton(
             tagName: 'span',
             properties: { class: 'success' },
             children: [],
-          },
-        ],
-      });
-      node.children.push({
-        type: 'element',
-        tagName: 'style',
-        properties: {},
-        children: [
-          {
-            type: 'text',
-            value: copyButtonStyle({
-              copyIcon: options.copyIcon,
-              successIcon: options.successIcon,
-              visibility: options.visibility,
-            }),
           },
         ],
       });
@@ -167,5 +173,31 @@ function copyButtonStyle({
         }
       `;
   }
-  return trimWhitespace(copyButtonStyle);
+  return copyButtonStyle;
+}
+
+/**
+ * Registers the copy button event listener
+ * to be used in jsx environments.
+ */
+export function registerCopyButton() {
+  if (typeof document === 'undefined') return;
+  const copyButtonElements = document.querySelectorAll(
+    'button[data-name="rehype-pretty-copy-button"]',
+  );
+  copyButtonElements.forEach((element) => {
+    element.addEventListener('click', async (event) => {
+      event.preventDefault();
+      const target = event.currentTarget as HTMLButtonElement;
+      const source = target.getAttribute('data');
+      if (!source) return;
+      await navigator.clipboard.writeText(source);
+      const feedbackDuration = target.getAttribute('data-feedback-duration');
+      element.classList.add('rehype-pretty-copied');
+      setTimeout(
+        () => element.classList.remove('rehype-pretty-copied'),
+        Number(feedbackDuration || 2_500),
+      );
+    });
+  });
 }

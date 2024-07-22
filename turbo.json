@@ -3,7 +3,7 @@
   "globalDependencies": [
     "biome.jsonc"
   ],
-  "ui": "tui",
+  "ui": "stream",
   "tasks": {
     "build": {
       "dependsOn": [

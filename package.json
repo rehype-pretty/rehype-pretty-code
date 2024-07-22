@@ -27,12 +27,12 @@
     "@changesets/cli": "^2.27.7",
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/bun": "^1.1.6",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.14.11",
     "bun": "^1.1.20",
     "knip": "^5.26.0",
     "markdownlint-cli2": "^0.13.0",
     "simple-git-hooks": "^2.11.1",
-    "turbo": "^2.0.6",
+    "turbo": "^2.0.9",
     "typescript": "^5.5.3"
   },
   "overrides": {
@@ -55,7 +55,7 @@
   "simple-git-hooks": {
     "pre-commit": "pnpm format && pnpm lint && pnpm lint:repo && pnpm typecheck"
   },
-  "packageManager": "pnpm@9.4.0",
+  "packageManager": "pnpm@9.6.0",
   "author": "https://github.com/atomiks",
   "contributors": [
     "atomiks (https://github.com/atomiks)",

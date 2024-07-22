@@ -12,7 +12,8 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
+    "module": "ESNext",
+    "checkJs": true,
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -30,13 +31,15 @@
     }
   },
   "include": [
-    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "next-env.d.ts",
     ".next/types/**/*.ts"
   ],
   "files": [
-    "next.config.mjs"
+    "next.config.mjs",
+    "postcss.config.cjs",
+    "tailwind.config.ts"
   ],
   "exclude": [
     "_",
