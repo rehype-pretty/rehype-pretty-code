@@ -4,34 +4,13 @@
   "version": "0.13.2",
   "homepage": "https://rehype-pretty.pages.dev",
   "type": "module",
-  "main": "./src/index.ts",
-  "module": "./src/index.ts",
-  "types": "./src/index.ts",
-  "exports": "./src/index.ts",
-  "publishConfig": {
-    "access": "public",
-    "provenance": true,
-    "main": "./dist/index.js",
-    "module": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "typings": "./dist/index.d.ts",
-    "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "import": "./dist/index.js",
-        "default": "./dist/index.js"
-      },
-      "./copy-button": {
-        "types": "./dist/copy-button.d.ts",
-        "import": "./dist/copy-button.js",
-        "default": "./dist/copy-button.js"
-      },
-      "./foldable-lines": {
-        "types": "./dist/foldable-lines.d.ts",
-        "import": "./dist/foldable-lines.js",
-        "default": "./dist/foldable-lines.js"
-      },
-      "./package.json": "./package.json"
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "files": [
@@ -50,12 +29,12 @@
     "check-package": "pnpm dlx publint@latest --strict && attw --pack --ignore-rules cjs-resolves-to-esm no-resolution"
   },
   "dependencies": {
-    "@std/html": "npm:@jsr/std__html@1.0.0-rc.2"
+    "@std/html": "npm:@jsr/std__html@1.0.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.3",
-    "@types/node": "^20.14.10",
-    "tsup": "^8.1.0",
+    "@types/node": "^20.14.11",
+    "tsup": "^8.2.1",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3"
   },

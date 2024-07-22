@@ -5,6 +5,7 @@ import Index from '@/app/index.mdx';
 import { Header } from '@/app/header';
 import { Footer } from '@/app/footer';
 import { MDXProvider } from '@mdx-js/react';
+import { registerCopyButton } from '@rehype-pretty/transformers';
 
 function Heading({
   level,
@@ -25,6 +26,9 @@ function Heading({
 }
 
 export default function Home() {
+  React.useEffect(() => {
+    registerCopyButton();
+  }, []);
   return (
     <>
       <Header />
@@ -32,6 +36,7 @@ export default function Home() {
         <div className="prose prose-invert text-gray-300/70 px-4 sm:px-6 md:px-8 mx-auto mt-12 mb-6 relative z-1">
           <article>
             <MDXProvider
+              disableParentContext={false}
               components={{
                 h1: (props) => <Heading level={1} {...props} />,
                 h2: (props) => <Heading level={2} {...props} />,

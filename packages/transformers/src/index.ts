@@ -1,2 +1,2 @@
-export { transformerCopyButton } from './copy-button';
 export { transformerFoldableLines } from './foldable-lines';
+export { transformerCopyButton, registerCopyButton } from './copy-button';
