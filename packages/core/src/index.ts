@@ -172,6 +172,7 @@ export function rehypePrettyCode(
     grid = true,
     theme = 'github-dark-dimmed',
     keepBackground = true,
+    bypassInlineCode = false,
     defaultLang = '',
     tokensMap = {},
     filterMetaString = (v) => v,
@@ -230,7 +231,7 @@ export function rehypePrettyCode(
 
     // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     visit(tree, 'element', (element, _, parent) => {
-      if (isInlineCode(element, parent)) {
+      if (isInlineCode(element, parent, bypassInlineCode)) {
         const textElement = element.children[0];
         if (!isText(textElement)) return;
         const value = textElement.value;
@@ -275,7 +276,7 @@ export function rehypePrettyCode(
 
     // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     visit(tree, 'element', (element, _, parent) => {
-      if (isInlineCode(element, parent)) {
+      if (isInlineCode(element, parent, bypassInlineCode)) {
         const textElement = element.children[0];
         if (!isText(textElement)) return;
         const value = textElement.value;
