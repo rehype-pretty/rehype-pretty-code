@@ -1,6 +1,6 @@
 ## Bypass Inline Code
 
-```js bypassInlineCode{true}
+```js
 const x = true;
 ```
 
