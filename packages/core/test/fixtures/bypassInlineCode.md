@@ -4,4 +4,4 @@
 const x = true;
 ```
 
-`const x = true;{bypassInlineCode:true}`
+`const x = true;{:js,bypassInlineCode:true}`
