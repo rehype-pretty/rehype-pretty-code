@@ -220,6 +220,7 @@ interface Options {
   grid?: boolean;
   theme?: Theme | Record<string, Theme>;
   keepBackground?: boolean;
+  bypassInlineCode?: boolean;
   defaultLang?: string | { block?: string; inline?: string };
   tokensMap?: Record<string, string>;
   transformers?: ShikiTransformer[];
@@ -274,6 +275,16 @@ theme:
 ```js
 const options = {
   keepBackground: false,
+};
+```
+
+### `bypassInlineCode`
+
+Skip inline code highlighting:
+
+```js
+const options = {
+  bypassInlineCode: true,
 };
 ```
 
