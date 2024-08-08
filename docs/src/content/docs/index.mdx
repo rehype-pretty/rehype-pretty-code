@@ -485,11 +485,11 @@ Add a caption underneath your code block, with text inside double quotes (`""`):
 CSS counters can be used to add line numbers.
 
 ```css {2,6-7}
-code {
+code[data-line-numbers] {
   counter-reset: line;
 }
 
-code > [data-line]::before {
+code[data-line-numbers] > [data-line]::before {
   counter-increment: line;
   content: counter(line);
 
