@@ -495,18 +495,22 @@ code > [data-line]::before {
 
   /* Other styling */
   display: inline-block;
-  width: 1rem;
+  width: 0.75rem;
   margin-right: 2rem;
   text-align: right;
   color: gray;
 }
 
 code[data-line-numbers-max-digits="2"] > [data-line]::before {
-  width: 2rem;
+  width: 1.25rem;
 }
 
 code[data-line-numbers-max-digits="3"] > [data-line]::before {
-  width: 3rem;
+  width: 1.75rem;
+}
+
+code[data-line-numbers-max-digits="4"] > [data-line]::before {
+  width: 2.25rem;
 }
 ```
 
