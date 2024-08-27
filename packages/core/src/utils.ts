@@ -20,7 +20,11 @@ export function isText(value: ElementContent | null): value is Text {
 export function isInlineCode(
   element: Element,
   parent: Element | Root | undefined,
+  bypass = false,
 ): element is Element {
+  if (bypass) {
+    return false;
+  }
   return (
     (element.tagName === 'code' &&
       isElement(parent) &&

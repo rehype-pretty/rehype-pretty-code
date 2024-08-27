@@ -22,6 +22,7 @@ export interface Options {
   grid?: boolean;
   theme?: Theme | Record<string, Theme>;
   keepBackground?: boolean;
+  bypassInlineCode?: boolean;
   defaultLang?: string | { block?: string; inline?: string };
   tokensMap?: Record<string, string>;
   transformers?: Array<ShikiTransformer>;
