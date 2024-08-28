@@ -76,6 +76,7 @@ pre > code {
    * https://github.com/withastro/starlight/blob/main/packages/starlight/style/markdown.css#L94
    */
   counter-reset: line !important;
+  overflow-x: auto !important;
 }
 
 figcaption {
