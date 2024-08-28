@@ -1,5 +1,11 @@
 # rehype-pretty-code
 
+## 0.14.0
+
+### Minor Changes
+
+- Adds an option to bypass inline code blocks
+
 ## 0.13.2
 
 ### Patch Changes
