@@ -17,7 +17,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "autoprefixer": "^10.4.20",
     "next": "15.0.0-rc.0",
-    "postcss": "^8.4.43",
+    "postcss": "^8.4.44",
     "react": "19.0.0-rc-e56f4ae3-20240830",
     "react-dom": "19.0.0-rc-e56f4ae3-20240830",
     "rehype-pretty-code": "workspace:*",

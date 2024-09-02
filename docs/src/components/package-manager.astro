@@ -1,41 +1,134 @@
 ---
-import { Code } from 'astro/components';
 import type { ComponentProps } from 'astro/types';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import type { NoRepetition } from '../lib/utilities/types.ts';
+import { transformerCopyButton } from '@rehype-pretty/transformers';
+import {
+  type RawTheme,
+  createJavaScriptRegexEngine,
+  createHighlighter,
+} from 'shiki';
+import moonlightTheme from '../../public/theme/moonlight-ii.json' with {
+  type: 'json',
+};
+
+const packageManager = ['pnpm', 'bun', 'npm', 'yarn', 'jsr', 'ni'] as const;
+type PackageManager = (typeof packageManager)[number];
 
 type TabItemProps = ComponentProps<typeof TabItem>;
 
 interface Props {
-  packageManagers: NoRepetition<'pnpm' | 'bun' | 'npm' | 'yarn' | 'ni' | 'jsr'>;
+  dev?: boolean;
+  packageId: string;
+  packageManagers: NoRepetition<PackageManager>;
+  type?: 'add' | 'create' | 'exec' | 'run' | 'remove';
 }
 
-const packageManagers = Astro.props.packageManagers ?? [
-  'pnpm',
-  'bun',
-  'npm',
-  'yarn',
-  'jsr',
-];
-const iconMap: Record<string, TabItemProps['icon'] | undefined> = {
-  bun: 'bun',
-  pnpm: 'pnpm',
-  npm: 'seti:npm',
-  yarn: 'seti:yarn',
-  ni: 'seti:shell',
-  jsr: 'seti:shell',
-};
+const {
+  dev,
+  packageId,
+  type = 'add',
+  // @ts-expect-error
+  packageManagers = packageManager,
+} = Astro.props;
+
+const javascriptEngine = createJavaScriptRegexEngine();
+const shiki = await createHighlighter({
+  langs: ['sh'],
+  engine: javascriptEngine,
+  themes: [moonlightTheme as unknown as RawTheme],
+});
+const managers = [
+  {
+    name: 'bun',
+    icon: 'bun',
+    code: shiki.codeToHtml(`bun add ${packageId}`, {
+      lang: 'sh',
+      theme: moonlightTheme as unknown as RawTheme,
+
+      transformers: [
+        transformerCopyButton({
+          visibility: 'always',
+          feedbackDuration: 3_000,
+        }),
+      ],
+    }),
+  },
+  {
+    name: 'pnpm',
+    icon: 'pnpm',
+    code: shiki.codeToHtml(`pnpm add ${packageId}`, {
+      lang: 'sh',
+      theme: moonlightTheme as unknown as RawTheme,
+      transformers: [
+        transformerCopyButton({
+          visibility: 'always',
+          feedbackDuration: 3_000,
+        }),
+      ],
+    }),
+  },
+  {
+    name: 'npm',
+    icon: 'seti:npm',
+    code: shiki.codeToHtml(`npm install ${packageId}`, {
+      lang: 'sh',
+      theme: moonlightTheme as unknown as RawTheme,
+      transformers: [
+        transformerCopyButton({
+          visibility: 'always',
+          feedbackDuration: 3_000,
+        }),
+      ],
+    }),
+  },
+  {
+    name: 'yarn',
+    icon: 'seti:yarn',
+    code: shiki.codeToHtml(`yarn add ${packageId}`, {
+      lang: 'sh',
+      theme: moonlightTheme as unknown as RawTheme,
+      transformers: [
+        transformerCopyButton({
+          visibility: 'always',
+          feedbackDuration: 3_000,
+        }),
+      ],
+    }),
+  },
+  {
+    name: 'jsr',
+    icon: 'seti:shell',
+    code: shiki.codeToHtml(`npx jsr add ${packageId}`, {
+      lang: 'sh',
+      theme: moonlightTheme as unknown as RawTheme,
+      transformers: [
+        transformerCopyButton({
+          visibility: 'always',
+          feedbackDuration: 3_000,
+        }),
+      ],
+    }),
+  },
+] satisfies Array<{
+  code: string;
+  name: PackageManager;
+  icon: TabItemProps['icon'];
+}>;
 ---
 
 <Tabs syncKey="pkg">
   {
-    // @ts-expect-error
-    packageManagers.map(pkgManager => (
-      <TabItem label={pkgManager} icon={iconMap[pkgManager]}>
-        <Code lang="sh" code={`${pkgManager} add @rehype-pretty/transformers`} />
+    managers.map(manager => (
+      <TabItem label={manager.name} icon={manager.icon}>
+        <div set:html={manager.code} data-package-manager-code="" />
       </TabItem>
     ))
   }
 </Tabs>
 
-<style></style>
+<style is:global>
+  div[data-package-manager-code] pre code {
+    margin-left: 1rem;
+  }
+</style>

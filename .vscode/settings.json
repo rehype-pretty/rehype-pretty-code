@@ -61,12 +61,14 @@
   },
   "files.exclude": {
     ".zed": true,
+    "**/build": true,
     ".gitignore": true,
     "**/LICENSE": true,
     "**/dist/**": true,
     "**/.turbo/**": true,
     "**/.astro/**": true,
     "pnpm-lock.yaml": true,
+    "**/.svelte-kit": true,
     "**/*.timestamp-*": true
   },
   "[markdown]": {

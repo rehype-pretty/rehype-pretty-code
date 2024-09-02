@@ -3,10 +3,9 @@ title: Rehype Pretty Code
 description: Beautiful code blocks for Markdown or MDX powered by the Shiki syntax highlighter.
 template: doc
 ---
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import PackageManager from '#components/package-manager.astro';
 
-[`rehype-pretty-code`](https://github.com/rehype-pretty/rehype-pretty-code) is a Rehype plugin
-powered by the [`shiki`](https://github.com/shikijs/shiki) syntax highlighter that provides beautiful code blocks for Markdown or MDX. It works on both the server at build-time (avoiding runtime syntax highlighting) and on the client for dynamic highlighting.
+[`rehype-pretty-code`](https://github.com/rehype-pretty/rehype-pretty-code) is a Rehype plugin powered by the [`shiki`](https://github.com/shikijs/shiki) syntax highlighter that provides beautiful code blocks for Markdown or MDX. It works on both the server at build-time (avoiding runtime syntax highlighting) and on the client for dynamic highlighting.
 
 ## Editor-Grade Highlighting
 
@@ -18,7 +17,7 @@ of its themes ecosystem - use any VSCode theme you want!
 
 Draw attention to a particular line of code.
 
-```js {4} showLineNumbers
+```ts {4} showLineNumbers
 import { useFloating } from "@floating-ui/react";
 
 function MyComponent() {
@@ -37,7 +36,7 @@ function MyComponent() {
 
 Draw attention to a particular word or series of characters.
 
-```js /floatingStyles/
+```ts /floatingStyles/
 import { useFloating } from "@floating-ui/react";
 
 function MyComponent() {
@@ -93,36 +92,11 @@ Inline ANSI: `> Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m{:ansi}`
 
 Install via your terminal:
 
-<Tabs syncKey="pkg">
-  <TabItem label="npm">
-
-  ```sh
-  npm install rehype-pretty-code shiki
-  ```
-
-  </TabItem>
-  <TabItem label="pnpm">
-
-  ```sh
-  pnpm add rehype-pretty-code shiki
-  ```
-
-  </TabItem>
-  <TabItem label="bun">
-
-  ```sh
-  bun add rehype-pretty-code shiki
-  ```
-
-  </TabItem>
-  <TabItem label="yarn">
-
-  ```sh
-  yarn add rehype-pretty-code shiki
-  ```
-
-  </TabItem>
-</Tabs>
+<PackageManager
+  dev={false}
+  packageId='rehype-pretty-code'
+  packageManagers={['pnpm', 'bun', 'npm', 'yarn', 'jsr']}
+/>
 
 This package is ESM-only and currently supports `shiki{:.string}`
 `^1.0.0{:.string}`.
@@ -135,7 +109,7 @@ This package is ESM-only and currently supports `shiki{:.string}`
 
 The following works both on the server and on the client.
 
-```js /rehypePrettyCode/
+```ts /rehypePrettyCode/
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
@@ -165,7 +139,7 @@ Ensure your `unified{:.string}` version is compatible.
 
 The following example shows how to use this package with Next.js.
 
-```js title="next.config.mjs"
+```ts title="next.config.mjs"
 import fs from "node:fs";
 import nextMDX from "@next/mdx";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -253,7 +227,7 @@ The default theme is `github-dark-dimmed{:.string}`. Shiki has a bunch of
 [pre-packaged themes](https://shiki.style/themes#themes),
 which can be specified as a plain string:
 
-```js
+```ts
 const options = {
   theme: "one-dark-pro",
 };
@@ -304,7 +278,7 @@ const options = {
 Or you can also specify default languages for inline code and code blocks
 separately:
 
-```js
+```ts
 const options = {
   defaultLang: {
     block: "plaintext",
@@ -321,7 +295,7 @@ extend the behavior of this plugin. The
 [`@shikijs/transformers`](https://npm.im/@shikijs/transformers)
 package provides some useful transformers.
 
-```js
+```ts
 import { transformerNotationDiff } from '@shikijs/transformers';
 
 const options = {
@@ -349,7 +323,7 @@ Code blocks are configured via the meta string on the top codeblock fence.
 Place a numeric range inside `{}`.
 
 ````md
-```js {1-3,4}
+```ts {1-3,4}
 
 ```
 ````
@@ -363,7 +337,7 @@ Place an id after `#` after the `{}`. This allows you to color or style lines
 differently based on their id.
 
 ````md
-```js {1,2}#a {3,4}#b
+```ts {1,2}#a {3,4}#b
 
 ```
 ````
@@ -376,7 +350,7 @@ differently based on their id.
 You can use either `/`:
 
 ````md
-```js /carrot/
+```ts /carrot/
 
 ```
 ````
@@ -384,7 +358,7 @@ You can use either `/`:
 Or `"` as a delimiter:
 
 ````md
-```js "carrot"
+```ts "carrot"
 
 ```
 ````
@@ -392,7 +366,7 @@ Or `"` as a delimiter:
 Different segments of chars can also be highlighted:
 
 ````md
-```js /carrot/ /apple/
+```ts /carrot/ /apple/
 
 ```
 ````
@@ -404,7 +378,7 @@ To highlight only the third to fifth instances of `carrot`, a numeric range can
 be placed after the last `/`.
 
 ````md
-```js /carrot/3-5
+```ts /carrot/3-5
 
 ```
 ````
@@ -413,7 +387,7 @@ Highlight only the third to fifth instances of `carrot` and any instances of
 `apple`.
 
 ````md
-```js /carrot/3-5 /apple/
+```ts /carrot/3-5 /apple/
 
 ```
 ````
@@ -424,13 +398,13 @@ Place an id after `#` after the chars. This allows you to color chars
 differently based on their id.
 
 ````md
-```js /age/#v /name/#v /setAge/#s /setName/#s /50/#i /"Taylor"/#i
+```ts /age/#v /name/#v /setAge/#s /setName/#s /50/#i /"Taylor"/#i
 const [age, setAge] = useState(50);
 const [name, setName] = useState("Taylor");
 ```
 ````
 
-```js /age/#v /name/#v /setAge/#s /setName/#s /50/#i /"Taylor"/#i
+```ts /age/#v /name/#v /setAge/#s /setName/#s /50/#i /"Taylor"/#i
 const [age, setAge] = useState(50);
 const [name, setName] = useState("Taylor");
 ```
@@ -459,7 +433,7 @@ The name of the function is `getStringLength{:.entity.name.function}`.
 
 You can create a map of tokens to shorten this usage throughout your docs:
 
-```js
+```ts
 const options = {
   tokensMap: {
     fn: "entity.name.function",
@@ -476,7 +450,7 @@ The name of the function is `getStringLength{:.fn}`.
 Add a file title to your code block, with text inside double quotes (`""`):
 
 ````md
-```js title="..."
+```ts title="..."
 
 ```
 ````
@@ -486,7 +460,7 @@ Add a file title to your code block, with text inside double quotes (`""`):
 Add a caption underneath your code block, with text inside double quotes (`""`):
 
 ````md
-```js caption="..."
+```ts caption="..."
 
 ```
 ````
@@ -528,7 +502,7 @@ code[data-line-numbers-max-digits="4"] > [data-line]::before {
 If you want to conditionally show them, use `showLineNumbers`:
 
 ````md
-```js showLineNumbers
+```ts showLineNumbers
 
 ```
 ````
@@ -540,7 +514,7 @@ If you want to start line numbers at a specific number, use
 `showLineNumbers{number}`:
 
 ````md
-```js showLineNumbers{number}
+```ts showLineNumbers{number}
 
 ```
 ````
@@ -550,7 +524,7 @@ If you want to start line numbers at a specific number, use
 Pass your themes to `theme{:.meta.object-literal.key}`, where the keys represent
 the color mode:
 
-```js
+```ts
 const options = {
   theme: {
     dark: "github-dark-dimmed",
@@ -636,7 +610,7 @@ const options = {
 
 The [usage](#usage) works directly in React Server Components. Here's an example:
 
-```jsx title="code.tsx"
+```tsx title="code.tsx"
 import * as React from "react";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
@@ -671,7 +645,7 @@ async function highlightCode(code: string) {
 
 Then, import the RSC into a page or another component:
 
-```jsx src/app/rsc/page.tsx
+```tsx src/app/rsc/page.tsx
 import * as React from "react";
 import { Code } from "./code.tsx";
 

@@ -25,6 +25,7 @@ import { defineConfig } from 'astro/config';
 import remarkSmartypants from 'remark-smartypants';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import starlightLinksValidator from 'starlight-links-validator';
 import { transformerTwoslash, rendererRich } from '@shikijs/twoslash';
 import moonlightTheme from './public/theme/moonlight-ii.json' with {
   type: 'json',
@@ -60,7 +61,7 @@ export default defineConfig({
               visibility: 'always',
               feedbackDuration: 2_500,
             }),
-            transformerLineNumbers({ autoApply: true }),
+            transformerLineNumbers({ autoApply: false }),
             transformerNotationDiff(),
             transformerNotationFocus(),
             transformerMetaHighlight(),
@@ -89,7 +90,7 @@ export default defineConfig({
         './src/styles/tailwind.css',
         './node_modules/@shikijs/twoslash/style-rich.css',
       ],
-      plugins: [],
+      plugins: [starlightLinksValidator()],
       head: [
         {
           tag: 'script',
@@ -104,8 +105,8 @@ export default defineConfig({
         {
           label: 'Plugins',
           autogenerate: {
-            directory: 'plugins',
             collapsed: false,
+            directory: 'plugins',
           },
         },
         {

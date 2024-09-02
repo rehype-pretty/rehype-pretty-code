@@ -5,7 +5,6 @@
   "exports": "./src/index.ts",
   "publish": {
     "include": [
-      "LICENSE",
       "jsr.json",
       "README.md",
       "src/**/*.ts"

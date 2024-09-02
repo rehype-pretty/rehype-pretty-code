@@ -13,6 +13,7 @@ export default defineConfig({
   entry: {
     index: './src/index.ts',
     'copy-button': './src/copy-button.ts',
+    'line-numbers': './src/line-numbers.ts',
     'foldable-lines': './src/foldable-lines.ts',
   },
   treeshake: 'recommended',

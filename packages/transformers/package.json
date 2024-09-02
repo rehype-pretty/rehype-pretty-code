@@ -15,7 +15,6 @@
   },
   "files": [
     "dist",
-    "LICENSE",
     "README.md",
     "package.json"
   ],
@@ -28,9 +27,7 @@
     "prepublishOnly": "NODE_ENV='production' pnpm build",
     "check-package": "pnpm dlx publint@latest --strict && attw --pack --ignore-rules cjs-resolves-to-esm no-resolution"
   },
-  "dependencies": {
-    "@std/html": "npm:@jsr/std__html@1.0.2"
-  },
+  "license": "MIT",
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.4",
     "@types/node": "^22.5.2",
@@ -39,16 +36,15 @@
     "typescript": "^5.5.4"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rehype-pretty/rehype-pretty-code.git",
-    "directory": "packages/transformers"
+    "directory": "packages/transformers",
+    "url": "https://github.com/rehype-pretty/rehype-pretty-code.git"
   },
   "author": "https://github.com/o-az",
   "browserslist": [
     "node 20"
-  ],
-  "license": "MIT"
+  ]
 }

@@ -9,19 +9,21 @@ export function transformerLineNumbers(
 ): ShikiTransformer {
   return {
     name: '@rehype-pretty/transformers/line-numbers',
-    code(hast) {
+    pre(node) {
       const metaStrings = this.options.meta?.__raw?.split(' ');
       const noLineNumbers = metaStrings?.includes('showLineNumbers=false');
 
       if (noLineNumbers) {
-        hast.properties['data-show-line-numbers'] = 'false';
-        return hast;
+        node.properties['data-show-line-numbers'] = 'false';
+        return node;
       }
 
       const showLineNumbers = metaStrings?.includes('showLineNumbers');
       if (options.autoApply || showLineNumbers) {
-        hast.properties['data-show-line-numbers'] = 'true';
+        node.properties['data-show-line-numbers'] = 'true';
       }
+
+      if (!(showLineNumbers || options.autoApply)) return node;
 
       const startLineNumberMeta = metaStrings?.find((s) =>
         s.startsWith('startLineNumber='),
@@ -31,24 +33,26 @@ export function transformerLineNumbers(
         (Number(startLineNumberMeta?.split('=')?.at(1)) || 1) - 1;
 
       if (startLineNumber) {
-        hast.properties['data-start-line-number'] = startLineNumber.toString();
+        node.properties['data-start-line-number'] = startLineNumber.toString();
       }
+
+      return node;
     },
-    pre(hast) {
+    code(node) {
       const metaStrings = this.options.meta?.__raw?.split(' ');
       const noLineNumbers = metaStrings?.includes('showLineNumbers=false');
 
       if (noLineNumbers) {
-        hast.properties['data-show-line-numbers'] = 'false';
-        return hast;
+        node.properties['data-show-line-numbers'] = 'false';
+        return node;
       }
 
       const showLineNumbers = metaStrings?.includes('showLineNumbers');
       if (options.autoApply || showLineNumbers) {
-        hast.properties['data-show-line-numbers'] = 'true';
+        node.properties['data-show-line-numbers'] = 'true';
       }
 
-      if (!(showLineNumbers || options.autoApply)) return hast;
+      if (!(showLineNumbers || options.autoApply)) return node;
 
       const startLineNumberMeta = metaStrings?.find((s) =>
         s.startsWith('startLineNumber='),
@@ -58,49 +62,52 @@ export function transformerLineNumbers(
         (Number(startLineNumberMeta?.split('=')?.at(1)) || 1) - 1;
 
       if (startLineNumber) {
-        hast.properties['data-start-line-number'] = startLineNumber.toString();
+        node.properties['data-start-line-number'] = startLineNumber.toString();
       }
 
-      hast.children.push({
-        type: 'element',
-        tagName: 'style',
-        properties: {},
-        children: [
-          {
-            type: 'text',
-            value: /* css */ `
-              pre[data-show-line-numbers], code[data-show-line-numbers] {
-                counter-increment: step 0;
-                font-variant-numeric: tabular-nums;
-                counter-reset: step 0;
-              }
-  
-              code[data-show-line-numbers] > span[data-line]::before {
-                color: #6a737d;
-                text-align: right;
-                margin-right: 0.75rem;
-                display: inline-block;
-                content: counter(step);
-                counter-increment: step;
-                font-variant-numeric: tabular-nums;
-              }
-  
-              code[data-show-line-numbers] > span[data-line]:empty::before {
-                content: none;
-              }
-            `.trim(),
-          },
-        ],
+      return node;
+    },
+    root(node) {
+      node.children.map((childNode) => {
+        if (childNode.type === 'element' && childNode.tagName === 'pre') {
+          childNode.children.push({
+            type: 'element',
+            tagName: 'style',
+            properties: {},
+            children: [{ type: 'text', value: lineNumbersStyle() }],
+          });
+        }
       });
 
-      if (!noLineNumbers) {
-        hast.children.push({
-          type: 'element',
-          tagName: 'style',
-          properties: {},
-          children: [],
-        });
-      }
+      return node;
     },
   };
+}
+
+function lineNumbersStyle() {
+  return /* css */ `
+  pre[data-show-line-numbers='true'], code[data-show-line-numbers='true'] {
+    counter-increment: step 0;
+    font-variant-numeric: tabular-nums;
+    counter-reset: step 0;
+  }
+
+  code[data-show-line-numbers='true'] > span[data-line]::before {
+    color: #6a737d;
+    text-align: right;
+    margin-right: 0.75rem;
+    display: inline-block;
+    content: counter(step);
+    counter-increment: step;
+    font-variant-numeric: tabular-nums;
+  }
+
+  code[data-show-line-numbers='true'] > span[data-line]:empty::before,
+  span[data-rehype-pretty-code-figure] > code > span[data-line]::before {
+    content: none;
+  }
+`
+    .replaceAll(/\n/g, '')
+    .replaceAll(/\s+/g, ' ')
+    .trim();
 }

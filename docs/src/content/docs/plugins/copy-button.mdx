@@ -1,43 +1,24 @@
 ---
 title: Copy Button
 description: A shiki transformer that adds a copy button to code blocks
-sidebar:
-  badge:
-    text: experimental
-    variant: caution
 ---
-import { Aside } from '@astrojs/starlight/components';
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Aside, Badge } from '@astrojs/starlight/components';
+import PackageManager from '#components/package-manager.astro';
+
+<Aside type="note" title="note">
+  This plugin is experimental and may change in the future.
+  
+  [Report any issues you encounter](https://github.com/rehype-pretty/rehype-pretty-code/issues/new)
+  and feel free to [suggest improvements / new features](https://github.com/rehype-pretty/rehype-pretty-code/discussions/new?category=ideas).
+</Aside>
 
 ## Installation
 
-<Tabs syncKey="pkg">
-  <TabItem label="pnpm" icon="pnpm">
-  ```sh
-  pnpm add @rehype-pretty/transformers
-  ```
-  </TabItem>
-  <TabItem label="npm" icon="seti:npm">
-  ```sh
-  npm install @rehype-pretty/transformers
-  ```
-  </TabItem>
-  <TabItem label="bun" icon="bun">
-  ```sh
-  bun add @rehype-pretty/transformers
-  ```
-  </TabItem>
-  <TabItem label="jsr" icon="seti:shell">
-  ```sh
-  npx jsr add @rehype-pretty/transformers
-  ```
-  </TabItem>
-  <TabItem label="yarn" icon="seti:yarn">
-  ```sh
-  yarn add @rehype-pretty/transformers
-  ```
-  </TabItem>
-</Tabs>
+<PackageManager
+  dev={false}
+  packageId='@rehype-pretty/transformers'
+  packageManagers={['pnpm', 'bun', 'npm', 'yarn', 'jsr']}
+/>
 
 ## Usage
 
@@ -95,9 +76,3 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
     ]
   })
   ```
-
-<Aside type="note" title="note">
-  This plugin is experimental and may change in the future.
-  
-  Please report any issues you encounter and feel free to suggest improvements / new features.
-</Aside>

@@ -1,6 +1,6 @@
 :root {
   color-scheme: dark;
-  --sl-sidebar-width: 18rem;
+  --sl-sidebar-width: 16rem;
 }
 
 .twoslash-popup-docs {
@@ -16,10 +16,6 @@ code,
 figure {
   overflow-x: auto;
   position: relative;
-}
-
-code {
-  margin-left: 1rem;
 }
 
 .twoslash > * {
@@ -44,21 +40,6 @@ code {
 span[data-line]:empty {
   display: none !important;
 }
-
-/* pre, code {
-  counter-reset: step;
-  counter-increment: step 0;
-}
-
-code > span[data-line]::before {
-  width: 0.3rem;
-  color: #6a737d;
-  text-align: right;
-  margin-right: 1rem;
-  display: inline-block;
-  content: counter(step);
-  counter-increment: step;
-} */
 
 body {
   -moz-osx-font-smoothing: grayscale;

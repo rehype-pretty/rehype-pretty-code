@@ -1,13 +1,13 @@
+import {
+  transformerCopyButton,
+  transformerFoldableLines,
+} from '@rehype-pretty/transformers';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import type { Compatible } from 'vfile';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
-import rehypePrettyCode from 'rehype-pretty-code';
-import {
-  transformerCopyButton,
-  transformerFoldableLines,
-} from '@rehype-pretty/transformers';
+import { rehypePrettyCode } from 'rehype-pretty-code';
 
 export const toHTML = (content: Compatible | undefined) =>
   unified()
