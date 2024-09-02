@@ -1,6 +1,6 @@
 :root {
   color-scheme: dark;
-  --sl-sidebar-width: 16rem;
+  --sl-sidebar-width: 15rem;
 }
 
 .twoslash-popup-docs {
@@ -97,7 +97,7 @@ h5:hover::after {
 }
 
 h3 code {
-  @apply !text-lg md:!text-xl;
+  /* @apply !text-lg md:!text-xl; */
 }
 
 pre {
