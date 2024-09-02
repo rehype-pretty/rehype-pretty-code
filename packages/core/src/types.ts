@@ -4,8 +4,11 @@ import type {
   BuiltinTheme,
   ThemeRegistrationRaw,
   ShikiTransformer,
+  createHighlighter,
 } from 'shiki';
 import type { Element, Properties, Text } from 'hast';
+
+export type ShikiHighlighterOptions = Parameters<typeof createHighlighter>[0];
 
 export type LineElement = Omit<Element, 'properties'> & {
   properties: Properties & { className?: Array<string> };
@@ -17,6 +20,8 @@ export type CharsElement = Omit<Element, 'properties' | 'children'> & {
 };
 
 export type Theme = BuiltinTheme | ThemeRegistrationRaw;
+
+export type { Options as RehypePrettyCodeOptions };
 
 export interface Options {
   grid?: boolean;

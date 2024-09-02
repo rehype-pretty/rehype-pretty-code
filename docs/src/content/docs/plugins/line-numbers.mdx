@@ -1,6 +1,6 @@
 ---
-title: Copy Button
-description: A shiki transformer that adds a copy button to code blocks
+title: Line Numbers
+description: A shiki transformer that adds line numbers to code blocks
 sidebar:
   badge:
     text: experimental
@@ -45,10 +45,7 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
 
 ### Options
 
-- `visibility`: `'always' | 'hover'` (default: `'hover'`)
-- `feedbackDuration`: `number` (default: `3_000`)
-- `copyIcon`: `string` (default: an inline SVG of a copy icon)
-- `successIcon`: `string` (default: an inline SVG of a green checkmark icon)
+- `autoApply`: `boolean` (default: `true`)
 
 ### Examples
 
@@ -60,17 +57,14 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
   import remarkRehype from 'remark-rehype'
   import rehypeStringify from 'rehype-stringify'
   import { rehypePrettyCode } from 'rehype-pretty-code'
-  import { transformerCopyButton } from '@rehype-pretty/transformers'
+  import { transformerLineNumbers } from '@rehype-pretty/transformers'
 
   const file = await unified()
     .use(remarkParse)
     .use(remarkRehype)
     .use(rehypePrettyCode, {
       transformers: [
-        transformerCopyButton({
-          visibility: 'always',
-          feedbackDuration: 3_000,
-        }),
+        transformerLineNumbers({ autoApply: true }),
       ],
     })
     .use(rehypeStringify)
@@ -88,10 +82,7 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
     lang: 'ts',
     theme: 'vitesse-light',
     transformers: [
-      transformerCopyButton({
-        visibility: 'always',
-        feedbackDuration: 3_000,
-      }),
+      transformerLineNumbers({ autoApply: true }),
     ]
   })
   ```

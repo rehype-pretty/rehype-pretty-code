@@ -1,11 +1,42 @@
 {
-  "extends": ["astro/tsconfigs/strictest"],
+  "extends": [
+    "astro/tsconfigs/strictest"
+  ],
   "compilerOptions": {
+    "strict": true,
+    "allowJs": true,
+    "checkJs": true,
     "target": "ESNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "moduleResolution": "Bundler"
+    "alwaysStrict": true,
+    "noUnusedLocals": false,
+    "resolveJsonModule": true,
+    "noUnusedParameters": false,
+    "moduleResolution": "Bundler",
+    "allowArbitraryExtensions": true,
+    "noUncheckedIndexedAccess": true,
+    "resolvePackageJsonImports": true,
+    "resolvePackageJsonExports": true,
+    "exactOptionalPropertyTypes": false,
+    "paths": {
+      "#*": [
+        "./src/*"
+      ]
+    },
+    "allowImportingTsExtensions": true,
+    "lib": [
+      "DOM",
+      "ESNext",
+      "DOM.Iterable"
+    ],
+    "noPropertyAccessFromIndexSignature": true
   },
-  "include": ["src"],
-  "files": ["astro.config.ts", "tailwind.config.ts", "reset.d.ts"]
+  "include": [
+    "src"
+  ],
+  "files": [
+    "reset.d.ts",
+    "astro.config.ts",
+    "tailwind.config.ts"
+  ]
 }

@@ -18,7 +18,7 @@ of its themes ecosystem - use any VSCode theme you want!
 
 Draw attention to a particular line of code.
 
-```ts {4} showLineNumbers
+```js {4} showLineNumbers
 import { useFloating } from "@floating-ui/react";
 
 function MyComponent() {
@@ -37,7 +37,7 @@ function MyComponent() {
 
 Draw attention to a particular word or series of characters.
 
-```ts /floatingStyles/
+```js /floatingStyles/
 import { useFloating } from "@floating-ui/react";
 
 function MyComponent() {
@@ -60,7 +60,7 @@ The result of `[1, 2, 3].join('-'){:js}` is `'1-2-3'{:js}`.
 
 For instance, if you had the following code block:
 
-```js
+```ts
 function getStringLength(str) {
   return str.length;
 }
@@ -150,7 +150,7 @@ async function main() {
       // See Options section below.
     })
     .use(rehypeStringify)
-    .process("`const numbers = [1, 2, 3]{:js}`");
+    .process(`\`\`\`js\nconsole.log('Hello, World!')\n\`\`\``)
 
   console.log(String(file));
 }
@@ -240,7 +240,7 @@ entire width of a horizontally-scrollable code block.
 
 You can disable this setting if necessary:
 
-```js
+```ts
 const options = {
   grid: false,
 };
@@ -260,7 +260,7 @@ const options = {
 
 You can use your own theme as well by passing the theme JSON:
 
-```js
+```ts
 const options = {
   theme: JSON.parse(fs.readFileSync("./themes/moonlight-ii.json", "utf-8")),
 };
@@ -271,7 +271,7 @@ const options = {
 To apply a custom background instead of inheriting the background from the
 theme:
 
-```js
+```ts
 const options = {
   keepBackground: false,
 };
@@ -281,7 +281,7 @@ const options = {
 
 Skip inline code highlighting:
 
-```js
+```ts
 const options = {
   bypassInlineCode: true,
 };
@@ -294,7 +294,7 @@ themed (nor will the background), which may appear incongruous with others.
 
 In this case, you can specify a default language:
 
-```js
+```ts
 const options = {
   defaultLang: "plaintext",
 };
@@ -337,7 +337,7 @@ Code blocks are configured via the meta string on the top codeblock fence.
 > with `rehype-pretty-code`. This option allows you to filter out some part of
 > the meta string before the library starts parsing it.
 >
-> ```js
+> ```ts
 > const options = {
 >   filterMetaString: (string) => string.replace(/filename="[^"]*"/, ""),
 > };
@@ -558,7 +558,7 @@ const options = {
 };
 ```
 
-Now, use the following CSS to display the variable colors Ă˘âŹâ if a space is found
+Now, use the following CSS to display the variable colors — if a space is found
 in the theme name, then CSS variable keys based on the object are available
 ([more info](https://shiki.style/guide/dual-themes#light-dark-dual-themes)):
 
@@ -590,7 +590,7 @@ The `<code>{:html}` and `<pre>{:html}` elements will have the data attribute
 To customize the HTML output, you can use visitor callback hooks to manipulate
 the [hAST elements](https://github.com/syntax-tree/hast#element) directly:
 
-```js
+```ts
 const options = {
   onVisitLine(element) {
     console.log("Visited line");
@@ -616,7 +616,7 @@ To completely configure the highlighter, use the
 `getHighlighter{:.entity.name.function}` option. This is helpful if you'd like
 to configure other Shiki options, such as `langs{:.meta.object-literal.key}`.
 
-```js
+```ts
 import { getHighlighter } from "shiki";
 
 const options = {
@@ -635,7 +635,7 @@ const options = {
 
 The [usage](#usage) works directly in React Server Components. Here's an example:
 
-```tsx title="code.tsx"
+```jsx title="code.tsx"
 import * as React from "react";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
@@ -670,7 +670,7 @@ async function highlightCode(code: string) {
 
 Then, import the RSC into a page or another component:
 
-```tsx src/app/rsc/page.tsx
+```jsx src/app/rsc/page.tsx
 import * as React from "react";
 import { Code } from "./code.tsx";
 

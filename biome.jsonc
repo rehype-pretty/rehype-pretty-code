@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
   "vcs": {
     "root": ".",
     "enabled": true,
@@ -28,8 +28,7 @@
       "node_modules",
       "examples/astro/src/globals.css",
       "examples/sveltekit/src/app.css",
-      "examples/next/src/app/globals.css",
-      "docs/.vitepress/theme/styles/index.css"
+      "examples/next/src/app/globals.css"
     ],
     "ignoreUnknown": true
   },
@@ -48,6 +47,7 @@
       "enabled": true
     },
     "parser": {
+      "cssModules": true,
       "allowWrongLineComments": true
     }
   },
@@ -75,14 +75,18 @@
         "noUnusedTemplateLiteral": "off",
         "useConsistentArrayType": {
           "level": "warn",
-          "options": { "syntax": "generic" }
+          "options": {
+            "syntax": "generic"
+          }
         }
       },
       "performance": {
         "noBarrelFile": "off",
         "noAccumulatingSpread": "off"
       },
-      "a11y": { "noSvgWithoutTitle": "off" },
+      "a11y": {
+        "noSvgWithoutTitle": "off"
+      },
       "correctness": {
         "noNodejsModules": "off",
         "noUndeclaredVariables": "off"
@@ -91,6 +95,7 @@
         "useAwait": "off",
         "noConsoleLog": "off",
         "noExplicitAny": "off",
+        "noFocusedTests": "off",
         "noEmptyInterface": "off",
         "noConfusingVoidType": "off"
       },
@@ -106,8 +111,12 @@
     }
   },
   "json": {
+    "linter": {
+      "enabled": true
+    },
     "parser": {
-      "allowComments": true
+      "allowComments": true,
+      "allowTrailingCommas": true
     },
     "formatter": {
       "enabled": true
@@ -141,8 +150,29 @@
     }
   },
   "overrides": [
+    /**
+     * override to have one item per line in json/jsonc files
+     */
     {
-      "include": ["test", "scripts"],
+      "include": [
+        "*.json",
+        "*.jsonc"
+      ],
+      "ignore": [
+        "theme/**",
+        "moonlight-ii.json"
+      ],
+      "json": {
+        "formatter": {
+          "lineWidth": 1
+        }
+      }
+    },
+    {
+      "include": [
+        "test",
+        "scripts"
+      ],
       "linter": {
         "rules": {
           "suspicious": {
@@ -152,11 +182,14 @@
       }
     },
     {
-      "include": ["*.astro"],
+      "include": [
+        "*.astro"
+      ],
       "linter": {
         "rules": {
           "correctness": {
-            "noUnusedImports": "off"
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
           },
           "style": {
             "useImportType": "off",
@@ -166,7 +199,9 @@
       }
     },
     {
-      "include": ["*.svelte"],
+      "include": [
+        "*.svelte"
+      ],
       "linter": {
         "rules": {
           "correctness": {
