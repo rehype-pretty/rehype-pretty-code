@@ -122,6 +122,8 @@ figcaption {
   margin-bottom: -1rem;
 }
 
+figure[data-rehype-pretty-code-figure],
+pre[data-theme*=" "],
 code[data-theme*=" "],
 code[data-theme*=" "] span {
   color: var(--shiki-light);
@@ -129,6 +131,8 @@ code[data-theme*=" "] span {
 }
 
 @media (prefers-color-scheme: dark) {
+  figure[data-rehype-pretty-code-figure],
+  pre[data-theme*=" "],
   code[data-theme*=" "],
   code[data-theme*=" "] span {
     color: var(--shiki-dark);
@@ -184,12 +188,23 @@ span[data-line-numbers] [data-line] {
   @apply !text-purple-200 bg-purple-800/50 border-b-purple-600 font-bold;
 }
 
+figure[data-rehype-pretty-code-figure] {
+  background: #151618;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid #121212;
+}
+
 [data-rehype-pretty-code-title] {
-  @apply bg-zinc-700 text-zinc-200 rounded-t-lg py-2 px-3 font-semibold text-sm;
+  width: min-content;
+  background: #101010;
+  border-top: 1px solid #3c3c3c;
+  @apply text-zinc-200 rounded-t-md py-2 px-3 font-semibold text-sm;
 }
 
 figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title])
   pre {
+  border: unset;
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;
 }

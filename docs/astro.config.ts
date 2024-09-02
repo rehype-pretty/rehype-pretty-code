@@ -23,8 +23,10 @@ import type { RawTheme } from 'shiki/core';
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 import remarkSmartypants from 'remark-smartypants';
+// import starlightThemeRapide from 'starlight-theme-rapide';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import starlightHeadingBadges from 'starlight-heading-badges';
 import starlightLinksValidator from 'starlight-links-validator';
 import { transformerTwoslash, rendererRich } from '@shikijs/twoslash';
 import moonlightTheme from './public/theme/moonlight-ii.json' with {
@@ -50,6 +52,7 @@ export default defineConfig({
       [
         rehypePrettyCode,
         {
+          grid: true,
           keepBackground: true,
           theme: moonlightTheme as unknown as RawTheme,
           transformers: [
@@ -90,7 +93,11 @@ export default defineConfig({
         './src/styles/tailwind.css',
         './node_modules/@shikijs/twoslash/style-rich.css',
       ],
-      plugins: [starlightLinksValidator()],
+      plugins: [
+        // starlightThemeRapide(),
+        starlightHeadingBadges(),
+        starlightLinksValidator(),
+      ],
       head: [
         {
           tag: 'script',

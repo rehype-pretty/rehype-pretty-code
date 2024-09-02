@@ -104,9 +104,15 @@ importers:
       shiki:
         specifier: ^1.16.1
         version: 1.16.1
+      starlight-heading-badges:
+        specifier: ^0.1.0
+        version: 0.1.0(@astrojs/starlight@0.26.1(astro@4.15.1(@types/node@22.5.2)(lightningcss@1.26.0)(rollup@4.21.2)(terser@5.31.6)(typescript@5.5.4)))
       starlight-links-validator:
         specifier: ^0.11.0
         version: 0.11.0(@astrojs/starlight@0.26.1(astro@4.15.1(@types/node@22.5.2)(lightningcss@1.26.0)(rollup@4.21.2)(terser@5.31.6)(typescript@5.5.4)))(astro@4.15.1(@types/node@22.5.2)(lightningcss@1.26.0)(rollup@4.21.2)(terser@5.31.6)(typescript@5.5.4))
+      starlight-theme-rapide:
+        specifier: ^0.1.1
+        version: 0.1.1(@astrojs/starlight@0.26.1(astro@4.15.1(@types/node@22.5.2)(lightningcss@1.26.0)(rollup@4.21.2)(terser@5.31.6)(typescript@5.5.4)))
       tailwindcss:
         specifier: ^3.4.10
         version: 3.4.10
@@ -283,7 +289,7 @@ importers:
         version: 5.0.0-next.242
       svelte-check:
         specifier: ^3.8.6
-        version: 3.8.6(@babel/core@7.25.2)(postcss-load-config@6.0.1(jiti@1.21.6)(postcss@8.4.44)(tsx@4.19.0)(yaml@2.5.0))(postcss@8.4.44)(svelte@5.0.0-next.242)
+        version: 3.8.6(@babel/core@7.25.2)(postcss-load-config@4.0.2(postcss@8.4.44))(postcss@8.4.44)(svelte@5.0.0-next.242)
       tslib:
         specifier: ^2.7.0
         version: 2.7.0
@@ -4302,12 +4308,24 @@ packages:
   stackback@0.0.2:
     resolution: {integrity: sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==}
 
+  starlight-heading-badges@0.1.0:
+    resolution: {integrity: sha512-iK1LoDio25UqKn8I3mcdNXoxS86kIrAR3LHByLX8ynOeSbY6xWi8c3wt10bIT84RzOldJNnNJuQD7ETEwwZg9w==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@astrojs/starlight': '>=0.24.5'
+
   starlight-links-validator@0.11.0:
     resolution: {integrity: sha512-7mKiP0xAS8ItKy8QAIkmeNYbzI4w0WD0pOYoTPa1xMNbz+qYr/QWT+a40QO/Z2XYJLzzQn47yomupUfI89wheg==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       '@astrojs/starlight': '>=0.15.0'
       astro: '>=4.0.0'
+
+  starlight-theme-rapide@0.1.1:
+    resolution: {integrity: sha512-jVACnhIAVcdnlgIC0VceECMLWxn5rpqg3Ei+YfYigrAzCHdulMma/DIO7X7mH8193kVIoSphUl1z6DJ00a0lUQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@astrojs/starlight': '>=0.23.0'
 
   std-env@3.7.0:
     resolution: {integrity: sha512-JPbdCEQLj1w5GilpiHAx3qJvFndqybBysA3qUOnznweH4QbNYUsW/ea8QzSrnh0vNsezMMw5bcVool8lM0gwzg==}
@@ -9755,6 +9773,15 @@ snapshots:
 
   stackback@0.0.2: {}
 
+  starlight-heading-badges@0.1.0(@astrojs/starlight@0.26.1(astro@4.15.1(@types/node@22.5.2)(lightningcss@1.26.0)(rollup@4.21.2)(terser@5.31.6)(typescript@5.5.4))):
+    dependencies:
+      '@astrojs/markdown-remark': 5.2.0
+      '@astrojs/starlight': 0.26.1(astro@4.15.1(@types/node@22.5.2)(lightningcss@1.26.0)(rollup@4.21.2)(terser@5.31.6)(typescript@5.5.4))
+      github-slugger: 2.0.0
+      unist-util-visit: 5.0.0
+    transitivePeerDependencies:
+      - supports-color
+
   starlight-links-validator@0.11.0(@astrojs/starlight@0.26.1(astro@4.15.1(@types/node@22.5.2)(lightningcss@1.26.0)(rollup@4.21.2)(terser@5.31.6)(typescript@5.5.4)))(astro@4.15.1(@types/node@22.5.2)(lightningcss@1.26.0)(rollup@4.21.2)(terser@5.31.6)(typescript@5.5.4)):
     dependencies:
       '@astrojs/starlight': 0.26.1(astro@4.15.1(@types/node@22.5.2)(lightningcss@1.26.0)(rollup@4.21.2)(terser@5.31.6)(typescript@5.5.4))
@@ -9767,6 +9794,10 @@ snapshots:
       mdast-util-to-string: 4.0.0
       picomatch: 4.0.2
       unist-util-visit: 5.0.0
+
+  starlight-theme-rapide@0.1.1(@astrojs/starlight@0.26.1(astro@4.15.1(@types/node@22.5.2)(lightningcss@1.26.0)(rollup@4.21.2)(terser@5.31.6)(typescript@5.5.4))):
+    dependencies:
+      '@astrojs/starlight': 0.26.1(astro@4.15.1(@types/node@22.5.2)(lightningcss@1.26.0)(rollup@4.21.2)(terser@5.31.6)(typescript@5.5.4))
 
   std-env@3.7.0: {}
 
@@ -9867,14 +9898,14 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte-check@3.8.6(@babel/core@7.25.2)(postcss-load-config@6.0.1(jiti@1.21.6)(postcss@8.4.44)(tsx@4.19.0)(yaml@2.5.0))(postcss@8.4.44)(svelte@5.0.0-next.242):
+  svelte-check@3.8.6(@babel/core@7.25.2)(postcss-load-config@4.0.2(postcss@8.4.44))(postcss@8.4.44)(svelte@5.0.0-next.242):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       chokidar: 3.6.0
       picocolors: 1.0.1
       sade: 1.8.1
       svelte: 5.0.0-next.242
-      svelte-preprocess: 5.1.4(@babel/core@7.25.2)(postcss-load-config@6.0.1(jiti@1.21.6)(postcss@8.4.44)(tsx@4.19.0)(yaml@2.5.0))(postcss@8.4.44)(svelte@5.0.0-next.242)(typescript@5.5.4)
+      svelte-preprocess: 5.1.4(@babel/core@7.25.2)(postcss-load-config@4.0.2(postcss@8.4.44))(postcss@8.4.44)(svelte@5.0.0-next.242)(typescript@5.5.4)
       typescript: 5.5.4
     transitivePeerDependencies:
       - '@babel/core'
@@ -9891,7 +9922,7 @@ snapshots:
     dependencies:
       svelte: 5.0.0-next.242
 
-  svelte-preprocess@5.1.4(@babel/core@7.25.2)(postcss-load-config@6.0.1(jiti@1.21.6)(postcss@8.4.44)(tsx@4.19.0)(yaml@2.5.0))(postcss@8.4.44)(svelte@5.0.0-next.242)(typescript@5.5.4):
+  svelte-preprocess@5.1.4(@babel/core@7.25.2)(postcss-load-config@4.0.2(postcss@8.4.44))(postcss@8.4.44)(svelte@5.0.0-next.242)(typescript@5.5.4):
     dependencies:
       '@types/pug': 2.0.10
       detect-indent: 6.1.0
@@ -9902,7 +9933,7 @@ snapshots:
     optionalDependencies:
       '@babel/core': 7.25.2
       postcss: 8.4.44
-      postcss-load-config: 6.0.1(jiti@1.21.6)(postcss@8.4.44)(tsx@4.19.0)(yaml@2.5.0)
+      postcss-load-config: 4.0.2(postcss@8.4.44)
       typescript: 5.5.4
 
   svelte@5.0.0-next.242:
