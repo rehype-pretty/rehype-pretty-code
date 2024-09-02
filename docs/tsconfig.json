@@ -10,14 +10,23 @@
     "module": "ESNext",
     "alwaysStrict": true,
     "noUnusedLocals": false,
+    "resolveJsonModule": true,
     "noUnusedParameters": false,
     "moduleResolution": "Bundler",
     "allowArbitraryExtensions": true,
     "noUncheckedIndexedAccess": true,
+    "resolvePackageJsonImports": true,
+    "resolvePackageJsonExports": true,
+    "exactOptionalPropertyTypes": false,
+    "paths": {
+      "#*": [
+        "./src/*"
+      ]
+    },
     "allowImportingTsExtensions": true,
     "lib": [
-      "ESNext",
       "DOM",
+      "ESNext",
       "DOM.Iterable"
     ],
     "noPropertyAccessFromIndexSignature": true

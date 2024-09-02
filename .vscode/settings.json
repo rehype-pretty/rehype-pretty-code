@@ -43,6 +43,9 @@
   "[svelte]": {
     "editor.defaultFormatter": "svelte.svelte-vscode"
   },
+  "[css]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  },
   "files.associations": {
     "biome.json": "jsonc",
     "*.css": "tailwindcss",
@@ -58,7 +61,12 @@
   },
   "files.exclude": {
     ".zed": true,
-    ".turbo": true,
+    ".gitignore": true,
+    "**/LICENSE": true,
+    "**/dist/**": true,
+    "**/.turbo/**": true,
+    "**/.astro/**": true,
+    "pnpm-lock.yaml": true,
     "**/*.timestamp-*": true
   },
   "[markdown]": {

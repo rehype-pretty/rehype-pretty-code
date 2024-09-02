@@ -48,21 +48,6 @@ export function transformerCopyButton(
     pre(node) {
       node.children.push({
         type: 'element',
-        tagName: 'style',
-        properties: {},
-        children: [
-          {
-            type: 'text',
-            value: copyButtonStyle({
-              copyIcon: options.copyIcon,
-              successIcon: options.successIcon,
-              visibility: options.visibility,
-            }),
-          },
-        ],
-      });
-      node.children.push({
-        type: 'element',
         tagName: 'button',
         properties: {
           type: 'button',
@@ -93,6 +78,21 @@ export function transformerCopyButton(
             tagName: 'span',
             properties: { class: 'success' },
             children: [],
+          },
+        ],
+      });
+      node.children.push({
+        type: 'element',
+        tagName: 'style',
+        properties: {},
+        children: [
+          {
+            type: 'text',
+            value: copyButtonStyle({
+              copyIcon: options.copyIcon,
+              successIcon: options.successIcon,
+              visibility: options.visibility,
+            }),
           },
         ],
       });
@@ -133,6 +133,7 @@ function copyButtonStyle({
       width: 24px;
       height: 24px;
       display: flex;
+      cursor: pointer;
       margin-top: 8px;
       margin-right: 8px;
       position: absolute;
@@ -161,6 +162,7 @@ function copyButtonStyle({
 
     pre button.rehype-pretty-copy.rehype-pretty-copied {
       opacity: 1;
+      cursor: default;
       & .ready { display: none; }
       & .success { display: block; }
     }

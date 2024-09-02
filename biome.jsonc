@@ -47,6 +47,7 @@
       "enabled": true
     },
     "parser": {
+      "cssModules": true,
       "allowWrongLineComments": true
     }
   },
@@ -187,7 +188,8 @@
       "linter": {
         "rules": {
           "correctness": {
-            "noUnusedImports": "off"
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
           },
           "style": {
             "useImportType": "off",

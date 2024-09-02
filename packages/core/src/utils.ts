@@ -1,7 +1,8 @@
-import type { Theme } from './types';
-import type { Element, ElementContent, Root, RootContent, Text } from 'hast';
-import type { ThemeRegistrationRaw } from 'shiki';
 import rangeParser from 'parse-numeric-range';
+import type { ThemeRegistrationRaw, createHighlighter } from 'shiki';
+import type { Element, ElementContent, Root, RootContent, Text } from 'hast';
+
+export type ShikiHighlighterOptions = Parameters<typeof createHighlighter>[0];
 
 export function isJSONTheme(value: any): value is ThemeRegistrationRaw {
   return value ? Object.hasOwn(value, 'tokenColors') : false;
@@ -61,9 +62,6 @@ export function parseBlockMetaString(
   let meta = filter(
     (element.data?.meta ?? element.properties?.metastring ?? '') as string,
   );
-  const showLineNumbers = /showLineNumbers/i.test(meta);
-  meta = meta.replace(/showLineNumbers/i, '').trim();
-
   const titleMatch = meta.match(/title="([^"]*)"/);
   const title = titleMatch?.[1] ?? null;
   meta = meta.replace(titleMatch?.[0] ?? '', '');
@@ -87,17 +85,18 @@ export function parseBlockMetaString(
     caption,
     lang,
     meta,
-    showLineNumbers,
   };
 }
 
-export function getThemeNames(theme: Theme | Record<string, Theme>) {
-  if (isJSONTheme(theme)) {
-    return [theme.name];
-  }
-  if (typeof theme === 'string') {
-    return [theme];
-  }
+export function getThemeNames(
+  theme:
+    | ShikiHighlighterOptions['themes']
+    | ShikiHighlighterOptions['themes'][number],
+) {
+  if (isJSONTheme(theme)) return [theme.name];
+
+  if (typeof theme === 'string') return [theme];
+
   return Object.values(theme).map((theme) =>
     typeof theme === 'string' ? theme : theme.name,
   );

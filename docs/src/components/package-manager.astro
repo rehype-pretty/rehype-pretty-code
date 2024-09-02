@@ -1,0 +1,41 @@
+---
+import { Code } from 'astro/components';
+import type { ComponentProps } from 'astro/types';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import type { NoRepetition } from '../lib/utilities/types.ts';
+
+type TabItemProps = ComponentProps<typeof TabItem>;
+
+interface Props {
+  packageManagers: NoRepetition<'pnpm' | 'bun' | 'npm' | 'yarn' | 'ni' | 'jsr'>;
+}
+
+const packageManagers = Astro.props.packageManagers ?? [
+  'pnpm',
+  'bun',
+  'npm',
+  'yarn',
+  'jsr',
+];
+const iconMap: Record<string, TabItemProps['icon'] | undefined> = {
+  bun: 'bun',
+  pnpm: 'pnpm',
+  npm: 'seti:npm',
+  yarn: 'seti:yarn',
+  ni: 'seti:shell',
+  jsr: 'seti:shell',
+};
+---
+
+<Tabs syncKey="pkg">
+  {
+    // @ts-expect-error
+    packageManagers.map(pkgManager => (
+      <TabItem label={pkgManager} icon={iconMap[pkgManager]}>
+        <Code lang="sh" code={`${pkgManager} add @rehype-pretty/transformers`} />
+      </TabItem>
+    ))
+  }
+</Tabs>
+
+<style></style>

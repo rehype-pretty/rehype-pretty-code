@@ -8,21 +8,23 @@ import {
   transformerMetaHighlight,
   transformerRenderWhitespace,
   transformerNotationHighlight,
-  transformerMetaWordHighlight,
-  transformerNotationErrorLevel,
   transformerCompactLineOptions,
+  transformerNotationErrorLevel,
   transformerNotationWordHighlight,
 } from '@shikijs/transformers';
+import {
+  transformerCopyButton,
+  transformerLineNumbers,
+} from '@rehype-pretty/transformers';
 import remarkToc from 'remark-toc';
 import rehypeSlug from 'rehype-slug';
-import type { RawTheme } from 'shiki';
 import tailwind from '@astrojs/tailwind';
+import type { RawTheme } from 'shiki/core';
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 import remarkSmartypants from 'remark-smartypants';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import { transformerCopyButton } from '@rehype-pretty/transformers';
 import { transformerTwoslash, rendererRich } from '@shikijs/twoslash';
 import moonlightTheme from './public/theme/moonlight-ii.json' with {
   type: 'json',
@@ -30,30 +32,19 @@ import moonlightTheme from './public/theme/moonlight-ii.json' with {
 
 // https://astro.build/config
 export default defineConfig({
+  output: 'static',
+  compressHTML: true,
   markdown: {
+    gfm: true,
     syntaxHighlight: false,
-    shikiConfig: {
-      transformers: [
-        transformerTwoslash({ renderer: rendererRich() }),
-        transformerNotationDiff(),
-        transformerNotationFocus(),
-        transformerMetaHighlight(),
-        transformerRenderWhitespace(),
-        transformerNotationHighlight(),
-        transformerMetaWordHighlight(),
-        transformerNotationErrorLevel(),
-        transformerCompactLineOptions(),
-        transformerNotationWordHighlight(),
-      ],
-    },
     remarkPlugins: [
       // @ts-expect-error
       remarkSmartypants,
       [remarkToc, { heading: 'contents', prefix: 'toc-' }],
     ],
     rehypePlugins: [
-      rehypeHeadingIds,
       rehypeSlug,
+      rehypeHeadingIds,
       [rehypeAutolinkHeadings, { behavior: 'wrap' }],
       [
         rehypePrettyCode,
@@ -61,10 +52,23 @@ export default defineConfig({
           keepBackground: true,
           theme: moonlightTheme as unknown as RawTheme,
           transformers: [
+            transformerTwoslash({
+              explicitTrigger: true,
+              renderer: rendererRich(),
+            }),
             transformerCopyButton({
               visibility: 'always',
               feedbackDuration: 2_500,
             }),
+            transformerLineNumbers({ autoApply: true }),
+            transformerNotationDiff(),
+            transformerNotationFocus(),
+            transformerMetaHighlight(),
+            transformerRenderWhitespace(),
+            transformerNotationHighlight(),
+            transformerCompactLineOptions(),
+            transformerNotationErrorLevel(),
+            transformerNotationWordHighlight(),
           ],
         } satisfies RehypePrettyCodeOptions,
       ],
@@ -83,7 +87,7 @@ export default defineConfig({
       customCss: [
         './src/styles/index.css',
         './src/styles/tailwind.css',
-        '@shikijs/twoslash/style-rich.css',
+        './node_modules/@shikijs/twoslash/style-rich.css',
       ],
       plugins: [],
       head: [

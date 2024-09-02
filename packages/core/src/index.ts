@@ -237,29 +237,25 @@ export function rehypePrettyCode(
     // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     visit(tree, 'element', (element, _, parent) => {
       if (isInlineCode(element, parent, bypassInlineCode)) {
-        const textElement = element.children[0];
+        const [textElement] = element.children;
         if (!isText(textElement)) return;
         const value = textElement.value;
         if (!value) return;
         const lang = getInlineCodeLang(value, defaultInlineCodeLang);
-        if (lang && lang[0] !== '.') {
-          langsToLoad.add(lang);
-        }
+        if (lang && lang[0] !== '.') langsToLoad.add(lang);
       }
 
       if (isBlockCode(element)) {
-        const codeElement = element.children[0];
+        const [codeElement] = element.children;
         if (!isElement(codeElement)) return;
 
-        const { lang } = parseBlockMetaString(
+        const { lang, meta: _meta } = parseBlockMetaString(
           codeElement,
           filterMetaString,
           defaultCodeBlockLang,
         );
 
-        if (lang) {
-          langsToLoad.add(lang);
-        }
+        if (lang) langsToLoad.add(lang);
       }
     });
 
@@ -282,7 +278,7 @@ export function rehypePrettyCode(
     // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     visit(tree, 'element', (element, _, parent) => {
       if (isInlineCode(element, parent, bypassInlineCode)) {
-        const textElement = element.children[0];
+        const [textElement] = element.children;
         if (!isText(textElement)) return;
         const value = textElement.value;
         if (!value) return;
@@ -353,13 +349,11 @@ export function rehypePrettyCode(
         if (!isElement(codeElement)) return;
         const [textElement] = codeElement.children;
 
-        const { title, caption, meta, lang, showLineNumbers } =
-          parseBlockMetaString(
-            codeElement,
-            filterMetaString,
-            defaultCodeBlockLang,
-          );
-
+        const { title, caption, meta, lang } = parseBlockMetaString(
+          codeElement,
+          filterMetaString,
+          defaultCodeBlockLang,
+        );
         if (!lang || lang === 'math') return;
 
         const lineNumbers: Array<number> = [];
@@ -435,27 +429,6 @@ export function rehypePrettyCode(
 
         // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         visit(codeTree, 'element', (element) => {
-          if (
-            (element.tagName === 'code' || element.tagName === 'pre') &&
-            showLineNumbers
-          ) {
-            if (element.properties) {
-              element.properties['data-line-numbers'] = '';
-            }
-
-            const lineNumbersStartAtMatch = meta.match(
-              /showLineNumbers=(\d+)/i,
-            );
-            const startNumberString = lineNumbersStartAtMatch?.[1];
-            if (startNumberString) {
-              const startAt = Number(startNumberString) - 1;
-              lineNumbersMaxDigits = startAt;
-              if (element.properties) {
-                element.properties.style = `counter-set: line ${startAt};`;
-              }
-            }
-          }
-
           if (
             Array.isArray(element.properties?.className) &&
             element.properties?.className?.[0] === 'line'

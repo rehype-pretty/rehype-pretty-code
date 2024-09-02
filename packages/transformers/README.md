@@ -13,21 +13,32 @@ npx jsr add @rehype-pretty/transformers
 ## Available Transformers
 
 - [`transformerCopyButton`](./src/copy-button.ts)
+- [`transformerLineNumbers`](./src/line-numbers.ts)
 
 ## Usage
 
+### `transformerCopyButton`
+
 You can use this as a [`shiki` transformer](https://shiki.style/guide/transformers) in `rehype-pretty-code` by passing it to the `transformers` array.
 
-### Options
+#### `transformerCopyButton` Options
 
 - `visibility`: `'always' | 'hover'` (default: `'hover'`)
 - `feedbackDuration`: `number` (default: `3_000`)
 - `copyIcon`: `string` (default: an inline SVG of a copy icon)
 - `successIcon`: `string` (default: an inline SVG of a green checkmark icon)
 
-### Examples
+### `transformerLineNumbers`
 
-#### with `rehype-pretty-code`
+You can use this as a [`shiki` transformer](https://shiki.style/guide/transformers) in `rehype-pretty-code` by passing it to the `transformers` array.
+
+#### `transformerLineNumbers` Options
+
+- `autoApply`: `boolean` (default: `true`) - Whether to apply line numbers automatically to every code block.
+
+#### Examples
+
+##### with `rehype-pretty-code`
 
   ```ts
   import { unified } from 'unified'
@@ -35,7 +46,7 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
   import remarkRehype from 'remark-rehype'
   import rehypeStringify from 'rehype-stringify'
   import rehypePrettyCode from 'rehype-pretty-code'
-  import { transformerCopyButton } from '@rehype-pretty/transformers'
+  import { transformerCopyButton, transformerLineNumbers } from '@rehype-pretty/transformers'
 
   const file = await unified()
     .use(remarkParse)
@@ -46,6 +57,7 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
           visibility: 'always',
           feedbackDuration: 3_000,
         }),
+        transformerLineNumbers({ autoApply: true }),
       ],
     })
     .use(rehypeStringify)
@@ -54,10 +66,11 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
   console.log(String(file))
   ```
 
-#### with `shiki`
+##### with `shiki`
 
   ```ts
   import { codeToHtml } from 'shiki'
+  import { transformerCopyButton, transformerLineNumbers } from '@rehype-pretty/transformers'
 
   const code = await codeToHtml('console.log("Hello World")', {
     lang: 'ts',
@@ -67,6 +80,7 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
         visibility: 'always',
         feedbackDuration: 3_000,
       }),
+      transformerLineNumbers({ autoApply: true }),
     ]
   })
   ```

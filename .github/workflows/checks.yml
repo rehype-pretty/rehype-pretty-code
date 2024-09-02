@@ -1,4 +1,4 @@
-name: Checks
+name: 'Checks'
 on:
   pull_request:
   workflow_dispatch:
@@ -15,7 +15,6 @@ env:
   NEXT_TELEMETRY_DISABLED: '1'
   ASTRO_TELEMETRY_DISABLED: '1'
   NODE_OPTIONS: '--no-warnings'
-  FORCE_COLOR: 1
 
 jobs:
   checks:

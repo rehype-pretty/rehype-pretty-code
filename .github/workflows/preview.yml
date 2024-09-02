@@ -1,4 +1,11 @@
-name: Preview
+name: 'Preview'
+
+# pkg.pr.new won't publish anything to NPM; instead, 
+# it leverages its own URLs, which are npm-compatible.
+
+# npm install https://pkg.pr.new/${owner}/${repo}/${package}@${commit}
+
+# learn more: https://github.com/stackblitz-labs/pkg.pr.new/blob/main/README.md
 
 on:
   push:

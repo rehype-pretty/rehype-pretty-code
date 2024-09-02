@@ -29,14 +29,14 @@
     "check-package": "pnpm dlx publint@latest --strict && attw --pack --ignore-rules cjs-resolves-to-esm no-resolution"
   },
   "dependencies": {
-    "@std/html": "npm:@jsr/std__html@1.0.0"
+    "@std/html": "npm:@jsr/std__html@1.0.2"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.15.3",
-    "@types/node": "^20.14.11",
-    "tsup": "^8.2.1",
-    "tsx": "^4.16.2",
-    "typescript": "^5.5.3"
+    "@arethetypeswrong/cli": "^0.15.4",
+    "@types/node": "^22.5.2",
+    "tsup": "^8.2.4",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4"
   },
   "engines": {
     "node": ">=18"
