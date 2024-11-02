@@ -16,7 +16,7 @@ function Heading({
   HTMLHeadingElement
 > & {
   level: 1 | 2 | 3 | 4 | 5 | 6;
-}) {
+} & any) {
   const tag = `h${level}`;
   return React.createElement(
     tag,
