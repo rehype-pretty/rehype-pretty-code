@@ -1,16 +1,19 @@
-import {
-  type Theme,
-  rehypePrettyCode,
-  type RehypePrettyCodeOptions,
-} from 'rehype-pretty-code';
+/**
+ * @typedef {import('next').NextConfig} NextConfig
+ * @typedef {Array<((config: NextConfig & any) => NextConfig)>} NextConfigPlugins
+ * @typedef {import('webpack').Configuration} WebpackConfiguration
+ */
+
+import { rehypePrettyCode } from 'rehype-pretty-code';
 import nextMDX from '@next/mdx';
 import rehypeSlug from 'rehype-slug';
-import type { NextConfig } from 'next';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
 import moonlightTheme from './assets/moonlight-ii.json' with { type: 'json' };
 
-const plugins: Array<(config: NextConfig) => NextConfig> = [];
+/** @type {NextConfigPlugins} */
+const plugins = [];
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
   cleanDistDir: true,
@@ -23,19 +26,21 @@ const nextConfig = {
   env: {
     NEXT_TELEMETRY_DISABLED: '1',
   },
-} satisfies NextConfig;
+};
 
+/** @type {import('rehype-pretty-code').RehypePrettyCodeOptions} */
 const options = {
   keepBackground: false,
-  theme: moonlightTheme as unknown as Theme,
+  // @ts-expect-error
+  theme: moonlightTheme,
   transformers: [
     transformerCopyButton({
-      jsx: true,
+      jsx: true, // required for React
       visibility: 'always',
       feedbackDuration: 2_500,
     }),
   ],
-} satisfies RehypePrettyCodeOptions;
+};
 
 plugins.push(
   nextMDX({
@@ -47,5 +52,4 @@ plugins.push(
   }),
 );
 
-// @ts-expect-error
 export default () => plugins.reduce((_, plugin) => plugin(_), nextConfig);

@@ -37,7 +37,7 @@
     ".next/types/**/*.ts"
   ],
   "files": [
-    "next.config.ts",
+    "next.config.mjs",
     "postcss.config.cjs",
     "tailwind.config.ts"
   ],
