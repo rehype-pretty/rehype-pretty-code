@@ -15,19 +15,19 @@
     "@tailwindcss/vite": "4.0.0-alpha.20",
     "rehype-pretty-code": "workspace:*",
     "rehype-slug": "^6.0.0",
-    "rehype-stringify": "^10.0.0",
+    "rehype-stringify": "^10.0.1",
     "remark-parse": "^11.0.0",
     "tailwindcss": "4.0.0-alpha.20"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "^3.0.4",
-    "@sveltejs/kit": "^2.5.25",
+    "@sveltejs/kit": "^2.5.26",
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
     "magic-string": "^0.30.11",
     "svelte": "5.0.0-next.242",
-    "svelte-check": "^3.8.6",
+    "svelte-check": "^4.0.1",
     "tslib": "^2.7.0",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.2"
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
   }
 }

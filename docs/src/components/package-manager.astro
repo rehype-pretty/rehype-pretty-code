@@ -1,13 +1,13 @@
 ---
+import {
+  type RawTheme,
+  createHighlighter,
+  createJavaScriptRegexEngine,
+} from 'shiki';
 import type { ComponentProps } from 'astro/types';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import type { NoRepetition } from '../lib/utilities/types.ts';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
-import {
-  type RawTheme,
-  createJavaScriptRegexEngine,
-  createHighlighter,
-} from 'shiki';
 import moonlightTheme from '../../public/theme/moonlight-ii.json' with {
   type: 'json',
 };

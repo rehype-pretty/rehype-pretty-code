@@ -1,10 +1,9 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.inlayHints.parameterNames.enabled": "all",
-  "typescript.preferences.importModuleSpecifier": "shortest",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "javascript.preferences.importModuleSpecifier": "relative",
   "typescript.preferences.preferTypeOnlyAutoImports": true,
-  "references.preferredLocation": "peek",
   "editor.quickSuggestions": {
     "strings": "on"
   },
@@ -64,7 +63,6 @@
     "**/build": true,
     ".gitignore": true,
     "**/LICENSE": true,
-    "**/dist/**": true,
     "**/.turbo/**": true,
     "**/.astro/**": true,
     "pnpm-lock.yaml": true,

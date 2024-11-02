@@ -22,45 +22,47 @@ import PackageManager from '#components/package-manager.astro';
 
 ## Usage
 
+
 You can use this as a [`shiki` transformer](https://shiki.style/guide/transformers) in `rehype-pretty-code` by passing it to the `transformers` array.
 
-### Options
+#### Options
 
 - `visibility`: `'always' | 'hover'` (default: `'hover'`)
 - `feedbackDuration`: `number` (default: `3_000`)
 - `copyIcon`: `string` (default: an inline SVG of a copy icon)
 - `successIcon`: `string` (default: an inline SVG of a green checkmark icon)
+- `jsx`?: `boolean` (default: `false`) (required for React-based usage)
 
-### Examples
+### Simple
 
-#### with `rehype-pretty-code`
+###### with `rehype-pretty-code`
 
-  ```ts twoslash
-  import { unified } from 'unified'
-  import remarkParse from 'remark-parse'
-  import remarkRehype from 'remark-rehype'
-  import rehypeStringify from 'rehype-stringify'
-  import { rehypePrettyCode } from 'rehype-pretty-code'
-  import { transformerCopyButton } from '@rehype-pretty/transformers'
+```ts
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
+import { rehypePrettyCode } from 'rehype-pretty-code'
+import { transformerCopyButton } from '@rehype-pretty/transformers'
 
-  const file = await unified()
-    .use(remarkParse)
-    .use(remarkRehype)
-    .use(rehypePrettyCode, {
-      transformers: [
-        transformerCopyButton({
-          visibility: 'always',
-          feedbackDuration: 3_000,
-        }),
-      ],
-    })
-    .use(rehypeStringify)
-    .process(`\`\`\`js\nconsole.log('Hello, World!')\n\`\`\``)
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkRehype)
+  .use(rehypePrettyCode, {
+    transformers: [
+      transformerCopyButton({
+        visibility: 'always',
+        feedbackDuration: 3_000,
+      }),
+    ],
+  })
+  .use(rehypeStringify)
+  .process(`\`\`\`js\nconsole.log('Hello, World!')\n\`\`\``)
 
-  console.log(String(file))
-  ```
+console.log(String(file))
+```
 
-#### with `shiki`
+###### with `shiki`
 
   ```ts
   import { codeToHtml } from 'shiki'
@@ -76,3 +78,75 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
     ]
   })
   ```
+
+### React / Next.js
+
+To use this with React, you need to import the `registerCopyButton` function and call it in your the outermost **client** component.
+
+Next.js example:
+
+```tsx title="next.config.mjs" /jsx: true/
+/**
+ * @typedef {import('next').NextConfig} NextConfig
+ * @typedef {Array<((config: NextConfig & any) => NextConfig)>} NextConfigPlugins
+ * @typedef {import('webpack').Configuration} WebpackConfiguration
+ */
+
+import nextMDX from '@next/mdx';
+import rehypeSlug from 'rehype-slug';
+import { rehypePrettyCode } from 'rehype-pretty-code';
+import { transformerCopyButton } from '@rehype-pretty/transformers';
+
+/** @type {NextConfigPlugins} */
+const plugins = [];
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',
+  reactStrictMode: true,
+  pageExtensions: ['md', 'mdx', 'tsx', 'ts', 'jsx', 'js'],
+};
+
+/** @type {import('rehype-pretty-code').RehypePrettyCodeOptions} */
+const options = {
+  keepBackground: false,
+  theme: 'github-dark',
+  transformers: [
+    transformerCopyButton({
+      jsx: true, // required for React
+      visibility: 'always',
+      feedbackDuration: 2_500,
+    }),
+  ],
+};
+
+plugins.push(
+  nextMDX({
+    extension: /\.(md|mdx)$/,
+    options: {
+      remarkPlugins: [],
+      rehypePlugins: [[rehypePrettyCode, options], rehypeSlug],
+    },
+  }),
+);
+
+export default () => plugins.reduce((_, plugin) => plugin(_), nextConfig);
+```
+
+```tsx title="app/index.tsx"
+'use client';
+
+import { registerCopyButton } from '@rehype-pretty/transformers';
+
+export default function Home() {
+  React.useEffect(() => {
+    registerCopyButton();
+  }, []);
+
+  return (
+    <MDXProvider disableParentContext={false}>
+      <Index />
+    </MDXProvider>
+  );
+}
+```

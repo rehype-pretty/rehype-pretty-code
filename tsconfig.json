@@ -29,8 +29,8 @@
     "scripts"
   ],
   "files": [
-    "biome.json",
     "reset.d.ts",
+    "biome.jsonc",
     ".changeset/changelog.cjs"
   ],
   "exclude": [

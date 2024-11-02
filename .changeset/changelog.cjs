@@ -13,7 +13,7 @@ const getReleaseLine = async (changeset) => {
     .split('\n')
     .map((l) => l.trimEnd());
 
-  if (!nextLines.length) return `- ${firstLine}`;
+  if (nextLines.length === 0) return `- ${firstLine}`;
 
   return `- ${firstLine}\n${nextLines.join('\n')}`;
 };

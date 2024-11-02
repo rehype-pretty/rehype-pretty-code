@@ -3,10 +3,6 @@
   --sl-sidebar-width: 15rem;
 }
 
-.twoslash-popup-docs {
-  font-family: var(--tw-font-family) !important;
-}
-
 figure {
   overflow-x: hidden;
 }
@@ -16,6 +12,10 @@ code,
 figure {
   overflow-x: auto;
   position: relative;
+}
+
+.twoslash-popup-docs {
+  font-family: var(--tw-font-family) !important;
 }
 
 .twoslash > * {
@@ -105,7 +105,7 @@ pre {
 }
 
 code {
-  @apply !leading-loose;
+  /* @apply !leading-loose; */
 }
 
 pre > code {

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
   "vcs": {
     "root": ".",
     "enabled": true,
@@ -28,7 +28,8 @@
       "node_modules",
       "examples/astro/src/globals.css",
       "examples/sveltekit/src/app.css",
-      "examples/next/src/app/globals.css"
+      "examples/next/src/app/globals.css",
+      "moonlight-ii.json"
     ],
     "ignoreUnknown": true
   },
@@ -89,7 +90,8 @@
       },
       "correctness": {
         "noNodejsModules": "off",
-        "noUndeclaredVariables": "off"
+        "noUndeclaredVariables": "off",
+        "noUndeclaredDependencies": "off"
       },
       "suspicious": {
         "useAwait": "off",
@@ -123,6 +125,9 @@
     }
   },
   "javascript": {
+    "linter": {
+      "enabled": true
+    },
     "globals": [
       "NodeJS",
       "Astro",
@@ -149,6 +154,10 @@
       "quoteProperties": "asNeeded"
     }
   },
+  /**
+   * biome monorepo support is not great atm so we need overrides
+   * https://biomejs.dev/guides/big-projects/#monorepos
+   */
   "overrides": [
     /**
      * override to have one item per line in json/jsonc files
@@ -171,11 +180,13 @@
     {
       "include": [
         "test",
-        "scripts"
+        "scripts",
+        "examples"
       ],
       "linter": {
         "rules": {
           "suspicious": {
+            "noConsole": "off",
             "noConsoleLog": "off"
           }
         }
@@ -216,6 +227,18 @@
           },
           "suspicious": {
             "noConfusingLabels": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": [
+        "*.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noReactSpecificProps": "off"
           }
         }
       }

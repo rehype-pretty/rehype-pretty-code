@@ -1,5 +1,5 @@
-import { trimWhitespace } from './utilities';
 import type { ShikiTransformer } from 'shiki';
+import { trimWhitespace } from './utilities/index.ts';
 
 interface CopyButtonOptions {
   feedbackDuration?: number;
@@ -169,11 +169,11 @@ function copyButtonStyle({
 `;
   if (visibility === 'hover') {
     copyButtonStyle += /* css */ `
-        pre button.rehype-pretty-copy { opacity: 0; }
-        figure[data-rehype-pretty-code-figure]:hover > pre > code button.rehype-pretty-copy {
-          opacity: 1;
-        }
-      `;
+      pre button.rehype-pretty-copy { opacity: 0; }
+      button[data-name="rehype-pretty-copy-button"]:hover {
+        opacity: 1;
+      }
+    `;
   }
   return copyButtonStyle;
 }

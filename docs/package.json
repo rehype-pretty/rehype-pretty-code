@@ -14,30 +14,30 @@
     "#*": "./src/*"
   },
   "dependencies": {
-    "@astrojs/mdx": "^3.1.5",
-    "@astrojs/starlight": "^0.26.1",
+    "@astrojs/mdx": "^3.1.9",
+    "@astrojs/starlight": "^0.27.1",
     "@astrojs/starlight-tailwind": "^2.0.3",
-    "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/tailwind": "^5.1.2",
     "@rehype-pretty/transformers": "workspace:*",
-    "astro": "^4.15.1",
+    "astro": "^4.16.8",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-pretty-code": "workspace:*",
     "rehype-slug": "^6.0.0",
-    "rehype-stringify": "^10.0.0",
+    "rehype-stringify": "^10.0.1",
     "remark-toc": "^9.0.0",
     "sharp": "^0.33.5",
-    "shiki": "^1.16.1",
-    "starlight-heading-badges": "^0.1.0",
+    "shiki": "^1.22.2",
+    "starlight-heading-badges": "^0.2.0",
     "starlight-links-validator": "^0.11.0",
     "starlight-theme-rapide": "^0.1.1",
     "tailwindcss": "^3.4.10"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.3",
-    "@shikijs/transformers": "^1.16.1",
-    "@shikijs/twoslash": "^1.16.1",
-    "@total-typescript/ts-reset": "^0.6.0",
-    "@types/node": "^22.5.2",
-    "typescript": "^5.5.4"
+    "@astrojs/check": "^0.9.4",
+    "@shikijs/transformers": "^1.16.3",
+    "@shikijs/twoslash": "^1.16.3",
+    "@total-typescript/ts-reset": "^0.6.1",
+    "@types/node": "^22.8.6",
+    "typescript": "^5.6.3"
   }
 }

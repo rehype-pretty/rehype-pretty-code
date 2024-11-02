@@ -29,6 +29,7 @@ export default function Home() {
   React.useEffect(() => {
     registerCopyButton();
   }, []);
+
   return (
     <>
       <Header />

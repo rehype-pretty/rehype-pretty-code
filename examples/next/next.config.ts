@@ -1,40 +1,33 @@
-import process from 'node:process';
-Object.assign(process.env, { NEXT_TELEMETRY_DISABLED: '1' });
-
-/**
- * @typedef {import('next').NextConfig} NextConfig
- * @typedef {Array<((config: NextConfig) => NextConfig)>} NextConfigPlugins
- */
+import {
+  type Theme,
+  rehypePrettyCode,
+  type RehypePrettyCodeOptions,
+} from 'rehype-pretty-code';
 import nextMDX from '@next/mdx';
 import rehypeSlug from 'rehype-slug';
-import { rehypePrettyCode } from 'rehype-pretty-code';
+import type { NextConfig } from 'next';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
 import moonlightTheme from './assets/moonlight-ii.json' with { type: 'json' };
 
-/** @type {NextConfigPlugins} */
-const plugins = [];
+const plugins: Array<(config: NextConfig) => NextConfig> = [];
 
-/** @type {NextConfig} */
 const nextConfig = {
   output: 'export',
   cleanDistDir: true,
   reactStrictMode: true,
   poweredByHeader: false,
   experimental: {
-    reactCompiler: true,
     useLightningcss: false, // lightningcss doesn't work with postcss-loader
   },
   pageExtensions: ['md', 'mdx', 'tsx', 'ts', 'jsx', 'js'],
   env: {
     NEXT_TELEMETRY_DISABLED: '1',
   },
-};
+} satisfies NextConfig;
 
-/** @satisfies {import('rehype-pretty-code').RehypePrettyCodeOptions} */
 const options = {
   keepBackground: false,
-  // @ts-expect-error
-  theme: moonlightTheme,
+  theme: moonlightTheme as unknown as Theme,
   transformers: [
     transformerCopyButton({
       jsx: true,
@@ -42,7 +35,7 @@ const options = {
       feedbackDuration: 2_500,
     }),
   ],
-};
+} satisfies RehypePrettyCodeOptions;
 
 plugins.push(
   nextMDX({
@@ -54,4 +47,5 @@ plugins.push(
   }),
 );
 
+// @ts-expect-error
 export default () => plugins.reduce((_, plugin) => plugin(_), nextConfig);

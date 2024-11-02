@@ -23,7 +23,6 @@ import type { RawTheme } from 'shiki/core';
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 import remarkSmartypants from 'remark-smartypants';
-// import starlightThemeRapide from 'starlight-theme-rapide';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import starlightHeadingBadges from 'starlight-heading-badges';
@@ -56,6 +55,7 @@ export default defineConfig({
           keepBackground: true,
           theme: moonlightTheme as unknown as RawTheme,
           transformers: [
+            // twoslash is WIP
             transformerTwoslash({
               explicitTrigger: true,
               renderer: rendererRich(),
