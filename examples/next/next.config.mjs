@@ -4,11 +4,14 @@
  * @typedef {import('webpack').Configuration} WebpackConfiguration
  */
 
-import { rehypePrettyCode } from 'rehype-pretty-code';
 import nextMDX from '@next/mdx';
 import rehypeSlug from 'rehype-slug';
-import { transformerCopyButton } from '@rehype-pretty/transformers';
+import { rehypePrettyCode } from 'rehype-pretty-code';
 import moonlightTheme from './assets/moonlight-ii.json' with { type: 'json' };
+import {
+  transformerCopyButton,
+  transformerLineNumbers,
+} from '@rehype-pretty/transformers';
 
 /** @type {NextConfigPlugins} */
 const plugins = [];
@@ -19,9 +22,6 @@ const nextConfig = {
   cleanDistDir: true,
   reactStrictMode: true,
   poweredByHeader: false,
-  experimental: {
-    useLightningcss: false, // lightningcss doesn't work with postcss-loader
-  },
   pageExtensions: ['md', 'mdx', 'tsx', 'ts', 'jsx', 'js'],
   env: {
     NEXT_TELEMETRY_DISABLED: '1',
@@ -39,6 +39,7 @@ const options = {
       visibility: 'always',
       feedbackDuration: 2_500,
     }),
+    transformerLineNumbers({ autoApply: false }),
   ],
 };
 

@@ -4,6 +4,26 @@ interface LineNumbersOptions {
   autoApply?: boolean;
 }
 
+/**
+ * A transformer that adds line numbers to code blocks.
+ * @param {Object} options - Options for the line numbers behavior and appearance.
+ * @param {boolean} options.autoApply - Whether to apply line numbers automatically to every code block.
+ * @returns A Shiki transformer.
+ *
+ * @example
+ * ```ts
+ * import { codeToHtml } from 'shiki'
+ * import { transformerLineNumbers } from '@rehype-pretty/transformers'
+ *
+ * const html = await codeToHtml(`console.log('hello, world')`, {
+ *   lang: 'ts',
+ *   theme: 'vitesse-light',
+ *   transformers: [
+ *     transformerLineNumbers({ autoApply: true }),
+ *   ]
+ * })
+ * ```
+ */
 export function transformerLineNumbers(
   options: LineNumbersOptions = { autoApply: true },
 ): ShikiTransformer {
@@ -84,6 +104,9 @@ export function transformerLineNumbers(
   };
 }
 
+/**
+ * Returns the CSS styles for line numbers.
+ */
 function lineNumbersStyle() {
   return /* css */ `
   pre[data-show-line-numbers='true'], code[data-show-line-numbers='true'] {

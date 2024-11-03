@@ -27,6 +27,7 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
 - `feedbackDuration`: `number` (default: `3_000`)
 - `copyIcon`: `string` (default: an inline SVG of a copy icon)
 - `successIcon`: `string` (default: an inline SVG of a green checkmark icon)
+- `jsx`: `boolean` (default: `false`) (required as `true` for React-based usage)
 
 ### `transformerLineNumbers`
 
@@ -38,15 +39,15 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
 
 #### Examples
 
-##### with `rehype-pretty-code`
+##### direct
 
   ```ts
   import { unified } from 'unified'
   import remarkParse from 'remark-parse'
   import remarkRehype from 'remark-rehype'
   import rehypeStringify from 'rehype-stringify'
-  import rehypePrettyCode from 'rehype-pretty-code'
-  import { transformerCopyButton, transformerLineNumbers } from '@rehype-pretty/transformers'
+  import { rehypePrettyCode } from 'rehype-pretty-code'
+  import { transformerCopyButton } from '@rehype-pretty/transformers'
 
   const file = await unified()
     .use(remarkParse)
@@ -57,7 +58,7 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
           visibility: 'always',
           feedbackDuration: 3_000,
         }),
-        transformerLineNumbers({ autoApply: true }),
+        transformerLineNumbers({ autoApply: false }),
       ],
     })
     .use(rehypeStringify)
@@ -66,21 +67,66 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
   console.log(String(file))
   ```
 
-##### with `shiki`
+##### In React / Next.js
 
-  ```ts
-  import { codeToHtml } from 'shiki'
-  import { transformerCopyButton, transformerLineNumbers } from '@rehype-pretty/transformers'
+In Next.js you st it up in `next.config.js` as you'd expect with `jsx: true`
 
-  const code = await codeToHtml('console.log("Hello World")', {
-    lang: 'ts',
-    theme: 'vitesse-light',
-    transformers: [
-      transformerCopyButton({
-        visibility: 'always',
-        feedbackDuration: 3_000,
-      }),
-      transformerLineNumbers({ autoApply: true }),
-    ]
-  })
-  ```
+```js
+// next.config.js
+
+import nextMDX from '@next/mdx';
+import rehypeSlug from 'rehype-slug';
+import { rehypePrettyCode } from 'rehype-pretty-code';
+import { transformerCopyButton } from '@rehype-pretty/transformers';
+
+const plugins = [];
+
+const nextConfig = {
+  output: 'export',
+  pageExtensions: ['md', 'mdx', 'tsx', 'ts', 'jsx', 'js'],
+};
+
+const const rehypePrettyCodeOptions = {
+  theme: 'github-dark',
+  keepBackground: false,
+  transformers: [
+    transformerCopyButton({
+      jsx: true, // required for React
+      visibility: 'always',
+      feedbackDuration: 2_500,
+    }),
+  ],
+};
+
+plugins.push(
+  nextMDX({
+    extension: /\.(md|mdx)$/,
+    options: {
+      remarkPlugins: [],
+      rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions], rehypeSlug],
+    },
+  }),
+);
+
+export default () => plugins.reduce((_, plugin) => plugin(_), nextConfig);
+```
+
+Then in your client component, import the `registerCopyButton` function and call it in your the outermost **client** component.
+
+```tsx
+'use client';
+
+import { registerCopyButton } from '@rehype-pretty/transformers';
+
+export default function Home() {
+  React.useEffect(() => {
+    registerCopyButton();
+  }, []);
+
+  return (
+    <MDXProvider disableParentContext={false}>
+      <Index />
+    </MDXProvider>
+  );
+}
+```

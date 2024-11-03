@@ -3,16 +3,6 @@ import {
   type RehypePrettyCodeOptions,
 } from 'rehype-pretty-code';
 import {
-  transformerNotationDiff,
-  transformerNotationFocus,
-  transformerMetaHighlight,
-  transformerRenderWhitespace,
-  transformerNotationHighlight,
-  transformerCompactLineOptions,
-  transformerNotationErrorLevel,
-  transformerNotationWordHighlight,
-} from '@shikijs/transformers';
-import {
   transformerCopyButton,
   transformerLineNumbers,
 } from '@rehype-pretty/transformers';
@@ -27,7 +17,6 @@ import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import starlightHeadingBadges from 'starlight-heading-badges';
 import starlightLinksValidator from 'starlight-links-validator';
-import { transformerTwoslash, rendererRich } from '@shikijs/twoslash';
 import moonlightTheme from './public/theme/moonlight-ii.json' with {
   type: 'json',
 };
@@ -55,24 +44,11 @@ export default defineConfig({
           keepBackground: true,
           theme: moonlightTheme as unknown as RawTheme,
           transformers: [
-            // twoslash is WIP
-            transformerTwoslash({
-              explicitTrigger: true,
-              renderer: rendererRich(),
-            }),
             transformerCopyButton({
               visibility: 'always',
               feedbackDuration: 2_500,
             }),
             transformerLineNumbers({ autoApply: false }),
-            transformerNotationDiff(),
-            transformerNotationFocus(),
-            transformerMetaHighlight(),
-            transformerRenderWhitespace(),
-            transformerNotationHighlight(),
-            transformerCompactLineOptions(),
-            transformerNotationErrorLevel(),
-            transformerNotationWordHighlight(),
           ],
         } satisfies RehypePrettyCodeOptions,
       ],

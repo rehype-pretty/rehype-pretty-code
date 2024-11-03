@@ -20,7 +20,7 @@ export const load = (async (_event) => {
     import: 'default',
   });
 
-  const parsedSnippets = [];
+  const parsedSnippets: Array<{ filename: string; code: string }> = [];
   for await (const [path, snippetPromise] of Object.entries(rawSnippets)) {
     const filename = path.split('/').pop();
     if (!filename) throw new Error('Invalid filename');
