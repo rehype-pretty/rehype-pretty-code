@@ -1,5 +1,5 @@
 > [!NOTE]  
-> Currently in **development**.
+> **experimental**. Please report any issues you encounter.
 
 # `@rehype-pretty/transformers`
 
@@ -37,9 +37,9 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
 
 - `autoApply`: `boolean` (default: `true`) - Whether to apply line numbers automatically to every code block.
 
-#### Examples
+### Examples
 
-##### direct
+#### direct
 
   ```ts
   import { unified } from 'unified'
@@ -67,7 +67,7 @@ You can use this as a [`shiki` transformer](https://shiki.style/guide/transforme
   console.log(String(file))
   ```
 
-##### In React / Next.js
+#### In React / Next.js
 
 In Next.js you st it up in `next.config.js` as you'd expect with `jsx: true`
 
