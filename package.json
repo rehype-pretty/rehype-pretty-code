@@ -38,6 +38,9 @@
     "node": ">=20",
     "pnpm": ">=9"
   },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm format && pnpm lint && pnpm lint:repo && pnpm typecheck"
+  },
   "packageManager": "pnpm@9.4.0",
   "author": "https://github.com/atomiks",
   "contributors": [
