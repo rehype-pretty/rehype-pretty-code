@@ -29,6 +29,7 @@
     "@types/node": "^20.14.9",
     "bun": "^1.1.17",
     "markdownlint-cli2": "^0.13.0",
+    "shiki": "^3.0.0",
     "simple-git-hooks": "^2.11.1",
     "turbo": "^2.0.5",
     "typescript": "^5.5.2"
@@ -36,9 +37,6 @@
   "engines": {
     "node": ">=20",
     "pnpm": ">=9"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm format && pnpm lint && pnpm lint:repo && pnpm typecheck"
   },
   "packageManager": "pnpm@9.4.0",
   "author": "https://github.com/atomiks",

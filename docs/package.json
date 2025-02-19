@@ -15,7 +15,7 @@
     "@astrojs/starlight": "^0.24.4",
     "@astrojs/starlight-tailwind": "^2.0.3",
     "@astrojs/tailwind": "^5.1.0",
-    "@rehype-pretty/transformers": "workspace:*",
+    "@rehype-pretty/transformers": "workspace:^",
     "astro": "^4.11.1",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-pretty-code": "workspace:*",
@@ -23,13 +23,13 @@
     "rehype-stringify": "^10.0.0",
     "remark-toc": "^9.0.0",
     "sharp": "^0.33.4",
-    "shiki": "^1.9.1",
+    "shiki": "^3.0.0",
     "tailwindcss": "^3.4.4"
   },
   "devDependencies": {
     "@astrojs/check": "^0.7.0",
-    "@shikijs/transformers": "^1.9.1",
-    "@shikijs/twoslash": "^1.9.1",
+    "@shikijs/transformers": "^3.0.0",
+    "@shikijs/twoslash": "^3.0.0",
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/node": "^20.14.9",
     "typescript": "^5.5.2"
