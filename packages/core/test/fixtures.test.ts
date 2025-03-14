@@ -9,7 +9,7 @@ import {
   type BundledLanguage,
   type HighlighterGeneric,
   type BundledHighlighterOptions,
-  getHighlighter as shikiHighlighter,
+  getSingletonHighlighter as shikiHighlighter,
 } from 'shiki';
 import prettier from 'prettier';
 import { remark } from 'remark';
