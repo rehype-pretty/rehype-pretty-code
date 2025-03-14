@@ -1,14 +1,3 @@
-import {
-  transformerNotationDiff,
-  transformerNotationFocus,
-  transformerMetaHighlight,
-  transformerRenderWhitespace,
-  transformerNotationHighlight,
-  transformerMetaWordHighlight,
-  transformerNotationErrorLevel,
-  transformerCompactLineOptions,
-  transformerNotationWordHighlight,
-} from '@shikijs/transformers';
 import remarkToc from 'remark-toc';
 import rehypeSlug from 'rehype-slug';
 import tailwind from '@astrojs/tailwind';
@@ -19,7 +8,6 @@ import { rehypePrettyCode } from 'rehype-pretty-code';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
-import { transformerTwoslash, rendererRich } from '@shikijs/twoslash';
 import moonlightTheme from './public/theme/moonlight-ii.json' with {
   type: 'json',
 };
@@ -28,20 +16,6 @@ import moonlightTheme from './public/theme/moonlight-ii.json' with {
 export default defineConfig({
   markdown: {
     syntaxHighlight: false,
-    shikiConfig: {
-      transformers: [
-        transformerTwoslash({ renderer: rendererRich() }),
-        transformerNotationDiff(),
-        transformerNotationFocus(),
-        transformerMetaHighlight(),
-        transformerRenderWhitespace(),
-        transformerNotationHighlight(),
-        transformerMetaWordHighlight(),
-        transformerNotationErrorLevel(),
-        transformerCompactLineOptions(),
-        transformerNotationWordHighlight(),
-      ],
-    },
     remarkPlugins: [
       // @ts-expect-error
       remarkSmartypants,
