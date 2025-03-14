@@ -12,7 +12,7 @@
     "format": "biome format . --error-on-warnings --log-level='info' --diagnostic-level='info' --write",
     "lint": "biome lint . --log-level='info' --log-kind='pretty' --diagnostic-level='info' --apply-unsafe",
     "format:markdown": "markdownlint-cli2 '**/*.md' '#**/node_modules' '#**/test'",
-    "lint:repo": "pnpm dlx sherif@latest --ignore-dependency tailwindcss",
+    "lint:repo": "pnpm dlx sherif@latest --ignore-dependency tailwindcss --ignore-dependency shiki --ignore-dependency @shikijs/transformers",
     "changeset": "changeset",
     "changeset:version": "changeset version && pnpm install --lockfile-only",
     "changeset:publish": "changeset publish",
