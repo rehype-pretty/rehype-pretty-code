@@ -12,7 +12,6 @@
     "format": "biome format . --error-on-warnings --log-level='info' --diagnostic-level='info' --write",
     "lint": "biome lint . --log-level='info' --log-kind='pretty' --diagnostic-level='info' --apply-unsafe",
     "format:markdown": "markdownlint-cli2 '**/*.md' '#**/node_modules' '#**/test'",
-    "lint:repo": "pnpm dlx sherif@latest --ignore-dependency tailwindcss --ignore-dependency shiki --ignore-dependency @shikijs/transformers",
     "changeset": "changeset",
     "changeset:version": "changeset version && pnpm install --lockfile-only",
     "changeset:publish": "changeset publish",
@@ -30,16 +29,12 @@
     "bun": "^1.1.17",
     "markdownlint-cli2": "^0.13.0",
     "shiki": "^3.0.0",
-    "simple-git-hooks": "^2.11.1",
     "turbo": "^2.0.5",
     "typescript": "^5.5.2"
   },
   "engines": {
     "node": ">=20",
     "pnpm": ">=9"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm format && pnpm lint && pnpm lint:repo && pnpm typecheck"
   },
   "packageManager": "pnpm@9.4.0",
   "author": "https://github.com/atomiks",
