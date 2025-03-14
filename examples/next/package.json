@@ -32,6 +32,10 @@
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.2"
   },
-  "browserslist": ["> 0.5%", "not dead", "not op_mini all"],
+  "browserslist": [
+    "> 0.5%",
+    "not dead",
+    "not op_mini all"
+  ],
   "sideEffects": false
 }

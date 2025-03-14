@@ -1,5 +1,12 @@
 # rehype-pretty-code
 
+## 0.14.1
+
+### Patch Changes
+
+- fix: use `getSingletonHighlighter` to avoid deprecated (since v2) Shiki API
+- Support Shiki 3
+
 ## 0.14.0
 
 ### Minor Changes
