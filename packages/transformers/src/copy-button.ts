@@ -113,53 +113,57 @@ function copyButtonStyle({
       position: relative;
     }
 
-    button[data='<span>'] {
-      width: 0;
-      height: 0;
-      display: none;
-      visibility: hidden;
+    pre code {
+      display: grid;
+      grid-auto-rows: min-content;
     }
 
     pre button.rehype-pretty-copy {
-      right: 1px;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 2;
+      margin: 0;
       padding: 0;
       width: 24px;
       height: 24px;
-      display: flex;
-      margin-top: 2px;
-      margin-right: 8px;
-      position: absolute;
+      display: inline-flex;
       border-radius: 25%;
-      & span {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-      }
-      & .ready {
-        background-image: var(--copy-icon);
-      }
-      & .success {
-        display: none; background-image: var(--success-icon);
-      }
+      backdrop-filter: blur(3px);
     }
-
-    &.rehype-pretty-copied { 
-      & .success { 
-        display: block;
-      } & .ready {
-        display: none;
-      }
+    
+    pre button.rehype-pretty-copy span {
+      width: 100%;
+      aspect-ratio: 1 / 1;
     }
-
+    
+    pre button.rehype-pretty-copy .ready {
+      background-image: var(--copy-icon);
+    }
+    
+    pre button.rehype-pretty-copy .success {
+      display: none;
+      background-image: var(--success-icon);
+    }
+    
     pre button.rehype-pretty-copy.rehype-pretty-copied {
       opacity: 1;
-      & .ready { display: none; }
-      & .success { display: block; }
+    }
+
+    pre button.rehype-pretty-copy.rehype-pretty-copied .ready {
+      display: none;
+    }
+
+    pre button.rehype-pretty-copy.rehype-pretty-copied .success {
+      display: block;
     }
 `;
   if (visibility === 'hover') {
     copyButtonStyle += /* css */ `
-        pre button.rehype-pretty-copy { opacity: 0; }
-        figure[data-rehype-pretty-code-figure]:hover > pre > code button.rehype-pretty-copy {
+        pre button.rehype-pretty-copy { 
+          opacity: 0;
+        }
+        pre:hover button.rehype-pretty-copy {
           opacity: 1;
         }
       `;
