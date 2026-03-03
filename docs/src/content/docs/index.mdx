@@ -617,11 +617,11 @@ To completely configure the highlighter, use the
 to configure other Shiki options, such as `langs{:.meta.object-literal.key}`.
 
 ```js
-import { getHighlighter } from "shiki";
+import { createHighlighter } from "shiki";
 
 const options = {
   getHighlighter: (options) =>
-    getHighlighter({
+    createHighlighter({
       ...options,
       langs: [
         "plaintext",
