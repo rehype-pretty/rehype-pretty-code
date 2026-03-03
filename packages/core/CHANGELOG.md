@@ -1,5 +1,12 @@
 # rehype-pretty-code
 
+## 0.14.3
+
+### Patch Changes
+
+- chore: fix npm OIDC trusted publishing workflow
+- docs: update docs with renamed shiki function: `getHighlighter` -> `createHighlighter`
+
 ## 0.14.2
 
 ### Patch Changes
