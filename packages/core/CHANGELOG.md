@@ -1,5 +1,11 @@
 # rehype-pretty-code
 
+## 0.14.2
+
+### Patch Changes
+
+- Support Shiki 4
+
 ## 0.14.1
 
 ### Patch Changes
