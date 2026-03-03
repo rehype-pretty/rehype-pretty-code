@@ -52,7 +52,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'pnpm'
-          node-version: '24.x'
+          # v24.14.0 bundles npm 11.9.0; ^ keeps newer 24.x while enforcing this minimum baseline.
+          node-version: '^24.14.0'
           registry-url: 'https://registry.npmjs.org'
 
       - name: 'Install Dependencies'

@@ -2,4 +2,4 @@
 "rehype-pretty-code": patch
 ---
 
-Republish with the fixed npm OIDC trusted publishing workflow.
+chore: fix npm OIDC trusted publishing workflow
