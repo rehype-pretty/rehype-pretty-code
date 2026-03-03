@@ -52,11 +52,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'pnpm'
-          node-version: 'lts/*'
+          node-version: '24.x'
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Install npm >= 11.5.1 (required for OIDC publishing)
-        run: npm install -g npm@^11.5.1
 
       - name: 'Install Dependencies'
         run: pnpm install --frozen-lockfile
