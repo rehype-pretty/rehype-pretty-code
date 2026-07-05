@@ -1,0 +1,86 @@
+
+<style>
+  html {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  body {
+    margin: 30px auto;
+    max-width: 800px;
+  }
+  pre {
+    padding: 16px;
+  }
+  span > code {
+    background: black;
+    padding: 4px;
+  }
+  [data-highlighted-line], [data-highlighted-chars] {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  code[data-line-numbers] {
+    counter-reset: line;
+  }
+  code[data-line-numbers]>[data-line]::before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 1rem;
+    margin-right: 2rem;
+    text-align: right;
+    color: gray;
+  }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
+
+  .diff.add {
+    background-color: rgba(0, 255, 100, 0.25);
+  }
+  .diff.remove {
+    background-color: rgba(255, 100, 200, 0.35);
+  }
+</style>
+<h1>Highlight chars spanning multiple tokens, repeated</h1>
+<p>
+  A pattern whose match spans multiple syntax-highlighting tokens and occurs
+  more than once on the same line should highlight every occurrence without
+  hanging (see issue #185).
+</p>
+<p>/Math.sin/</p>
+<figure data-rehype-pretty-code-figure="">
+  <pre
+    style="background-color: #24292e; color: #e1e4e8"
+    tabindex="0"
+    data-language="js"
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> s</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> </span><mark data-highlighted-chars-mark="" data-highlighted-chars="" class="word"><span style="color:#E1E4E8">Math.</span><span style="color:#B392F0">sin</span></mark><span style="color:#E1E4E8">(x) </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> </span><mark data-highlighted-chars-mark="" data-highlighted-chars="" class="word"><span style="color:#E1E4E8">Math.</span><span style="color:#B392F0">sin</span></mark><span style="color:#E1E4E8">(y);</span></span></code></pre>
+</figure>
+<p>/c.json/</p>
+<figure data-rehype-pretty-code-figure="">
+  <pre
+    style="background-color: #24292e; color: #e1e4e8"
+    tabindex="0"
+    data-language="js"
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><mark data-highlighted-chars-mark="" data-highlighted-chars="" class="word"><span style="color:#E1E4E8">c.</span><span style="color:#B392F0">json</span></mark><span style="color:#E1E4E8">(); </span><mark data-highlighted-chars-mark="" data-highlighted-chars="" class="word"><span style="color:#E1E4E8">c.</span><span style="color:#B392F0">json</span></mark><span style="color:#E1E4E8">();</span></span></code></pre>
+</figure>
+<p>/'a/</p>
+<figure data-rehype-pretty-code-figure="">
+  <pre
+    style="background-color: #24292e; color: #e1e4e8"
+    tabindex="0"
+    data-language="rust"
+    data-theme="github-dark"
+  ><code data-language="rust" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">fn</span><span style="color:#B392F0"> f</span><span style="color:#E1E4E8">&#x3C;</span><mark data-highlighted-chars-mark="" data-highlighted-chars="" class="word"><span style="color:#E1E4E8">'</span><span style="color:#B392F0">a</span></mark><span style="color:#E1E4E8">, '</span><span style="color:#B392F0">b</span><span style="color:#E1E4E8">>(x</span><span style="color:#F97583">:</span><span style="color:#F97583"> &#x26;</span><mark data-highlighted-chars-mark="" data-highlighted-chars="" class="word"><span style="color:#E1E4E8">'</span><span style="color:#B392F0">a</span></mark><span style="color:#B392F0"> str</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">-></span><span style="color:#F97583"> &#x26;</span><mark data-highlighted-chars-mark="" data-highlighted-chars="" class="word"><span style="color:#E1E4E8">'</span><span style="color:#B392F0">a</span></mark><span style="color:#B392F0"> str</span><span style="color:#E1E4E8"> { x }</span></span></code></pre>
+</figure>

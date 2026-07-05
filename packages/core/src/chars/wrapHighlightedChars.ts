@@ -55,6 +55,11 @@ export function wrapHighlightedChars(
     element.properties = element.properties || {};
     element.properties['data-highlighted-chars'] = '';
     element.properties['data-chars-id'] = id;
+    // Mark this wrapped group as visited so it is skipped when the outer
+    // loop rescans for further occurrences of the same chars. Without this,
+    // a match that spans multiple tokens and repeats on the same line is
+    // re-detected here on every iteration, so the loop never terminates.
+    element.properties['rehype-pretty-code-visited'] = '';
     element.tagName = 'mark';
     onVisitHighlightedChars?.(element as CharsElement, id);
   } else {

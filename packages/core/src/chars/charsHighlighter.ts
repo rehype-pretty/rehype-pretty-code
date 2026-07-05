@@ -26,12 +26,19 @@ export function charsHighlighter(
   const { ranges = [] } = options;
   const textContent = hastToString(element);
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: char matching is inherently branchy
   charsList.forEach((chars, index) => {
     if (chars && textContent?.includes(chars)) {
       let textContent = hastToString(element);
       let startIndex = 0;
 
       while (textContent.includes(chars)) {
+        // Snapshot the remaining text so we can bail out if an iteration
+        // fails to make progress. The recomputed `textContent` excludes
+        // already-highlighted nodes, so a productive iteration always makes
+        // it strictly shorter; if it does not shrink, no occurrence was
+        // consumed and continuing would loop forever.
+        const previousTextContent = textContent;
         const currentCharsRange = ranges[index] || [];
         const id = `${chars}-${index}`;
 
@@ -79,6 +86,10 @@ export function charsHighlighter(
             }
           })
           .join('');
+
+        // Safety guard: if the remaining text did not shrink, this iteration
+        // consumed nothing, so stop instead of spinning forever.
+        if (textContent.length >= previousTextContent.length) break;
       }
     }
   });
