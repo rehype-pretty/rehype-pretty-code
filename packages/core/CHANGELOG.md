@@ -1,5 +1,11 @@
 # rehype-pretty-code
 
+## 0.14.4
+
+### Patch Changes
+
+- fix: prevent an infinite loop in inline character highlighting when a pattern matches text that spans multiple syntax tokens and occurs more than once on the same line (#185)
+
 ## 0.14.3
 
 ### Patch Changes
