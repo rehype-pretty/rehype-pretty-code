@@ -109,6 +109,21 @@ function apply(
       return code;
     }
 
+    // Shiki emits the dual-theme keys (e.g. `--shiki-light-bg`) as inline
+    // styles on <pre> only. When multiple themes are active, mirror them onto
+    // <code> as well, so the documented `code[data-theme*=' ']` selector can
+    // read the theme background variables directly instead of relying on them
+    // inheriting from <pre>. See rehype-pretty/rehype-pretty-code#222.
+    if (
+      keepBackground &&
+      themeNames.length > 1 &&
+      typeof pre.properties.style === 'string'
+    ) {
+      code.properties.style = code.properties.style
+        ? `${pre.properties.style};${code.properties.style}`
+        : `${pre.properties.style};`;
+    }
+
     if (grid) {
       if (code.properties.style) {
         code.properties.style += 'display: grid;';
