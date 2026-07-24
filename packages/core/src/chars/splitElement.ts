@@ -10,7 +10,6 @@ interface SplitElementProps {
   rest: Array<string>;
   nextElementContinues: boolean;
   index: number;
-  ignoreChars: boolean;
 }
 
 export function splitElement({
@@ -22,12 +21,10 @@ export function splitElement({
   rest,
   nextElementContinues,
   index,
-  ignoreChars,
 }: SplitElementProps) {
   if (
-    (isElement(elementToWrap) &&
-      elementToWrap.children?.[0]?.type !== 'text') ||
-    ignoreChars
+    isElement(elementToWrap) &&
+    elementToWrap.children?.[0]?.type !== 'text'
   ) {
     return [elementToWrap, index] as const;
   }

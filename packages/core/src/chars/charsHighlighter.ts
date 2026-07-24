@@ -52,7 +52,6 @@ export function charsHighlighter(
           element,
           chars,
           startIndex,
-          ignoreChars,
         );
 
         // maybe throw / notify due to failure here
