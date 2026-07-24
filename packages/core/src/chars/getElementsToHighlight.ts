@@ -11,7 +11,6 @@ export function getElementsToHighlight(
   element: Element,
   chars: string,
   startIndex = 0,
-  ignoreChars = false,
 ): Array<{ element: Element; index: number }> {
   const toWrap = [];
   let charsSoFar = '';
@@ -123,7 +122,6 @@ export function getElementsToHighlight(
               rest,
               nextElementContinues,
               index: i,
-              ignoreChars,
             });
 
             charsSoFar += overlap;
