@@ -11,7 +11,6 @@ import rangeParser from 'parse-numeric-range';
 import { unified, type Transformer } from 'unified';
 import rehypeParse from 'rehype-parse';
 import { charsHighlighter } from './chars/charsHighlighter';
-import { reverseString } from './chars/utils';
 import {
   isElement,
   isText,
@@ -23,6 +22,7 @@ import {
   getThemeNames,
   replaceLineClass,
   getLineId,
+  getShowLineNumbers,
 } from './utils';
 export type { Options, LineElement, CharsElement, Theme } from './types';
 
@@ -427,24 +427,29 @@ export function rehypePrettyCode(
           counterMap: new Map<string, number>(),
         };
 
+        // Detect `showLineNumbers` (optionally `showLineNumbers{N}`) as a
+        // standalone meta token, wherever it appears in the meta string.
+        // Occurrences inside a character-highlight annotation, which may
+        // legitimately span whitespace (`/foo showLineNumbers bar/`), are
+        // highlight text rather than an option, so the spans those
+        // annotations already claim are excluded.
+        const showLineNumbers = getShowLineNumbers(
+          meta,
+          (charsMatches ?? []).map((match) => {
+            const start = match.index ?? 0;
+            return [start, start + match[0].length];
+          }),
+        );
+
         // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         visit(codeTree, 'element', (element) => {
-          if (
-            element.tagName === 'code' &&
-            /srebmuNeniLwohs(?!(.*)(\/))/.test(reverseString(meta))
-          ) {
+          if (element.tagName === 'code' && showLineNumbers) {
             if (element.properties) {
               element.properties['data-line-numbers'] = '';
             }
 
-            const lineNumbersStartAtMatch = reverseString(meta).match(
-              /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/,
-            );
-            const startNumberString = lineNumbersStartAtMatch?.[1];
-            if (startNumberString) {
-              const startAt = startNumberString
-                ? Number(reverseString(startNumberString)) - 1
-                : 0;
+            if (showLineNumbers.startAt !== null) {
+              const startAt = showLineNumbers.startAt - 1;
               lineNumbersMaxDigits = startAt;
               if (element.properties) {
                 element.properties.style = `counter-set: line ${startAt};`;
