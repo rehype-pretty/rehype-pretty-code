@@ -111,6 +111,43 @@ export function replaceLineClass(element: Element) {
   }
 }
 
+// `showLineNumbers`, optionally `showLineNumbers{N}`, bounded by
+// whitespace or the ends of the meta string. Only lookahead is used, so
+// this stays parseable on Safari < 16.4, which lacks lookbehind.
+const showLineNumbersRegex = /(?:^|\s)(showLineNumbers(?:\{(\d+)\})?)(?=\s|$)/g;
+
+/**
+ * Finds the `showLineNumbers` option in a block meta string.
+ *
+ * Whitespace boundaries alone do not prove the token is an option: it can
+ * also be part of a delimited character-highlight annotation, as in
+ * `/foo showLineNumbers bar/`, where it is highlight text. `takenSpans`
+ * holds the `[start, end)` offsets already claimed by those annotations,
+ * and any match overlapping one of them is skipped.
+ *
+ * Returns `null` when the option is absent, otherwise `startAt` — the
+ * line number given by `showLineNumbers{N}`, or `null` for a bare token.
+ */
+export function getShowLineNumbers(
+  meta: string,
+  takenSpans: Array<[number, number]>,
+) {
+  for (const match of meta.matchAll(showLineNumbersRegex)) {
+    const token = match[1];
+    if (!token) continue;
+
+    // `match[0]` may carry a leading whitespace boundary character.
+    const start = (match.index ?? 0) + (match[0].length - token.length);
+    const end = start + token.length;
+
+    if (takenSpans.some(([from, to]) => start < to && end > from)) continue;
+
+    return { startAt: match[2] ? Number(match[2]) : null };
+  }
+
+  return null;
+}
+
 export function getLineId(lineNumber: number, meta: string) {
   const segments = meta.match(/\{[^}]+\}#[a-zA-Z0-9]+/g);
   if (!segments) return null;
