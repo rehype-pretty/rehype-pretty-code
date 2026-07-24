@@ -11,7 +11,6 @@ import rangeParser from 'parse-numeric-range';
 import { unified, type Transformer } from 'unified';
 import rehypeParse from 'rehype-parse';
 import { charsHighlighter } from './chars/charsHighlighter';
-import { reverseString } from './chars/utils';
 import {
   isElement,
   isText,
@@ -427,24 +426,24 @@ export function rehypePrettyCode(
           counterMap: new Map<string, number>(),
         };
 
+        // Detect `showLineNumbers` (optionally `showLineNumbers{N}`) as a
+        // standalone meta token, wherever it appears in the meta string.
+        // Bounding on whitespace/string-ends avoids matching a
+        // `/showLineNumbers/` highlight word, which is slash-delimited.
+        const showLineNumbersMatch = meta.match(
+          /(?:^|\s)showLineNumbers(?:\{(\d+)\})?(?=\s|$)/,
+        );
+
         // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         visit(codeTree, 'element', (element) => {
-          if (
-            element.tagName === 'code' &&
-            /srebmuNeniLwohs(?!(.*)(\/))/.test(reverseString(meta))
-          ) {
+          if (element.tagName === 'code' && showLineNumbersMatch) {
             if (element.properties) {
               element.properties['data-line-numbers'] = '';
             }
 
-            const lineNumbersStartAtMatch = reverseString(meta).match(
-              /(?:\}(\d+){)?srebmuNeniLwohs(?!(.*)(\/))/,
-            );
-            const startNumberString = lineNumbersStartAtMatch?.[1];
+            const startNumberString = showLineNumbersMatch[1];
             if (startNumberString) {
-              const startAt = startNumberString
-                ? Number(reverseString(startNumberString)) - 1
-                : 0;
+              const startAt = Number(startNumberString) - 1;
               lineNumbersMaxDigits = startAt;
               if (element.properties) {
                 element.properties.style = `counter-set: line ${startAt};`;
