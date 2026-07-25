@@ -2,9 +2,17 @@ import type { Element } from 'hast';
 import type { CharsHighlighterOptions, CharsElement } from '../types';
 import { isElement, isText } from '../utils';
 
+function markElementsVisited(elementsToWrap: Array<Element>) {
+  for (const element of elementsToWrap) {
+    element.properties = element.properties || {};
+    element.properties['rehype-pretty-code-visited'] = '';
+  }
+}
+
 export function wrapHighlightedChars(
   parentElement: Element,
-  elementsToWrap: Array<{ element: Element; index: number }>,
+  elementsToWrap: Array<Element>,
+  chars: string,
   options: CharsHighlighterOptions,
   ignoreWord: boolean,
   onVisitHighlightedChars?: (
@@ -13,85 +21,28 @@ export function wrapHighlightedChars(
   ) => void,
 ) {
   if (!elementsToWrap || elementsToWrap.length === 0) {
-    return;
+    return false;
   }
-
-  const [{ element }] = elementsToWrap;
 
   if (ignoreWord) {
-    if (element.properties) {
-      element.properties['rehype-pretty-code-visited'] = '';
-    }
-    return;
+    // Every fragment belongs to the ignored occurrence. Marking only the
+    // first one leaves the remaining fragments available to the next scan,
+    // which can then count an overlapping, token-boundary-dependent match.
+    markElementsVisited(elementsToWrap);
+    return true;
   }
 
-  if (elementsToWrap.length > 1) {
-    // The recorded indices are the ones the matcher predicted while it was
-    // still splitting nodes, so they can drift from where the elements ended
-    // up. Read the positions back from the tree before touching it.
-    const positions = elementsToWrap.map(({ element }) =>
-      parentElement.children.indexOf(element),
-    );
+  const [singleElement] = elementsToWrap;
+  const isSimpleSingleElement =
+    elementsToWrap.length === 1 &&
+    singleElement.children.length === 1 &&
+    isText(singleElement.children[0]);
 
-    // The splice replaces a consecutive slice, which only lines up with the
-    // match when the run is contiguous. Leave the tree alone rather than
-    // delete siblings that were never part of it.
-    const isContiguous = positions.every(
-      (position, i) =>
-        position !== -1 && (i === 0 || position === positions[i - 1] + 1),
-    );
-
-    if (!isContiguous) {
-      return;
-    }
-
-    const start = positions[0];
-
-    parentElement.children.splice(start, elementsToWrap.length, {
-      type: 'element',
-      tagName: 'mark',
-      properties: { 'data-highlighted-chars-mark': '' },
-      children: elementsToWrap.map(({ element }) => element),
-    });
-
-    const element = parentElement.children[start];
-
-    if (!isElement(element)) {
-      return;
-    }
-
-    const wordStr = element.children.reduce((acc, node) => {
-      const textElement = isElement(node) ? node.children[0] : null;
-      if (isText(textElement)) {
-        return acc + textElement.value;
-      }
-      return acc;
-    }, '');
-
-    const id = options.idsMap.get(wordStr);
-    element.properties = element.properties || {};
-    element.properties['data-highlighted-chars'] = '';
-    element.properties['data-chars-id'] = id;
-    // Mark this wrapped group as visited so it is skipped when the outer
-    // loop rescans for further occurrences of the same chars. Without this,
-    // a match that spans multiple tokens and repeats on the same line is
-    // re-detected here on every iteration, so the loop never terminates.
-    element.properties['rehype-pretty-code-visited'] = '';
-    element.tagName = 'mark';
-    onVisitHighlightedChars?.(element as CharsElement, id);
-  } else {
-    const [{ element }] = elementsToWrap;
-    const textElement = element.children[0];
-
-    if (!isText(textElement)) {
-      return;
-    }
-
-    const id = options.idsMap.get(textElement.value);
+  if (isSimpleSingleElement) {
+    const element = singleElement;
+    const id = options.idsMap.get(chars);
 
     element.properties = element.properties || {};
-    // used to skip already parsed chars
-    element.properties['rehype-pretty-code-visited'] = '';
     element.properties['data-highlighted-chars'] = '';
     element.properties['data-chars-id'] = id;
     element.tagName = 'mark';
@@ -108,5 +59,49 @@ export function wrapHighlightedChars(
     element.properties.style = undefined;
 
     onVisitHighlightedChars?.(element as CharsElement, id);
+    element.properties = element.properties || {};
+    element.properties['rehype-pretty-code-visited'] = '';
+    return true;
   }
+
+  const positions = elementsToWrap.map((element) =>
+    parentElement.children.indexOf(element),
+  );
+
+  // The splice replaces a consecutive slice, which only lines up with the
+  // match when the run is contiguous. Leave the tree alone rather than
+  // delete siblings that were never part of it.
+  const isContiguous = positions.every(
+    (position, i) =>
+      position !== -1 && (i === 0 || position === positions[i - 1] + 1),
+  );
+
+  if (!isContiguous) {
+    return false;
+  }
+
+  const start = positions[0];
+
+  parentElement.children.splice(start, elementsToWrap.length, {
+    type: 'element',
+    tagName: 'mark',
+    properties: { 'data-highlighted-chars-mark': '' },
+    children: elementsToWrap,
+  });
+
+  const element = parentElement.children[start];
+
+  if (!isElement(element)) {
+    return false;
+  }
+
+  const id = options.idsMap.get(chars);
+  element.properties = element.properties || {};
+  element.properties['data-highlighted-chars'] = '';
+  element.properties['data-chars-id'] = id;
+  element.tagName = 'mark';
+  onVisitHighlightedChars?.(element as CharsElement, id);
+  element.properties = element.properties || {};
+  element.properties['rehype-pretty-code-visited'] = '';
+  return true;
 }

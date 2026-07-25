@@ -4,6 +4,7 @@ import {
   readFileSync,
   type PathOrFileDescriptor,
 } from 'node:fs';
+import type { Element } from 'hast';
 import {
   type BundledTheme,
   type BundledLanguage,
@@ -16,8 +17,13 @@ import { remark } from 'remark';
 import { join, parse } from 'node:path';
 import type { Compatible } from 'vfile';
 import { toHtml } from 'hast-util-to-html';
+import { toString as hastToString } from 'hast-util-to-string';
 import { toHast } from 'mdast-util-to-hast';
+import rehypeParse from 'rehype-parse';
 import rehypePrettyCode, { type Options } from '../src';
+import { charsHighlighter } from '../src/chars/charsHighlighter';
+import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
 import { expect, describe, it, vi, type Mock } from 'vitest';
 import { transformerNotationDiff } from '@shikijs/transformers';
 
@@ -32,6 +38,27 @@ const getHtml = async (
   // @ts-expect-error
   await rehypePrettyCode(options)(hAst);
   return toHtml(hAst, { allowDangerousHtml: true });
+};
+
+const inspectHighlightedHtml = (html: string) => {
+  const tree = unified().use(rehypeParse, { fragment: true }).parse(html);
+  const highlightedChars: Array<{ text: string; id: unknown }> = [];
+  let codeText: string | undefined;
+
+  visit(tree, 'element', (element) => {
+    if (element.tagName === 'code') {
+      codeText = hastToString(element);
+    }
+
+    if (Object.hasOwn(element.properties, 'dataHighlightedChars')) {
+      highlightedChars.push({
+        text: hastToString(element),
+        id: element.properties.dataCharsId,
+      });
+    }
+  });
+
+  return { codeText, highlightedChars };
 };
 
 const parseQueryParameters = (query: string) =>
@@ -182,6 +209,298 @@ it("highlighter caches don't overwrite each other", async () => {
   // both highlighters are being cached under the same key, but in separate caches,
   // that's what we're testing here by asserting that they yield different results
   expect(html1).not.toBe(html2);
+});
+
+it('highlights repeated chars spanning syntax tokens without changing the source', async () => {
+  const source = 's = "\\aa"';
+  const html = await getHtml(['```python /aa/', source, '```'].join('\n'), {
+    theme: 'github-dark',
+  });
+  const tree = unified().use(rehypeParse, { fragment: true }).parse(html);
+  const highlightedChars: Array<string> = [];
+  let codeText: string | undefined;
+
+  visit(tree, 'element', (element) => {
+    if (element.tagName === 'code') {
+      codeText = hastToString(element);
+    }
+
+    if (Object.hasOwn(element.properties, 'dataHighlightedChars')) {
+      highlightedChars.push(hastToString(element));
+    }
+  });
+
+  expect(codeText).toBe(source);
+  expect(highlightedChars).toEqual(['aa']);
+});
+
+it('counts complete repeated-char matches across syntax tokens', async () => {
+  const source = 's = "\\aaaa"';
+  const html = await getHtml(['```python /aa/2', source, '```'].join('\n'), {
+    theme: 'github-dark',
+  });
+  const tree = unified().use(rehypeParse, { fragment: true }).parse(html);
+  const highlightedChars: Array<{ text: string; nextText: string }> = [];
+  let codeText: string | undefined;
+
+  visit(tree, 'element', (element, index, parent) => {
+    if (element.tagName === 'code') {
+      codeText = hastToString(element);
+    }
+
+    if (
+      Object.hasOwn(element.properties, 'dataHighlightedChars') &&
+      typeof index === 'number' &&
+      parent
+    ) {
+      const nextSibling = parent.children[index + 1];
+      highlightedChars.push({
+        text: hastToString(element),
+        nextText: nextSibling ? hastToString(nextSibling) : '',
+      });
+    }
+  });
+
+  expect(codeText).toBe(source);
+  expect(highlightedChars).toEqual([{ text: 'aa', nextText: '"' }]);
+});
+
+it('preserves mixed token children when highlighting the whole token', async () => {
+  const source = 'const value = 1;';
+  const highlightedChars: Array<{ text: string; id: string | undefined }> = [];
+  const html = await getHtml(['```js /const/', source, '```'].join('\n'), {
+    theme: 'github-dark',
+    transformers: [
+      {
+        name: 'split-token-children',
+        span(element) {
+          if (hastToString(element) === 'const') {
+            element.children = [
+              { type: 'text', value: 'c' },
+              {
+                type: 'element',
+                tagName: 'em',
+                properties: {},
+                children: [{ type: 'text', value: 'onst' }],
+              },
+            ];
+          }
+        },
+      },
+    ],
+    onVisitHighlightedChars(element, id) {
+      highlightedChars.push({ text: hastToString(element), id });
+    },
+  });
+
+  const output = inspectHighlightedHtml(html);
+
+  expect(output.codeText).toBe(source);
+  expect(output.highlightedChars).toEqual([{ text: 'const', id: undefined }]);
+  expect(highlightedChars).toEqual([{ text: 'const', id: undefined }]);
+  expect(html.match(/<em>onst<\/em>/g)).toHaveLength(1);
+});
+
+it('preserves auxiliary token children when highlighting a partial match', async () => {
+  const source = 'foo';
+  const html = await getHtml(['```js /oo/', source, '```'].join('\n'), {
+    theme: 'github-dark',
+    transformers: [
+      {
+        name: 'append-word-break',
+        span(element) {
+          if (hastToString(element) === source) {
+            element.children.push({
+              type: 'element',
+              tagName: 'wbr',
+              properties: {},
+              children: [],
+            });
+          }
+        },
+      },
+    ],
+  });
+
+  const output = inspectHighlightedHtml(html);
+
+  expect(output.codeText).toBe(source);
+  expect(output.highlightedChars).toEqual([{ text: 'oo', id: undefined }]);
+  expect(html.match(/<wbr>/g)).toHaveLength(1);
+});
+
+it('counts nested partial matches when applying a range', async () => {
+  const source = ['foobar;', 'foo;'].join('\n');
+  const html = await getHtml(['```js /foo/2', source, '```'].join('\n'), {
+    theme: 'github-dark',
+    transformers: [
+      {
+        name: 'nest-first-line-tokens',
+        span(element, line) {
+          if (line === 1) {
+            element.children = [
+              {
+                type: 'element',
+                tagName: 'em',
+                properties: {},
+                children: element.children,
+              },
+            ];
+          }
+        },
+      },
+    ],
+  });
+
+  const output = inspectHighlightedHtml(html);
+
+  expect(output.codeText).toBe(source);
+  expect(output.highlightedChars).toEqual([{ text: 'foo', id: undefined }]);
+});
+
+it('highlights partial matches nested by a transformer', async () => {
+  const source = 'foobar';
+  const highlightedChars: Array<{ text: string; id: string | undefined }> = [];
+  const html = await getHtml(
+    ['```js /foo/#keyword', source, '```'].join('\n'),
+    {
+      theme: 'github-dark',
+      transformers: [
+        {
+          name: 'nest-token-children',
+          span(element) {
+            if (hastToString(element) === source) {
+              element.children = [
+                {
+                  type: 'element',
+                  tagName: 'em',
+                  properties: {},
+                  children: element.children,
+                },
+              ];
+            }
+          },
+        },
+      ],
+      onVisitHighlightedChars(element, id) {
+        highlightedChars.push({ text: hastToString(element), id });
+      },
+    },
+  );
+
+  const output = inspectHighlightedHtml(html);
+
+  expect(output.codeText).toBe(source);
+  expect(output.highlightedChars).toEqual([{ text: 'foo', id: 'keyword' }]);
+  expect(highlightedChars).toEqual([{ text: 'foo', id: 'keyword' }]);
+  expect(html.match(/<em>foo<\/em>/g)).toHaveLength(1);
+  expect(html.match(/<em>bar<\/em>/g)).toHaveLength(1);
+});
+
+it('does not count comments as highlighted text when splitting nested tokens', () => {
+  const line: Element = {
+    type: 'element',
+    tagName: 'span',
+    properties: {},
+    children: [
+      {
+        type: 'element',
+        tagName: 'span',
+        properties: {},
+        children: [
+          { type: 'comment', value: 'foo' },
+          { type: 'text', value: 'foobar' },
+        ],
+      },
+    ],
+  };
+  const highlightedChars: Array<string> = [];
+
+  charsHighlighter(
+    line,
+    ['foo'],
+    {
+      ranges: [[1]],
+      idsMap: new Map(),
+      counterMap: new Map(),
+    },
+    (element) => {
+      highlightedChars.push(hastToString(element));
+    },
+  );
+
+  expect(hastToString(line)).toBe('foobar');
+  expect(highlightedChars).toEqual(['foo']);
+});
+
+it('composes token-spanning ranges, ids, and highlighted-char callbacks', async () => {
+  const line = 's = "\\aa"';
+  const source = [line, line].join('\n');
+  const highlightedChars: Array<{ text: string; id: string | undefined }> = [];
+  const html = await getHtml(['```python /aa/2#a', source, '```'].join('\n'), {
+    theme: 'github-dark',
+    onVisitHighlightedChars(element, id) {
+      highlightedChars.push({ text: hastToString(element), id });
+    },
+  });
+
+  const output = inspectHighlightedHtml(html);
+
+  expect(output.codeText).toBe(source);
+  expect(output.highlightedChars).toEqual([{ text: 'aa', id: 'a' }]);
+  expect(highlightedChars).toEqual([{ text: 'aa', id: 'a' }]);
+});
+
+it('matches chars exactly regardless of syntax token boundaries', () => {
+  const cases = [
+    { parts: ['ba', 'bb'], chars: 'bb' },
+    { parts: ['aa', 'ab'], chars: 'aab' },
+    { parts: ['a', 'b', 'c', 'a', 'babcab'], chars: 'abcab' },
+  ];
+
+  const results = cases.map(({ parts, chars }) => {
+    const source = parts.join('');
+    const line: Element = {
+      type: 'element',
+      tagName: 'span',
+      properties: {},
+      children: parts.map((value) => ({
+        type: 'element',
+        tagName: 'span',
+        properties: {},
+        children: [{ type: 'text', value }],
+      })),
+    };
+
+    charsHighlighter(line, [chars], {
+      ranges: [[]],
+      idsMap: new Map(),
+      counterMap: new Map(),
+    });
+
+    const highlightedChars: Array<string> = [];
+    visit(line, 'element', (element) => {
+      if (Object.hasOwn(element.properties, 'data-highlighted-chars')) {
+        highlightedChars.push(hastToString(element));
+      }
+    });
+
+    return {
+      source,
+      rendered: hastToString(line),
+      highlightedChars,
+    };
+  });
+
+  expect(results).toEqual([
+    { source: 'babb', rendered: 'babb', highlightedChars: ['bb'] },
+    { source: 'aaab', rendered: 'aaab', highlightedChars: ['aab'] },
+    {
+      source: 'abcababcab',
+      rendered: 'abcababcab',
+      highlightedChars: ['abcab', 'abcab'],
+    },
+  ]);
 });
 
 const defaultStyle = /* html */ `
