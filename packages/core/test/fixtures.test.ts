@@ -415,10 +415,7 @@ it('preserves transformer-owned interactive elements around partial highlights',
                   href: '#definition',
                   ariaLabel: 'Go to definition',
                 },
-                children: [
-                  { type: 'text', value: 'fo' },
-                  { type: 'text', value: 'obar' },
-                ],
+                children: element.children,
               },
             ];
           }
@@ -446,6 +443,77 @@ it('preserves transformer-owned interactive elements around partial highlights',
   expect(highlightedChars).toEqual(['oob']);
 });
 
+it('preserves a transformer-owned semantic element on a whole match', async () => {
+  const html = await getHtml(['```js /foo/', 'foo', '```'].join('\n'), {
+    theme: 'github-dark',
+    transformers: [
+      {
+        name: 'link-token',
+        span(element) {
+          if (hastToString(element) === 'foo') {
+            element.tagName = 'a';
+            element.properties = {
+              id: 'definition',
+              href: '#definition',
+              ariaLabel: 'Go to definition',
+            };
+          }
+        },
+      },
+    ],
+  });
+  const tree = unified().use(rehypeParse, { fragment: true }).parse(html);
+  const links: Array<Element> = [];
+
+  visit(tree, 'element', (element) => {
+    if (element.tagName === 'a') {
+      links.push(element);
+    }
+  });
+
+  expect(links).toHaveLength(1);
+  expect(links[0]?.properties.id).toBe('definition');
+  expect(hastToString(links[0])).toBe('foo');
+  expect(inspectHighlightedHtml(html).highlightedChars).toEqual([
+    { text: 'foo', id: undefined },
+  ]);
+});
+
+it('retains decorated whole-token highlight properties and callback shape', async () => {
+  const highlightedChars: Array<Element> = [];
+  const html = await getHtml(['```js /foo/', 'foo', '```'].join('\n'), {
+    theme: 'github-dark',
+    transformers: [
+      {
+        name: 'decorate-token',
+        span(element) {
+          if (hastToString(element) === 'foo') {
+            element.properties.className = ['token'];
+          }
+        },
+      },
+    ],
+    onVisitHighlightedChars(element) {
+      highlightedChars.push(element);
+    },
+  });
+  const tree = unified().use(rehypeParse, { fragment: true }).parse(html);
+  const markedTokens: Array<Element> = [];
+
+  visit(tree, 'element', (element) => {
+    if (Object.hasOwn(element.properties, 'dataHighlightedChars')) {
+      markedTokens.push(element);
+    }
+  });
+
+  expect(markedTokens).toHaveLength(1);
+  expect(markedTokens[0]?.tagName).toBe('mark');
+  expect(markedTokens[0]?.properties.className).toEqual(['token']);
+  expect(highlightedChars).toHaveLength(1);
+  expect(highlightedChars[0]?.tagName).toBe('mark');
+  expect(highlightedChars[0]?.properties.className).toEqual(['token']);
+});
+
 it('isolates transformer properties from ranged highlight callbacks', async () => {
   const source = 'foofoo';
   const html = await getHtml(['```js /foo/2', source, '```'].join('\n'), {
@@ -462,16 +530,28 @@ it('isolates transformer properties from ranged highlight callbacks', async () =
       },
     ],
     onVisitHighlightedChars(element) {
-      element.properties.className = ['highlighted'];
+      const className = element.properties.className;
+      if (Array.isArray(className)) {
+        className.push('highlighted');
+      }
     },
   });
   const tree = unified().use(rehypeParse, { fragment: true }).parse(html);
   const tokenElements: Array<Element> = [];
+  const untouchedTokens: Array<Element> = [];
   const highlightedElements: Array<Element> = [];
 
   visit(tree, 'element', (element) => {
     if (element.properties.id === 'token') {
       tokenElements.push(element);
+    }
+
+    if (
+      !Object.hasOwn(element.properties, 'dataHighlightedChars') &&
+      Array.isArray(element.properties.className) &&
+      element.properties.className.includes('token')
+    ) {
+      untouchedTokens.push(element);
     }
 
     if (Object.hasOwn(element.properties, 'dataHighlightedChars')) {
@@ -480,11 +560,85 @@ it('isolates transformer properties from ranged highlight callbacks', async () =
   });
 
   expect(tokenElements).toHaveLength(1);
-  expect(tokenElements[0]?.properties.className).toEqual(['token']);
-  expect(hastToString(tokenElements[0])).toBe(source);
+  expect(hastToString(tokenElements[0])).toBe('foo');
+  expect(untouchedTokens).toHaveLength(1);
+  expect(untouchedTokens[0]?.properties.className).toEqual(['token']);
   expect(highlightedElements).toHaveLength(1);
-  expect(highlightedElements[0]?.properties.className).toEqual(['highlighted']);
+  expect(highlightedElements[0]?.properties.className).toEqual([
+    'token',
+    'highlighted',
+  ]);
   expect(hastToString(highlightedElements[0])).toBe('foo');
+});
+
+it('does not duplicate transformer ids when splitting token boundaries', async () => {
+  let tokenIndex = 0;
+  const html = await getHtml(
+    ['```js /onst x/', 'const xyz = 1', '```'].join('\n'),
+    {
+      theme: 'github-dark',
+      transformers: [
+        {
+          name: 'identify-tokens',
+          span(element) {
+            element.properties.id = `token-${tokenIndex++}`;
+          },
+        },
+      ],
+    },
+  );
+  const tree = unified().use(rehypeParse, { fragment: true }).parse(html);
+  const ids: Array<string> = [];
+
+  visit(tree, 'element', (element) => {
+    if (typeof element.properties.id === 'string') {
+      ids.push(element.properties.id);
+    }
+  });
+
+  expect(inspectHighlightedHtml(html).highlightedChars).toEqual([
+    { text: 'onst x', id: undefined },
+  ]);
+  expect(new Set(ids).size).toBe(ids.length);
+});
+
+it('composes adjacent matches across an identified token boundary', () => {
+  const line: Element = {
+    type: 'element',
+    tagName: 'span',
+    properties: {},
+    children: [
+      {
+        type: 'element',
+        tagName: 'span',
+        properties: { style: 'color:red' },
+        children: [{ type: 'text', value: 'ab' }],
+      },
+      {
+        type: 'element',
+        tagName: 'span',
+        properties: { id: 'token', style: 'color:blue' },
+        children: [{ type: 'text', value: 'cd' }],
+      },
+    ],
+  };
+  const highlightedChars: Array<string> = [];
+
+  charsHighlighter(
+    line,
+    ['abc', 'd'],
+    {
+      ranges: [[], []],
+      idsMap: new Map(),
+      counterMap: new Map(),
+    },
+    (element) => {
+      highlightedChars.push(hastToString(element));
+    },
+  );
+
+  expect(hastToString(line)).toBe('abcd');
+  expect(highlightedChars).toEqual(['abc', 'd']);
 });
 
 it('does not materialize range-excluded occurrences', () => {

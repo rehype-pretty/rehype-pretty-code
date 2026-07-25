@@ -6,4 +6,4 @@ fix: stop character-highlight ranges leaking across patterns, so an id-only anno
 
 Range-excluded occurrences are counted without changing the token tree, so unhighlighted markup remains intact.
 
-Partial highlights inside transformer-generated elements preserve the surrounding semantic element instead of cloning it.
+Partial highlights contained within a transformer-generated element preserve that surrounding semantic element instead of cloning it.
