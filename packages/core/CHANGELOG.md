@@ -1,5 +1,16 @@
 # rehype-pretty-code
 
+## 0.14.5
+
+### Patch Changes
+
+- fix: detect `showLineNumbers` wherever it appears in the meta string, not only before the highlight annotations, while ignoring the word when it is part of a character highlight such as `/foo showLineNumbers bar/` (#204)
+- fix: stop character-highlight ranges leaking across patterns, so an id-only annotation like `/foo/#a` no longer makes a later pattern inherit the previous pattern's range, and a range-ignored occurrence no longer consumes the whole token it lives in (#169)
+
+Range-excluded occurrences are counted without changing the token tree, so unhighlighted markup remains intact.
+
+Partial highlights contained within a transformer-generated element preserve that surrounding semantic element instead of cloning it.
+
 ## 0.14.4
 
 ### Patch Changes
