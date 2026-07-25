@@ -33,3 +33,11 @@ is the first occurrence, so `/lo/2` has to reach the `lo` on the next line.
 balloon;
 lo;
 ```
+
+A highlighted occurrence leaves the same kind of gap, so an unranged pattern
+has to hold too: `/con/` highlights the one `con` in `coconnection` and
+leaves the rest of the code untouched.
+
+```js /con/
+coconnection;
+```
