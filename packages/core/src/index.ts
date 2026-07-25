@@ -395,7 +395,11 @@ export function rehypePrettyCode(
               charsListNumbers.push([]);
             } else {
               const [range, id] = charsIdAndOrRange.split('#');
-              range && charsListNumbers.push(rangeParser(range));
+              // Always push a ranges entry so charsListNumbers stays
+              // index-aligned with charsList. An id-only annotation such as
+              // `/foo/#a` has no range, so the entry is an empty array —
+              // otherwise the next chars would inherit this one's range.
+              charsListNumbers.push(range ? rangeParser(range) : []);
               id && charsListIdMap.set(chars, id);
             }
           });

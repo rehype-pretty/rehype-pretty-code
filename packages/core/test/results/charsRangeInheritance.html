@@ -1,0 +1,131 @@
+
+<style>
+  html {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  body {
+    margin: 30px auto;
+    max-width: 800px;
+  }
+  pre {
+    padding: 16px;
+  }
+  span > code {
+    background: black;
+    padding: 4px;
+  }
+  [data-highlighted-line], [data-highlighted-chars] {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  code[data-line-numbers] {
+    counter-reset: line;
+  }
+  code[data-line-numbers]>[data-line]::before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 1rem;
+    margin-right: 2rem;
+    text-align: right;
+    color: gray;
+  }
+
+  [data-rehype-pretty-code-figure] code[data-theme*=' '],
+  [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rehype-pretty-code-figure] code[data-theme*=' '],
+    [data-rehype-pretty-code-figure] code[data-theme*=' '] span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+    }
+  }
+
+  .diff.add {
+    background-color: rgba(0, 255, 100, 0.25);
+  }
+  .diff.remove {
+    background-color: rgba(255, 100, 200, 0.35);
+  }
+</style>
+<h1>Chars range inheritance (#169)</h1>
+<p>
+  A ranged pattern must not leak its range onto a later plain pattern that
+  shares a token. <code>/Length/</code> has no range, so it highlights on both
+  lines, even though <code>/get/1</code> restricts <code>get</code> to its first
+  occurrence.
+</p>
+<figure data-rehype-pretty-code-figure="">
+  <pre
+    style="background-color: #24292e; color: #e1e4e8"
+    tabindex="0"
+    data-language="js"
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">const</span><span style="color:#B392F0"> </span><mark data-highlighted-chars="" class="word"><span style="color:#B392F0">get</span></mark><span style="color:#B392F0">String</span><mark data-highlighted-chars="" class="word"><span style="color:#B392F0">Length</span></mark><span style="color:#F97583"> =</span><span style="color:#FFAB70"> str</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> str.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">;</span></span>
+<span data-line=""><span style="color:#F97583">const</span><span style="color:#B392F0"> getString</span><mark data-highlighted-chars="" class="word"><span style="color:#B392F0">Length</span></mark><span style="color:#F97583"> =</span><span style="color:#FFAB70"> str</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> str.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">;</span></span></code></pre>
+</figure>
+<p>
+  An id-only annotation (<code>/get/#a</code>) has no range, so
+  <code>get</code> highlights everywhere while <code>/Length/2</code> restricts
+  <code>Length</code> to its second occurrence.
+</p>
+<figure data-rehype-pretty-code-figure="">
+  <pre
+    style="background-color: #24292e; color: #e1e4e8"
+    tabindex="0"
+    data-language="js"
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">const</span><span style="color:#B392F0"> </span><mark style="
+          color: pink; 
+          background-color: rgba(255, 100, 200, 0.35)
+        " data-highlighted-chars="" data-chars-id="a" class="word"><span style="color:#B392F0">get</span></mark><span style="color:#B392F0">StringLength</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> str</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> str.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">;</span></span>
+<span data-line=""><span style="color:#F97583">const</span><span style="color:#B392F0"> </span><mark style="
+          color: pink; 
+          background-color: rgba(255, 100, 200, 0.35)
+        " data-highlighted-chars="" data-chars-id="a" class="word"><span style="color:#B392F0">get</span></mark><span style="color:#B392F0">String</span><mark data-highlighted-chars="" class="word"><span style="color:#B392F0">Length</span></mark><span style="color:#F97583"> =</span><span style="color:#FFAB70"> str</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> str.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">;</span></span></code></pre>
+</figure>
+<p>
+  Splitting a token around an occurrence the range excludes must not let the
+  fragments on either side spell a new one. <code>coconnection</code> holds a
+  single <code>con</code>, so <code>/con/2</code> has nothing to highlight and
+  must leave the code intact — <code>co</code> and <code>nection</code> must not
+  join into a second <code>con</code>.
+</p>
+<figure data-rehype-pretty-code-figure="">
+  <pre
+    style="background-color: #24292e; color: #e1e4e8"
+    tabindex="0"
+    data-language="js"
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#E1E4E8">coconnection;</span></span></code></pre>
+</figure>
+<p>
+  The same joining must not consume a number either: the <code>lo</code> inside
+  <code>balloon</code> is the first occurrence, so <code>/lo/2</code> has to
+  reach the <code>lo</code> on the next line.
+</p>
+<figure data-rehype-pretty-code-figure="">
+  <pre
+    style="background-color: #24292e; color: #e1e4e8"
+    tabindex="0"
+    data-language="js"
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#E1E4E8">balloon;</span></span>
+<span data-line=""><mark data-highlighted-chars="" class="word"><span style="color:#E1E4E8">lo</span></mark><span style="color:#E1E4E8">;</span></span></code></pre>
+</figure>
+<p>
+  A highlighted occurrence leaves the same kind of gap, so an unranged pattern
+  has to hold too: <code>/con/</code> highlights the one <code>con</code> in
+  <code>coconnection</code> and leaves the rest of the code untouched.
+</p>
+<figure data-rehype-pretty-code-figure="">
+  <pre
+    style="background-color: #24292e; color: #e1e4e8"
+    tabindex="0"
+    data-language="js"
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#E1E4E8">co</span><mark data-highlighted-chars="" class="word"><span style="color:#E1E4E8">con</span></mark><span style="color:#E1E4E8">nection;</span></span></code></pre>
+</figure>
