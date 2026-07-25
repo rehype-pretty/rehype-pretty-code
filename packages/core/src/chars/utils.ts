@@ -18,6 +18,14 @@ export function nextElementMaybeContinuesChars({
   }
 
   const nextNode = elements[nextIndex];
+
+  // A node already claimed by an earlier match is skipped by the scanner, so
+  // letting it continue the chars here would promise a run the scanner then
+  // assembles out of non-adjacent siblings.
+  if (Object.hasOwn(nextNode?.properties ?? {}, 'rehype-pretty-code-visited')) {
+    return false;
+  }
+
   const content = getContent(nextNode);
 
   if (!content) {

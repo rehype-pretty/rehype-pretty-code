@@ -16,3 +16,20 @@ everywhere while `/Length/2` restricts `Length` to its second occurrence.
 const getStringLength = str => str.length;
 const getStringLength = str => str.length;
 ```
+
+Splitting a token around an occurrence the range excludes must not let the
+fragments on either side spell a new one. `coconnection` holds a single
+`con`, so `/con/2` has nothing to highlight and must leave the code intact —
+`co` and `nection` must not join into a second `con`.
+
+```js /con/2
+coconnection;
+```
+
+The same joining must not consume a number either: the `lo` inside `balloon`
+is the first occurrence, so `/lo/2` has to reach the `lo` on the next line.
+
+```js /lo/2
+balloon;
+lo;
+```

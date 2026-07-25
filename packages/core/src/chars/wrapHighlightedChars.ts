@@ -26,18 +26,35 @@ export function wrapHighlightedChars(
   }
 
   if (elementsToWrap.length > 1) {
-    parentElement.children.splice(
-      elementsToWrap[0].index,
-      elementsToWrap.length,
-      {
-        type: 'element',
-        tagName: 'mark',
-        properties: { 'data-highlighted-chars-mark': '' },
-        children: elementsToWrap.map(({ element }) => element),
-      },
+    // The recorded indices are the ones the matcher predicted while it was
+    // still splitting nodes, so they can drift from where the elements ended
+    // up. Read the positions back from the tree before touching it.
+    const positions = elementsToWrap.map(({ element }) =>
+      parentElement.children.indexOf(element),
     );
 
-    const element = parentElement.children[elementsToWrap[0].index];
+    // The splice replaces a consecutive slice, which only lines up with the
+    // match when the run is contiguous. Leave the tree alone rather than
+    // delete siblings that were never part of it.
+    const isContiguous = positions.every(
+      (position, i) =>
+        position !== -1 && (i === 0 || position === positions[i - 1] + 1),
+    );
+
+    if (!isContiguous) {
+      return;
+    }
+
+    const start = positions[0];
+
+    parentElement.children.splice(start, elementsToWrap.length, {
+      type: 'element',
+      tagName: 'mark',
+      properties: { 'data-highlighted-chars-mark': '' },
+      children: elementsToWrap.map(({ element }) => element),
+    });
+
+    const element = parentElement.children[start];
 
     if (!isElement(element)) {
       return;

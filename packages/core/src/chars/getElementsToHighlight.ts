@@ -18,6 +18,15 @@ export function getElementsToHighlight(
   if (element.children) {
     const elements = element.children as Array<Element>;
 
+    // `wrapHighlightedChars` replaces `toWrap.length` consecutive siblings
+    // starting at the first index, so a run collected across a gap would
+    // splice out nodes it never matched. Drop a partial run the moment it
+    // stops being contiguous.
+    const discardRun = () => {
+      toWrap.length = 0;
+      charsSoFar = '';
+    };
+
     for (let i = startIndex; i < elements.length; i++) {
       const remaining = charsSoFar ? chars.replace(charsSoFar, '') : chars;
 
@@ -36,13 +45,21 @@ export function getElementsToHighlight(
           'rehype-pretty-code-visited',
         )
       ) {
+        // This node cannot take part in the run, so it separates whatever
+        // preceded it from whatever follows.
+        discardRun();
         continue;
       }
 
+      // How much had been collected before this node was considered, so the
+      // end of the loop body can tell whether the node joined the run.
+      const collectedBefore = toWrap.length;
       const content = getContent(maybeElement) || '';
 
       // node is the chars, or it finishes the chars
-      if (content === chars || charsSoFar + content === chars) {
+      if (
+        charsSoFar === '' ? content === chars : charsSoFar + content === chars
+      ) {
         toWrap.push({ element: maybeElement, index: i });
         return toWrap;
       }
@@ -81,6 +98,12 @@ export function getElementsToHighlight(
             remainingPart: nextPart,
           })
         ) {
+          if (collectedBefore > 0) {
+            // Give up on the run, then reconsider this node from scratch: it
+            // may still be the start of a fresh one.
+            discardRun();
+            i--;
+          }
           continue;
         }
 
@@ -132,6 +155,13 @@ export function getElementsToHighlight(
             });
           }
         }
+      }
+
+      if (collectedBefore > 0 && toWrap.length === collectedBefore) {
+        // The node contributed nothing, so the chars are not spelled by an
+        // unbroken run of siblings ending here. Start over from this node.
+        discardRun();
+        i--;
       }
     }
   }

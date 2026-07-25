@@ -87,3 +87,32 @@
           background-color: rgba(255, 100, 200, 0.35)
         " data-highlighted-chars="" data-chars-id="a" class="word"><span style="color:#B392F0">get</span></mark><span style="color:#B392F0">String</span><mark data-highlighted-chars="" class="word"><span style="color:#B392F0">Length</span></mark><span style="color:#F97583"> =</span><span style="color:#FFAB70"> str</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> str.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">;</span></span></code></pre>
 </figure>
+<p>
+  Splitting a token around an occurrence the range excludes must not let the
+  fragments on either side spell a new one. <code>coconnection</code> holds a
+  single <code>con</code>, so <code>/con/2</code> has nothing to highlight and
+  must leave the code intact — <code>co</code> and <code>nection</code> must not
+  join into a second <code>con</code>.
+</p>
+<figure data-rehype-pretty-code-figure="">
+  <pre
+    style="background-color: #24292e; color: #e1e4e8"
+    tabindex="0"
+    data-language="js"
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#E1E4E8">co</span><span style="color:#E1E4E8">con</span><span style="color:#E1E4E8">nection;</span></span></code></pre>
+</figure>
+<p>
+  The same joining must not consume a number either: the <code>lo</code> inside
+  <code>balloon</code> is the first occurrence, so <code>/lo/2</code> has to
+  reach the <code>lo</code> on the next line.
+</p>
+<figure data-rehype-pretty-code-figure="">
+  <pre
+    style="background-color: #24292e; color: #e1e4e8"
+    tabindex="0"
+    data-language="js"
+    data-theme="github-dark"
+  ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#E1E4E8">bal</span><span style="color:#E1E4E8">lo</span><span style="color:#E1E4E8">on;</span></span>
+<span data-line=""><mark data-highlighted-chars="" class="word"><span style="color:#E1E4E8">lo</span></mark><span style="color:#E1E4E8">;</span></span></code></pre>
+</figure>
