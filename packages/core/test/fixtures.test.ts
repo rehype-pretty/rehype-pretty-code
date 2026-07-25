@@ -393,8 +393,133 @@ it('highlights partial matches nested by a transformer', async () => {
   expect(output.codeText).toBe(source);
   expect(output.highlightedChars).toEqual([{ text: 'foo', id: 'keyword' }]);
   expect(highlightedChars).toEqual([{ text: 'foo', id: 'keyword' }]);
-  expect(html.match(/<em>foo<\/em>/g)).toHaveLength(1);
-  expect(html.match(/<em>bar<\/em>/g)).toHaveLength(1);
+  expect(html.match(/<em>/g)).toHaveLength(1);
+  expect(html.match(/<\/em>/g)).toHaveLength(1);
+});
+
+it('preserves transformer-owned interactive elements around partial highlights', async () => {
+  const source = 'foobar';
+  const html = await getHtml(['```js /oob/', source, '```'].join('\n'), {
+    theme: 'github-dark',
+    transformers: [
+      {
+        name: 'link-token',
+        span(element) {
+          if (hastToString(element) === source) {
+            element.children = [
+              {
+                type: 'element',
+                tagName: 'a',
+                properties: {
+                  id: 'definition',
+                  href: '#definition',
+                  ariaLabel: 'Go to definition',
+                },
+                children: [
+                  { type: 'text', value: 'fo' },
+                  { type: 'text', value: 'obar' },
+                ],
+              },
+            ];
+          }
+        },
+      },
+    ],
+  });
+  const tree = unified().use(rehypeParse, { fragment: true }).parse(html);
+  const links: Array<Element> = [];
+  const highlightedChars: Array<string> = [];
+
+  visit(tree, 'element', (element) => {
+    if (element.tagName === 'a') {
+      links.push(element);
+    }
+
+    if (Object.hasOwn(element.properties, 'dataHighlightedChars')) {
+      highlightedChars.push(hastToString(element));
+    }
+  });
+
+  expect(links).toHaveLength(1);
+  expect(links[0]?.properties.id).toBe('definition');
+  expect(hastToString(links[0])).toBe(source);
+  expect(highlightedChars).toEqual(['oob']);
+});
+
+it('isolates transformer properties from ranged highlight callbacks', async () => {
+  const source = 'foofoo';
+  const html = await getHtml(['```js /foo/2', source, '```'].join('\n'), {
+    theme: 'github-dark',
+    transformers: [
+      {
+        name: 'decorate-token',
+        span(element) {
+          if (hastToString(element) === source) {
+            element.properties.id = 'token';
+            element.properties.className = ['token'];
+          }
+        },
+      },
+    ],
+    onVisitHighlightedChars(element) {
+      element.properties.className = ['highlighted'];
+    },
+  });
+  const tree = unified().use(rehypeParse, { fragment: true }).parse(html);
+  const tokenElements: Array<Element> = [];
+  const highlightedElements: Array<Element> = [];
+
+  visit(tree, 'element', (element) => {
+    if (element.properties.id === 'token') {
+      tokenElements.push(element);
+    }
+
+    if (Object.hasOwn(element.properties, 'dataHighlightedChars')) {
+      highlightedElements.push(element);
+    }
+  });
+
+  expect(tokenElements).toHaveLength(1);
+  expect(tokenElements[0]?.properties.className).toEqual(['token']);
+  expect(hastToString(tokenElements[0])).toBe(source);
+  expect(highlightedElements).toHaveLength(1);
+  expect(highlightedElements[0]?.properties.className).toEqual(['highlighted']);
+  expect(hastToString(highlightedElements[0])).toBe('foo');
+});
+
+it('does not materialize range-excluded occurrences', () => {
+  const source = 'a'.repeat(101);
+  const line: Element = {
+    type: 'element',
+    tagName: 'span',
+    properties: {},
+    children: [
+      {
+        type: 'element',
+        tagName: 'span',
+        properties: { style: 'color:red' },
+        children: [{ type: 'text', value: source }],
+      },
+    ],
+  };
+  const highlightedChars: Array<string> = [];
+
+  charsHighlighter(
+    line,
+    ['a'],
+    {
+      ranges: [[100]],
+      idsMap: new Map(),
+      counterMap: new Map(),
+    },
+    (element) => {
+      highlightedChars.push(hastToString(element));
+    },
+  );
+
+  expect(hastToString(line)).toBe(source);
+  expect(line.children).toHaveLength(3);
+  expect(highlightedChars).toEqual(['a']);
 });
 
 it('does not count comments as highlighted text when splitting nested tokens', () => {

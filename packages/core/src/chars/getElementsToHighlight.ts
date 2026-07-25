@@ -1,33 +1,64 @@
-import type { Element, ElementContent } from 'hast';
+import type { Element, ElementContent, Properties } from 'hast';
 import { toString as hastToString } from 'hast-util-to-string';
 import { isElement, isText } from '../utils';
 
-interface RunElement {
-  element: Element;
-  content: string;
+interface ContentRange {
+  child: ElementContent;
+  index: number;
   start: number;
   end: number;
 }
 
-interface Match {
-  first: RunElement;
-  last: RunElement;
-  firstOffset: number;
-  lastOffset: number;
+export type HighlightTarget =
+  | {
+      type: 'elements';
+      parent: Element;
+      elements: Array<Element>;
+    }
+  | {
+      type: 'range';
+      parent: Element;
+      childIndex: number;
+      start: number;
+      end: number;
+    };
+
+function cloneProperties(properties: Properties): Properties {
+  return Object.fromEntries(
+    Object.entries(properties).map(([key, value]) => [
+      key,
+      Array.isArray(value) ? [...value] : value,
+    ]),
+  );
 }
 
 function cloneElementWithChildren(
   element: Element,
   children: Array<ElementContent>,
 ): Element {
+  const { data, position: _position, ...rest } = element;
+
   return {
-    ...element,
-    properties: { ...element.properties },
+    ...rest,
+    data: data ? { ...data } : undefined,
+    properties: cloneProperties(element.properties),
     children,
   };
 }
 
-function splitContentAt(
+export function getContentLength(child: ElementContent) {
+  if (isText(child)) {
+    return child.value.length;
+  }
+
+  if (isElement(child)) {
+    return hastToString(child).length;
+  }
+
+  return 0;
+}
+
+export function splitContentAt(
   child: ElementContent,
   offset: number,
 ): [ElementContent | undefined, ElementContent | undefined] {
@@ -42,19 +73,7 @@ function splitContentAt(
     return splitElementAt(child, offset);
   }
 
-  return [child, undefined];
-}
-
-function getContentLength(child: ElementContent) {
-  if (isText(child)) {
-    return child.value.length;
-  }
-
-  if (isElement(child)) {
-    return hastToString(child).length;
-  }
-
-  return 0;
+  return offset <= 0 ? [undefined, child] : [child, undefined];
 }
 
 function pushContent(
@@ -101,7 +120,6 @@ function splitElementAt(
     const [left, right] = splitContentAt(child, remaining);
     pushContent(leftChildren, left);
     pushContent(rightChildren, right);
-
     remaining = 0;
   }
 
@@ -111,167 +129,227 @@ function splitElementAt(
   ];
 }
 
-function createMatch(
-  run: Array<RunElement>,
-  matchStart: number,
-  matchLength: number,
-): Match | undefined {
-  const matchEnd = matchStart + matchLength;
-  const first = run.find(
-    ({ start, end }) => start <= matchStart && matchStart < end,
-  );
-  const last = run.find(
-    ({ start, end }) => start < matchEnd && matchEnd <= end,
-  );
+function getContentRanges(element: Element, end: number): Array<ContentRange> {
+  let offset = 0;
+  const ranges: Array<ContentRange> = [];
 
-  if (!(first && last)) {
-    return undefined;
+  for (let index = 0; index < element.children.length; index++) {
+    const child = element.children[index];
+    const start = offset;
+    offset += getContentLength(child);
+    ranges.push({ child, index, start, end: offset });
+
+    if (offset >= end) {
+      break;
+    }
   }
 
-  return {
-    first,
-    last,
-    firstOffset: matchStart - first.start,
-    lastOffset: matchEnd - last.start,
-  };
+  return ranges;
+}
+
+function canSplitToken(element: Element) {
+  return (
+    element.children.length === 1 &&
+    isText(element.children[0]) &&
+    Object.keys(element.properties).every((key) => key === 'style')
+  );
+}
+
+function findTextRange(
+  element: Element,
+  start: number,
+  end: number,
+): HighlightTarget | undefined {
+  let offset = 0;
+
+  for (let childIndex = 0; childIndex < element.children.length; childIndex++) {
+    const child = element.children[childIndex];
+    const childStart = offset;
+    offset += getContentLength(child);
+
+    if (!(childStart <= start && end <= offset)) {
+      continue;
+    }
+
+    if (isText(child)) {
+      return {
+        type: 'range',
+        parent: element,
+        childIndex,
+        start: start - childStart,
+        end: end - childStart,
+      };
+    }
+
+    if (isElement(child)) {
+      return findTextRange(child, start - childStart, end - childStart);
+    }
+  }
+
+  return undefined;
 }
 
 function splitSingleElement(
-  elements: Array<Element>,
-  match: Match,
+  parent: Element,
+  element: Element,
+  start: number,
+  end: number,
 ): Array<Element> {
-  const { first, firstOffset, lastOffset } = match;
-
-  if (firstOffset === 0 && lastOffset === first.content.length) {
-    return [first.element];
+  if (start === 0 && end === hastToString(element).length) {
+    return [element];
   }
 
-  const [before, fromMatch] = splitElementAt(first.element, firstOffset);
-
+  const [before, fromMatch] = splitElementAt(element, start);
   if (!fromMatch) {
     return [];
   }
 
-  const [matching, after] = splitElementAt(fromMatch, lastOffset - firstOffset);
-
+  const [matching, after] = splitElementAt(fromMatch, end - start);
   if (!matching) {
     return [];
   }
 
   const replacements = [before, matching, after].filter(isElement);
-  elements.splice(elements.indexOf(first.element), 1, ...replacements);
+  parent.children.splice(parent.children.indexOf(element), 1, ...replacements);
   return [matching];
 }
 
 function splitBoundaryElements(
-  elements: Array<Element>,
-  match: Match,
+  parent: Element,
+  first: ContentRange & { child: Element },
+  last: ContentRange & { child: Element },
+  start: number,
+  end: number,
 ): Array<Element> {
-  const { first, last, firstOffset, lastOffset } = match;
-  let firstMatch = first.element;
-  let lastMatch = last.element;
+  let firstMatch = first.child;
+  let lastMatch = last.child;
+  const firstOffset = start - first.start;
+  const lastOffset = end - last.start;
 
   if (firstOffset > 0) {
-    const [before, matching] = splitElementAt(first.element, firstOffset);
-
+    const [before, matching] = splitElementAt(first.child, firstOffset);
     if (!(before && matching)) {
       return [];
     }
 
-    const firstIndex = elements.indexOf(first.element);
-    elements.splice(firstIndex, 1, before, matching);
+    const firstIndex = parent.children.indexOf(first.child);
+    parent.children.splice(firstIndex, 1, before, matching);
     firstMatch = matching;
   }
 
-  if (lastOffset < last.content.length) {
-    const [matching, after] = splitElementAt(last.element, lastOffset);
-
+  if (lastOffset < last.end - last.start) {
+    const [matching, after] = splitElementAt(last.child, lastOffset);
     if (!(matching && after)) {
       return [];
     }
 
-    const lastIndex = elements.indexOf(last.element);
-    elements.splice(lastIndex, 1, matching, after);
+    const lastIndex = parent.children.indexOf(last.child);
+    parent.children.splice(lastIndex, 1, matching, after);
     lastMatch = matching;
   }
 
-  const firstIndex = elements.indexOf(firstMatch);
-  const lastIndex = elements.indexOf(lastMatch);
-  return elements.slice(firstIndex, lastIndex + 1);
+  const firstIndex = parent.children.indexOf(firstMatch);
+  const lastIndex = parent.children.indexOf(lastMatch);
+  return parent.children.slice(firstIndex, lastIndex + 1).filter(isElement);
 }
 
-function splitMatch(elements: Array<Element>, match: Match): Array<Element> {
-  if (match.first === match.last) {
-    return splitSingleElement(elements, match);
+function getSingleTarget(
+  element: Element,
+  range: ContentRange,
+  start: number,
+  end: number,
+): HighlightTarget {
+  if (isElement(range.child) && canSplitToken(range.child)) {
+    return {
+      type: 'elements',
+      parent: element,
+      elements: splitSingleElement(
+        element,
+        range.child,
+        start - range.start,
+        end - range.start,
+      ),
+    };
   }
 
-  return splitBoundaryElements(elements, match);
+  if (isElement(range.child)) {
+    const nestedRange = findTextRange(
+      range.child,
+      start - range.start,
+      end - range.start,
+    );
+    if (nestedRange) {
+      return nestedRange;
+    }
+
+    return {
+      type: 'elements',
+      parent: element,
+      elements: splitSingleElement(
+        element,
+        range.child,
+        start - range.start,
+        end - range.start,
+      ),
+    };
+  }
+
+  return {
+    type: 'range',
+    parent: element,
+    childIndex: range.index,
+    start: start - range.start,
+    end: end - range.start,
+  };
 }
 
-function findMatchInRun(
-  elements: Array<Element>,
-  run: Array<RunElement>,
-  matchStart: number,
-  matchLength: number,
-): Array<Element> {
-  const match = createMatch(run, matchStart, matchLength);
-
-  if (!match) {
-    return [];
+function getMultipleTarget(
+  element: Element,
+  first: ContentRange,
+  last: ContentRange,
+  start: number,
+  end: number,
+): HighlightTarget | undefined {
+  const selectedChildren = element.children.slice(first.index, last.index + 1);
+  if (
+    isElement(first.child) &&
+    isElement(last.child) &&
+    selectedChildren.every(isElement)
+  ) {
+    return {
+      type: 'elements',
+      parent: element,
+      elements: splitBoundaryElements(
+        element,
+        { ...first, child: first.child },
+        { ...last, child: last.child },
+        start,
+        end,
+      ),
+    };
   }
 
-  return splitMatch(elements, match);
+  return undefined;
 }
 
 export function getElementsToHighlight(
   element: Element,
-  chars: string,
-  startIndex = 0,
-): Array<Element> {
-  if (chars === '') {
-    return [];
+  start: number,
+  end: number,
+): HighlightTarget | undefined {
+  const ranges = getContentRanges(element, end);
+  const first = ranges.find(
+    (range) => range.start <= start && start < range.end,
+  );
+  const last = ranges.find((range) => range.start < end && end <= range.end);
+
+  if (!(first && last)) {
+    return undefined;
   }
 
-  const elements = element.children as Array<Element>;
-  let run: Array<RunElement> = [];
-  let runLength = 0;
-  let tail = '';
-
-  for (let i = startIndex; i <= elements.length; i++) {
-    const maybeElement = elements[i];
-    const isAvailable =
-      maybeElement?.type === 'element' &&
-      !Object.hasOwn(
-        maybeElement.properties ?? {},
-        'rehype-pretty-code-visited',
-      );
-
-    if (isAvailable) {
-      const content = hastToString(maybeElement);
-      const window = tail + content;
-      const localMatchStart = window.indexOf(chars);
-
-      run.push({
-        element: maybeElement,
-        content,
-        start: runLength,
-        end: runLength + content.length,
-      });
-
-      if (localMatchStart !== -1) {
-        const matchStart = runLength - tail.length + localMatchStart;
-        return findMatchInRun(elements, run, matchStart, chars.length);
-      }
-
-      runLength += content.length;
-      tail = chars.length > 1 ? window.slice(1 - chars.length) : '';
-      continue;
-    }
-
-    run = [];
-    runLength = 0;
-    tail = '';
+  if (first === last) {
+    return getSingleTarget(element, first, start, end);
   }
 
-  return [];
+  return getMultipleTarget(element, first, last, start, end);
 }

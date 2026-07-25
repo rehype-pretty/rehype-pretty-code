@@ -1,12 +1,33 @@
 import type { Element } from 'hast';
 import type { CharsHighlighterOptions, CharsElement } from '../types';
-import { isElement, isText } from '../utils';
+import { isText } from '../utils';
 
-function markElementsVisited(elementsToWrap: Array<Element>) {
-  for (const element of elementsToWrap) {
-    element.properties = element.properties || {};
-    element.properties['rehype-pretty-code-visited'] = '';
-  }
+function applyHighlightProperties(
+  element: Element,
+  chars: string,
+  options: CharsHighlighterOptions,
+) {
+  element.properties['data-highlighted-chars'] = '';
+  element.properties['data-chars-id'] = options.idsMap.get(chars);
+}
+
+function createHighlight(
+  children: Element['children'],
+  chars: string,
+  options: CharsHighlighterOptions,
+) {
+  const element: Element = {
+    type: 'element',
+    tagName: 'mark',
+    properties:
+      children.length === 1 && isText(children[0])
+        ? {}
+        : { 'data-highlighted-chars-mark': '' },
+    children,
+  };
+
+  applyHighlightProperties(element, chars, options);
+  return element;
 }
 
 export function wrapHighlightedChars(
@@ -14,22 +35,9 @@ export function wrapHighlightedChars(
   elementsToWrap: Array<Element>,
   chars: string,
   options: CharsHighlighterOptions,
-  ignoreWord: boolean,
-  onVisitHighlightedChars?: (
-    element: CharsElement,
-    id: string | undefined,
-  ) => void,
-) {
-  if (!elementsToWrap || elementsToWrap.length === 0) {
-    return false;
-  }
-
-  if (ignoreWord) {
-    // Every fragment belongs to the ignored occurrence. Marking only the
-    // first one leaves the remaining fragments available to the next scan,
-    // which can then count an overlapping, token-boundary-dependent match.
-    markElementsVisited(elementsToWrap);
-    return true;
+): CharsElement | undefined {
+  if (elementsToWrap.length === 0) {
+    return undefined;
   }
 
   const [singleElement] = elementsToWrap;
@@ -40,68 +48,66 @@ export function wrapHighlightedChars(
 
   if (isSimpleSingleElement) {
     const element = singleElement;
-    const id = options.idsMap.get(chars);
-
-    element.properties = element.properties || {};
-    element.properties['data-highlighted-chars'] = '';
-    element.properties['data-chars-id'] = id;
+    applyHighlightProperties(element, chars, options);
     element.tagName = 'mark';
     element.children = [
       {
         type: 'element',
         tagName: 'span',
-        properties: {
-          style: element.properties.style,
-        },
+        properties: { style: element.properties.style },
         children: element.children,
       },
     ];
     element.properties.style = undefined;
-
-    onVisitHighlightedChars?.(element as CharsElement, id);
-    element.properties = element.properties || {};
-    element.properties['rehype-pretty-code-visited'] = '';
-    return true;
+    return element as CharsElement;
   }
 
   const positions = elementsToWrap.map((element) =>
     parentElement.children.indexOf(element),
   );
-
-  // The splice replaces a consecutive slice, which only lines up with the
-  // match when the run is contiguous. Leave the tree alone rather than
-  // delete siblings that were never part of it.
   const isContiguous = positions.every(
-    (position, i) =>
-      position !== -1 && (i === 0 || position === positions[i - 1] + 1),
+    (position, index) =>
+      position !== -1 && (index === 0 || position === positions[index - 1] + 1),
   );
 
   if (!isContiguous) {
-    return false;
+    return undefined;
   }
 
   const start = positions[0];
+  const element = createHighlight(elementsToWrap, chars, options);
+  parentElement.children.splice(start, elementsToWrap.length, element);
+  return element as CharsElement;
+}
 
-  parentElement.children.splice(start, elementsToWrap.length, {
-    type: 'element',
-    tagName: 'mark',
-    properties: { 'data-highlighted-chars-mark': '' },
-    children: elementsToWrap,
-  });
-
-  const element = parentElement.children[start];
-
-  if (!isElement(element)) {
-    return false;
+export function wrapHighlightedCharsInRange(
+  parentElement: Element,
+  childIndex: number,
+  start: number,
+  end: number,
+  chars: string,
+  options: CharsHighlighterOptions,
+): CharsElement | undefined {
+  const child = parentElement.children[childIndex];
+  if (!isText(child)) {
+    return undefined;
   }
 
-  const id = options.idsMap.get(chars);
-  element.properties = element.properties || {};
-  element.properties['data-highlighted-chars'] = '';
-  element.properties['data-chars-id'] = id;
-  element.tagName = 'mark';
-  onVisitHighlightedChars?.(element as CharsElement, id);
-  element.properties = element.properties || {};
-  element.properties['rehype-pretty-code-visited'] = '';
-  return true;
+  const highlight = createHighlight(
+    [{ ...child, value: child.value.slice(start, end) }],
+    chars,
+    options,
+  );
+  const replacements: Element['children'] = [];
+
+  if (start > 0) {
+    replacements.push({ ...child, value: child.value.slice(0, start) });
+  }
+  replacements.push(highlight);
+  if (end < child.value.length) {
+    replacements.push({ ...child, value: child.value.slice(end) });
+  }
+
+  parentElement.children.splice(childIndex, 1, ...replacements);
+  return highlight as CharsElement;
 }
