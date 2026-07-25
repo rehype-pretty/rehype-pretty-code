@@ -479,6 +479,94 @@ it('preserves a transformer-owned semantic element on a whole match', async () =
   ]);
 });
 
+it('preserves a whole transformer-owned first boundary in a cross-token match', async () => {
+  const source = 'const value = 1;';
+  const highlightedChars: Array<{ text: string; id: string | undefined }> = [];
+  const html = await getHtml(
+    ['```js /const val/#chars-a', source, '```'].join('\n'),
+    {
+      theme: 'github-dark',
+      transformers: [
+        {
+          name: 'link-keyword',
+          span(element) {
+            if (hastToString(element) === 'const') {
+              element.tagName = 'a';
+              element.properties = {
+                id: 'definition-start',
+                href: '#definition-start',
+              };
+            }
+          },
+        },
+      ],
+      onVisitHighlightedChars(element, id) {
+        highlightedChars.push({ text: hastToString(element), id });
+      },
+    },
+  );
+  const tree = unified().use(rehypeParse, { fragment: true }).parse(html);
+  const links: Array<Element> = [];
+
+  visit(tree, 'element', (element) => {
+    if (element.tagName === 'a') {
+      links.push(element);
+    }
+  });
+
+  expect(inspectHighlightedHtml(html).highlightedChars).toEqual([
+    { text: 'const val', id: 'chars-a' },
+  ]);
+  expect(highlightedChars).toEqual([{ text: 'const val', id: 'chars-a' }]);
+  expect(links).toHaveLength(1);
+  expect(links[0]?.properties.id).toBe('definition-start');
+  expect(hastToString(links[0])).toBe('const');
+});
+
+it('preserves a whole transformer-owned last boundary in a cross-token match', async () => {
+  const source = 'foo.bar()';
+  const highlightedChars: Array<{ text: string; id: string | undefined }> = [];
+  const html = await getHtml(
+    ['```js /o.bar/#chars-b', source, '```'].join('\n'),
+    {
+      theme: 'github-dark',
+      transformers: [
+        {
+          name: 'link-property',
+          span(element) {
+            if (hastToString(element) === 'bar') {
+              element.tagName = 'a';
+              element.properties = {
+                id: 'definition-end',
+                href: '#definition-end',
+              };
+            }
+          },
+        },
+      ],
+      onVisitHighlightedChars(element, id) {
+        highlightedChars.push({ text: hastToString(element), id });
+      },
+    },
+  );
+  const tree = unified().use(rehypeParse, { fragment: true }).parse(html);
+  const links: Array<Element> = [];
+
+  visit(tree, 'element', (element) => {
+    if (element.tagName === 'a') {
+      links.push(element);
+    }
+  });
+
+  expect(inspectHighlightedHtml(html).highlightedChars).toEqual([
+    { text: 'o.bar', id: 'chars-b' },
+  ]);
+  expect(highlightedChars).toEqual([{ text: 'o.bar', id: 'chars-b' }]);
+  expect(links).toHaveLength(1);
+  expect(links[0]?.properties.id).toBe('definition-end');
+  expect(hastToString(links[0])).toBe('bar');
+});
+
 it('retains decorated whole-token highlight properties and callback shape', async () => {
   const highlightedChars: Array<Element> = [];
   const html = await getHtml(['```js /foo/', 'foo', '```'].join('\n'), {

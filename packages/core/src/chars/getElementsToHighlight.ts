@@ -184,23 +184,30 @@ function getMultipleTarget(
   end: number,
 ): HighlightTarget | undefined {
   const selectedChildren = element.children.slice(first.index, last.index + 1);
+  const firstIsWhole = start === first.start;
+  const lastIsWhole = end === last.end;
+
   if (
     !(
-      isTextToken(first.child) &&
-      isTextToken(last.child) &&
-      selectedChildren.every(isElement)
+      selectedChildren.every(isElement) &&
+      (firstIsWhole || isTextToken(first.child)) &&
+      (lastIsWhole || isTextToken(last.child))
     )
   ) {
     return undefined;
   }
 
-  const firstMatch = splitToken(
-    element,
-    first.child,
-    start - first.start,
-    first.end - first.start,
-  );
-  const lastMatch = splitToken(element, last.child, 0, end - last.start);
+  const firstMatch = firstIsWhole
+    ? (first.child as Element)
+    : splitToken(
+        element,
+        first.child as TextToken,
+        start - first.start,
+        first.end - first.start,
+      );
+  const lastMatch = lastIsWhole
+    ? (last.child as Element)
+    : splitToken(element, last.child as TextToken, 0, end - last.start);
   const firstIndex = element.children.indexOf(firstMatch);
   const lastIndex = element.children.indexOf(lastMatch);
 
