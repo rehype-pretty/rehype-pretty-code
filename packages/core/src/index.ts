@@ -319,17 +319,40 @@ export function rehypePrettyCode(
               : 'inherit',
           );
 
-          if (isMultiTheme && themeKeys) {
-            codeTree = hastParser.parse(
-              `<pre><code><span style="${themeKeys
-                .map((key, i) => `--shiki-${key}:${colorsByTheme[i]}`)
-                .join(';')}">${strippedValue}</span></code></pre>`,
-            );
-          } else {
-            codeTree = hastParser.parse(
-              `<pre><code><span style="color:${colorsByTheme[0]}">${strippedValue}</span></code></pre>`,
-            );
-          }
+          const style =
+            isMultiTheme && themeKeys
+              ? themeKeys
+                  .map((key, i) => `--shiki-${key}:${colorsByTheme[i]}`)
+                  .join(';')
+              : `color:${colorsByTheme[0]}`;
+
+          // Build the tree directly: `strippedValue` is untrusted text and must
+          // never be interpolated into an HTML string.
+          codeTree = {
+            type: 'root',
+            children: [
+              {
+                type: 'element',
+                tagName: 'pre',
+                properties: {},
+                children: [
+                  {
+                    type: 'element',
+                    tagName: 'code',
+                    properties: {},
+                    children: [
+                      {
+                        type: 'element',
+                        tagName: 'span',
+                        properties: { style },
+                        children: [{ type: 'text', value: strippedValue }],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          };
         }
 
         visit(codeTree, 'element', replaceLineClass);
