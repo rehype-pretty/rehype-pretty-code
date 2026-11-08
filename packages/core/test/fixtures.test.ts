@@ -20,7 +20,7 @@ import { toHtml } from 'hast-util-to-html';
 import { toString as hastToString } from 'hast-util-to-string';
 import { toHast } from 'mdast-util-to-hast';
 import rehypeParse from 'rehype-parse';
-import rehypePrettyCode, { type Options } from '../src';
+import rehypePrettyCode, { type Options, type Theme } from '../src';
 import { charsHighlighter } from '../src/chars/charsHighlighter';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
@@ -209,6 +209,37 @@ it("highlighter caches don't overwrite each other", async () => {
   // both highlighters are being cached under the same key, but in separate caches,
   // that's what we're testing here by asserting that they yield different results
   expect(html1).not.toBe(html2);
+});
+
+describe('inline tokens with JSON themes that have no name', () => {
+  // A VS Code-style JSON theme, as read from a theme file without a `name`.
+  const unnamedTheme = (keywordColor: string) =>
+    ({
+      type: 'dark',
+      colors: {
+        'editor.background': '#000000',
+        'editor.foreground': '#ffffff',
+      },
+      tokenColors: [
+        { scope: ['keyword'], settings: { foreground: keywordColor } },
+      ],
+    }) as unknown as Theme;
+
+  it('colors the token with a single theme', async () => {
+    const html = await getHtml('`const{:.keyword}`', {
+      theme: unnamedTheme('#ff0000'),
+    });
+    expect(html).toContain('<span style="color:#ff0000">const</span>');
+  });
+
+  it('colors the token with multiple themes', async () => {
+    const html = await getHtml('`const{:.keyword}`', {
+      theme: { light: unnamedTheme('#00ff00'), dark: unnamedTheme('#0000ff') },
+    });
+    expect(html).toContain(
+      '<span style="--shiki-light:#00ff00;--shiki-dark:#0000ff">const</span>',
+    );
+  });
 });
 
 it('highlights repeated chars spanning syntax tokens without changing the source', async () => {

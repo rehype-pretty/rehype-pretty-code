@@ -306,13 +306,15 @@ export function rehypePrettyCode(
             );
           }
         } else {
-          const themeNames = getThemeNames(theme);
           const isMultiTheme = typeof theme === 'object' && !isJSONTheme(theme);
           const themeKeys = isMultiTheme ? Object.keys(theme) : null;
-          const colorsByTheme = themeNames.map((name) =>
-            name
+          // Resolve each theme from its registration rather than its name, so
+          // JSON themes that don't declare a `name` still provide token colors.
+          const themeInputs = isMultiTheme ? Object.values(theme) : [theme];
+          const colorsByTheme = themeInputs.map((themeInput) =>
+            themeInput
               ? highlighter
-                  .getTheme(name)
+                  .getTheme(themeInput)
                   .settings.find(({ scope }) =>
                     scope?.includes(tokensMap[lang.slice(1)] ?? lang.slice(1)),
                   )?.settings.foreground ?? 'inherit'
