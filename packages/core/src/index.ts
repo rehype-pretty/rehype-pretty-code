@@ -388,10 +388,8 @@ export function rehypePrettyCode(
             ]
           : undefined;
 
-        // `[start, end)` offsets of each character-highlight annotation's
-        // delimited text, such as `/{1}/` or `/foo showLineNumbers bar/`.
-        // That text is highlight text rather than options, so the scans for
-        // line ranges, line ids and `showLineNumbers` skip it.
+        // Text between an annotation's delimiters is highlight text, not
+        // options. A range or id after the closing delimiter is not part of it.
         const charsSpans: Array<[number, number]> = (charsMatches ?? []).map(
           (match) => {
             const start = match.index ?? 0;

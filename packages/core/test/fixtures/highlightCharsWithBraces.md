@@ -3,7 +3,7 @@
 Braces inside a char annotation are highlight text, not a line range, so
 only the chars are highlighted here, with either delimiter:
 
-````md showLineNumbers{16} /{1}/#a /{3-4}/#a
+````md showLineNumbers{16} /{1}/1 /{3-4}/1
 ```js {1} /{3-4}/
 const a = 1;
 ```

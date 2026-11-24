@@ -111,9 +111,6 @@ export function replaceLineClass(element: Element) {
   }
 }
 
-/**
- * Whether `[start, end)` overlaps any of the `[from, to)` spans.
- */
 export function overlapsSpans(
   start: number,
   end: number,
@@ -159,11 +156,6 @@ export function getShowLineNumbers(
   return null;
 }
 
-/**
- * Finds the id given to `lineNumber` by a `{range}#id` meta token. Matches
- * overlapping `takenSpans`, the character-highlight annotations, are
- * highlight text and are skipped.
- */
 export function getLineId(
   lineNumber: number,
   meta: string,
