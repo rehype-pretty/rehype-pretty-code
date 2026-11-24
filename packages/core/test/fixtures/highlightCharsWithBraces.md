@@ -15,8 +15,8 @@ const a = 1;
 ```
 ````
 
-A real line range or line id next to a char annotation with braces keeps
-only its own lines and id:
+A real line range next to a char annotation with braces keeps only its own
+lines, and `{2}#a` inside the annotation does not give line 2 an id:
 
 ```js {2} /{1}/ {4}
 const a = {1};
@@ -25,7 +25,7 @@ const c = 3;
 const d = 4;
 ```
 
-```js {2}#b /{2}#a/
+```js {2} /{2}#a/
 const a = 1;
 const b = '{2}#a';
 ```

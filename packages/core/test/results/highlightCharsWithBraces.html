@@ -83,8 +83,9 @@
 <span data-line=""><span style="color:#E1E4E8">```</span></span></code></pre>
 </figure>
 <p>
-  A real line range or line id next to a char annotation with braces keeps only
-  its own lines and id:
+  A real line range next to a char annotation with braces keeps only its own
+  lines, and <code>{2}#a</code> inside the annotation does not give line 2 an
+  id:
 </p>
 <figure data-rehype-pretty-code-figure="">
   <pre
@@ -104,5 +105,5 @@
     data-language="js"
     data-theme="github-dark"
   ><code data-language="js" data-theme="github-dark" style="display: grid;"><span data-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> a</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
-<span class="highlighted" data-line="" data-highlighted-line="" data-highlighted-line-id="b"><span style="color:#F97583">const</span><span style="color:#79B8FF"> b</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> '</span><mark data-highlighted-chars="" class="word"><span style="color:#9ECBFF">{2}#a</span></mark><span style="color:#9ECBFF">'</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<span class="highlighted" data-line="" data-highlighted-line=""><span style="color:#F97583">const</span><span style="color:#79B8FF"> b</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> '</span><mark data-highlighted-chars="" class="word"><span style="color:#9ECBFF">{2}#a</span></mark><span style="color:#9ECBFF">'</span><span style="color:#E1E4E8">;</span></span></code></pre>
 </figure>
