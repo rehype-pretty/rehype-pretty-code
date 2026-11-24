@@ -23,6 +23,7 @@ import {
   replaceLineClass,
   getLineId,
   getShowLineNumbers,
+  overlapsSpans,
 } from './utils';
 export type { Options, LineElement, CharsElement, Theme } from './types';
 
@@ -379,11 +380,33 @@ export function rehypePrettyCode(
 
         if (!lang || lang === 'math') return;
 
+        const charsMatches = meta
+          ? [
+              ...meta.matchAll(
+                /(?<delimiter>["/])(?<chars>.*?)\k<delimiter>(?<charsIdAndOrRange>\S*)/g,
+              ),
+            ]
+          : undefined;
+
+        // `[start, end)` offsets of each character-highlight annotation's
+        // delimited text, such as `/{1}/` or `/foo showLineNumbers bar/`.
+        // That text is highlight text rather than options, so the scans for
+        // line ranges, line ids and `showLineNumbers` skip it.
+        const charsSpans: Array<[number, number]> = (charsMatches ?? []).map(
+          (match) => {
+            const start = match.index ?? 0;
+            const suffix = match.groups?.charsIdAndOrRange ?? '';
+            return [start, start + match[0].length - suffix.length];
+          },
+        );
+
         const lineNumbers: Array<number> = [];
         if (meta) {
           const matches = meta.matchAll(/\B\{(.*?)\}\B/g);
           for (const match of matches) {
-            if (match[1]) {
+            const start = match.index ?? 0;
+            const end = start + match[0].length;
+            if (match[1] && !overlapsSpans(start, end, charsSpans)) {
               lineNumbers.push(...rangeParser(match[1]));
             }
           }
@@ -394,16 +417,8 @@ export function rehypePrettyCode(
         const charsList: Array<string> = [];
         const charsListNumbers: Array<Array<number>> = [];
         const charsListIdMap = new Map();
-        const charsMatches = meta
-          ? [
-              ...meta.matchAll(
-                /(?<delimiter>["/])(?<chars>.*?)\k<delimiter>(?<charsIdAndOrRange>\S*)/g,
-              ),
-            ]
-          : undefined;
-
         lineNumbers.forEach((lineNumber) => {
-          const id = getLineId(lineNumber, meta);
+          const id = getLineId(lineNumber, meta, charsSpans);
           id && lineIdMap.set(lineNumber, id);
         });
 
@@ -460,13 +475,7 @@ export function rehypePrettyCode(
         // legitimately span whitespace (`/foo showLineNumbers bar/`), are
         // highlight text rather than an option, so the spans those
         // annotations already claim are excluded.
-        const showLineNumbers = getShowLineNumbers(
-          meta,
-          (charsMatches ?? []).map((match) => {
-            const start = match.index ?? 0;
-            return [start, start + match[0].length];
-          }),
-        );
+        const showLineNumbers = getShowLineNumbers(meta, charsSpans);
 
         // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         visit(codeTree, 'element', (element) => {

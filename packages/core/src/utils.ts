@@ -111,6 +111,17 @@ export function replaceLineClass(element: Element) {
   }
 }
 
+/**
+ * Whether `[start, end)` overlaps any of the `[from, to)` spans.
+ */
+export function overlapsSpans(
+  start: number,
+  end: number,
+  spans: Array<[number, number]>,
+) {
+  return spans.some(([from, to]) => start < to && end > from);
+}
+
 // `showLineNumbers`, optionally `showLineNumbers{N}`, bounded by
 // whitespace or the ends of the meta string. Only lookahead is used, so
 // this stays parseable on Safari < 16.4, which lacks lookbehind.
@@ -140,7 +151,7 @@ export function getShowLineNumbers(
     const start = (match.index ?? 0) + (match[0].length - token.length);
     const end = start + token.length;
 
-    if (takenSpans.some(([from, to]) => start < to && end > from)) continue;
+    if (overlapsSpans(start, end, takenSpans)) continue;
 
     return { startAt: match[2] ? Number(match[2]) : null };
   }
@@ -148,12 +159,21 @@ export function getShowLineNumbers(
   return null;
 }
 
-export function getLineId(lineNumber: number, meta: string) {
-  const segments = meta.match(/\{[^}]+\}#[a-zA-Z0-9]+/g);
-  if (!segments) return null;
+/**
+ * Finds the id given to `lineNumber` by a `{range}#id` meta token. Matches
+ * overlapping `takenSpans`, the character-highlight annotations, are
+ * highlight text and are skipped.
+ */
+export function getLineId(
+  lineNumber: number,
+  meta: string,
+  takenSpans: Array<[number, number]>,
+) {
+  for (const segment of meta.matchAll(/\{[^}]+\}#[a-zA-Z0-9]+/g)) {
+    const start = segment.index ?? 0;
+    if (overlapsSpans(start, start + segment[0].length, takenSpans)) continue;
 
-  for (const segment of segments) {
-    const [range, id] = segment.split('#');
+    const [range, id] = segment[0].split('#');
     if (!(range && id)) continue;
 
     const match = range.match(/\{(.*?)\}/);
